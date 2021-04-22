@@ -40,7 +40,8 @@
     },
     "lint-staged": {
         "./**/*.{js,jsx,ts,tsx}": [
-            "eslint --fix"
+            "yarn lint",
+            "prettier --write"
         ]
     }
 }
