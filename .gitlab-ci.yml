@@ -1,0 +1,15 @@
+image: node
+
+cache:
+    # key: '${CI_JOB_NAME}'
+    paths:
+        - node_modules
+
+stages:
+    - Test
+
+Eslint:
+    stage: Test
+    script:
+        - yarn
+        - yarn lint
