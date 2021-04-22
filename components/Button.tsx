@@ -1,17 +1,17 @@
 import React, { FC } from 'react'
-import { Button as RebassButton } from 'rebass'
+import { Button } from 'theme-ui'
 
 export interface ButtonProps {
     title: string
     onPress?: () => void
 }
 
-const Button: FC<ButtonProps> = ({ title, onPress }) => {
+const Buttons: FC<ButtonProps> = ({ title, onPress }) => {
     return (
-        <RebassButton color="black" onClick={onPress}>
+        <Button color="text" bg="background" onClick={onPress}>
             {title}
-        </RebassButton>
+        </Button>
     )
 }
 
-export default Button
+export default Buttons
