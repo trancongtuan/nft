@@ -47,9 +47,10 @@
         }
     },
     "lint-staged": {
-        "./**/*.{js,jsx,ts,tsx}": [
-            "eslint --fix .",
-            "prettier --write"
+        "*.{js,jsx,ts,tsx}": [
+            "yarn lint",
+            "yarn format",
+            "git add ."
         ]
     }
 }
