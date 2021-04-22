@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import React from 'react'
+import React, { FC } from 'react'
 import styles from '../styles/Home.module.css'
 
 const Home = () => {
