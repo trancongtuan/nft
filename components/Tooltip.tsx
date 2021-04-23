@@ -1,3 +1,4 @@
+import { alpha } from '@theme-ui/color'
 import React, { FC } from 'react'
 import { Button, useColorMode, Text, Box } from 'theme-ui'
 
@@ -24,12 +25,12 @@ const Tooltip: FC<TooltipProps> = ({ items, onClick, visible }) => {
                 flexGrow: 1,
                 boxShadow:
                     colorMode !== 'dark'
-                        ? 'rgb(4 4 5 / 20%) 0px 7px 36px -8px'
+                        ? `${alpha('text', 0.2)} 0px 7px 36px -8px`
                         : undefined,
                 borderRadius: 8,
                 border:
                     colorMode === 'dark'
-                        ? '1px solid rgba(255, 255, 255, 0.1)'
+                        ? `1px solid ${alpha('white', 0.1)}`
                         : undefined,
                 transition: 'all 0.12s ease-in-out 0s',
                 transform: 'translate(20px, 95px)',
