@@ -1,6 +1,7 @@
 import { addDecorator } from '@storybook/react'
 import { ThemeProvider } from '@theme-ui/theme-provider'
-import { useColorMode } from 'theme-ui'
+import React from 'react'
+import { Box, Flex, useColorMode } from 'theme-ui'
 import theme from '../styles/theme'
 
 const ChangeMode = () => {

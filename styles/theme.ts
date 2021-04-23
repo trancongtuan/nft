@@ -2,12 +2,14 @@ export default {
     breakpoints: ['40em', '52em', '64em'],
     fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
     colors: {
-        text: '#000',
+        text: '#040405',
         background: '#fff',
+        hover: 'rgba(4, 4, 5, 0.05)',
         modes: {
             dark: {
                 text: '#fff',
-                background: '#000',
+                background: '#1f1f1f',
+                hover: 'rgba(255, 255, 255, 0.05)',
             },
         },
     },
