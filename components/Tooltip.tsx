@@ -17,6 +17,7 @@ const Tooltip: FC<TooltipProps> = ({ items, onClick, visible }) => {
     return (
         <Box
             py={16}
+            bg="background"
             sx={{
                 display: visible ? 'flex' : 'none',
                 flexDirection: 'column',
@@ -31,6 +32,8 @@ const Tooltip: FC<TooltipProps> = ({ items, onClick, visible }) => {
                         ? '1px solid rgba(255, 255, 255, 0.1)'
                         : undefined,
                 transition: 'all 0.12s ease-in-out 0s',
+                transform: 'translate(20px, 95px)',
+                minWidth: 207,
             }}
         >
             {items.map((item) => (
