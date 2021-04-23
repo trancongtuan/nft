@@ -34,7 +34,13 @@ export default {
         large: '0 0 24px rgba(0, 0, 0, .125)',
     },
     variants: {},
-    text: {},
+    text: {
+        heading: {
+            fontFamily: 'sans-serif',
+            lineHeight: 'heading',
+            fontWeight: 'heading',
+        },
+    },
     buttons: {
         primary: {
             display: 'flex',

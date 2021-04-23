@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Box, Flex, useColorMode, Button } from 'theme-ui'
 import Avatar from '../components/Avatar'
 import BidCard from '../components/BidCard'
+import HomeCard from '../components/HomeCard'
 import HotCollection from '../components/HotCollection'
 import TopSellerCard from '../components/TopSellerCard'
 
@@ -19,6 +20,13 @@ const Home: FC = () => {
             </Button>
             <br />
             <Button variant="secondary">Secondary</Button>
+            <br />
+            <HomeCard
+                label="Pink Cat"
+                subLabel="FLOSSTRADAMUS"
+                image="https://dl.airtable.com/.attachments/58cc8ae0a4cf13909f4b85322ab688ad/cfa6de0d/Screenshot2021-04-20at22_32_23.png"
+                darkText={false}
+            />
             <br />
             <Flex sx={{ justifyContent: 'space-between' }}>
                 <Avatar
