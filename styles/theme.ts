@@ -2,14 +2,15 @@ export default {
     breakpoints: ['40em', '52em', '64em'],
     fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
     colors: {
-        text: '#040405',
+        text: '#000',
+        fadeText: 'rgba(255, 255, 255, 0.5)',
         background: '#fff',
         hover: 'rgba(4, 4, 5, 0.05)',
         modes: {
             dark: {
                 text: '#fff',
-                background: '#1f1f1f',
-                hover: 'rgba(255, 255, 255, 0.05)',
+                fadeText: 'rgba(255, 255, 255, 0.5)',
+                background: '#000',
             },
         },
     },
@@ -28,7 +29,13 @@ export default {
         large: '0 0 24px rgba(0, 0, 0, .125)',
     },
     variants: {},
-    text: {},
+    text: {
+        heading: {
+            fontFamily: 'sans-serif',
+            lineHeight: 'heading',
+            fontWeight: 'heading',
+        },
+    },
     buttons: {
         primary: {},
     },
