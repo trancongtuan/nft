@@ -77,10 +77,10 @@ const BidCard: FC<BidCardProps> = ({
                             height: '40px',
                             display: 'block',
                             borderRadius: '16px',
-                            border:
+                            border: (t) =>
                                 colorMode === 'dark'
-                                    ? `1px solid ${alpha('white', 0.1)}`
-                                    : `1px solid ${alpha('text', 0.1)}`,
+                                    ? `1px solid ${alpha('white', 0.1)(t)}`
+                                    : `1px solid ${alpha('text', 0.1)(t)}`,
                         },
                         ':after': {
                             bg: 'background',
@@ -93,10 +93,10 @@ const BidCard: FC<BidCardProps> = ({
                             height: '40px',
                             display: 'block',
                             borderRadius: '16px',
-                            border:
+                            border: (t) =>
                                 colorMode === 'dark'
-                                    ? `1px solid ${alpha('white', 0.1)}`
-                                    : `1px solid ${alpha('text', 0.1)}`,
+                                    ? `1px solid ${alpha('white', 0.1)(t)}`
+                                    : `1px solid ${alpha('text', 0.1)(t)}`,
                         },
                     }}
                 />
@@ -110,10 +110,10 @@ const BidCard: FC<BidCardProps> = ({
                     width: '100%',
                     position: 'relative',
                     borderRadius: 16,
-                    border:
+                    border: (t) =>
                         colorMode === 'dark'
-                            ? `1px solid ${alpha('white', 0.1)}`
-                            : `1px solid ${alpha('text', 0.1)}`,
+                            ? `1px solid ${alpha('white', 0.1)(t)}`
+                            : `1px solid ${alpha('text', 0.1)(t)}`,
                     px: [18, 18, 22],
                     py: [22, 22, 24],
                 }}
@@ -153,12 +153,12 @@ const BidCard: FC<BidCardProps> = ({
                                 position: 'relative',
                                 width: 30,
                                 height: 30,
-                                svg: {
+                                svg: (t) => ({
                                     fill:
                                         colorMode === 'dark'
-                                            ? `1px solid ${alpha('white', 0.5)}`
-                                            : `1px solid ${alpha('text', 0.5)}`,
-                                },
+                                            ? alpha('white', 0.5)(t)
+                                            : alpha('text', 0.5)(t),
+                                }),
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 borderRadius: 9999,
@@ -170,10 +170,16 @@ const BidCard: FC<BidCardProps> = ({
                                                 ? 'white'
                                                 : 'text',
                                     },
-                                    backgroundColor:
+                                    backgroundColor: (t) =>
                                         colorMode === 'dark'
-                                            ? `1px solid ${alpha('white', 0.6)}`
-                                            : `1px solid ${alpha('text', 0.6)}`,
+                                            ? `1px solid ${alpha(
+                                                  'white',
+                                                  0.6
+                                              )(t)}`
+                                            : `1px solid ${alpha(
+                                                  'text',
+                                                  0.6
+                                              )(t)}`,
                                 },
                                 cursor: 'pointer',
                             }}

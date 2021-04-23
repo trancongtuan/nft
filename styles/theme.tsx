@@ -7,7 +7,7 @@ export default {
         text: '#040405',
         textSecondary: alpha('text', 0.5),
         background: '#fff',
-        hover: alpha('text', 0.5),
+        hover: alpha('text', 0.05),
         primary: '#0066ff',
         red: '#ff5757',
         modes: {

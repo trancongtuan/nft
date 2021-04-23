@@ -23,17 +23,17 @@ const Tooltip: FC<TooltipProps> = ({ items, onClick, visible }) => {
                 display: visible ? 'flex' : 'none',
                 flexDirection: 'column',
                 flexGrow: 1,
-                boxShadow:
+                boxShadow: (t) =>
                     colorMode !== 'dark'
-                        ? `${alpha('text', 0.2)} 0px 7px 36px -8px`
+                        ? `${alpha('text', 0.2)(t)} 0px 7px 36px -8px`
                         : undefined,
                 borderRadius: 8,
-                border:
+                border: (t) =>
                     colorMode === 'dark'
-                        ? `1px solid ${alpha('white', 0.1)}`
+                        ? `1px solid ${alpha('white', 0.1)(t)}`
                         : undefined,
                 transition: 'all 0.12s ease-in-out 0s',
-                transform: 'translate(20px, 95px)',
+                transform: 'translate(20px, 110px)',
                 minWidth: 207,
             }}
         >

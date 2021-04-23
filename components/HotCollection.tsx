@@ -23,10 +23,10 @@ const HotCollection: FC<HotCollectionProps> = ({
         <Box
             sx={{
                 borderRadius: 16,
-                border:
+                border: (t) =>
                     colorMode === 'dark'
-                        ? `1px solid ${alpha('white', 0.1)}`
-                        : `1px solid ${alpha('text', 0.1)}`,
+                        ? `1px solid ${alpha('white', 0.1)(t)}`
+                        : `1px solid ${alpha('text', 0.1)(t)}`,
                 overflow: 'hidden',
                 height: 220,
             }}
