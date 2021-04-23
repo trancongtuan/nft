@@ -47,6 +47,7 @@ const Avatar: FC<AvatarProps> = ({ src, verified, size = 'md' }) => {
                     width: verifiedSize,
                     height: verifiedSize,
                 },
+                cursor: 'pointer',
             }}
         >
             <Image src={src} variant={size} />
