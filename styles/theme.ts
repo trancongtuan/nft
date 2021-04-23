@@ -3,10 +3,12 @@ export default {
     fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
     colors: {
         text: '#000',
+        fadeText: 'rgba(255, 255, 255, 0.5)',
         background: '#fff',
         modes: {
             dark: {
                 text: '#fff',
+                fadeText: 'rgba(255, 255, 255, 0.5)',
                 background: '#000',
             },
         },
@@ -26,7 +28,13 @@ export default {
         large: '0 0 24px rgba(0, 0, 0, .125)',
     },
     variants: {},
-    text: {},
+    text: {
+        heading: {
+            fontFamily: 'sans-serif',
+            lineHeight: 'heading',
+            fontWeight: 'heading',
+        },
+    },
     buttons: {
         primary: {},
     },

@@ -16,7 +16,7 @@ export interface HomeCardProps {
 
 const HomeCard: FC<HomeCardProps> = ({ items, onPress }) => {
     return (
-        <Box p={32} sx={{ padding: '30px' }}>
+        <Box sx={{ padding: 4 }}>
             <Box
                 color="text"
                 onClick={onPress}
@@ -37,7 +37,7 @@ const HomeCard: FC<HomeCardProps> = ({ items, onPress }) => {
                             maxWidth: '270px',
                             maxHeight: '270px',
                             overflow: 'hidden',
-                            borderRadius: '20px',
+                            borderRadius: 20,
                             cursor: 'pointer',
                             ':after': {
                                 content: '""',
@@ -45,7 +45,7 @@ const HomeCard: FC<HomeCardProps> = ({ items, onPress }) => {
                                 paddingTop: '100%',
                             },
                             ':last-child': {
-                                margin: '0',
+                                margin: 0,
                             },
                         }}
                     >
@@ -71,16 +71,14 @@ const HomeCard: FC<HomeCardProps> = ({ items, onPress }) => {
                                 top: '10px',
                                 left: '10px',
                                 width: '70%',
+                                variant: 'text.heading',
                             }}
                         >
                             <Text
                                 sx={{
                                     display: 'block',
                                     color: item.darkText ? '#000' : '#FFF',
-                                    fontSize: '16px',
-                                    fontFamily: 'sans-serif',
-                                    lineHeight: 1.4,
-                                    fontWeight: '800',
+                                    fontSize: 2,
                                     whiteSpace: 'normal',
                                 }}
                             >
@@ -88,11 +86,8 @@ const HomeCard: FC<HomeCardProps> = ({ items, onPress }) => {
                             </Text>
                             <Text
                                 sx={{
-                                    color: 'rgba(255, 255, 255, 0.5)',
-                                    fontSize: '14px',
-                                    fontFamily: 'sans-serif',
-                                    lineHeight: 1.4,
-                                    fontWeight: '700',
+                                    color: 'fadeText',
+                                    fontSize: 1,
                                 }}
                             >
                                 {item.subLabel}
