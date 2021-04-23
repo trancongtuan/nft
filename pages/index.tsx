@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { useColorMode } from 'theme-ui'
 import Button from '../components/Button'
+import HotBidCard from '../components/HotBidCard'
 import Tooltip from '../components/Tooltip'
 
 const items = [
@@ -29,6 +30,7 @@ const Home: FC = () => {
                 title={colorMode === 'default' ? 'Dark' : 'Light'}
             />
             <Tooltip items={items} visible />
+            <HotBidCard name="Test" status="Test" bid={50} currency="WETH" />
         </div>
     )
 }
