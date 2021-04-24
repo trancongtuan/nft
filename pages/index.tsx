@@ -19,6 +19,12 @@ const Home: FC = () => {
                 {colorMode === 'default' ? 'Dark' : 'Light'}
             </Button>
             <br />
+            <Button variant="border">Border</Button>
+            <br />
+            <Button variant="borderActive">Border active</Button>
+            <br />
+            <Button variant="secondary">Secondary</Button>
+            <br />
             <Button variant="secondary">Secondary</Button>
             <br />
             <HomeCard
