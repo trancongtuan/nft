@@ -7,6 +7,7 @@ import CustomInput from '../components/CustomInput'
 import HomeCard from '../components/HomeCard'
 import HotCollection from '../components/HotCollection'
 import TopSellerCard from '../components/TopSellerCard'
+import ToggleButton from '../components/ToggleButton'
 
 const Home: FC = () => {
     const [colorMode, setColorMode] = useColorMode()
@@ -79,6 +80,12 @@ const Home: FC = () => {
                         count: 10,
                     },
                 ]}
+            />
+            <br />
+            <ToggleButton
+                onChange={(value) => {
+                    console.log(value)
+                }}
             />
             <br />
             <HomeCard

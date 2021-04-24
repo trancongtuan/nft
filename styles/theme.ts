@@ -68,7 +68,7 @@ export default {
             fontWeight: 'heading',
             display: 'inline-block',
             paddingRight: '15px',
-            transition: '.3s',
+            transition: 'all 0.12s ease-in-out 0s',
             ':hover': {
                 color: 'text',
             },
@@ -91,6 +91,30 @@ export default {
             top: '-2px',
             right: 0,
             fontSize: 0,
+        },
+    },
+    toggleButton: {
+        button: {
+            cursor: 'pointer',
+            borderRadius: 28,
+            padding: 1,
+            width: '28px',
+            height: '16px',
+            background: 'rgba(0, 102, 255, 0.1);',
+        },
+        activeButton: {
+            cursor: 'pointer',
+            borderRadius: 28,
+            padding: 1,
+            width: '28px',
+            height: '16px',
+            background: 'rgb(45, 129, 255);',
+        },
+        circle: {
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            transition: 'all 0.12s ease-in-out 0s',
         },
     },
     buttons: {
