@@ -32,7 +32,11 @@ const HotCollection: FC<HotCollectionProps> = ({
             }}
         >
             <Box>
-                <Image src={background} variant="background" />
+                <Image
+                    src={background}
+                    variant="background"
+                    sx={{ objectFit: 'cover' }}
+                />
             </Box>
             <Flex sx={{ flexDirection: 'column', alignItems: 'center' }}>
                 <Box mt={-42}>

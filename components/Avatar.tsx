@@ -50,7 +50,11 @@ const Avatar: FC<AvatarProps> = ({ src, verified, size = 'md' }) => {
                 cursor: 'pointer',
             }}
         >
-            <Image src={src} variant={size} />
+            <Image
+                src={src}
+                variant={`avatar.${size}`}
+                sx={{ objectFit: 'cover', borderRadius: 9999 }}
+            />
             {verified && <VerifiedIcon />}
         </Box>
     )
