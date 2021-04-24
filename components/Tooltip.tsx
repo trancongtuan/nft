@@ -39,6 +39,7 @@ const Tooltip: FC<TooltipProps> = ({ items, onClick, visible }) => {
         >
             {items.map((item) => (
                 <Button
+                    variant=""
                     bg="background"
                     px="12px"
                     py={2}
