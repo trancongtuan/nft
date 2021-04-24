@@ -63,6 +63,9 @@ const Carousel: FC<PropsWithChildren<CarouselProps>> = ({
                         ':hover': {
                             bg: 'background',
                         },
+                        ':active': {
+                            transform: 'scale(0.95)',
+                        },
                     }}
                     onClick={() => ref.current.slickPrev()}
                 >
@@ -89,6 +92,9 @@ const Carousel: FC<PropsWithChildren<CarouselProps>> = ({
                         },
                         ':hover': {
                             bg: 'background',
+                        },
+                        ':active': {
+                            transform: 'scale(0.95)',
                         },
                     }}
                     onClick={() => ref.current.slickNext()}
