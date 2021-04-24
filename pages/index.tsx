@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Box, Flex, useColorMode, Button } from 'theme-ui'
 import Avatar from '../components/Avatar'
 import BidCard from '../components/BidCard'
+import Selection from '../components/Selection'
 import CustomInput from '../components/CustomInput'
 import HomeCard from '../components/HomeCard'
 import HotCollection from '../components/HotCollection'
@@ -35,6 +36,49 @@ const Home: FC = () => {
                 onChange={(value) => {
                     console.log(value)
                 }}
+            />
+            <br />
+            <Selection
+                onChange={(value) => {
+                    console.log(value)
+                }}
+                items={[
+                    {
+                        id: '1',
+                        label: 'On sale',
+                        count: 0,
+                    },
+                    {
+                        id: '2',
+                        label: 'Collectibles',
+                        count: 0,
+                    },
+                    {
+                        id: '3',
+                        label: 'Created',
+                        count: 0,
+                    },
+                    {
+                        id: '4',
+                        label: 'Liked',
+                        count: 2,
+                    },
+                    {
+                        id: '5',
+                        label: 'Activity',
+                        count: 5,
+                    },
+                    {
+                        id: '6',
+                        label: 'Following',
+                        count: 1,
+                    },
+                    {
+                        id: '7',
+                        label: 'Followers',
+                        count: 10,
+                    },
+                ]}
             />
             <br />
             <HomeCard

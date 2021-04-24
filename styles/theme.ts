@@ -56,6 +56,43 @@ export default {
             },
         },
     },
+    selection: {
+        overflow: 'auto',
+        whiteSpace: 'nowrap',
+        item: {
+            position: 'relative',
+            cursor: 'pointer',
+            color: 'textSecondary',
+            marginRight: 3,
+            fontSize: 1,
+            fontWeight: 'heading',
+            display: 'inline-block',
+            paddingRight: '15px',
+            transition: '.3s',
+            ':hover': {
+                color: 'text',
+            },
+        },
+        itemActive: {
+            position: 'relative',
+            cursor: 'pointer',
+            color: 'text',
+            marginRight: 3,
+            fontSize: 1,
+            fontWeight: 'heading',
+            display: 'inline-block',
+            paddingBottom: 1,
+            borderColor: 'text',
+            borderBottom: '2px solid',
+            paddingRight: '15px',
+        },
+        count: {
+            position: 'absolute',
+            top: '-2px',
+            right: 0,
+            fontSize: 0,
+        },
+    },
     buttons: {
         border: {
             display: 'flex',
