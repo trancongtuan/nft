@@ -39,6 +39,23 @@ export default {
             fontWeight: 'heading',
         },
     },
+    forms: {
+        input: {
+            border: 'none',
+            borderBottom: '2px #eaeaea solid',
+            borderRadius: '0',
+            padding: '15px 0',
+            color: 'textSecondary',
+            fontSize: 1,
+            fontWeight: '600',
+            ':focus': {
+                outline: 'none',
+            },
+            '::placeholder': {
+                color: 'rgba(4, 4, 5, 0.2)',
+            },
+        },
+    },
     buttons: {
         border: {
             display: 'flex',

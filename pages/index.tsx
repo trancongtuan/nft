@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Box, Flex, useColorMode, Button } from 'theme-ui'
 import Avatar from '../components/Avatar'
 import BidCard from '../components/BidCard'
+import CustomInput from '../components/CustomInput'
 import HomeCard from '../components/HomeCard'
 import HotCollection from '../components/HotCollection'
 import TopSellerCard from '../components/TopSellerCard'
@@ -26,6 +27,15 @@ const Home: FC = () => {
             <Button variant="secondary">Secondary</Button>
             <br />
             <Button variant="secondary">Secondary</Button>
+            <br />
+            <CustomInput
+                label="Name"
+                placeholder='e. g. "Redeemable T-shirt with logo"'
+                value=""
+                onChange={(value) => {
+                    console.log(value)
+                }}
+            />
             <br />
             <HomeCard
                 label="Pink Cat"
