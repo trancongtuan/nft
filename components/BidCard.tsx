@@ -172,14 +172,8 @@ const BidCard: FC<BidCardProps> = ({
                                     },
                                     backgroundColor: (t) =>
                                         colorMode === 'dark'
-                                            ? `1px solid ${alpha(
-                                                  'white',
-                                                  0.6
-                                              )(t)}`
-                                            : `1px solid ${alpha(
-                                                  'text',
-                                                  0.6
-                                              )(t)}`,
+                                            ? alpha('white', 0.6)(t)
+                                            : alpha('text', 0.06)(t),
                                 },
                                 cursor: 'pointer',
                             }}
