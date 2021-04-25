@@ -150,6 +150,7 @@ const selectionItems = [
 const Home: FC = () => {
     const [colorMode, setColorMode] = useColorMode()
     const [openPopup, setOpenPopup] = useState(false)
+    const [liked, setLiked] = useState(false)
     return (
         <Box p={20}>
             <Carousel slidesToShow={4} length={carouselItems.length}>
@@ -355,7 +356,6 @@ const Home: FC = () => {
                 />
                 <br />
                 <BidCard
-                    liked
                     favorite={10}
                     price={10}
                     type="multiple"
@@ -372,6 +372,28 @@ const Home: FC = () => {
                     name="Test"
                     bid={50}
                     currency="WETH"
+                    liked={liked}
+                    onLike={() => setLiked(!liked)}
+                />
+                <br />
+                <BidCard
+                    favorite={10}
+                    price={10}
+                    image="https://picsum.photos/200/400"
+                    collection={{
+                        src: 'https://picsum.photos/300/300',
+                        verified: true,
+                    }}
+                    owner={{ src: 'https://picsum.photos/200/300' }}
+                    creator={{
+                        src: 'https://picsum.photos/200/400',
+                        verified: true,
+                    }}
+                    name="Test"
+                    bid={50}
+                    currency="WETH"
+                    liked={liked}
+                    onLike={() => setLiked(!liked)}
                 />
             </Box>
         </Box>
