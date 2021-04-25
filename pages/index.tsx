@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Box, Flex, useColorMode, Button } from 'theme-ui'
+import React, { FC, useState } from 'react'
+import { Box, Flex, useColorMode, Button, Text } from 'theme-ui'
 import Avatar from '../components/Avatar'
 import BidCard from '../components/BidCard'
 import Selection from '../components/Selection'
@@ -8,9 +8,17 @@ import HomeCard from '../components/HomeCard'
 import HotCollection from '../components/HotCollection'
 import TopSellerCard from '../components/TopSellerCard'
 import ToggleButton from '../components/ToggleButton'
+import Popup from '../components/Popup'
+
+import TwitterIcon from '../public/assets/images/icons/twitter.svg'
+import FacebookIcon from '../public/assets/images/icons/facebook.svg'
+import TelegramIcon from '../public/assets/images/icons/telegram.svg'
+import EmailIcon from '../public/assets/images/icons/email.svg'
 
 const Home: FC = () => {
     const [colorMode, setColorMode] = useColorMode()
+    const [openPopup, setOpenPopup] = useState(false)
+
     return (
         <Box p={20} sx={{ maxWidth: 500 }}>
             <Button
@@ -94,6 +102,116 @@ const Home: FC = () => {
                 image="https://dl.airtable.com/.attachments/58cc8ae0a4cf13909f4b85322ab688ad/cfa6de0d/Screenshot2021-04-20at22_32_23.png"
                 darkText={false}
             />
+            <br />
+            <Button
+                variant="primary"
+                onClick={() => {
+                    setOpenPopup(true)
+                }}
+            >
+                Open Popup
+            </Button>
+            <Popup
+                isOpen={openPopup}
+                onClose={() => {
+                    setOpenPopup(false)
+                }}
+                label="Share this NFT"
+            >
+                <Flex
+                    p={3}
+                    sx={{
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Box>
+                        <Button
+                            variant="circle"
+                            sx={{ width: '56px', height: '56px' }}
+                        >
+                            <TwitterIcon />
+                        </Button>
+                        <Box
+                            mt={1}
+                            sx={{
+                                width: '56px',
+                                color: 'rgba(4, 4, 5, 0.5)',
+                                fontSize: '11px',
+                                lineHeight: '16.56px',
+                                textAlign: 'center',
+                                fontWeight: '600',
+                            }}
+                        >
+                            Twitter
+                        </Box>
+                    </Box>
+                    <Box>
+                        <Button
+                            variant="circle"
+                            sx={{ width: '56px', height: '56px' }}
+                        >
+                            <FacebookIcon />
+                        </Button>
+                        <Box
+                            mt={1}
+                            sx={{
+                                width: '56px',
+                                color: 'rgba(4, 4, 5, 0.5)',
+                                fontSize: '11px',
+                                lineHeight: '16.56px',
+                                textAlign: 'center',
+                                fontWeight: '600',
+                            }}
+                        >
+                            Facebook
+                        </Box>
+                    </Box>
+                    <Box>
+                        <Button
+                            variant="circle"
+                            sx={{ width: '56px', height: '56px' }}
+                        >
+                            <TelegramIcon />
+                        </Button>
+                        <Box
+                            mt={1}
+                            sx={{
+                                width: '56px',
+                                color: 'rgba(4, 4, 5, 0.5)',
+                                fontSize: '11px',
+                                lineHeight: '16.56px',
+                                textAlign: 'center',
+                                fontWeight: '600',
+                            }}
+                        >
+                            Telegram
+                        </Box>
+                    </Box>
+                    <Box>
+                        <Button
+                            variant="circle"
+                            sx={{ width: '56px', height: '56px' }}
+                        >
+                            <EmailIcon />
+                        </Button>
+                        <Box
+                            mt={1}
+                            sx={{
+                                width: '56px',
+                                color: 'rgba(4, 4, 5, 0.5)',
+                                fontSize: '11px',
+                                lineHeight: '16.56px',
+                                textAlign: 'center',
+                                fontWeight: '600',
+                            }}
+                        >
+                            E-mail
+                        </Box>
+                    </Box>
+                </Flex>
+            </Popup>
             <br />
             <Flex sx={{ justifyContent: 'space-between' }}>
                 <Avatar
