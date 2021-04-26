@@ -93,10 +93,8 @@ const Carousel: FC<PropsWithChildren<Record<string, unknown>>> = ({
     const settings: Settings = {
         speed: 500,
         infinite: false,
-        arrows: true,
         slidesToShow: 5,
         slidesToScroll: 5,
-        initialSlide: 5,
         nextArrow: <ArrowNext />,
         prevArrow: <ArrowPrev />,
         responsive: [
@@ -105,7 +103,6 @@ const Carousel: FC<PropsWithChildren<Record<string, unknown>>> = ({
                 settings: {
                     slidesToShow: 4,
                     slidesToScroll: 4,
-                    initialSlide: 4,
                 },
             },
             {
@@ -113,7 +110,6 @@ const Carousel: FC<PropsWithChildren<Record<string, unknown>>> = ({
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 3,
-                    initialSlide: 3,
                 },
             },
             {
@@ -121,7 +117,6 @@ const Carousel: FC<PropsWithChildren<Record<string, unknown>>> = ({
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 2,
-                    initialSlide: 2,
                 },
             },
             {
