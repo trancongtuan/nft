@@ -145,6 +145,7 @@ const BidCard: FC<BidCardProps> = ({
                         )}
                     </Flex>
                     <Popover
+                        onOuterAction={() => setVisible(false)}
                         isOpen={visible}
                         body={<Tooltip visible={visible} items={items} />}
                         place="left"

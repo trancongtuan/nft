@@ -1,18 +1,25 @@
-import { Box, Text } from 'theme-ui'
+import { Box, Flex, Text } from 'theme-ui'
 import React, { FC, useEffect, useState } from 'react'
+import NewIcon from '../public/assets/images/icons/new.svg'
 
 interface SelectionItemsProps {
     id: string | number
     label: string
-    count: number
+    count?: number
+    isNew?: boolean
 }
 
 interface SelectionProps {
     items: SelectionItemsProps[]
     onChange?: (value: string | number) => void
+    borderBottom?: boolean
 }
 
-const Selection: FC<SelectionProps> = ({ items, onChange }) => {
+const Selection: FC<SelectionProps> = ({
+    items,
+    onChange,
+    borderBottom = true,
+}) => {
     const [selectedTab, setSelectedTab] = useState(items[0].id)
     useEffect(() => onChange && onChange(selectedTab), [selectedTab, onChange])
     return (
@@ -27,51 +34,68 @@ const Selection: FC<SelectionProps> = ({ items, onChange }) => {
                         cursor: 'pointer',
                         marginRight: 3,
                         display: 'inline-block',
+                        ':last-child': {
+                            marginRight: 0,
+                        },
                     }}
                     onClick={() => setSelectedTab(item.id)}
                 >
-                    <Text
-                        sx={{
-                            color:
-                                item.id === selectedTab
-                                    ? 'text'
-                                    : 'textSecondary',
-                            fontWeight: 'heading',
-                            fontSize: 1,
-                            lineHeight: '30px',
-                            transition: 'all 0.12s ease-in-out 0s',
-                            ':hover': {
-                                color: 'text',
-                            },
-                        }}
-                    >
-                        {item.label}
-                    </Text>
-                    <Text
-                        sx={{
-                            verticalAlign: 'top',
-                            ml: '4px',
-                            color: 'rgba(4, 4, 5, 0.4)',
-                            fontSize: 0,
-                            fontWeight: 900,
-                            lineHeight: '22px',
-                        }}
-                    >
-                        {item.count}
-                    </Text>
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            background: 'rgb(4, 4, 5)',
-                            height: 2,
-                            width: '100%',
-                            visibility:
-                                item.id === selectedTab ? 'visible' : 'hidden',
-                        }}
-                    />
+                    <Flex sx={{ alignItems: 'center' }}>
+                        <Text
+                            sx={{
+                                color:
+                                    item.id === selectedTab
+                                        ? 'text'
+                                        : 'textSecondary',
+                                fontWeight: 'heading',
+                                fontSize: 1,
+                                lineHeight: '30px',
+                                transition: 'all 0.12s ease-in-out 0s',
+                                ':hover': {
+                                    color: 'text',
+                                },
+                            }}
+                        >
+                            {item.label}
+                        </Text>
+                        {item.isNew && (
+                            <Box ml={8}>
+                                <NewIcon />
+                            </Box>
+                        )}
+                        {typeof item.count === 'number' && (
+                            <Text
+                                sx={{
+                                    verticalAlign: 'top',
+                                    ml: '4px',
+                                    color: 'rgba(4, 4, 5, 0.4)',
+                                    fontSize: 0,
+                                    fontWeight: 900,
+                                    lineHeight: '22px',
+                                    mb: '4px',
+                                }}
+                            >
+                                {item.count}
+                            </Text>
+                        )}
+                    </Flex>
+                    {borderBottom && (
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                background: 'rgb(4, 4, 5)',
+                                height: 2,
+                                width: '100%',
+                                visibility:
+                                    item.id === selectedTab
+                                        ? 'visible'
+                                        : 'hidden',
+                            }}
+                        />
+                    )}
                 </Box>
             ))}
         </Box>

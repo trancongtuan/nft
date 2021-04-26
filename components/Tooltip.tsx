@@ -33,7 +33,6 @@ const Tooltip: FC<TooltipProps> = ({ items, onClick, visible }) => {
                         ? `1px solid ${alpha('white', 0.1)(t)}`
                         : undefined,
                 transition: 'all 0.12s ease-in-out 0s',
-                transform: 'translate(20px, 110px)',
                 minWidth: 207,
             }}
         >

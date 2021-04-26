@@ -14,3 +14,7 @@ a {
 * {
     box-sizing: border-box;
 }
+
+.Popover {
+    z-index: 9999;
+}

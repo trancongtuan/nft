@@ -197,6 +197,9 @@ export default {
     },
     images: {
         avatar: {
+            width: 38,
+            height: 38,
+            borderRadius: 9999,
             xs: {
                 width: 26,
                 height: 26,
