@@ -56,7 +56,7 @@ const Footer: FC = () => {
                                 sx={{
                                     position: 'relative',
                                     width: '100%',
-                                    maxWidth: '320px',
+                                    maxWidth: ['100%', '100%', '100%', 320],
                                     height: '48px',
                                     background:
                                         colorMode === 'dark'
