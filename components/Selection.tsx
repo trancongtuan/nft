@@ -51,7 +51,7 @@ const Selection: FC<SelectionProps> = ({ items, onChange }) => {
                         sx={{
                             verticalAlign: 'top',
                             ml: '4px',
-                            color: 'rgba(4, 4, 5, 0.4)',
+                            color: 'textSecondary',
                             fontSize: 0,
                             fontWeight: 900,
                             lineHeight: '22px',
@@ -65,7 +65,7 @@ const Selection: FC<SelectionProps> = ({ items, onChange }) => {
                             bottom: 0,
                             left: 0,
                             right: 0,
-                            background: 'rgb(4, 4, 5)',
+                            backgroundColor: 'text',
                             height: 2,
                             width: '100%',
                             visibility:
