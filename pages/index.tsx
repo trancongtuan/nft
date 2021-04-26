@@ -16,6 +16,7 @@ import FacebookIcon from '../public/assets/images/icons/facebook.svg'
 import TelegramIcon from '../public/assets/images/icons/telegram.svg'
 import EmailIcon from '../public/assets/images/icons/email.svg'
 import NavigationBar from '../components/NavigationBar'
+import ActivityCard from '../components/ActivityCard'
 
 const carouselItems = [
     {
@@ -398,6 +399,102 @@ const Home: FC = () => {
                         liked={liked}
                         onLike={() => setLiked(!liked)}
                     />
+                    <br />
+                    <ActivityCard
+                        type="follow"
+                        src="https://via.placeholder.com/500x100"
+                        verified
+                        name="Ahihihi"
+                        content={{
+                            from: {
+                                name: 'Han Khung',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            to: {
+                                name: 'Han Dien',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            value: 200,
+                        }}
+                        time="6 days ago"
+                    />
+                    <br />
+                    <ActivityCard
+                        type="like"
+                        src="https://via.placeholder.com/500x100"
+                        verified
+                        name="Ahihihi"
+                        content={{
+                            from: {
+                                name: 'Han Khung',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            to: {
+                                name: 'Han Dien',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            value: 200,
+                        }}
+                        time="6 days ago"
+                    />
+                    <br />
+                    <ActivityCard
+                        type="purchase"
+                        src="https://via.placeholder.com/500x100"
+                        verified
+                        name="Ahihihi"
+                        content={{
+                            from: {
+                                name: 'Han Khung',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            to: {
+                                name: 'Han Dien',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            value: 200,
+                        }}
+                        time="6 days ago"
+                    />
+                    <br />
+                    <ActivityCard
+                        type="transfer"
+                        src="https://via.placeholder.com/500x100"
+                        verified
+                        name="Ahihihi"
+                        content={{
+                            from: {
+                                name: 'Han Khung',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            to: {
+                                name: 'Han Dien',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            value: 200,
+                        }}
+                        time="6 days ago"
+                    />
+                    <br />
+                    <ActivityCard
+                        type="offer"
+                        src="https://via.placeholder.com/500x100"
+                        verified
+                        name="Ahihihi"
+                        content={{
+                            from: {
+                                name: 'Han Khung',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            to: {
+                                name: 'Han Dien',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            value: 200,
+                        }}
+                        time="6 days ago"
+                    />
+                    <br />
                 </Box>
             </Box>
         </Box>

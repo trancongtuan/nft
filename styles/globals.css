@@ -18,3 +18,7 @@ a {
 .Popover {
     z-index: 9999;
 }
+
+.slick-disabled {
+    visibility: hidden;
+}

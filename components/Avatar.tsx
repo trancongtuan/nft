@@ -1,17 +1,27 @@
-import React, { FC } from 'react'
-import { Box, Image } from 'theme-ui'
+import React, { FC, ReactNode } from 'react'
+import { Box, Flex, Image } from 'theme-ui'
 import VerifiedIcon from '../public/assets/images/icons/verified.svg'
+import CheckedIcon from '../public/assets/images/icons/checked.svg'
+import FavoriteIcon from '../public/assets/images/icons/favorite.svg'
+import OfferIcon from '../public/assets/images/icons/offer.svg'
+import TransferIcon from '../public/assets/images/icons/transfer.svg'
+import PurchaseIcon from '../public/assets/images/icons/purchase.svg'
 
-type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+type Size = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
+type Type = 'offer' | 'transfer' | 'like' | 'purchase' | 'follow'
 export interface AvatarProps {
     src: string
     verified?: boolean
     size?: Size
+    showType?: boolean
+    type?: Type
 }
 
 const useSize = (size: Size): [number, number, number] => {
     switch (size) {
+        case 'xxs':
+            return [16, 9, 0]
         case 'xs':
             return [26, 16, 0]
         case 'sm':
@@ -27,20 +37,59 @@ const useSize = (size: Size): [number, number, number] => {
     }
 }
 
-const Avatar: FC<AvatarProps> = ({ src, verified, size = 'md' }) => {
+const useIcon = (type: Type): [string, () => ReactNode] => {
+    switch (type) {
+        case 'like':
+            return [
+                '#ff9012',
+                () => (
+                    <Box sx={{ svg: { fill: 'white', stroke: 'white' } }}>
+                        <FavoriteIcon />
+                    </Box>
+                ),
+            ]
+        case 'offer':
+            return ['#f76dc0', () => <OfferIcon />]
+        case 'transfer':
+            return ['#b159dc', () => <TransferIcon />]
+        case 'purchase':
+            return ['#ffc75a', () => <PurchaseIcon />]
+        case 'follow':
+            return ['#6dbc00', () => <CheckedIcon />]
+        default:
+            return [
+                '#ff9012',
+                () => (
+                    <Box sx={{ svg: { fill: 'white', stroke: 'white' } }}>
+                        <FavoriteIcon />
+                    </Box>
+                ),
+            ]
+    }
+}
+
+const Avatar: FC<AvatarProps> = ({
+    src,
+    verified,
+    size = 'md',
+    showType,
+    type = 'follow',
+}) => {
     const [avatarSize, verifiedSize, borderSize] = useSize(size)
+    const [color, icon] = useIcon(type)
     return (
         <Box
             sx={{
+                minWidth: avatarSize,
                 width: avatarSize,
                 height: avatarSize,
                 position: 'relative',
                 display: 'inline-block',
-                borderRadius: 9999,
+                borderRadius: type !== 'follow' ? 6 : 9999,
                 borderColor: 'background',
                 borderWidth: borderSize,
                 borderStyle: 'solid',
-                svg: {
+                '>svg': {
                     position: 'absolute',
                     bottom: '-4px',
                     right: '-4px',
@@ -53,9 +102,34 @@ const Avatar: FC<AvatarProps> = ({ src, verified, size = 'md' }) => {
             <Image
                 src={src}
                 variant={`avatar.${size}`}
-                sx={{ objectFit: 'cover', borderRadius: 9999 }}
+                sx={{
+                    objectFit: 'cover',
+                    borderRadius: type !== 'follow' ? 6 : 9999,
+                    mb: size === 'xxs' ? '-2px' : undefined,
+                }}
             />
             {verified && <VerifiedIcon />}
+            {showType && (
+                <Flex
+                    sx={{
+                        top: -8,
+                        left: -8,
+                        position: 'absolute',
+                        borderRadius: 9999,
+                        width: 26,
+                        height: 26,
+                        backgroundColor: color,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        svg: {
+                            width: 12,
+                            height: 12,
+                        },
+                    }}
+                >
+                    {icon()}
+                </Flex>
+            )}
         </Box>
     )
 }

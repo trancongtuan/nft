@@ -200,6 +200,10 @@ export default {
             width: 38,
             height: 38,
             borderRadius: 9999,
+            xxs: {
+                width: 16,
+                height: 16,
+            },
             xs: {
                 width: 26,
                 height: 26,
