@@ -105,6 +105,7 @@ const Avatar: FC<AvatarProps> = ({
                 sx={{
                     objectFit: 'cover',
                     borderRadius: type !== 'follow' ? 6 : 9999,
+                    mb: size === 'xxs' ? '-2px' : undefined,
                 }}
             />
             {verified && <VerifiedIcon />}

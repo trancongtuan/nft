@@ -1,10 +1,5 @@
 import { alpha } from '@theme-ui/color'
-import React, {
-    CSSProperties,
-    FC,
-    MouseEventHandler,
-    PropsWithChildren,
-} from 'react'
+import React, { FC, MouseEventHandler, PropsWithChildren } from 'react'
 import Slider, { Settings } from 'react-slick'
 import { Box } from 'theme-ui'
 import ArrowIcon from '../public/assets/images/icons/arrow.svg'
