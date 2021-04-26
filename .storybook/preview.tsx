@@ -1,27 +1,27 @@
-import { addDecorator } from '@storybook/react'
-import { ThemeProvider } from '@theme-ui/theme-provider'
 import React from 'react'
-import { Box, Flex, useColorMode } from 'theme-ui'
-import theme from '../styles/theme'
-
-const renderItem = () => <div>Ahihi</div>
+import { Button, Flex, ThemeProvider, useColorMode } from 'theme-ui'
+import { theme } from '../styles/theme'
 
 const ChangeMode = () => {
     const [colorMode, setColorMode] = useColorMode()
     return (
-        <button
-            onClick={() => {
+        <Button
+            onClick={() =>
                 setColorMode(colorMode === 'default' ? 'dark' : 'default')
-            }}
+            }
         >
             {colorMode === 'default' ? 'Dark' : 'Light'}
-        </button>
+        </Button>
     )
 }
 
-addDecorator((storyFn) => (
-    <ThemeProvider theme={theme}>
-        <ChangeMode />
-        {storyFn()}
-    </ThemeProvider>
-))
+export const decorators = [
+    (Story: React.FC<{}>) => (
+        <ThemeProvider theme={theme}>
+            <ChangeMode />
+            <Flex m={2}>
+                <Story />
+            </Flex>
+        </ThemeProvider>
+    ),
+]

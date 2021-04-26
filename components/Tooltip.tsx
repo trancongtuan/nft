@@ -1,6 +1,6 @@
 import { alpha } from '@theme-ui/color'
 import React, { FC } from 'react'
-import { Button, useColorMode, Text, Box } from 'theme-ui'
+import { Box, Button, Text, useColorMode } from 'theme-ui'
 
 interface TooltipItemProps {
     id: string | number
