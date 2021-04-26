@@ -1,4 +1,6 @@
 import '../styles/globals.css'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import React, { FC } from 'react'
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'theme-ui'
