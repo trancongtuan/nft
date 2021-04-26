@@ -1,7 +1,5 @@
-import { Theme } from 'theme-ui'
-
-export const theme: Theme = {
-    breakpoints: ['40em', '52em', '64em'],
+export default {
+    breakpoints: ['40em', '47.5em', '61.5em', '64em'],
     fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
     colors: {
         text: '#040405',
@@ -63,6 +61,20 @@ export const theme: Theme = {
             color: 'textSecondary',
             fontSize: 1,
             fontWeight: '600',
+            ':focus': {
+                outline: 'none',
+            },
+            '::placeholder': {
+                color: 'placeHolder',
+            },
+        },
+        footerInput: {
+            color: 'textButton',
+            border: 'none',
+            background: '#FFF',
+            height: '100%',
+            fontWeight: 'heading',
+            fontSize: 1,
             ':focus': {
                 outline: 'none',
             },
@@ -198,6 +210,13 @@ export const theme: Theme = {
     },
     images: {
         avatar: {
+            width: 38,
+            height: 38,
+            borderRadius: 9999,
+            xxs: {
+                width: 16,
+                height: 16,
+            },
             xs: {
                 width: 26,
                 height: 26,

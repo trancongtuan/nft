@@ -14,3 +14,11 @@ a {
 * {
     box-sizing: border-box;
 }
+
+.Popover {
+    z-index: 9999;
+}
+
+.slick-disabled {
+    visibility: hidden;
+}
