@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Input, Text, useColorMode } from 'theme-ui'
-import React from 'react'
-import { alpha } from '@theme-ui/color'
+import React, { FC } from 'react'
 import ArrowDown from '../public/assets/images/icons/arrowDown.svg'
 import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 import FacebookIcon from '../public/assets/images/icons/facebook.svg'
@@ -9,7 +8,7 @@ import InstagramIcon from '../public/assets/images/icons/instagram.svg'
 import EmailIcon from '../public/assets/images/icons/email.svg'
 import DiscordIcon from '../public/assets/images/icons/discord.svg'
 
-const Footer = () => {
+const Footer: FC = () => {
     const [colorMode] = useColorMode()
     return (
         <Flex
@@ -97,7 +96,7 @@ const Footer = () => {
                                         fontSize: 1,
                                     }}
                                 >
-                                    I'm in
+                                    I am in
                                 </Button>
                             </Flex>
                         </Box>
