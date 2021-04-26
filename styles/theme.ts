@@ -1,5 +1,5 @@
 export default {
-    breakpoints: ['40em', '52em', '64em'],
+    breakpoints: ['40em', '47.5em', '61.5em', '64em'],
     fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
     colors: {
         text: '#040405',
@@ -45,7 +45,6 @@ export default {
         small: '0 0 4px rgba(0, 0, 0, 0.125)',
         large: '0 0 24px rgba(0, 0, 0, 0.125)',
     },
-    variants: {},
     text: {
         heading: {
             fontFamily: 'sans-serif',
@@ -62,6 +61,20 @@ export default {
             color: 'textSecondary',
             fontSize: 1,
             fontWeight: '600',
+            ':focus': {
+                outline: 'none',
+            },
+            '::placeholder': {
+                color: 'placeHolder',
+            },
+        },
+        footerInput: {
+            color: 'textButton',
+            border: 'none',
+            background: '#FFF',
+            height: '100%',
+            fontWeight: 'heading',
+            fontSize: 1,
             ':focus': {
                 outline: 'none',
             },

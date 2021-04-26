@@ -26,7 +26,7 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
                 minHeight: '100vh',
                 top: 0,
                 left: 0,
-                opacity: 1,
+                opacity: isOpen ? 1 : 0,
                 visibility: isOpen ? 'visible' : 'hidden',
                 zIndex: 9,
                 transition: 'all 0.22s ease-in-out 0s',

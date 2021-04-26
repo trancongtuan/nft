@@ -17,6 +17,7 @@ import TelegramIcon from '../public/assets/images/icons/telegram.svg'
 import EmailIcon from '../public/assets/images/icons/email.svg'
 import NavigationBar from '../components/NavigationBar'
 import ActivityCard from '../components/ActivityCard'
+import Footer from '../components/Footer'
 
 const carouselItems = [
     {
@@ -497,6 +498,7 @@ const Home: FC = () => {
                     <br />
                 </Box>
             </Box>
+            <Footer />
         </Box>
     )
 }
