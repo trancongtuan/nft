@@ -1,109 +1,145 @@
 import { alpha } from '@theme-ui/color'
-import React, { FC, PropsWithChildren, useRef, useState } from 'react'
+import React, {
+    CSSProperties,
+    FC,
+    MouseEventHandler,
+    PropsWithChildren,
+} from 'react'
 import Slider, { Settings } from 'react-slick'
-import { Box, Button, Flex } from 'theme-ui'
+import { Box } from 'theme-ui'
 import ArrowIcon from '../public/assets/images/icons/arrow.svg'
 
-interface CarouselProps {
-    slidesToShow?: number
-    length: number
+interface ArrowProps {
+    className: string
+    onClick: MouseEventHandler<HTMLDivElement>
 }
 
-const Carousel: FC<PropsWithChildren<CarouselProps>> = ({
+const ArrowPrev: FC = (props) => {
+    const { className, onClick } = props as ArrowProps
+    return (
+        <Box
+            className={className}
+            onClick={onClick}
+            sx={{
+                zIndex: 1,
+                borderRadius: 9999,
+                position: 'absolute',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                left: -47 / 2 + 10,
+                width: 47,
+                height: 47,
+                p: 0,
+                border: (t) => `1px solid ${alpha('text', 0.1)(t)}`,
+                bg: 'background',
+                svg: {
+                    position: 'absolute',
+                    fill: 'text',
+                },
+                ':hover': {
+                    bg: 'background',
+                },
+                transition: 'all 0.12s ease-in-out 0s',
+                ':before': {
+                    content: '""',
+                },
+                '.slick-disabled': {
+                    visibility: 'hidden',
+                },
+            }}
+        >
+            <ArrowIcon />
+        </Box>
+    )
+}
+
+const ArrowNext: FC = (props) => {
+    const { className, onClick } = props as ArrowProps
+    return (
+        <Box
+            className={className}
+            onClick={onClick}
+            sx={{
+                zIndex: 1,
+                borderRadius: 9999,
+                position: 'absolute',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                right: -47 / 2 + 10,
+                width: 47,
+                height: 47,
+                p: 0,
+                border: (t) => `1px solid ${alpha('text', 0.1)(t)}`,
+                bg: 'background',
+                svg: {
+                    position: 'absolute',
+                    transform: 'rotate(-90deg)',
+                    fill: 'text',
+                },
+                ':hover': {
+                    bg: 'background',
+                },
+                transition: 'all 0.12s ease-in-out 0s',
+                ':before': {
+                    content: '""',
+                },
+            }}
+        >
+            <ArrowIcon />
+        </Box>
+    )
+}
+
+const Carousel: FC<PropsWithChildren<Record<string, unknown>>> = ({
     children,
-    slidesToShow = 4,
-    length,
 }) => {
     const settings: Settings = {
         speed: 500,
-        slidesToShow,
-        slidesToScroll: slidesToShow,
         infinite: false,
-        arrows: false,
+        arrows: true,
+        slidesToShow: 5,
+        slidesToScroll: 5,
+        initialSlide: 5,
+        nextArrow: <ArrowNext />,
+        prevArrow: <ArrowPrev />,
+        responsive: [
+            {
+                breakpoint: 1280,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 4,
+                    initialSlide: 4,
+                },
+            },
+            {
+                breakpoint: 956,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    initialSlide: 3,
+                },
+            },
+            {
+                breakpoint: 648,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    initialSlide: 2,
+                },
+            },
+            {
+                breakpoint: 522,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    initialSlide: 1,
+                },
+            },
+        ],
     }
-    const ref = useRef<Slider>(null)
-    const [current, setCurrent] = useState(0)
-    const [next, setNext] = useState(slidesToShow)
-    return (
-        <Flex
-            sx={{
-                position: 'relative',
-                alignItems: 'center',
-            }}
-        >
-            <Box>
-                <Slider
-                    ref={ref}
-                    {...settings}
-                    afterChange={(value) => setCurrent(value)}
-                    beforeChange={(_, value) => {
-                        setNext(value)
-                    }}
-                >
-                    {children}
-                </Slider>
-            </Box>
-            {current !== 0 && (
-                <Button
-                    sx={{
-                        position: 'absolute',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        left: -47 / 2 + 10,
-                        width: 47,
-                        height: 47,
-                        p: 0,
-                        border: (t) => `1px solid ${alpha('text', 0.1)(t)}`,
-                        bg: 'background',
-                        svg: {
-                            position: 'absolute',
-                            fill: 'text',
-                        },
-                        ':hover': {
-                            bg: 'background',
-                        },
-                        ':active': {
-                            transform: 'scale(0.95)',
-                        },
-                    }}
-                    onClick={() => ref.current.slickPrev()}
-                >
-                    <ArrowIcon />
-                </Button>
-            )}
-            {next !== length - slidesToShow && (
-                <Button
-                    sx={{
-                        position: 'absolute',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        right: -47 / 2 + 10,
-                        width: 47,
-                        height: 47,
-                        p: 0,
-                        border: (t) => `1px solid ${alpha('text', 0.1)(t)}`,
-                        bg: 'background',
-                        svg: {
-                            position: 'absolute',
-                            transform: 'rotate(-90deg)',
-                            fill: 'text',
-                        },
-                        ':hover': {
-                            bg: 'background',
-                        },
-                        ':active': {
-                            transform: 'scale(0.95)',
-                        },
-                    }}
-                    onClick={() => ref.current.slickNext()}
-                >
-                    <ArrowIcon />
-                </Button>
-            )}
-        </Flex>
-    )
+    return <Slider {...settings}>{children}</Slider>
 }
 
 export default Carousel

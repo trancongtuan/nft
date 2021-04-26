@@ -197,6 +197,10 @@ export default {
     },
     images: {
         avatar: {
+            xxs: {
+                width: 16,
+                height: 16,
+            },
             xs: {
                 width: 26,
                 height: 26,

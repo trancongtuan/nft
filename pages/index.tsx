@@ -15,6 +15,7 @@ import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 import FacebookIcon from '../public/assets/images/icons/facebook.svg'
 import TelegramIcon from '../public/assets/images/icons/telegram.svg'
 import EmailIcon from '../public/assets/images/icons/email.svg'
+import ActivityCard from '../components/ActivityCard'
 
 const carouselItems = [
     {
@@ -153,7 +154,7 @@ const Home: FC = () => {
     const [liked, setLiked] = useState(false)
     return (
         <Box p={20}>
-            <Carousel slidesToShow={4} length={carouselItems.length}>
+            <Carousel>
                 {carouselItems.map((item) => (
                     <Box key={item.id} px={10}>
                         <HotCollection {...item} />
@@ -310,6 +311,11 @@ const Home: FC = () => {
                 <Flex sx={{ justifyContent: 'space-between' }}>
                     <Avatar
                         src="https://via.placeholder.com/500x100"
+                        size="xxs"
+                        verified
+                    />
+                    <Avatar
+                        src="https://via.placeholder.com/500x100"
                         size="xs"
                         verified
                     />
@@ -324,6 +330,8 @@ const Home: FC = () => {
                         verified
                     />
                     <Avatar
+                        type="like"
+                        showType
                         src="https://via.placeholder.com/500x100"
                         size="lg"
                         verified
@@ -395,6 +403,102 @@ const Home: FC = () => {
                     liked={liked}
                     onLike={() => setLiked(!liked)}
                 />
+                <br />
+                <ActivityCard
+                    type="follow"
+                    src="https://via.placeholder.com/500x100"
+                    verified
+                    name="Ahihihi"
+                    content={{
+                        from: {
+                            name: 'Han Khung',
+                            src: 'https://via.placeholder.com/500x100',
+                        },
+                        to: {
+                            name: 'Han Dien',
+                            src: 'https://via.placeholder.com/500x100',
+                        },
+                        value: 200,
+                    }}
+                    time="6 days ago"
+                />
+                <br />
+                <ActivityCard
+                    type="like"
+                    src="https://via.placeholder.com/500x100"
+                    verified
+                    name="Ahihihi"
+                    content={{
+                        from: {
+                            name: 'Han Khung',
+                            src: 'https://via.placeholder.com/500x100',
+                        },
+                        to: {
+                            name: 'Han Dien',
+                            src: 'https://via.placeholder.com/500x100',
+                        },
+                        value: 200,
+                    }}
+                    time="6 days ago"
+                />
+                <br />
+                <ActivityCard
+                    type="purchase"
+                    src="https://via.placeholder.com/500x100"
+                    verified
+                    name="Ahihihi"
+                    content={{
+                        from: {
+                            name: 'Han Khung',
+                            src: 'https://via.placeholder.com/500x100',
+                        },
+                        to: {
+                            name: 'Han Dien',
+                            src: 'https://via.placeholder.com/500x100',
+                        },
+                        value: 200,
+                    }}
+                    time="6 days ago"
+                />
+                <br />
+                <ActivityCard
+                    type="transfer"
+                    src="https://via.placeholder.com/500x100"
+                    verified
+                    name="Ahihihi"
+                    content={{
+                        from: {
+                            name: 'Han Khung',
+                            src: 'https://via.placeholder.com/500x100',
+                        },
+                        to: {
+                            name: 'Han Dien',
+                            src: 'https://via.placeholder.com/500x100',
+                        },
+                        value: 200,
+                    }}
+                    time="6 days ago"
+                />
+                <br />
+                <ActivityCard
+                    type="offer"
+                    src="https://via.placeholder.com/500x100"
+                    verified
+                    name="Ahihihi"
+                    content={{
+                        from: {
+                            name: 'Han Khung',
+                            src: 'https://via.placeholder.com/500x100',
+                        },
+                        to: {
+                            name: 'Han Dien',
+                            src: 'https://via.placeholder.com/500x100',
+                        },
+                        value: 200,
+                    }}
+                    time="6 days ago"
+                />
+                <br />
             </Box>
         </Box>
     )
