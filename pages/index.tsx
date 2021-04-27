@@ -287,7 +287,7 @@ const Home: FC = () => {
                     </Text>
                 </Text>
             </Flex>
-            <Flex mx={-20} sx={{ position: 'relative', overflowX: 'auto' }}>
+            <Flex ml={-20} sx={{ position: 'relative', overflowX: 'auto' }}>
                 {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
                     <Box pl={20} sx={{ width: 258, flexShrink: 0 }}>
                         {item.map((x, index) => (

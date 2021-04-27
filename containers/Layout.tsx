@@ -10,7 +10,8 @@ const Layout: FC<PropsWithChildren<Record<string, unknown>>> = ({
         <Box>
             <NavigationBar />
             <Box
-                p={32}
+                py={32}
+                px={[24, 28, 32]}
                 mx="auto"
                 sx={{
                     width: '100%',
