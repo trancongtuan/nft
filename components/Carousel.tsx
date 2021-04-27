@@ -129,7 +129,11 @@ const Carousel: FC<PropsWithChildren<Record<string, unknown>>> = ({
             },
         ],
     }
-    return <Slider {...settings}>{children}</Slider>
+    return (
+        <Box mx={-10}>
+            <Slider {...settings}>{children}</Slider>
+        </Box>
+    )
 }
 
 export default Carousel
