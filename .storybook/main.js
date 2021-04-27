@@ -9,6 +9,17 @@ module.exports = {
             // https://github.com/system-ui/theme-ui/issues/354#issuecomment-805161307
             '@emotion/styled': resolve('node_modules/@emotion/styled'),
         }
+        const fileLoaderRule = config.module.rules.find(
+            (rule) => rule.test && rule.test.test('.svg')
+        )
+        fileLoaderRule.exclude = /\.svg$/
+
+        config.module.rules.push({
+            test: /\.svg$/,
+            enforce: 'pre',
+            loader: require.resolve('@svgr/webpack'),
+        })
+
         return config
     },
     stories: [
