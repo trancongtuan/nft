@@ -1,3 +1,6 @@
+import '../styles/globals.css'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import React from 'react'
 import { Button, Flex, ThemeProvider, useColorMode } from 'theme-ui'
 import { theme } from '../styles/theme'
