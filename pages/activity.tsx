@@ -304,9 +304,7 @@ const Activity: FC = () => {
                 }}
                 label="Filters"
             >
-                <Flex
-                    sx={{ width: '400px', marginTop: '16px', flexWrap: 'wrap' }}
-                >
+                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
                     <FilterButton content="Listings" type="listings" />
                     <FilterButton content="Purchases" type="purchases" />
                     <FilterButton content="Sales" type="sales" />

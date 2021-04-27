@@ -1,15 +1,14 @@
 import React, { FC, ReactNode } from 'react'
 import { Button, Box } from 'theme-ui'
-import {
-    LikeIcon,
-    FollowingIcon,
-    TransferIcon,
-    PurchaseIcon,
-    BidIcon,
-    SaleIcon,
-    BurnIcon,
-    ListingIcon,
-} from './FilterIcons'
+
+import LikeIcon from '../public/assets/images/icons/like.svg'
+import FollowingIcon from '../public/assets/images/icons/following.svg'
+import TransferIcon from '../public/assets/images/icons/filterTransfer.svg'
+import PurchaseIcon from '../public/assets/images/icons/filterPurchase.svg'
+import BidIcon from '../public/assets/images/icons/bid.svg'
+import ListingIcon from '../public/assets/images/icons/listing.svg'
+import BurnIcon from '../public/assets/images/icons/burn.svg'
+import SaleIcon from '../public/assets/images/icons/sale.svg'
 
 type Type =
     | 'listings'
@@ -85,7 +84,7 @@ const FilterButton: FC<FilterButtonProps> = ({ content, type }) => {
     return (
         <Button
             sx={{
-                height: '40px',
+                height: 40,
                 lineHeight: '40px',
                 fontSize: '14px',
                 marginBottom: '10px',
