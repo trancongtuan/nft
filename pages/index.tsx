@@ -237,17 +237,19 @@ const bidItems = [
 const Home: FC = () => {
     return (
         <Layout>
-            <Flex sx={{ position: 'relative', overflowX: 'auto' }} mb={30}>
-                {new Array(5).fill(0).map((item, index) => (
-                    <HomeCard
-                        label="Pink Cat"
-                        subLabel="FLOSSTRADAMUS"
-                        image="https://dl.airtable.com/.attachments/58cc8ae0a4cf13909f4b85322ab688ad/cfa6de0d/Screenshot2021-04-20at22_32_23.png"
-                        darkText={false}
-                    />
-                ))}
+            <Box sx={{ position: 'relative' }}>
+                <Flex sx={{ overflowX: 'auto' }} mb={30}>
+                    {new Array(5).fill(0).map((item, index) => (
+                        <HomeCard
+                            label="Pink Cat"
+                            subLabel="FLOSSTRADAMUS"
+                            image="https://dl.airtable.com/.attachments/58cc8ae0a4cf13909f4b85322ab688ad/cfa6de0d/Screenshot2021-04-20at22_32_23.png"
+                            darkText={false}
+                        />
+                    ))}
+                </Flex>
                 <EdgeOverflow />
-            </Flex>
+            </Box>
             <Flex mb={30}>
                 <Text
                     color="text"
@@ -287,26 +289,29 @@ const Home: FC = () => {
                     </Text>
                 </Text>
             </Flex>
-            <Flex ml={-20} sx={{ position: 'relative', overflowX: 'auto' }}>
-                {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
-                    <Box pl={20} sx={{ width: 258, flexShrink: 0 }}>
-                        {item.map((x, index) => (
-                            <Box mb={20}>
-                                <TopSellerCard
-                                    id={idx * 3 + index}
-                                    name="Ahihi"
-                                    wallet={24}
-                                    user={{
-                                        src: 'https://picsum.photos/200/300',
-                                        verified: true,
-                                    }}
-                                />
-                            </Box>
-                        ))}
-                    </Box>
-                ))}
+            <Box sx={{ position: 'relative' }}>
+                <Flex ml={-20} sx={{ overflowX: 'auto' }}>
+                    {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
+                        <Box pl={20} sx={{ width: 258, flexShrink: 0 }}>
+                            {item.map((x, index) => (
+                                <Box mb={20}>
+                                    <TopSellerCard
+                                        id={idx * 3 + index}
+                                        name="Ahihi"
+                                        wallet={24}
+                                        user={{
+                                            src:
+                                                'https://picsum.photos/200/300',
+                                            verified: true,
+                                        }}
+                                    />
+                                </Box>
+                            ))}
+                        </Box>
+                    ))}
+                </Flex>
                 <EdgeOverflow />
-            </Flex>
+            </Box>
             <Flex mb={32} sx={{ flexDirection: 'column' }}>
                 <Text
                     mb={24}
@@ -359,99 +364,101 @@ const Home: FC = () => {
                 >
                     Explore ⚡
                 </Text>
-                <Flex ml={16} sx={{ position: 'relative', overflowX: 'auto' }}>
-                    <Button
-                        mr={12}
-                        variant="borderActive"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        All
-                    </Button>
-                    <Button
-                        mr={12}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        🌈 Art
-                    </Button>
-                    <Button
-                        mr={12}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        📸 Photography
-                    </Button>
-                    <Button
-                        mr={12}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        🕹 Games
-                    </Button>
-                    <Button
-                        mr={12}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        👾 Metaverses
-                    </Button>
-                    <Button
-                        mr={12}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        🎵 Music
-                    </Button>
-                    <Button
-                        mr={12}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        🏷 Domains
-                    </Button>
-                    <Button
-                        mr={12}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        💰 DeFi
-                    </Button>
-                    <Button
-                        mr={12}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        🤡 Memes
-                    </Button>
-                    <Button
-                        mr={12}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        💰 DeFi
-                    </Button>
+                <Box sx={{ position: 'relative' }}>
+                    <Flex ml={16} sx={{ overflowX: 'auto' }}>
+                        <Button
+                            mr={12}
+                            variant="borderActive"
+                            sx={{
+                                flexShrink: 0,
+                            }}
+                        >
+                            All
+                        </Button>
+                        <Button
+                            mr={12}
+                            variant="border"
+                            sx={{
+                                flexShrink: 0,
+                            }}
+                        >
+                            🌈 Art
+                        </Button>
+                        <Button
+                            mr={12}
+                            variant="border"
+                            sx={{
+                                flexShrink: 0,
+                            }}
+                        >
+                            📸 Photography
+                        </Button>
+                        <Button
+                            mr={12}
+                            variant="border"
+                            sx={{
+                                flexShrink: 0,
+                            }}
+                        >
+                            🕹 Games
+                        </Button>
+                        <Button
+                            mr={12}
+                            variant="border"
+                            sx={{
+                                flexShrink: 0,
+                            }}
+                        >
+                            👾 Metaverses
+                        </Button>
+                        <Button
+                            mr={12}
+                            variant="border"
+                            sx={{
+                                flexShrink: 0,
+                            }}
+                        >
+                            🎵 Music
+                        </Button>
+                        <Button
+                            mr={12}
+                            variant="border"
+                            sx={{
+                                flexShrink: 0,
+                            }}
+                        >
+                            🏷 Domains
+                        </Button>
+                        <Button
+                            mr={12}
+                            variant="border"
+                            sx={{
+                                flexShrink: 0,
+                            }}
+                        >
+                            💰 DeFi
+                        </Button>
+                        <Button
+                            mr={12}
+                            variant="border"
+                            sx={{
+                                flexShrink: 0,
+                            }}
+                        >
+                            🤡 Memes
+                        </Button>
+                        <Button
+                            mr={12}
+                            variant="border"
+                            sx={{
+                                flexShrink: 0,
+                            }}
+                        >
+                            💰 DeFi
+                        </Button>
+                    </Flex>
                     <EdgeOverflow />
-                </Flex>
+                </Box>
                 <Button
                     ml={8}
                     variant="border"

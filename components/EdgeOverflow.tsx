@@ -8,7 +8,7 @@ const EdgeOverflow: FC = () => {
                 position: 'absolute',
                 top: 0,
                 bottom: 0,
-                right: 0,
+                right: -1,
                 width: 30,
                 opacity: 1,
                 zIndex: 1,
