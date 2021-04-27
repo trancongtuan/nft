@@ -106,7 +106,7 @@ const NavigationBar: FC = () => {
             bg="white"
             px={[24, 28, 32]}
             sx={{
-                position: 'fixed',
+                position: 'sticky',
                 zIndex: 99,
                 left: 0,
                 right: 0,
@@ -264,7 +264,6 @@ const NavigationBar: FC = () => {
                         variant="border"
                         sx={{
                             width: 40,
-                            height: 40,
                             p: 0,
                             '@media screen and (min-width: 1111px)': {
                                 display: 'none',
@@ -273,9 +272,6 @@ const NavigationBar: FC = () => {
                                 fill: 'text',
                                 width: 14,
                                 height: 14,
-                            },
-                            ':hover': {
-                                borderColor: 'rgba(4, 4, 5, 0.18);',
                             },
                         }}
                     >
@@ -286,11 +282,7 @@ const NavigationBar: FC = () => {
                         variant="border"
                         sx={{
                             width: 40,
-                            height: 40,
                             p: 0,
-                            ':hover': {
-                                borderColor: 'rgba(4, 4, 5, 0.18);',
-                            },
                         }}
                     >
                         <NotificationIcon />
@@ -300,11 +292,7 @@ const NavigationBar: FC = () => {
                         variant="border"
                         sx={{
                             width: 40,
-                            height: 40,
                             p: 0,
-                            ':hover': {
-                                borderColor: 'rgba(4, 4, 5, 0.18);',
-                            },
                             '@media screen and (min-width: 891px)': {
                                 display: 'none',
                             },
@@ -318,11 +306,6 @@ const NavigationBar: FC = () => {
                         pr={55}
                         sx={{
                             position: 'relative',
-                            height: 40,
-                            ':hover': {
-                                borderColor: 'rgba(4, 4, 5, 0.18);',
-                            },
-                            fontSize: 1,
                         }}
                     >
                         O RARI

@@ -59,7 +59,6 @@ const BidCard: FC<BidCardProps> = ({
         <Box
             sx={{
                 position: 'relative',
-                maxWidth: 500,
             }}
         >
             {type === 'multiple' && (
@@ -148,7 +147,7 @@ const BidCard: FC<BidCardProps> = ({
                         onOuterAction={() => setVisible(false)}
                         isOpen={visible}
                         body={<Tooltip visible={visible} items={items} />}
-                        place="left"
+                        place="below"
                         tipSize={0.01}
                     >
                         <Flex
