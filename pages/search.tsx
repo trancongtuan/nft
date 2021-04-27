@@ -61,8 +61,8 @@ const Search: FC = () => {
                 </Box>
                 <Flex sx={{ flexWrap: 'wrap' }}>
                     {selectedTab === '1' &&
-                        new Array(10).fill(0).map((item) => (
-                            <Box
+                        [...Array(10)].map((item) => {
+                            ;<Box
                                 key={item}
                                 p={10}
                                 sx={{
@@ -103,7 +103,7 @@ const Search: FC = () => {
                                     currency="WETH"
                                 />
                             </Box>
-                        ))}
+                        })}
                     {selectedTab === '2' &&
                         [...Array(10)].map((item) => {
                             return (
