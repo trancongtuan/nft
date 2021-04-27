@@ -62,47 +62,52 @@ const Search: FC = () => {
                 <Flex sx={{ flexWrap: 'wrap' }}>
                     {selectedTab === '1' &&
                         [...Array(10)].map((item) => {
-                            ;<Box
-                                key={item}
-                                p={10}
-                                sx={{
-                                    maxWidth: [
-                                        '100%',
-                                        '50%',
-                                        '33.3333%',
-                                        '25%',
-                                        '20%',
-                                    ],
-                                    flex: [
-                                        '1 1 100%',
-                                        '1 1 50%',
-                                        '1 1 33.3333%',
-                                        '1 1 25%',
-                                        '1 1 20%',
-                                    ],
-                                }}
-                            >
-                                <BidCard
-                                    favorite={10}
-                                    price={10}
-                                    type="multiple"
-                                    image="https://picsum.photos/200/400"
-                                    collection={{
-                                        src: 'https://picsum.photos/300/300',
-                                        verified: true,
+                            return (
+                                <Box
+                                    key={item}
+                                    p={10}
+                                    sx={{
+                                        maxWidth: [
+                                            '100%',
+                                            '50%',
+                                            '33.3333%',
+                                            '25%',
+                                            '20%',
+                                        ],
+                                        flex: [
+                                            '1 1 100%',
+                                            '1 1 50%',
+                                            '1 1 33.3333%',
+                                            '1 1 25%',
+                                            '1 1 20%',
+                                        ],
                                     }}
-                                    owner={{
-                                        src: 'https://picsum.photos/200/300',
-                                    }}
-                                    creator={{
-                                        src: 'https://picsum.photos/200/400',
-                                        verified: true,
-                                    }}
-                                    name="Test"
-                                    bid={50}
-                                    currency="WETH"
-                                />
-                            </Box>
+                                >
+                                    <BidCard
+                                        favorite={10}
+                                        price={10}
+                                        type="multiple"
+                                        image="https://picsum.photos/200/400"
+                                        collection={{
+                                            src:
+                                                'https://picsum.photos/300/300',
+                                            verified: true,
+                                        }}
+                                        owner={{
+                                            src:
+                                                'https://picsum.photos/200/300',
+                                        }}
+                                        creator={{
+                                            src:
+                                                'https://picsum.photos/200/400',
+                                            verified: true,
+                                        }}
+                                        name="Test"
+                                        bid={50}
+                                        currency="WETH"
+                                    />
+                                </Box>
+                            )
                         })}
                     {selectedTab === '2' &&
                         [...Array(10)].map((item) => {
