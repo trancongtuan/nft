@@ -11,7 +11,7 @@ const EdgeOverflow: FC = () => {
                 right: 0,
                 width: 30,
                 opacity: 1,
-                zIndex: 999,
+                zIndex: 1,
                 background:
                     'linear-gradient(to left, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 100%)',
             }}
