@@ -318,15 +318,15 @@ const NavigationBar: FC = () => {
                                         '@media screen and (min-width: 1261px)': {
                                             display: 'none',
                                         },
-                                        svg: {
-                                            fill: 'textSecondary',
-                                        },
+                                        color: 'textSecondary',
                                         ':hover': {
-                                            svg: {
-                                                fill: 'text',
-                                            },
+                                            color: 'text',
                                         },
                                         cursor: 'pointer',
+                                        svg: {
+                                            width: 16,
+                                            height: 16,
+                                        },
                                     }}
                                 >
                                     <ThreeDosIcon />
@@ -402,6 +402,7 @@ const NavigationBar: FC = () => {
                             alt="avatar"
                             sx={{
                                 position: 'absolute',
+                                top: 0,
                                 right: 0,
                                 objectFit: 'cover',
                             }}

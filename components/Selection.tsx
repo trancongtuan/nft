@@ -81,12 +81,12 @@ const Selection: FC<SelectionProps> = ({
                     </Flex>
                     {borderBottom && (
                         <Box
+                            bg="text"
                             sx={{
                                 position: 'absolute',
                                 bottom: 0,
                                 left: 0,
                                 right: 0,
-                                background: 'text',
                                 height: 2,
                                 width: '100%',
                                 visibility:

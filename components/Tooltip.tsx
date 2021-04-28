@@ -1,5 +1,5 @@
 import { alpha } from '@theme-ui/color'
-import React, { FC } from 'react'
+import React, { FC, PropsWithChildren } from 'react'
 import { Box, Button, Text, useColorMode } from 'theme-ui'
 
 interface TooltipItemProps {
@@ -8,12 +8,19 @@ interface TooltipItemProps {
 }
 
 export interface TooltipProps {
-    items: TooltipItemProps[]
+    items?: TooltipItemProps[]
     onClick?: (item: TooltipItemProps) => void
     visible?: boolean
+    minWidth?: number
 }
 
-const Tooltip: FC<TooltipProps> = ({ items, onClick, visible }) => {
+const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
+    items,
+    onClick,
+    visible,
+    minWidth,
+    children,
+}) => {
     const [colorMode] = useColorMode()
     return (
         <Box
@@ -33,48 +40,50 @@ const Tooltip: FC<TooltipProps> = ({ items, onClick, visible }) => {
                         ? `1px solid ${alpha('white', 0.1)(t)}`
                         : undefined,
                 transition: 'all 0.12s ease-in-out 0s',
-                minWidth: 207,
+                minWidth: minWidth ?? 207,
             }}
         >
-            {items.map((item) => (
-                <Button
-                    variant=""
-                    bg="background"
-                    px="12px"
-                    py={2}
-                    mx="12px"
-                    sx={{
-                        transition: 'all 0.12s ease-in-out 0s',
-                        textAlign: 'left',
-                        minHeight: 32,
-                        borderRadius: 6,
-                        ':hover': {
-                            backgroundColor: 'hover',
-                        },
-                        cursor: 'pointer',
-                        ':focus': {
-                            outline: 'none',
-                        },
-                    }}
-                    key={item.id}
-                    onClick={() => onClick && onClick(item)}
-                >
-                    <Text
+            {items &&
+                items.map((item) => (
+                    <Button
+                        variant=""
+                        bg="background"
+                        px="12px"
+                        py={2}
+                        mx="12px"
                         sx={{
-                            color: 'text',
-                            fontSize: 1,
-                            lineHeight: '19px',
-                            fontWeight: 'heading',
-                            textOverflow: 'ellipsis',
-                            overflow: 'hidden',
-                            whiteSpace: 'nowrap',
-                            maxWidth: '100%',
+                            transition: 'all 0.12s ease-in-out 0s',
+                            textAlign: 'left',
+                            minHeight: 32,
+                            borderRadius: 6,
+                            ':hover': {
+                                backgroundColor: 'hover',
+                            },
+                            cursor: 'pointer',
+                            ':focus': {
+                                outline: 'none',
+                            },
                         }}
+                        key={item.id}
+                        onClick={() => onClick && onClick(item)}
                     >
-                        {item.label}
-                    </Text>
-                </Button>
-            ))}
+                        <Text
+                            sx={{
+                                color: 'text',
+                                fontSize: 1,
+                                lineHeight: '19px',
+                                fontWeight: 'heading',
+                                textOverflow: 'ellipsis',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                maxWidth: '100%',
+                            }}
+                        >
+                            {item.label}
+                        </Text>
+                    </Button>
+                ))}
+            {children}
         </Box>
     )
 }

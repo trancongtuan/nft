@@ -9,17 +9,7 @@ const Layout: FC<PropsWithChildren<Record<string, unknown>>> = ({
     return (
         <Box>
             <NavigationBar />
-            <Box
-                py={32}
-                px={[24, 28, 32]}
-                mx="auto"
-                sx={{
-                    width: '100%',
-                    maxWidth: 1500,
-                }}
-            >
-                {children}
-            </Box>
+            {children}
             <Footer />
         </Box>
     )
