@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react'
 import { Text, Box, Flex, Image, Button, useColorMode } from 'theme-ui'
 import Popover from 'react-popover'
-import { alpha } from '@theme-ui/color'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
 import FavoriteIcon from '../public/assets/images/icons/favorite.svg'
 import Avatar, { AvatarProps } from './Avatar'
@@ -78,10 +77,10 @@ const BidCard: FC<BidCardProps> = ({
                             height: '40px',
                             display: 'block',
                             borderRadius: '16px',
-                            border: (t) =>
+                            border:
                                 colorMode === 'dark'
-                                    ? `1px solid ${alpha('white', 0.1)(t)}`
-                                    : `1px solid ${alpha('text', 0.1)(t)}`,
+                                    ? '1px solid rgba(255, 255, 255, 0.1)'
+                                    : '1px solid rgba(18, 18, 18, 0.1)',
                         },
                         ':after': {
                             bg: 'background',
@@ -94,10 +93,10 @@ const BidCard: FC<BidCardProps> = ({
                             height: '40px',
                             display: 'block',
                             borderRadius: '16px',
-                            border: (t) =>
+                            border:
                                 colorMode === 'dark'
-                                    ? `1px solid ${alpha('white', 0.1)(t)}`
-                                    : `1px solid ${alpha('text', 0.1)(t)}`,
+                                    ? '1px solid rgba(255, 255, 255, 0.1)'
+                                    : '1px solid rgba(18, 18, 18, 0.1)',
                         },
                     }}
                 />
@@ -111,10 +110,10 @@ const BidCard: FC<BidCardProps> = ({
                     width: '100%',
                     position: 'relative',
                     borderRadius: 16,
-                    border: (t) =>
+                    border:
                         colorMode === 'dark'
-                            ? `1px solid ${alpha('white', 0.1)(t)}`
-                            : `1px solid ${alpha('text', 0.1)(t)}`,
+                            ? '1px solid rgba(255, 255, 255, 0.1)'
+                            : '1px solid rgba(18, 18, 18, 0.1)',
                     px: [18, 18, 22],
                     py: [22, 22, 24],
                 }}
@@ -155,10 +154,10 @@ const BidCard: FC<BidCardProps> = ({
                                 position: 'relative',
                                 width: 30,
                                 height: 30,
-                                color: (t) =>
+                                color:
                                     colorMode === 'dark'
-                                        ? alpha('white', 0.5)(t)
-                                        : alpha('text', 0.5)(t),
+                                        ? '1px solid rgba(255, 255, 255, 0.5)'
+                                        : '1px solid rgba(18, 18, 18, 0.5)',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 borderRadius: 9999,
@@ -166,10 +165,10 @@ const BidCard: FC<BidCardProps> = ({
                                 ':hover': {
                                     color:
                                         colorMode === 'dark' ? 'white' : 'text',
-                                    backgroundColor: (t) =>
+                                    backgroundColor:
                                         colorMode === 'dark'
-                                            ? alpha('white', 0.6)(t)
-                                            : alpha('text', 0.06)(t),
+                                            ? 'rgba(255, 255, 255, 0.06)'
+                                            : 'rgba(18, 18, 18, 0.06)',
                                 },
                                 cursor: 'pointer',
                                 svg: {
@@ -286,7 +285,8 @@ const BidCard: FC<BidCardProps> = ({
                                 fill: liked ? 'red' : undefined,
                             },
                             ':hover': {
-                                backgroundColor: alpha('text', 0.06),
+                                backgroundColor:
+                                    '1px solid rgba(18, 18, 18, 0.06)',
                                 opacity: 1,
                             },
                             transition: 'all 0.12s ease-in-out 0s',
