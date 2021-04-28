@@ -2,6 +2,7 @@
 import React, { FC } from 'react'
 import { Box, Button, Flex, Text } from 'theme-ui'
 import _ from 'lodash'
+import { useRouter } from 'next/router'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
 import EdgeOverflow from '../components/EdgeOverflow'
@@ -235,6 +236,7 @@ const bidItems = [
 ]
 
 const Home: FC = () => {
+    const router = useRouter()
     return (
         <Layout>
             <Box
@@ -348,7 +350,10 @@ const Home: FC = () => {
                     <Carousel slidesToShow={4} length={carouselItems.length}>
                         {carouselItems.map((item) => (
                             <Box key={item.id} px={10}>
-                                <HotCollection {...item} />
+                                <HotCollection
+                                    onClick={() => router.push('/collection')}
+                                    {...item}
+                                />
                             </Box>
                         ))}
                     </Carousel>
