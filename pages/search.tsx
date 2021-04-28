@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { Box, Text, Heading, Flex, Button } from 'theme-ui'
+import { Box, Text, Flex } from 'theme-ui'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import Selection from '../components/Selection'
@@ -22,7 +22,6 @@ const selectionItems = [
 ]
 
 const Search: FC = () => {
-    const [liked, setLiked] = useState(false)
     const [selectedTab, setSelectedTab] = useState<string | number | null>(null)
 
     return (
