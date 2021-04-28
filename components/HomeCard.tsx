@@ -1,6 +1,6 @@
 import { alpha } from '@theme-ui/color'
 import React, { FC } from 'react'
-import { Box, Text } from 'theme-ui'
+import { Box, Image, Text } from 'theme-ui'
 
 export interface HomeCardProps {
     label: string
@@ -31,6 +31,7 @@ const HomeCard: FC<HomeCardProps> = ({
                 overflow: 'hidden',
                 borderRadius: 20,
                 cursor: 'pointer',
+                willChange: 'transform',
                 ':after': {
                     content: '""',
                     display: 'block',
@@ -39,24 +40,26 @@ const HomeCard: FC<HomeCardProps> = ({
                 ':last-child': {
                     margin: 0,
                 },
+                ':hover img': {
+                    transform: 'scale(1.1)',
+                },
             }}
         >
-            <Box
-                sx={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    backgroundPositionX: 'center',
-                    backgroundPositionY: 'center',
-                    backgroundImage: `url(${image})`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                    transition: 'transform .3s',
-                    ':hover': {
-                        transform: 'scale(1.1)',
-                    },
-                }}
-            />
+            <Box>
+                <Image
+                    sx={{
+                        position: 'absolute',
+                        maxHeight: '100%',
+                        height: '100%',
+                        left: 0,
+                        right: 0,
+                        mx: 'auto',
+                        my: 'auto',
+                        transition: 'transform .3s',
+                    }}
+                    src={image}
+                />
+            </Box>
             <Box
                 sx={{
                     position: 'absolute',
