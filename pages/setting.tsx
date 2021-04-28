@@ -182,7 +182,7 @@ const Setting: FC = () => {
                                     maxWidth: '200px',
                                 }}
                             >
-                                We recommend an image of at least 400x400. Gifs
+                                We recommend an image of at least 400x400. Gift
                                 work too.
                             </Text>
                             <Button
