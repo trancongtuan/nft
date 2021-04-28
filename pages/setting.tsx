@@ -1,21 +1,18 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import CustomInput from '../components/CustomInput'
-import Popup from '../components/Popup'
 
-import EmailIcon from '../public/assets/images/icons/email.svg'
-import FacebookIcon from '../public/assets/images/icons/facebook.svg'
-import TelegramIcon from '../public/assets/images/icons/telegram.svg'
-import TwitterIcon from '../public/assets/images/icons/twitter.svg'
+import LockIcon from '../public/assets/images/icons/lock.svg'
 
 const Setting: FC = () => {
     return (
         <Box>
             <NavigationBar />
             <Box
-                p={[16, 18, 24, 24]}
+                py={32}
+                px={[16, 18, 24, 24]}
                 sx={{ width: '100%', margin: '0px auto', maxWidth: '815px' }}
             >
                 <Box mx={10}>
@@ -30,11 +27,13 @@ const Setting: FC = () => {
                         Edit profile
                     </Text>
                     <Text
-                        mt={16}
+                        mt={24}
                         sx={{
                             display: 'block',
                             fontSize: [20, 22, 22, 22],
                             color: 'textSecondary',
+                            lineHeight: 1.4,
+                            fontWeight: 500,
                         }}
                     >
                         You can set preferred display name, create your branded
@@ -57,7 +56,7 @@ const Setting: FC = () => {
                         sx={{
                             flexGrow: 1,
                             '>div': {
-                                marginTop: 40,
+                                marginTop: 45,
                                 ':first-child': {
                                     margin: 0,
                                 },
@@ -76,15 +75,49 @@ const Setting: FC = () => {
                         <CustomInput
                             label="Custom URL"
                             value=""
+                            staticLeft={
+                                <Text
+                                    mr={2}
+                                    sx={{
+                                        fontSize: '15px',
+                                        fontWeight: 600,
+                                        marginTop: '-2px',
+                                        minWidth: 'max-content',
+                                    }}
+                                >
+                                    rarible.com/
+                                </Text>
+                            }
                             placeholder="Enter your custom url"
                             onChange={(value) => {
                                 console.log(value)
                             }}
                         />
                         <CustomInput
+                            label="Bio"
+                            value=""
+                            placeholder="Tell about yourself in a few words"
+                            onChange={(value) => {
+                                console.log(value)
+                            }}
+                        />
+                        <CustomInput
                             label="Twitter username"
+                            subLabel="Link your Twitter account to gain more trust on the marketplace"
                             value=""
                             placeholder="@"
+                            staticRight={
+                                <Text
+                                    sx={{
+                                        fontWeight: 'heading',
+                                        color: 'primary',
+                                        fontSize: 1,
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    Link
+                                </Text>
+                            }
                             onChange={(value) => {
                                 console.log(value)
                             }}
@@ -99,7 +132,10 @@ const Setting: FC = () => {
                         />
                         <CustomInput
                             label="Email"
+                            type="password"
+                            subLabel="Your email for marketplace notifications"
                             value=""
+                            Icon={<LockIcon />}
                             placeholder="Enter your email"
                             onChange={(value) => {
                                 console.log(value)
@@ -128,7 +164,7 @@ const Setting: FC = () => {
                                     variant="secondary"
                                     sx={{ fontSize: '12px' }}
                                 >
-                                    Choose file
+                                    Get verified
                                 </Button>
                             </Box>
                         </Flex>
@@ -147,7 +183,7 @@ const Setting: FC = () => {
                                 'max-content',
                                 'max-content',
                                 'max-content',
-                                '700px',
+                                '915px',
                             ],
                             marginBottom: [32, 32, 32, 0],
                         }}
@@ -159,7 +195,7 @@ const Setting: FC = () => {
                                 alignItems: 'center',
                                 position: 'sticky',
                                 top: 90,
-                                bottom: '-20px',
+                                bottom: '0px',
                                 right: 0,
                             }}
                         >
