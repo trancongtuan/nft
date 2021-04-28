@@ -19,7 +19,7 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
             sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: ['flex-end', 'center', 'center', 'center'],
                 position: 'fixed',
                 background: 'rgba(4, 4, 5, 0.8)',
                 width: '100%',
@@ -45,7 +45,9 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
                     alignItems: 'flex-start',
                     background: 'white',
                     borderRadius: 20,
-                    minWidth: 400,
+                    borderBottomLeftRadius: [0, 20, 20, 20],
+                    borderBottomRightRadius: [0, 20, 20, 20],
+                    minWidth: ['100%', '400px', '400px', '400px'],
                     transition: 'all .5s',
                 }}
             >

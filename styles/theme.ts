@@ -57,9 +57,8 @@ export const theme: Theme = {
     forms: {
         input: {
             border: 'none',
-            borderBottom: '2px #eaeaea solid',
             borderRadius: '0',
-            padding: '15px 0',
+            padding: '14px 0',
             color: 'textSecondary',
             fontSize: 1,
             fontWeight: '600',
@@ -67,7 +66,7 @@ export const theme: Theme = {
                 outline: 'none',
             },
             '::placeholder': {
-                color: 'placeHolder',
+                color: 'textSecondary',
             },
         },
         footerInput: {
