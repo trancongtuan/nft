@@ -1,6 +1,8 @@
-import React, { FC, useState } from 'react'
+import React, { FC, KeyboardEventHandler, useState } from 'react'
 import { Avatar, Box, Button, Flex, Input, Text } from 'theme-ui'
 import Popover from 'react-popover'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import LogoIcon from '../public/assets/images/icons/logo.svg'
 import SearchIcon from '../public/assets/images/icons/search.svg'
 import DropDownIcon from '../public/assets/images/icons/drop-down.svg'
@@ -47,6 +49,12 @@ const tooltipItems = [
 
 const SearchInput: FC = () => {
     const [focus, setFocus] = useState(false)
+    const router = useRouter()
+    const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = (event) => {
+        if (event.key === 'Enter') {
+            router.push('/search')
+        }
+    }
     return (
         <Flex
             pl={16}
@@ -79,6 +87,7 @@ const SearchInput: FC = () => {
         >
             <SearchIcon />
             <Input
+                onKeyPress={handleKeyPress}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 placeholder="Search Rarible"
@@ -101,6 +110,7 @@ const SearchInput: FC = () => {
 
 const NavigationBar: FC = () => {
     const [visible, setVisible] = useState(false)
+    const router = useRouter()
     return (
         <Flex
             bg="white"
@@ -116,9 +126,11 @@ const NavigationBar: FC = () => {
                 alignItems: 'center',
             }}
         >
-            <Box mr={24}>
-                <LogoIcon />
-            </Box>
+            <Link href="/">
+                <Box mr={24} sx={{ cursor: 'pointer' }}>
+                    <LogoIcon />
+                </Box>
+            </Link>
             <SearchInput />
             <Flex
                 sx={{
@@ -136,7 +148,13 @@ const NavigationBar: FC = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <Selection borderBottom={false} items={selectionItems} />
+                    <Selection
+                        borderBottom={false}
+                        items={selectionItems}
+                        onChange={(id) =>
+                            id === '4' && router.push('/activity')
+                        }
+                    />
                     <Box
                         sx={{
                             height: 24,
