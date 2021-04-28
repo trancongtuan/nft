@@ -34,7 +34,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
         switch (type) {
             case 'follow':
                 return (
-                    <Flex sx={{ alignItems: 'center', height: 22 }}>
+                    <Text>
                         <Text
                             mr="4px"
                             color="textSecondary"
@@ -50,11 +50,11 @@ const ActivityCard: FC<ActivityCardProps> = ({
                         >
                             {from.name}
                         </Text>
-                    </Flex>
+                    </Text>
                 )
             case 'like':
                 return (
-                    <Flex sx={{ alignItems: 'center', height: 22 }}>
+                    <Text>
                         <Text
                             mr="4px"
                             color="textSecondary"
@@ -70,7 +70,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
                         >
                             {from.name}
                         </Text>
-                    </Flex>
+                    </Text>
                 )
             case 'offer':
                 return (
@@ -108,7 +108,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
                 )
             case 'transfer':
                 return (
-                    <Flex sx={{ alignItems: 'center', height: 22 }}>
+                    <Text>
                         <Text
                             mr="4px"
                             color="textSecondary"
@@ -139,7 +139,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
                         >
                             {to.name}
                         </Text>
-                    </Flex>
+                    </Text>
                 )
             case 'purchase':
                 return (
@@ -192,10 +192,23 @@ const ActivityCard: FC<ActivityCardProps> = ({
                 )
             default:
                 return (
-                    <Flex>
-                        started follow <Avatar {...from} size="xxs" />{' '}
-                        <Text>{from.name}</Text>
-                    </Flex>
+                    <Text>
+                        <Text
+                            mr="4px"
+                            color="textSecondary"
+                            sx={{ fontSize: 1, fontWeight: 'bold' }}
+                        >
+                            started follow
+                        </Text>
+                        <Avatar {...from} size="xxs" />
+                        <Text
+                            ml="4px"
+                            color="text"
+                            sx={{ fontSize: 1, fontWeight: 'bold' }}
+                        >
+                            {from.name}
+                        </Text>
+                    </Text>
                 )
         }
     }
