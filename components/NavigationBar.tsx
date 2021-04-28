@@ -1,5 +1,5 @@
 import React, { FC, KeyboardEventHandler, useState } from 'react'
-import { Avatar, Box, Button, Flex, Input, Text } from 'theme-ui'
+import { Avatar, Box, Button, Flex, Input, Text, useColorMode } from 'theme-ui'
 import Popover from 'react-popover'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -9,6 +9,7 @@ import DropDownIcon from '../public/assets/images/icons/drop-down.svg'
 import NotificationIcon from '../public/assets/images/icons/notification.svg'
 import ThreeDosIcon from '../public/assets/images/icons/threedos.svg'
 import CatalogIcon from '../public/assets/images/icons/catalog.svg'
+import CloseIcon from '../public/assets/images/icons/close.svg'
 import Selection from './Selection'
 import Tooltip from './Tooltip'
 
@@ -47,45 +48,79 @@ const tooltipItems = [
     },
 ]
 
+const useColorInput = (
+    focus: boolean,
+    colorMode: string
+): [string, string, string] => {
+    if (focus) {
+        if (colorMode === 'dark')
+            return [
+                'transparent',
+                'rgba(255, 255, 255, 0.2)',
+                'rgb(255 255 255 / 6%) 0px 0px 0px 4px',
+            ]
+        return [
+            'transparent',
+            'rgba(4, 4, 5, 0.2)',
+            'rgb(4 4 5 / 6%) 0px 0px 0px 4px',
+        ]
+    }
+    if (colorMode === 'dark')
+        return [
+            'rgba(255, 255, 255, 0.07)',
+            'rgba(255, 255, 255, 0.1)',
+            undefined,
+        ]
+    return ['rgba(4, 4, 5, 0.07)', 'rgba(4, 4, 5, 0.1)', undefined]
+}
+
 const SearchInput: FC = () => {
     const [focus, setFocus] = useState(false)
     const router = useRouter()
+    const [colorMode] = useColorMode()
+    const [value, setValue] = useState('')
     const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = (event) => {
         if (event.key === 'Enter') {
             router.push('/search')
         }
     }
+    const [bg, borderColor, boxShadow] = useColorInput(focus, colorMode)
     return (
         <Flex
             pl={16}
             pr={8}
-            bg={!focus ? 'rgba(4, 4, 5, 0.07)' : undefined}
+            bg={bg}
             mr={24}
+            color="text"
             sx={{
+                position: 'relative',
                 flex: '1 0 auto',
                 alignItems: 'center',
                 borderRadius: 28,
                 height: 40,
                 transition: 'all 0.12s ease-in-out 0s',
                 border: '1px solid transparent',
-                ':hover': {
-                    borderColor: 'rgba(4, 4, 5, 0.1)',
-                },
-                borderColor: focus ? 'rgba(4, 4, 5, 0.2)' : undefined,
+                borderColor,
                 svg: {
-                    fill: 'rgba(4, 4, 5, 0.4)',
                     width: 14,
                     height: 14,
                 },
-                boxShadow: focus
-                    ? 'rgb(4 4 5 / 6%) 0px 0px 0px 4px'
-                    : undefined,
+                boxShadow,
                 '@media screen and (max-width: 1110px)': {
                     display: 'none',
                 },
             }}
         >
-            <SearchIcon />
+            <Box
+                color={
+                    colorMode === 'dark'
+                        ? 'rgba(255, 255, 255, 0.5)'
+                        : 'rgba(4, 4, 5, 0.4)'
+                }
+            >
+                <SearchIcon />
+            </Box>
+
             <Input
                 onKeyPress={handleKeyPress}
                 onFocus={() => setFocus(true)}
@@ -93,17 +128,48 @@ const SearchInput: FC = () => {
                 placeholder="Search Rarible"
                 variant=""
                 sx={{
+                    fontSize: 15,
+                    fontWeight: 'bold',
                     border: 0,
                     ':focus-visible': {
                         outline: 'none',
                     },
                     '::placeholder': {
-                        color: 'rgba(4, 4, 5, 0.4)',
+                        color:
+                            colorMode === 'dark'
+                                ? 'rgba(255, 255, 255, 0.5)'
+                                : 'rgba(4, 4, 5, 0.4)',
                         fontWeight: 900,
                         fontSize: 1,
                     },
                 }}
+                value={value}
+                onChange={(event) => setValue(event.target.value)}
             />
+            {value && (
+                <Flex
+                    color={
+                        colorMode === 'dark'
+                            ? 'rgba(255, 255, 255, 0.5)'
+                            : 'rgba(4, 4, 5, 0.4)'
+                    }
+                    sx={{
+                        position: 'absolute',
+                        right: '5px',
+                        width: 32,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        svg: {
+                            width: 16,
+                            height: 16,
+                        },
+                        cursor: 'pointer',
+                    }}
+                    onClick={() => setValue('')}
+                >
+                    <CloseIcon />
+                </Flex>
+            )}
         </Flex>
     )
 }
@@ -111,9 +177,10 @@ const SearchInput: FC = () => {
 const NavigationBar: FC = () => {
     const [visible, setVisible] = useState(false)
     const router = useRouter()
+    const [colorMode] = useColorMode()
     return (
         <Flex
-            bg="white"
+            bg="background"
             px={[24, 28, 32]}
             sx={{
                 position: 'sticky',
@@ -121,7 +188,10 @@ const NavigationBar: FC = () => {
                 left: 0,
                 right: 0,
                 top: 0,
-                borderBottom: '1px solid rgba(4, 4, 5, 0.1)',
+                borderBottom:
+                    colorMode === 'dark'
+                        ? '1px solid rgba(255, 255, 255, 0.1)'
+                        : '1px solid rgba(4, 4, 5, 0.1)',
                 height: 84,
                 alignItems: 'center',
             }}

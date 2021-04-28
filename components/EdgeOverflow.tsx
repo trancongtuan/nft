@@ -1,7 +1,8 @@
-import { Box } from 'theme-ui'
+import { Box, useColorMode } from 'theme-ui'
 import React, { FC } from 'react'
 
 const EdgeOverflow: FC = () => {
+    const [colorMode] = useColorMode()
     return (
         <Box
             sx={{
@@ -13,7 +14,9 @@ const EdgeOverflow: FC = () => {
                 opacity: 1,
                 zIndex: 1,
                 background:
-                    'linear-gradient(to left, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 100%)',
+                    colorMode === 'dark'
+                        ? 'linear-gradient(to left, rgb(18, 18, 18) 0%, rgba(18, 18, 18, 0) 100%)'
+                        : 'linear-gradient(to left, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 100%)',
             }}
         />
     )
