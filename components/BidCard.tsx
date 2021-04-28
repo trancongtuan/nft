@@ -155,29 +155,27 @@ const BidCard: FC<BidCardProps> = ({
                                 position: 'relative',
                                 width: 30,
                                 height: 30,
-                                svg: (t) => ({
-                                    fill:
-                                        colorMode === 'dark'
-                                            ? alpha('white', 0.5)(t)
-                                            : alpha('text', 0.5)(t),
-                                }),
+                                color: (t) =>
+                                    colorMode === 'dark'
+                                        ? alpha('white', 0.5)(t)
+                                        : alpha('text', 0.5)(t),
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 borderRadius: 9999,
                                 transition: 'all 0.12s ease-in-out 0s',
                                 ':hover': {
-                                    svg: {
-                                        fill:
-                                            colorMode === 'dark'
-                                                ? 'white'
-                                                : 'text',
-                                    },
+                                    color:
+                                        colorMode === 'dark' ? 'white' : 'text',
                                     backgroundColor: (t) =>
                                         colorMode === 'dark'
                                             ? alpha('white', 0.6)(t)
                                             : alpha('text', 0.06)(t),
                                 },
                                 cursor: 'pointer',
+                                svg: {
+                                    width: 14,
+                                    height: 14,
+                                },
                             }}
                             onClick={() => setVisible(!visible)}
                         >

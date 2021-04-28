@@ -10,6 +10,7 @@ interface HotCollectionProps {
     name: string
     code: string
     background: string
+    onClick?: () => void
 }
 
 const HotCollection: FC<HotCollectionProps> = ({
@@ -17,10 +18,12 @@ const HotCollection: FC<HotCollectionProps> = ({
     name,
     code,
     background,
+    onClick,
 }) => {
     const [colorMode] = useColorMode()
     return (
         <Box
+            onClick={onClick}
             sx={{
                 borderRadius: 16,
                 border: (t) =>
@@ -29,6 +32,7 @@ const HotCollection: FC<HotCollectionProps> = ({
                         : `1px solid ${alpha('text', 0.1)(t)}`,
                 overflow: 'hidden',
                 height: 220,
+                cursor: 'pointer',
             }}
         >
             <Box>
