@@ -48,6 +48,7 @@ const CustomInput: FC<CustomInputProps> = ({
             >
                 {staticLeft && staticLeft}
                 <Input
+                    color="text"
                     type={type}
                     placeholder={placeholder}
                     defaultValue={value}
