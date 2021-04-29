@@ -5,7 +5,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import Avatar from '../components/Avatar'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
-import WorldIcon from '../public/assets/images/icons/world.svg'
 import Selection from '../components/Selection'
 import BidCard from '../components/BidCard'
 import CopyIcon from '../public/assets/images/icons/copy.svg'
@@ -20,6 +19,7 @@ import UploadIcon from '../public/assets/images/icons/upload.svg'
 import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import ActivityCard from '../components/ActivityCard'
+import WorldIcon from '../public/assets/images/icons/world.svg'
 
 const selectionItems = [
     {
@@ -49,7 +49,7 @@ const selectionItems = [
     },
 ]
 
-const Seller: FC = () => {
+const Items: FC = () => {
     const [showCards, setShowCards] = useState(false)
     const [showReport, setShowReport] = useState(false)
     const [showShare, setShowShare] = useState(false)
@@ -71,7 +71,6 @@ const Seller: FC = () => {
         setResetFilter(false)
     }
 
-
     useEffect(() => {
         if (counter > 0) {
             const timer = setInterval(() => setCounter(counter - 1), 1000)
@@ -81,270 +80,241 @@ const Seller: FC = () => {
     }, [counter])
 
     const renderActivity = (): ReactNode => {
-        if(showActivity){
-            return (
-                <>
-                <Box
-                
-                >
-                <Flex sx={{ marginTop: '17px' }}>
-                    <Box
-                        sx={{
-                            width: '65%',
-                            '@media screen and (max-width: 776px)': {
-                                width: '100%',
-                            },
-                        }}
-                    >
-                        
-                        {new Array(10).fill(0).map((x) => ( 
-                            <Box sx={{ marginBottom: '12px' }}>
-                            <ActivityCard
-                                type="follow"
-                                src="https://via.placeholder.com/500x100"
-                                verified
-                                name="Ahihihi"
-                                content={{
-                                    from: {
-                                        name: 'Han Khung',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    to: {
-                                        name: 'Han Dien',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    value: 200,
-                                }}
-                                time="6 days ago"
-                            />
+        return (
+            <>
+                <Box>
+                    <Flex sx={{ marginTop: '17px' }}>
+                        <Box
+                            sx={{
+                                width: '65%',
+                                '@media screen and (max-width: 776px)': {
+                                    width: '100%',
+                                },
+                            }}
+                        >
+                            {new Array(10).fill(0).map((x) => (
+                                <Box sx={{ marginBottom: '12px' }}>
+                                    <ActivityCard
+                                        type="follow"
+                                        src="https://via.placeholder.com/500x100"
+                                        verified
+                                        name="Ahihihi"
+                                        content={{
+                                            from: {
+                                                name: 'Han Khung',
+                                                src:
+                                                    'https://via.placeholder.com/500x100',
+                                            },
+                                            to: {
+                                                name: 'Han Dien',
+                                                src:
+                                                    'https://via.placeholder.com/500x100',
+                                            },
+                                            value: 200,
+                                        }}
+                                        time="6 days ago"
+                                    />
+                                </Box>
+                            ))}
                         </Box>
-
-                        ))}
-                        
-                    </Box>
-                    <Box
-                        sx={{
-                            marginLeft: '32px',
-                            width: '35%',
-                            '@media screen and (max-width: 776px)': {
-                                display: 'none',
-                            },
-                        }}
-                    >
-                        <Flex>
-                            <Text sx={{ fontWeight: '900' }}>Filters</Text>
-                            {showReset && (
-                                <Text
-                                    ml={20}
-                                    onClick={() => toogleResetFilter()}
-                                    sx={{
-                                        fontWeight: '900',
-                                        cursor: 'pointer',
-                                        color: 'primary',
-                                    }}
-                                >
-                                    Reset Filters
-                                </Text>
-                            )}
-                        </Flex>
-                        <Flex sx={{ marginTop: '16px', flexWrap: 'wrap' }}>
-                            <FilterButton
-                                toggleShowReset={() => toggleShowReset()}
-                                reset={resetFilter}
-                                content="Listings"
-                                type="listings"
-                            />
-                            <FilterButton
-                                toggleShowReset={() => toggleShowReset()}
-                                reset={resetFilter}
-                                content="Purchases"
-                                type="purchases"
-                            />
-                            <FilterButton
-                                toggleShowReset={() => toggleShowReset()}
-                                content="Sales"
-                                type="sales"
-                                reset={resetFilter}
-                            />
-                            <FilterButton
-                                toggleShowReset={() => toggleShowReset()}
-                                content="Transfers"
-                                type="transfers"
-                                reset={resetFilter}
-                            />
-                            <FilterButton
-                                toggleShowReset={() => toggleShowReset()}
-                                reset={resetFilter}
-                                content="Burns"
-                                type="burns"
-                            />
-                            <FilterButton
-                                toggleShowReset={() => toggleShowReset()}
-                                reset={resetFilter}
-                                content="Bids"
-                                type="bids"
-                            />
-                            <FilterButton
-                                toggleShowReset={() => toggleShowReset()}
-                                reset={resetFilter}
-                                content="Likes"
-                                type="likes"
-                            />
-                            <FilterButton
-                                toggleShowReset={() => toggleShowReset()}
-                                reset={resetFilter}
-                                content="Followings"
-                                type="followings"
-                            />
-                        </Flex>
-                    </Box>
-                </Flex>
-            </Box>
-            <Box
-            sx={{
-                display: 'none',
-                width: '100%',
-                paddingLeft: '24px',
-                paddingRight: '24px',
-                position: 'fixed',
-                bottom: '0',
-                '@media screen and (max-width: 776px)': {
-                    display: 'block',
-                },
-            }}
-        >
-            <Button
-                variant="primary"
-                onClick={() => {
-                    setOpenPopup(true)
-                }}
-                sx={{
-                    width: '100%',
-                }}
-            >
-                Filters : All
-            </Button>
-        </Box>
-
-        <Popup
-                isOpen={openPopup}
-                onClose={() => {
-                    setOpenPopup(false)
-                }}
-                label="Filters"
-            >
-                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
-                    <FilterButton
-                        toggleShowReset={() => toggleShowReset()}
-                        reset={false}
-                        content="Listings"
-                        type="listings"
-                    />
-                    <FilterButton
-                        toggleShowReset={() => toggleShowReset()}
-                        reset={false}
-                        content="Purchases"
-                        type="purchases"
-                    />
-                    <FilterButton
-                        toggleShowReset={() => toggleShowReset()}
-                        reset={false}
-                        content="Sales"
-                        type="sales"
-                    />
-                    <FilterButton
-                        toggleShowReset={() => toggleShowReset()}
-                        reset={false}
-                        content="Transfers"
-                        type="transfers"
-                    />
-                    <FilterButton
-                        toggleShowReset={() => toggleShowReset()}
-                        reset={false}
-                        content="Burns"
-                        type="burns"
-                    />
-                    <FilterButton
-                        toggleShowReset={() => toggleShowReset()}
-                        reset={false}
-                        content="Bids"
-                        type="bids"
-                    />
-                    <FilterButton
-                        toggleShowReset={() => toggleShowReset()}
-                        reset={false}
-                        content="Likes"
-                        type="likes"
-                    />
-                    <FilterButton
-                        toggleShowReset={() => toggleShowReset()}
-                        reset={false}
-                        content="Followings"
-                        type="followings"
-                    />
+                        <Box
+                            sx={{
+                                marginLeft: '32px',
+                                width: '35%',
+                                '@media screen and (max-width: 776px)': {
+                                    display: 'none',
+                                },
+                            }}
+                        >
+                            <Flex>
+                                <Text sx={{ fontWeight: '900' }}>Filters</Text>
+                                {showReset && (
+                                    <Text
+                                        ml={20}
+                                        onClick={() => toogleResetFilter()}
+                                        sx={{
+                                            fontWeight: '900',
+                                            cursor: 'pointer',
+                                            color: 'primary',
+                                        }}
+                                    >
+                                        Reset Filters
+                                    </Text>
+                                )}
+                            </Flex>
+                            <Flex sx={{ marginTop: '16px', flexWrap: 'wrap' }}>
+                                <FilterButton
+                                    toggleShowReset={() => toggleShowReset()}
+                                    reset={resetFilter}
+                                    content="Listings"
+                                    type="listings"
+                                />
+                                <FilterButton
+                                    toggleShowReset={() => toggleShowReset()}
+                                    reset={resetFilter}
+                                    content="Purchases"
+                                    type="purchases"
+                                />
+                                <FilterButton
+                                    toggleShowReset={() => toggleShowReset()}
+                                    content="Sales"
+                                    type="sales"
+                                    reset={resetFilter}
+                                />
+                                <FilterButton
+                                    toggleShowReset={() => toggleShowReset()}
+                                    content="Transfers"
+                                    type="transfers"
+                                    reset={resetFilter}
+                                />
+                                <FilterButton
+                                    toggleShowReset={() => toggleShowReset()}
+                                    reset={resetFilter}
+                                    content="Burns"
+                                    type="burns"
+                                />
+                                <FilterButton
+                                    toggleShowReset={() => toggleShowReset()}
+                                    reset={resetFilter}
+                                    content="Bids"
+                                    type="bids"
+                                />
+                                <FilterButton
+                                    toggleShowReset={() => toggleShowReset()}
+                                    reset={resetFilter}
+                                    content="Likes"
+                                    type="likes"
+                                />
+                                <FilterButton
+                                    toggleShowReset={() => toggleShowReset()}
+                                    reset={resetFilter}
+                                    content="Followings"
+                                    type="followings"
+                                />
+                            </Flex>
+                        </Box>
+                    </Flex>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'none',
+                        width: '100%',
+                        paddingLeft: '24px',
+                        paddingRight: '24px',
+                        position: 'fixed',
+                        bottom: '0',
+                        '@media screen and (max-width: 776px)': {
+                            display: 'block',
+                        },
+                    }}
+                >
                     <Button
                         variant="primary"
                         onClick={() => {
-                            setOpenPopup(false)
+                            setOpenPopup(true)
                         }}
                         sx={{
                             width: '100%',
                         }}
                     >
-                        Show
+                        Filters : All
                     </Button>
-                </Flex>
-            </Popup>
-        </>
-            )
-        }
+                </Box>
+
+                <Popup
+                    isOpen={openPopup}
+                    onClose={() => {
+                        setOpenPopup(false)
+                    }}
+                    label="Filters"
+                >
+                    <Flex
+                        sx={{
+                            width: 400,
+                            marginTop: '16px',
+                            flexWrap: 'wrap',
+                        }}
+                    >
+                        <FilterButton
+                            toggleShowReset={() => toggleShowReset()}
+                            reset={false}
+                            content="Listings"
+                            type="listings"
+                        />
+                        <FilterButton
+                            toggleShowReset={() => toggleShowReset()}
+                            reset={false}
+                            content="Purchases"
+                            type="purchases"
+                        />
+                        <FilterButton
+                            toggleShowReset={() => toggleShowReset()}
+                            reset={false}
+                            content="Sales"
+                            type="sales"
+                        />
+                        <FilterButton
+                            toggleShowReset={() => toggleShowReset()}
+                            reset={false}
+                            content="Transfers"
+                            type="transfers"
+                        />
+                        <FilterButton
+                            toggleShowReset={() => toggleShowReset()}
+                            reset={false}
+                            content="Burns"
+                            type="burns"
+                        />
+                        <FilterButton
+                            toggleShowReset={() => toggleShowReset()}
+                            reset={false}
+                            content="Bids"
+                            type="bids"
+                        />
+                        <FilterButton
+                            toggleShowReset={() => toggleShowReset()}
+                            reset={false}
+                            content="Likes"
+                            type="likes"
+                        />
+                        <FilterButton
+                            toggleShowReset={() => toggleShowReset()}
+                            reset={false}
+                            content="Followings"
+                            type="followings"
+                        />
+                        <Button
+                            variant="primary"
+                            onClick={() => {
+                                setOpenPopup(false)
+                            }}
+                            sx={{
+                                width: '100%',
+                            }}
+                        >
+                            Show
+                        </Button>
+                    </Flex>
+                </Popup>
+            </>
+        )
     }
 
     const renderCards = (): ReactNode => {
-        if (!showCards && !showActivity) {
-            return (
-                <Box sx={{ margin: '60px auto', maxWidth: '360px' }}>
-                    <Flex
-                        px={16}
-                        mt={8}
-                        mb={16}
-                        sx={{ flexDirection: 'column', alignItems: 'center' }}
-                    >
-                        <Text
-                            color="text"
-                            sx={{ fontWeight: 900, fontSize: 28 }}
-                        >
-                            No items found
-                        </Text>
-                        <Text mt={20}>
-                            Come back soon! Or try to browse something for you
-                            on our marketplace
-                        </Text>
-
-                        <Button
-                            mt={20}
-                            variant="primary"
-                            sx={{
-                                fontSize: 1,
-                                height: 40,
-                            }}
-                        >
-                            Browse Marketplace
-                        </Button>
-                    </Flex>
-                </Box>
-            )
-        }
-        if(showCards && !showActivity){
+        if (showCards && !showActivity) {
             return (
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
                     {new Array(10).fill(0).map((x) => (
                         <Box
                             p={10}
                             sx={{
-                                maxWidth: ['100%', '50%', '33.3333%', '25%', '20%'],
+                                maxWidth: [
+                                    '100%',
+                                    '50%',
+                                    '33.3333%',
+                                    '25%',
+                                    '20%',
+                                ],
                                 flex: [
                                     '0 0 100%',
                                     '0 0 50%',
@@ -377,7 +347,35 @@ const Seller: FC = () => {
                 </Flex>
             )
         }
-        
+        return (
+            <Box sx={{ margin: '60px auto', maxWidth: '360px' }}>
+                <Flex
+                    px={16}
+                    mt={8}
+                    mb={16}
+                    sx={{ flexDirection: 'column', alignItems: 'center' }}
+                >
+                    <Text color="text" sx={{ fontWeight: 900, fontSize: 28 }}>
+                        No items found
+                    </Text>
+                    <Text mt={20}>
+                        Come back soon! Or try to browse something for you on
+                        our marketplace
+                    </Text>
+
+                    <Button
+                        mt={20}
+                        variant="primary"
+                        sx={{
+                            fontSize: 1,
+                            height: 40,
+                        }}
+                    >
+                        Browse Marketplace
+                    </Button>
+                </Flex>
+            </Box>
+        )
     }
 
     return (
@@ -448,7 +446,6 @@ const Seller: FC = () => {
                             </Box>
                         </CopyToClipboard>
                     </Flex>
-
                     <Text mt={20}>
                         KIWIE 1001 is a unique concept that brings ownership to
                         Street Art through Blockchain technology. Each of KIWIE
@@ -469,6 +466,7 @@ const Seller: FC = () => {
                     >
                         <WorldIcon /> kiwie1001.com
                     </Text>
+
                     <Flex mt={20}>
                         <Button
                             variant="primary"
@@ -696,11 +694,9 @@ const Seller: FC = () => {
                             if (id === '1') {
                                 setShowCards(false)
                                 setShowActivity(false)
-                            } else if (id === '5'){
+                            } else if (id === '5') {
                                 setShowActivity(true)
-                                
-                            } 
-                            else {
+                            } else {
                                 setShowActivity(false)
                                 setShowCards(true)
                             }
@@ -791,7 +787,7 @@ const Seller: FC = () => {
                         </Flex>
                     </Box>
                 </Flex>
-                {renderActivity()}
+                {showActivity && renderActivity()}
                 {renderCards()}
             </Box>
             <Footer />
@@ -879,4 +875,4 @@ const Seller: FC = () => {
     )
 }
 
-export default Seller
+export default Items
