@@ -1,38 +1,48 @@
 import { Box } from 'theme-ui'
-import React, { FC, useEffect, useState } from 'react'
-import { alpha } from '@theme-ui/color'
+import React, { Dispatch, FC, SetStateAction } from 'react'
 
 interface ToggleButtonProps {
-    onChange?: (value: boolean) => void
+    size?: 'small' | 'large'
+    toggle?: boolean
+    setToggle?: Dispatch<SetStateAction<boolean>>
 }
 
-const ToggleButton: FC<ToggleButtonProps> = ({ onChange }) => {
-    const [toggle, setToggle] = useState(false)
-    useEffect(() => onChange && onChange(toggle), [toggle, onChange])
+const ToggleButton: FC<ToggleButtonProps> = ({
+    size = 'small',
+    toggle = false,
+    setToggle,
+}) => {
     return (
         <Box
             sx={{
                 cursor: 'pointer',
-                borderRadius: 28,
+                borderRadius: size === 'small' ? 28 : 40,
                 padding: 1,
-                width: '28px',
-                height: '16px',
-                background: (t) =>
-                    toggle ? alpha('primary', 0.1)(t) : 'rgb(45, 129, 255)',
+                width: size === 'small' ? 28 : 40,
+                height: size === 'small' ? 16 : 20,
+                background: toggle
+                    ? 'rgb(45, 129, 255)'
+                    : 'rgba(45, 129, 255,0.1)',
             }}
             onClick={() => {
-                setToggle(!toggle)
+                if (setToggle) {
+                    setToggle(!toggle)
+                }
             }}
         >
             <Box
                 sx={{
-                    width: '8px',
-                    height: '8px',
+                    width: size === 'small' ? 8 : 12,
+                    height: size === 'small' ? 8 : 12,
                     borderRadius: '50%',
                     transition: 'all 0.12s ease-in-out 0s',
-                    background: `${toggle ? 'rgb(45, 129, 255)' : '#FFF'}`,
+                    bg: `${toggle ? 'background' : 'rgb(45, 129, 255)'}`,
                     transform: `${
-                        toggle ? 'translateX(12px)' : 'translateX(0)'
+                        toggle
+                            ? `translateX(${
+                                  size === 'small' ? '12px' : '20px'
+                              })`
+                            : 'translateX(0)'
                     }`,
                 }}
             />

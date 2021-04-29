@@ -337,6 +337,7 @@ const NavigationBar: FC = () => {
                 </Flex>
                 <Flex ml="auto">
                     <Button
+                        onClick={() => router.push('/create')}
                         variant="secondary"
                         mr={8}
                         sx={{
