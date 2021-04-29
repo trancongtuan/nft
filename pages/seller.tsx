@@ -17,6 +17,9 @@ import TelegramIcon from '../public/assets/images/icons/telegram.svg'
 import EmailIcon from '../public/assets/images/icons/email.svg'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
 import UploadIcon from '../public/assets/images/icons/upload.svg'
+import FilterButton from '../components/FilterButton'
+import Popup from '../components/Popup'
+import ActivityCard from '../components/ActivityCard'
 
 const selectionItems = [
     {
@@ -44,23 +47,31 @@ const selectionItems = [
         label: 'Activity',
         count: 5,
     },
-    {
-        id: '6',
-        label: 'Following',
-        count: 1,
-    },
-    {
-        id: '7',
-        label: 'Followers',
-        count: 10,
-    },
 ]
 
 const Seller: FC = () => {
     const [showCards, setShowCards] = useState(false)
     const [showReport, setShowReport] = useState(false)
     const [showShare, setShowShare] = useState(false)
+    const [showFollowing, setShowFollowing] = useState(false)
+    const [showFollowers, setShowFollowers] = useState(false)
+    const [showActivity, setShowActivity] = useState(false)
     const [counter, setCounter] = useState(0)
+    const [openPopup, setOpenPopup] = useState(false)
+    const [resetFilter, setResetFilter] = useState(false)
+    const [showReset, setShowReset] = useState(false)
+
+    const toogleResetFilter = (): void => {
+        setResetFilter(true)
+        setShowReset(false)
+    }
+
+    const toggleShowReset = (): void => {
+        setShowReset(true)
+        setResetFilter(false)
+    }
+
+
     useEffect(() => {
         if (counter > 0) {
             const timer = setInterval(() => setCounter(counter - 1), 1000)
@@ -69,8 +80,230 @@ const Seller: FC = () => {
         return setCounter(0)
     }, [counter])
 
+    const renderActivity = (): ReactNode => {
+        if(showActivity){
+            return (
+                <>
+                <Box
+                
+                >
+                <Flex sx={{ marginTop: '17px' }}>
+                    <Box
+                        sx={{
+                            width: '65%',
+                            '@media screen and (max-width: 776px)': {
+                                width: '100%',
+                            },
+                        }}
+                    >
+                        
+                        {new Array(10).fill(0).map((x) => ( 
+                            <Box sx={{ marginBottom: '12px' }}>
+                            <ActivityCard
+                                type="follow"
+                                src="https://via.placeholder.com/500x100"
+                                verified
+                                name="Ahihihi"
+                                content={{
+                                    from: {
+                                        name: 'Han Khung',
+                                        src:
+                                            'https://via.placeholder.com/500x100',
+                                    },
+                                    to: {
+                                        name: 'Han Dien',
+                                        src:
+                                            'https://via.placeholder.com/500x100',
+                                    },
+                                    value: 200,
+                                }}
+                                time="6 days ago"
+                            />
+                        </Box>
+
+                        ))}
+                        
+                    </Box>
+                    <Box
+                        sx={{
+                            marginLeft: '32px',
+                            width: '35%',
+                            '@media screen and (max-width: 776px)': {
+                                display: 'none',
+                            },
+                        }}
+                    >
+                        <Flex>
+                            <Text sx={{ fontWeight: '900' }}>Filters</Text>
+                            {showReset && (
+                                <Text
+                                    ml={20}
+                                    onClick={() => toogleResetFilter()}
+                                    sx={{
+                                        fontWeight: '900',
+                                        cursor: 'pointer',
+                                        color: 'primary',
+                                    }}
+                                >
+                                    Reset Filters
+                                </Text>
+                            )}
+                        </Flex>
+                        <Flex sx={{ marginTop: '16px', flexWrap: 'wrap' }}>
+                            <FilterButton
+                                toggleShowReset={() => toggleShowReset()}
+                                reset={resetFilter}
+                                content="Listings"
+                                type="listings"
+                            />
+                            <FilterButton
+                                toggleShowReset={() => toggleShowReset()}
+                                reset={resetFilter}
+                                content="Purchases"
+                                type="purchases"
+                            />
+                            <FilterButton
+                                toggleShowReset={() => toggleShowReset()}
+                                content="Sales"
+                                type="sales"
+                                reset={resetFilter}
+                            />
+                            <FilterButton
+                                toggleShowReset={() => toggleShowReset()}
+                                content="Transfers"
+                                type="transfers"
+                                reset={resetFilter}
+                            />
+                            <FilterButton
+                                toggleShowReset={() => toggleShowReset()}
+                                reset={resetFilter}
+                                content="Burns"
+                                type="burns"
+                            />
+                            <FilterButton
+                                toggleShowReset={() => toggleShowReset()}
+                                reset={resetFilter}
+                                content="Bids"
+                                type="bids"
+                            />
+                            <FilterButton
+                                toggleShowReset={() => toggleShowReset()}
+                                reset={resetFilter}
+                                content="Likes"
+                                type="likes"
+                            />
+                            <FilterButton
+                                toggleShowReset={() => toggleShowReset()}
+                                reset={resetFilter}
+                                content="Followings"
+                                type="followings"
+                            />
+                        </Flex>
+                    </Box>
+                </Flex>
+            </Box>
+            <Box
+            sx={{
+                display: 'none',
+                width: '100%',
+                paddingLeft: '24px',
+                paddingRight: '24px',
+                position: 'fixed',
+                bottom: '0',
+                '@media screen and (max-width: 776px)': {
+                    display: 'block',
+                },
+            }}
+        >
+            <Button
+                variant="primary"
+                onClick={() => {
+                    setOpenPopup(true)
+                }}
+                sx={{
+                    width: '100%',
+                }}
+            >
+                Filters : All
+            </Button>
+        </Box>
+
+        <Popup
+                isOpen={openPopup}
+                onClose={() => {
+                    setOpenPopup(false)
+                }}
+                label="Filters"
+            >
+                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
+                    <FilterButton
+                        toggleShowReset={() => toggleShowReset()}
+                        reset={false}
+                        content="Listings"
+                        type="listings"
+                    />
+                    <FilterButton
+                        toggleShowReset={() => toggleShowReset()}
+                        reset={false}
+                        content="Purchases"
+                        type="purchases"
+                    />
+                    <FilterButton
+                        toggleShowReset={() => toggleShowReset()}
+                        reset={false}
+                        content="Sales"
+                        type="sales"
+                    />
+                    <FilterButton
+                        toggleShowReset={() => toggleShowReset()}
+                        reset={false}
+                        content="Transfers"
+                        type="transfers"
+                    />
+                    <FilterButton
+                        toggleShowReset={() => toggleShowReset()}
+                        reset={false}
+                        content="Burns"
+                        type="burns"
+                    />
+                    <FilterButton
+                        toggleShowReset={() => toggleShowReset()}
+                        reset={false}
+                        content="Bids"
+                        type="bids"
+                    />
+                    <FilterButton
+                        toggleShowReset={() => toggleShowReset()}
+                        reset={false}
+                        content="Likes"
+                        type="likes"
+                    />
+                    <FilterButton
+                        toggleShowReset={() => toggleShowReset()}
+                        reset={false}
+                        content="Followings"
+                        type="followings"
+                    />
+                    <Button
+                        variant="primary"
+                        onClick={() => {
+                            setOpenPopup(false)
+                        }}
+                        sx={{
+                            width: '100%',
+                        }}
+                    >
+                        Show
+                    </Button>
+                </Flex>
+            </Popup>
+        </>
+            )
+        }
+    }
+
     const renderCards = (): ReactNode => {
-        if (!showCards) {
+        if (!showCards && !showActivity) {
             return (
                 <Box sx={{ margin: '60px auto', maxWidth: '360px' }}>
                     <Flex
@@ -104,44 +337,47 @@ const Seller: FC = () => {
                 </Box>
             )
         }
-        return (
-            <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                {new Array(10).fill(0).map((x) => (
-                    <Box
-                        p={10}
-                        sx={{
-                            maxWidth: ['100%', '50%', '33.3333%', '25%', '20%'],
-                            flex: [
-                                '0 0 100%',
-                                '0 0 50%',
-                                '0 0 33.3333%',
-                                '0 0 25%',
-                                '0 0 20%',
-                            ],
-                        }}
-                    >
-                        <BidCard
-                            favorite={10}
-                            price={10}
-                            type="single"
-                            image="https://picsum.photos/200/400"
-                            collection={{
-                                src: 'https://picsum.photos/300/300',
-                                verified: true,
+        if(showCards && !showActivity){
+            return (
+                <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
+                    {new Array(10).fill(0).map((x) => (
+                        <Box
+                            p={10}
+                            sx={{
+                                maxWidth: ['100%', '50%', '33.3333%', '25%', '20%'],
+                                flex: [
+                                    '0 0 100%',
+                                    '0 0 50%',
+                                    '0 0 33.3333%',
+                                    '0 0 25%',
+                                    '0 0 20%',
+                                ],
                             }}
-                            owner={{ src: 'https://picsum.photos/200/300' }}
-                            creator={{
-                                src: 'https://picsum.photos/200/400',
-                                verified: true,
-                            }}
-                            name="Test"
-                            bid={50}
-                            currency="WETH"
-                        />
-                    </Box>
-                ))}
-            </Flex>
-        )
+                        >
+                            <BidCard
+                                favorite={10}
+                                price={10}
+                                type="single"
+                                image="https://picsum.photos/200/400"
+                                collection={{
+                                    src: 'https://picsum.photos/300/300',
+                                    verified: true,
+                                }}
+                                owner={{ src: 'https://picsum.photos/200/300' }}
+                                creator={{
+                                    src: 'https://picsum.photos/200/400',
+                                    verified: true,
+                                }}
+                                name="Test"
+                                bid={50}
+                                currency="WETH"
+                            />
+                        </Box>
+                    ))}
+                </Flex>
+            )
+        }
+        
     }
 
     return (
@@ -453,19 +689,192 @@ const Seller: FC = () => {
                     maxWidth: 1500,
                 }}
             >
-                <Selection
-                    items={selectionItems}
-                    onChange={(id) => {
-                        if (id === '1') {
-                            setShowCards(false)
-                        } else {
-                            setShowCards(true)
-                        }
-                    }}
-                />
+                <Flex>
+                    <Selection
+                        items={selectionItems}
+                        onChange={(id) => {
+                            if (id === '1') {
+                                setShowCards(false)
+                                setShowActivity(false)
+                            } else if (id === '5'){
+                                setShowActivity(true)
+                                
+                            } 
+                            else {
+                                setShowActivity(false)
+                                setShowCards(true)
+                            }
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            height: 30,
+                            position: 'relative',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            marginLeft: 16,
+                            display: 'inline-block',
+                        }}
+                        onClick={() => setShowFollowing(true)}
+                    >
+                        <Flex sx={{ alignItems: 'center' }}>
+                            <Text
+                                sx={{
+                                    color: 'textSecondary',
+                                    fontWeight: 'heading',
+                                    fontSize: 1,
+                                    lineHeight: '30px',
+                                    transition: 'all 0.12s ease-in-out 0s',
+                                    ':hover': {
+                                        color: 'text',
+                                    },
+                                }}
+                            >
+                                Following
+                            </Text>
+
+                            <Text
+                                sx={{
+                                    verticalAlign: 'top',
+                                    ml: '4px',
+                                    color: 'textSecondary',
+                                    fontSize: 0,
+                                    fontWeight: 900,
+                                    lineHeight: '22px',
+                                    mb: '4px',
+                                }}
+                            >
+                                10
+                            </Text>
+                        </Flex>
+                    </Box>
+                    <Box
+                        sx={{
+                            height: 30,
+                            position: 'relative',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            marginLeft: 16,
+                            display: 'inline-block',
+                        }}
+                        onClick={() => setShowFollowers(true)}
+                    >
+                        <Flex sx={{ alignItems: 'center' }}>
+                            <Text
+                                sx={{
+                                    color: 'textSecondary',
+                                    fontWeight: 'heading',
+                                    fontSize: 1,
+                                    lineHeight: '30px',
+                                    transition: 'all 0.12s ease-in-out 0s',
+                                    ':hover': {
+                                        color: 'text',
+                                    },
+                                }}
+                            >
+                                Followers
+                            </Text>
+
+                            <Text
+                                sx={{
+                                    verticalAlign: 'top',
+                                    ml: '4px',
+                                    color: 'textSecondary',
+                                    fontSize: 0,
+                                    fontWeight: 900,
+                                    lineHeight: '22px',
+                                    mb: '4px',
+                                }}
+                            >
+                                10
+                            </Text>
+                        </Flex>
+                    </Box>
+                </Flex>
+                {renderActivity()}
                 {renderCards()}
             </Box>
             <Footer />
+            <Popup
+                isOpen={showFollowers}
+                onClose={() => {
+                    setShowFollowers(false)
+                }}
+                label="Followers"
+            >
+                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
+                    <Flex
+                        sx={{
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                        }}
+                    >
+                        <Flex sx={{ alignItems: 'center' }}>
+                            <Avatar
+                                src="https://picsum.photos/200/300"
+                                verified
+                                size="sm"
+                            />
+                            <Flex ml={16} sx={{ flexDirection: 'column' }}>
+                                <Text
+                                    color="textSecondary"
+                                    sx={{ fontSize: 14, fontWeight: 700 }}
+                                >
+                                    999 Followers
+                                </Text>
+                                <Text
+                                    color="text"
+                                    sx={{ fontSize: 15, fontWeight: 900 }}
+                                >
+                                    Kyle Le
+                                </Text>
+                            </Flex>
+                        </Flex>
+                        <Button variant="primary">Follow</Button>
+                    </Flex>
+                </Flex>
+            </Popup>
+            <Popup
+                isOpen={showFollowing}
+                onClose={() => {
+                    setShowFollowing(false)
+                }}
+                label="Following"
+            >
+                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
+                    <Flex
+                        sx={{
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                        }}
+                    >
+                        <Flex sx={{ alignItems: 'center' }}>
+                            <Avatar
+                                src="https://picsum.photos/200/300"
+                                verified
+                                size="sm"
+                            />
+                            <Flex ml={16} sx={{ flexDirection: 'column' }}>
+                                <Text
+                                    color="textSecondary"
+                                    sx={{ fontSize: 14, fontWeight: 700 }}
+                                >
+                                    999 Followers
+                                </Text>
+                                <Text
+                                    color="text"
+                                    sx={{ fontSize: 15, fontWeight: 900 }}
+                                >
+                                    Kyle Le
+                                </Text>
+                            </Flex>
+                        </Flex>
+                        <Button variant="primary">Follow</Button>
+                    </Flex>
+                </Flex>
+            </Popup>
         </Box>
     )
 }

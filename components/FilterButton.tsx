@@ -22,13 +22,24 @@ type Type =
 
 export interface FilterButtonProps {
     content: string
+    reset: boolean
     type: Type
+    toggleShowReset: () => void
 }
 
-const FilterButton: FC<FilterButtonProps> = ({ content, type }) => {
+const FilterButton: FC<FilterButtonProps> = ({
+    content,
+    type,
+    reset,
+    toggleShowReset,
+}) => {
     const [bgColor, setBgColor] = React.useState('white')
     const [active, setActive] = React.useState(false)
     React.useEffect(() => {
+        if (reset) {
+            setActive(false)
+        }
+
         switch (type) {
             case 'likes':
                 setBgColor('#ff9012')
@@ -57,7 +68,12 @@ const FilterButton: FC<FilterButtonProps> = ({ content, type }) => {
             default:
                 break
         }
-    }, [type])
+    }, [type, reset])
+
+    const toggleActive = (): void => {
+        setActive(!active)
+        toggleShowReset()
+    }
 
     const renderIcon = (icon): ReactNode => {
         switch (icon) {
@@ -94,7 +110,7 @@ const FilterButton: FC<FilterButtonProps> = ({ content, type }) => {
                 transition: 'all .25s',
             }}
             variant="border"
-            onClick={() => setActive(!active)}
+            onClick={() => toggleActive()}
         >
             <Box>{renderIcon(type)}</Box>
             <Box sx={{ marginLeft: '8px' }}>{content}</Box>
