@@ -81,7 +81,12 @@ const Product: FC = () => {
             <NavigationBar />
             <Flex
                 sx={{
-                    height: 'calc(100vh - 84px)',
+                    height: [
+                        'max-content',
+                        'calc(100vh - 84px)',
+                        'calc(100vh - 84px)',
+                        'calc(100vh - 84px)',
+                    ],
                     flexDirection: ['column', 'row', 'row', 'row'],
                 }}
             >
@@ -117,7 +122,10 @@ const Product: FC = () => {
                 >
                     <Box
                         p={[16, 24, 32, 32]}
-                        sx={{ height: '100%', overflow: 'scroll' }}
+                        sx={{
+                            height: '100%',
+                            overflow: 'scroll',
+                        }}
                     >
                         <Flex
                             sx={{
@@ -440,7 +448,13 @@ const Product: FC = () => {
                                     'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
                             }}
                         />
-                        <Box p={24}>
+                        <Box
+                            p={24}
+                            sx={{
+                                backgroundColor: 'background',
+                                height: '185px',
+                            }}
+                        >
                             <TopSellerCard
                                 name="Highest bid by Aito"
                                 wallet={24}
