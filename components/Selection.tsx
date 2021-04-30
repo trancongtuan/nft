@@ -11,6 +11,7 @@ interface SelectionItemsProps {
 
 interface SelectionProps {
     items: SelectionItemsProps[]
+    fontSize?: string | number
     onChange?: (value: string | number) => void
     borderBottom?: boolean
 }
@@ -18,6 +19,7 @@ interface SelectionProps {
 const Selection: FC<SelectionProps> = ({
     items,
     onChange,
+    fontSize,
     borderBottom = true,
 }) => {
     const [selectedTab, setSelectedTab] = useState(items[0].id)
@@ -48,7 +50,7 @@ const Selection: FC<SelectionProps> = ({
                                         ? 'text'
                                         : 'textSecondary',
                                 fontWeight: 'heading',
-                                fontSize: 1,
+                                fontSize: fontSize || 1,
                                 lineHeight: '30px',
                                 transition: 'all 0.12s ease-in-out 0s',
                                 ':hover': {
