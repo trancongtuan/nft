@@ -161,7 +161,10 @@ export const CarouselStory: FC = () => (
         </Carousel>
     </Box>
 )
-export const ToggleButtonStory: FC = () => <ToggleButton />
+export const ToggleButtonStory: FC = () => {
+    const [toggle, setToggle] = useState(false)
+    return <ToggleButton toggle={toggle} setToggle={setToggle} />
+}
 export const PopupStory: FC = () => {
     const [openPopup, setOpenPopup] = useState(false)
     return (

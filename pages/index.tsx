@@ -313,7 +313,7 @@ const Home: FC = () => {
                                 {item.map((x, index) => (
                                     <Box mb={20}>
                                         <TopSellerCard
-                                            id={idx * 3 + index || '0'}
+                                            id={idx * 3 + index + 1}
                                             name="Ahihi asd asd zx asd zxc"
                                             wallet={24}
                                             user={{

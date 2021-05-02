@@ -51,7 +51,7 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                             fontSize: 15,
                             display: 'block',
                             fontWeight: 600,
-                            maxWidth: '100%',
+                            maxWidth: '167px',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             fontFamily: 'sans-serif',
