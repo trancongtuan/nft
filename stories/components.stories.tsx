@@ -165,7 +165,124 @@ export const ToggleButtonStory: FC = () => {
     const [toggle, setToggle] = useState(false)
     return <ToggleButton toggle={toggle} setToggle={setToggle} />
 }
-export const PopupStory: FC = () => {
+export const PopupShare: FC = () => {
+    const [openPopup, setOpenPopup] = useState(false)
+    return (
+        <Box sx={{ maxWidth: 500 }}>
+            <Button
+                variant="primary"
+                onClick={() => {
+                    setOpenPopup(true)
+                }}
+            >
+                Open Popup
+            </Button>
+            <Popup
+                isOpen={openPopup}
+                onClose={() => {
+                    setOpenPopup(false)
+                }}
+                label="Share this NFT"
+            >
+                <Flex
+                    p={3}
+                    sx={{
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Box>
+                        <Button
+                            variant="circle"
+                            sx={{ width: '56px', height: '56px' }}
+                        >
+                            <TwitterIcon />
+                        </Button>
+                        <Box
+                            mt={1}
+                            sx={{
+                                width: '56px',
+                                color: 'rgba(4, 4, 5, 0.5)',
+                                fontSize: '11px',
+                                lineHeight: '16.56px',
+                                textAlign: 'center',
+                                fontWeight: '600',
+                            }}
+                        >
+                            Twitter
+                        </Box>
+                    </Box>
+                    <Box>
+                        <Button
+                            variant="circle"
+                            sx={{ width: '56px', height: '56px' }}
+                        >
+                            <FacebookIcon />
+                        </Button>
+                        <Box
+                            mt={1}
+                            sx={{
+                                width: '56px',
+                                color: 'rgba(4, 4, 5, 0.5)',
+                                fontSize: '11px',
+                                lineHeight: '16.56px',
+                                textAlign: 'center',
+                                fontWeight: '600',
+                            }}
+                        >
+                            Facebook
+                        </Box>
+                    </Box>
+                    <Box>
+                        <Button
+                            variant="circle"
+                            sx={{ width: '56px', height: '56px' }}
+                        >
+                            <TelegramIcon />
+                        </Button>
+                        <Box
+                            mt={1}
+                            sx={{
+                                width: '56px',
+                                color: 'rgba(4, 4, 5, 0.5)',
+                                fontSize: '11px',
+                                lineHeight: '16.56px',
+                                textAlign: 'center',
+                                fontWeight: '600',
+                            }}
+                        >
+                            Telegram
+                        </Box>
+                    </Box>
+                    <Box>
+                        <Button
+                            variant="circle"
+                            sx={{ width: '56px', height: '56px' }}
+                        >
+                            <EmailIcon />
+                        </Button>
+                        <Box
+                            mt={1}
+                            sx={{
+                                width: '56px',
+                                color: 'rgba(4, 4, 5, 0.5)',
+                                fontSize: '11px',
+                                lineHeight: '16.56px',
+                                textAlign: 'center',
+                                fontWeight: '600',
+                            }}
+                        >
+                            E-mail
+                        </Box>
+                    </Box>
+                </Flex>
+            </Popup>
+        </Box>
+    )
+}
+
+export const PopupPlaceABid: FC = () => {
     const [openPopup, setOpenPopup] = useState(false)
     return (
         <Box sx={{ maxWidth: 500 }}>
@@ -286,6 +403,8 @@ export const CustomInputStory: FC = () => (
         label="Name"
         placeholder='e. g. "Redeemable T-shirt with logo"'
         value=""
+        optional
+        staticBottom="With preserved line-break"
         onChange={(value) => console.log(value)}
     />
 )
@@ -340,7 +459,6 @@ export const TopSellerCardStory: FC = () => (
     />
 )
 export const BidCardStory: FC = () => {
-    const [liked, setLiked] = useState(false)
     return (
         <>
             <BidCard
@@ -360,8 +478,6 @@ export const BidCardStory: FC = () => {
                 name="Test"
                 bid={50}
                 currency="WETH"
-                liked={liked}
-                onLike={() => setLiked(!liked)}
             />
             <BidCard
                 favorite={10}
@@ -379,8 +495,6 @@ export const BidCardStory: FC = () => {
                 name="Test"
                 bid={50}
                 currency="WETH"
-                liked={liked}
-                onLike={() => setLiked(!liked)}
             />
         </>
     )

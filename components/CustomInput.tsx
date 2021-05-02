@@ -9,7 +9,9 @@ interface CustomInputProps {
     type?: string
     staticLeft?: ReactChild
     staticRight?: ReactChild
+    staticBottom?: ReactChild
     Icon?: ReactChild
+    optional?: boolean
     onChange: (value: string) => void
 }
 
@@ -21,17 +23,34 @@ const CustomInput: FC<CustomInputProps> = ({
     type,
     staticLeft,
     staticRight,
+    staticBottom,
     Icon,
+    optional,
     onChange,
 }) => {
     return (
         <Box>
-            <Text
-                variant="heading"
-                sx={{ display: 'block', marginBottom: '7px' }}
-            >
-                {label}
-            </Text>
+            <Flex sx={{ marginBottom: '7px' }}>
+                <Text
+                    variant="heading"
+                    sx={{ display: 'block', lineHeight: 1 }}
+                >
+                    {label}
+                </Text>
+                {optional && (
+                    <Text
+                        ml={2}
+                        sx={{
+                            fontSize: 13,
+                            color: 'textSecondary',
+                            fontWeight: 500,
+                            lineHeight: 1.3,
+                        }}
+                    >
+                        (Optional)
+                    </Text>
+                )}
+            </Flex>
             <Text
                 sx={{
                     fontWeight: 'heading',
@@ -58,6 +77,20 @@ const CustomInput: FC<CustomInputProps> = ({
                 {staticRight && staticRight}
                 {Icon && Icon}
             </Flex>
+            {staticBottom && (
+                <Box mt={2}>
+                    <Text
+                        sx={{
+                            fontSize: 13,
+                            color: 'textSecondary',
+                            fontWeight: 500,
+                            lineHeight: 1.3,
+                        }}
+                    >
+                        {staticBottom}
+                    </Text>
+                </Box>
+            )}
         </Box>
     )
 }
