@@ -2,7 +2,15 @@ import { Flex, Text, useColorMode } from 'theme-ui'
 import React, { FC, ReactNode, useCallback } from 'react'
 import Avatar, { AvatarProps } from './Avatar'
 
-type Type = 'offer' | 'transfer' | 'like' | 'purchase' | 'follow'
+type Type =
+    | 'offer'
+    | 'transfer'
+    | 'like'
+    | 'purchase'
+    | 'follow'
+    | 'listing'
+    | 'sale'
+    | 'burn'
 
 interface User extends Omit<AvatarProps, 'size'> {
     name: string
@@ -142,6 +150,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
                             </Text>
                         </Text>
                     )
+                case 'sale':
                 case 'purchase':
                     return (
                         <Text>
@@ -188,6 +197,60 @@ const ActivityCard: FC<ActivityCardProps> = ({
                                 sx={{ fontSize: 1, fontWeight: 'bold' }}
                             >
                                 {to.name}
+                            </Text>
+                        </Text>
+                    )
+                case 'listing':
+                    return (
+                        <Text>
+                            <Text
+                                mr="4px"
+                                color="textSecondary"
+                                sx={{ fontSize: 1, fontWeight: 'bold' }}
+                            >
+                                listed by
+                            </Text>
+                            <Avatar {...from} size="xxs" />
+                            <Text
+                                ml="4px"
+                                color="text"
+                                sx={{ fontSize: 1, fontWeight: 'bold' }}
+                            >
+                                {from.name}
+                            </Text>
+                            <Text
+                                mx="4px"
+                                color="textSecondary"
+                                sx={{ fontSize: 1, fontWeight: 'bold' }}
+                            >
+                                for
+                            </Text>
+                            <Text
+                                mr="4px"
+                                color="text"
+                                sx={{ fontSize: 1, fontWeight: 'bold' }}
+                            >
+                                {value} WETH
+                            </Text>
+                        </Text>
+                    )
+                case 'burn':
+                    return (
+                        <Text>
+                            <Text
+                                mr="4px"
+                                color="textSecondary"
+                                sx={{ fontSize: 1, fontWeight: 'bold' }}
+                            >
+                                burned by
+                            </Text>
+                            <Avatar {...from} size="xxs" />
+                            <Text
+                                ml="4px"
+                                color="text"
+                                sx={{ fontSize: 1, fontWeight: 'bold' }}
+                            >
+                                {value}
                             </Text>
                         </Text>
                     )

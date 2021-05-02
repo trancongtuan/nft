@@ -9,15 +9,19 @@ import Tooltip from './Tooltip'
 const items = [
     {
         id: 1,
-        label: 'Label 1',
+        label: 'Purchase now',
     },
     {
         id: 2,
-        label: 'Label 2',
+        label: 'Place a bid',
     },
     {
         id: 3,
-        label: 'Label 3',
+        label: 'View on OpenSea',
+    },
+    {
+        id: 4,
+        label: 'Share',
     },
 ]
 
@@ -26,7 +30,7 @@ type UserProps = Pick<AvatarProps, 'src' | 'verified'>
 export interface BidCardProps {
     type?: 'single' | 'multiple'
     name: string
-    bid: number
+    bid?: number
     currency: string
     collection?: UserProps
     owner?: UserProps
@@ -37,9 +41,12 @@ export interface BidCardProps {
     favorite?: number
     liked?: boolean
     onLike?: () => void
+    gradientColor?: boolean
+    countDown?: boolean
 }
 
 const BidCard: FC<BidCardProps> = ({
+    bid,
     name,
     collection,
     owner,
@@ -51,6 +58,8 @@ const BidCard: FC<BidCardProps> = ({
     favorite = 0,
     liked,
     onLike,
+    gradientColor,
+    countDown,
 }) => {
     const [visible, setVisible] = useState(false)
     const [colorMode] = useColorMode()
@@ -145,7 +154,7 @@ const BidCard: FC<BidCardProps> = ({
                     <Popover
                         onOuterAction={() => setVisible(false)}
                         isOpen={visible}
-                        body={<Tooltip visible={visible} items={items} />}
+                        body={<Tooltip items={items} />}
                         place="below"
                         tipSize={0.01}
                     >
@@ -190,10 +199,9 @@ const BidCard: FC<BidCardProps> = ({
                         pt: '100%',
                     }}
                 >
-                    <Box
+                    <Flex
                         sx={{
                             position: 'absolute',
-                            display: 'flex',
                             top: 0,
                             left: 0,
                             right: 0,
@@ -213,24 +221,73 @@ const BidCard: FC<BidCardProps> = ({
                                 mx: 'auto',
                                 my: 'auto',
                                 borderRadius: 6,
+                                cursor: 'pointer',
                             }}
                             src={image}
                         />
-                    </Box>
+                        {countDown && (
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    left: -14,
+                                    bottom: '-6px',
+                                    zIndex: 10,
+                                }}
+                            >
+                                <Flex
+                                    pl={8}
+                                    pr={10}
+                                    bg="white"
+                                    m="2px"
+                                    sx={{
+                                        position: 'relative',
+                                        border: '2px solid transparent',
+                                        height: 32,
+                                        borderRadius: 32,
+                                        textAlign: 'center',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        ':before': {
+                                            content: '""',
+                                            position: 'absolute',
+                                            inset: 0,
+                                            zIndex: -1,
+                                            m: '-4px',
+                                            borderRadius: 32,
+                                            background:
+                                                'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
+                                        },
+                                        fontSize: 13,
+                                        color: 'text',
+                                        fontWeight: 900,
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    04h 06m 23s left 🔥
+                                </Flex>
+                            </Box>
+                        )}
+                    </Flex>
                 </Box>
-                <Text
+                <Box
                     sx={{
-                        fontSize: '15px',
-                        lineHeight: '20.7px',
-                        fontWeight: 900,
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
+                        display: 'inline-flex',
                         maxWidth: '100%',
                     }}
                 >
-                    {name}
-                </Text>
+                    <Text
+                        sx={{
+                            fontSize: '15px',
+                            lineHeight: '20.7px',
+                            fontWeight: 900,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                        }}
+                    >
+                        {name}
+                    </Text>
+                </Box>
                 <Flex
                     mt="4px"
                     sx={{
@@ -245,20 +302,53 @@ const BidCard: FC<BidCardProps> = ({
                             fontWeight: 900,
                         }}
                     >
-                        <Text mr={8}>{price} ETH</Text>
+                        <Text
+                            mr={8}
+                            sx={{
+                                color: gradientColor
+                                    ? 'rgb(12, 80, 255)'
+                                    : 'text',
+                                WebkitTextFillColor: gradientColor
+                                    ? 'transparent'
+                                    : undefined,
+                                WebkitBackgroundClip: gradientColor
+                                    ? 'text'
+                                    : undefined,
+                                backgroundImage: gradientColor
+                                    ? 'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)'
+                                    : undefined,
+                            }}
+                        >
+                            {price} ETH
+                        </Text>
                         <Text color="textSecondary">1 of {quantity}</Text>
                         <br />
                         <Text
                             sx={{
-                                fontSize: '12px',
-                                lineHeight: '16.56px',
-                                color: 'textSecondary',
+                                color: 'rgb(12, 80, 255)',
+                                WebkitTextFillColor: 'transparent',
+                                WebkitBackgroundClip: 'text',
+                                backgroundImage:
+                                    'linear-gradient(126.49deg, rgb(0, 163, 255) 0%, rgb(0, 102, 255) 100%)',
                             }}
                         >
-                            Bid
-                            <Text ml={8} sx={{ color: 'primary' }}>
-                                WETH
-                            </Text>
+                            {bid ? (
+                                <Text
+                                    color="textSecondary"
+                                    sx={{
+                                        fontSize: 0,
+                                    }}
+                                >
+                                    {bid}{' '}
+                                    <Text color="primary" sx={{ fontSize: 0 }}>
+                                        WETH
+                                    </Text>
+                                </Text>
+                            ) : (
+                                <Text color="primary" sx={{ fontSize: 0 }}>
+                                    Place a bid
+                                </Text>
+                            )}
                         </Text>
                     </Text>
                     <Button
@@ -286,7 +376,9 @@ const BidCard: FC<BidCardProps> = ({
                             },
                             ':hover': {
                                 backgroundColor:
-                                    '1px solid rgba(18, 18, 18, 0.06)',
+                                    colorMode === 'dark'
+                                        ? 'rgba(255, 255, 255, 0.06)'
+                                        : 'rgba(4, 4, 5, 0.06)',
                                 opacity: 1,
                             },
                             transition: 'all 0.12s ease-in-out 0s',

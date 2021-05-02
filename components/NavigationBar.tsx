@@ -1,8 +1,15 @@
-import React, { FC, KeyboardEventHandler, useState } from 'react'
+import React, {
+    FC,
+    KeyboardEventHandler,
+    ReactNode,
+    useEffect,
+    useState,
+} from 'react'
 import { Avatar, Box, Button, Flex, Input, Text, useColorMode } from 'theme-ui'
 import Popover from 'react-popover'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import CopyToClipboard from 'react-copy-to-clipboard'
 import LogoIcon from '../public/assets/images/icons/logo.svg'
 import SearchIcon from '../public/assets/images/icons/search.svg'
 import DropDownIcon from '../public/assets/images/icons/drop-down.svg'
@@ -10,8 +17,22 @@ import NotificationIcon from '../public/assets/images/icons/notification.svg'
 import ThreeDosIcon from '../public/assets/images/icons/threedos.svg'
 import CatalogIcon from '../public/assets/images/icons/catalog.svg'
 import CloseIcon from '../public/assets/images/icons/close.svg'
+import TwitterIcon from '../public/assets/images/icons/twitter.svg'
+import TelegramIcon from '../public/assets/images/icons/telegram.svg'
+import InstagramIcon from '../public/assets/images/icons/instagram.svg'
+import DiscordIcon from '../public/assets/images/icons/discord.svg'
+import YoutubeIcon from '../public/assets/images/icons/youtube.svg'
+import MediumIcon from '../public/assets/images/icons/medium.svg'
+import CheckedIcon from '../public/assets/images/icons/checked.svg'
+import CopyIcon from '../public/assets/images/icons/copy.svg'
+import MasterCardIcon from '../public/assets/images/icons/master-card.svg'
+import VisaIcon from '../public/assets/images/icons/visa.svg'
+import PurchaseIcon from '../public/assets/images/icons/purchase.svg'
+import ConvertIcon from '../public/assets/images/icons/convert.svg'
+import HelpIcon from '../public/assets/images/icons/help.svg'
 import Selection from './Selection'
 import Tooltip from './Tooltip'
+import ToggleButton from './ToggleButton'
 
 const selectionItems = [
     {
@@ -36,17 +57,73 @@ const selectionItems = [
 const tooltipItems = [
     {
         id: 1,
-        label: 'Label 1',
+        label: 'RARI Token',
     },
     {
         id: 2,
-        label: 'Label 2',
+        label: 'Discussion',
     },
     {
         id: 3,
-        label: 'Label 3',
+        label: 'Voting',
+    },
+    {
+        id: 4,
+        label: 'Suggest feature',
+    },
+    {
+        id: 5,
+        label: 'Subscribe',
     },
 ]
+
+interface TooltipItemProps {
+    onClick?: () => void
+    label: string
+    rightStatic?: () => ReactNode
+}
+
+const TooltipItem: FC<TooltipItemProps> = ({ onClick, label, rightStatic }) => (
+    <Button
+        variant=""
+        bg="background"
+        px="12px"
+        py={2}
+        mx="12px"
+        sx={{
+            transition: 'all 0.12s ease-in-out 0s',
+            textAlign: 'left',
+            minHeight: 32,
+            borderRadius: 6,
+            ':hover': {
+                backgroundColor: 'hover',
+            },
+            cursor: 'pointer',
+            ':focus': {
+                outline: 'none',
+            },
+        }}
+        onClick={() => onClick && onClick()}
+    >
+        <Flex sx={{ justifyContent: 'space-between' }}>
+            <Text
+                sx={{
+                    color: 'text',
+                    fontSize: 1,
+                    lineHeight: '19px',
+                    fontWeight: 'heading',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    maxWidth: '100%',
+                }}
+            >
+                {label}
+            </Text>
+            {rightStatic && rightStatic()}
+        </Flex>
+    </Button>
+)
 
 const useColorInput = (
     focus: boolean,
@@ -176,8 +253,19 @@ const SearchInput: FC = () => {
 
 const NavigationBar: FC = () => {
     const [visible, setVisible] = useState(false)
+    const [visibleNoti, setVisibleNoti] = useState(false)
+    const [showDetail, setShowDetail] = useState(false)
     const router = useRouter()
-    const [colorMode] = useColorMode()
+    const [colorMode, setColorMode] = useColorMode()
+    const [counter, setCounter] = useState(0)
+    const [autoPlay, setAutoPlay] = useState(true)
+    useEffect(() => {
+        if (counter > 0) {
+            const timer = setInterval(() => setCounter(counter - 1), 1000)
+            return () => clearInterval(timer)
+        }
+        return setCounter(0)
+    }, [counter])
     return (
         <Flex
             bg="background"
@@ -244,6 +332,8 @@ const NavigationBar: FC = () => {
                                 '@media screen and (max-width: 1260px)': {
                                     display: 'none',
                                 },
+
+                                cursor: 'pointer',
                             }}
                         >
                             <Text
@@ -256,7 +346,6 @@ const NavigationBar: FC = () => {
                                     ':hover': {
                                         color: 'text',
                                     },
-                                    cursor: 'pointer',
                                 }}
                             >
                                 How it works
@@ -266,10 +355,94 @@ const NavigationBar: FC = () => {
                             onOuterAction={() => setVisible(false)}
                             isOpen={visible}
                             body={
-                                <Tooltip
-                                    visible={visible}
-                                    items={tooltipItems}
-                                />
+                                <Tooltip minWidth={270} items={tooltipItems}>
+                                    <Box
+                                        bg="borderColor"
+                                        my={12}
+                                        sx={{ height: 1 }}
+                                    />
+                                    <Flex
+                                        py={8}
+                                        px={24}
+                                        sx={{
+                                            justifyContent: 'space-around',
+                                        }}
+                                        color="rgba(4, 4, 5, 0.6)"
+                                    >
+                                        <Box
+                                            sx={{
+                                                ':hover': {
+                                                    color: 'text',
+                                                },
+                                                transition:
+                                                    'all 0.12s ease-in-out 0s',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <TwitterIcon />
+                                        </Box>
+                                        <Box
+                                            sx={{
+                                                ':hover': {
+                                                    color: 'text',
+                                                },
+                                                transition:
+                                                    'all 0.12s ease-in-out 0s',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <TelegramIcon />
+                                        </Box>
+                                        <Box
+                                            sx={{
+                                                ':hover': {
+                                                    color: 'text',
+                                                },
+                                                transition:
+                                                    'all 0.12s ease-in-out 0s',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <InstagramIcon />
+                                        </Box>
+                                        <Box
+                                            sx={{
+                                                ':hover': {
+                                                    color: 'text',
+                                                },
+                                                transition:
+                                                    'all 0.12s ease-in-out 0s',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <DiscordIcon />
+                                        </Box>
+                                        <Box
+                                            sx={{
+                                                ':hover': {
+                                                    color: 'text',
+                                                },
+                                                transition:
+                                                    'all 0.12s ease-in-out 0s',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <YoutubeIcon />
+                                        </Box>
+                                        <Box
+                                            sx={{
+                                                ':hover': {
+                                                    color: 'text',
+                                                },
+                                                transition:
+                                                    'all 0.12s ease-in-out 0s',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <MediumIcon />
+                                        </Box>
+                                    </Flex>
+                                </Tooltip>
                             }
                             place="below"
                             tipSize={0.01}
@@ -291,6 +464,8 @@ const NavigationBar: FC = () => {
                                         '@media screen and (max-width: 1260px)': {
                                             display: 'none',
                                         },
+
+                                        cursor: 'pointer',
                                     }}
                                     onClick={() => setVisible(!visible)}
                                 >
@@ -303,7 +478,6 @@ const NavigationBar: FC = () => {
                                             lineHeight: '30px',
                                             transition:
                                                 'all 0.12s ease-in-out 0s',
-                                            cursor: 'pointer',
                                         }}
                                     >
                                         Community
@@ -366,16 +540,96 @@ const NavigationBar: FC = () => {
                     >
                         <SearchIcon />
                     </Button>
-                    <Button
-                        mr={8}
-                        variant="border"
-                        sx={{
-                            width: 40,
-                            p: 0,
-                        }}
+                    <Popover
+                        onOuterAction={() => setVisibleNoti(false)}
+                        isOpen={visibleNoti}
+                        body={
+                            <Tooltip minWidth={295}>
+                                <Flex
+                                    py={8}
+                                    px={24}
+                                    sx={{
+                                        justifyContent: 'space-around',
+                                        flexDirection: 'column',
+                                    }}
+                                    color="rgba(4, 4, 5, 0.6)"
+                                >
+                                    <Flex
+                                        sx={{
+                                            justifyContent: 'space-between',
+                                            width: '100%',
+                                        }}
+                                    >
+                                        <Text
+                                            color="text"
+                                            sx={{
+                                                fontSize: 1,
+                                                fontWeight: 900,
+                                            }}
+                                        >
+                                            Notifications
+                                        </Text>
+                                        <Link href="/activity">
+                                            <Text
+                                                color="primary"
+                                                sx={{
+                                                    fontSize: 1,
+                                                    fontWeight: 700,
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                See all
+                                            </Text>
+                                        </Link>
+                                    </Flex>
+                                    <Flex
+                                        sx={{
+                                            height: 240,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            flexDirection: 'column',
+                                            svg: {
+                                                width: 38,
+                                                height: 38,
+                                            },
+                                        }}
+                                    >
+                                        <NotificationIcon />
+                                        <Text
+                                            mt={8}
+                                            color="textSecondary"
+                                            sx={{
+                                                textAlign: 'center',
+                                                fontSize: 18,
+                                                fontWeight: 500,
+                                            }}
+                                        >
+                                            No new notifications
+                                        </Text>
+                                    </Flex>
+                                    <Link href="/setting">
+                                        <Button variant="border">
+                                            Receive email notifications
+                                        </Button>
+                                    </Link>
+                                </Flex>
+                            </Tooltip>
+                        }
+                        place="below"
+                        tipSize={0.01}
                     >
-                        <NotificationIcon />
-                    </Button>
+                        <Button
+                            mr={8}
+                            variant="border"
+                            sx={{
+                                width: 40,
+                                p: 0,
+                            }}
+                            onClick={() => setVisibleNoti(!visibleNoti)}
+                        >
+                            <NotificationIcon />
+                        </Button>
+                    </Popover>
                     <Button
                         mr={8}
                         variant="border"
@@ -389,26 +643,251 @@ const NavigationBar: FC = () => {
                     >
                         <CatalogIcon />
                     </Button>
-                    <Button
-                        variant="border"
-                        pl={20}
-                        pr={55}
-                        sx={{
-                            position: 'relative',
-                        }}
+                    <Popover
+                        onOuterAction={() => setShowDetail(false)}
+                        isOpen={showDetail}
+                        body={
+                            <Tooltip minWidth={318}>
+                                <Box py={8} px={24}>
+                                    <Flex sx={{ alignItems: 'center' }}>
+                                        <Text
+                                            sx={{
+                                                fontSize: 16,
+                                                lineHeight: '22px',
+                                                color: 'text',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            0xd92e44ac213b9...fa96
+                                        </Text>
+                                        <CopyToClipboard
+                                            onCopy={() => setCounter(2)}
+                                            text="0xd92e44ac213b9ebda0178e1523cc0ce177b7fa96"
+                                        >
+                                            <Box
+                                                ml={8}
+                                                color="textSecondary"
+                                                sx={{
+                                                    cursor: 'pointer',
+                                                    svg: {
+                                                        width: 16,
+                                                        height: 16,
+                                                    },
+                                                }}
+                                            >
+                                                {counter > 0 ? (
+                                                    <CheckedIcon />
+                                                ) : (
+                                                    <CopyIcon />
+                                                )}
+                                            </Box>
+                                        </CopyToClipboard>
+                                    </Flex>
+                                    <Link href="/setting">
+                                        <Text
+                                            color="primary"
+                                            sx={{
+                                                fontSize: 1,
+                                                fontWeight: 400,
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            Set display name
+                                        </Text>
+                                    </Link>
+                                    <Box mt={16}>
+                                        <Flex>
+                                            <Flex
+                                                mr={12}
+                                                color="white"
+                                                bg="#aabbff"
+                                                sx={{
+                                                    width: 40,
+                                                    height: 40,
+                                                    borderRadius: 40,
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    svg: {
+                                                        width: 20,
+                                                        height: 20,
+                                                    },
+                                                }}
+                                            >
+                                                <PurchaseIcon />
+                                            </Flex>
+                                            <Flex
+                                                sx={{
+                                                    flexDirection: 'column',
+                                                    fontSize: 1,
+                                                    fontWeight: 700,
+                                                }}
+                                            >
+                                                <Text
+                                                    color="textSecondary"
+                                                    mb="2px"
+                                                >
+                                                    Balance
+                                                </Text>
+                                                <Text color="text">
+                                                    0 ETH{' '}
+                                                    <Text color="textSecondary">
+                                                        $0.00
+                                                    </Text>
+                                                </Text>
+                                            </Flex>
+                                        </Flex>
+                                        <Flex mt={8} sx={{ width: '100%' }}>
+                                            <Flex
+                                                mr={12}
+                                                color="white"
+                                                bg="#ccc"
+                                                sx={{
+                                                    width: 40,
+                                                    height: 40,
+                                                    borderRadius: 40,
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    svg: {
+                                                        width: 20,
+                                                        height: 20,
+                                                    },
+                                                }}
+                                            >
+                                                <PurchaseIcon />
+                                            </Flex>
+                                            <Flex
+                                                sx={{
+                                                    flexDirection: 'column',
+                                                    fontSize: 1,
+                                                    fontWeight: 700,
+                                                }}
+                                            >
+                                                <Flex
+                                                    sx={{
+                                                        alignItems: 'center',
+                                                    }}
+                                                >
+                                                    <Text
+                                                        color="textSecondary"
+                                                        mb="2px"
+                                                    >
+                                                        Bidding balance{' '}
+                                                    </Text>
+                                                    <Button
+                                                        ml={8}
+                                                        variant="circle"
+                                                        p={0}
+                                                        sx={{
+                                                            width: 16,
+                                                            height: 16,
+                                                            svg: {
+                                                                width: 8,
+                                                                height: 8,
+                                                            },
+                                                        }}
+                                                    >
+                                                        <HelpIcon />
+                                                    </Button>
+                                                </Flex>
+                                                <Text color="text">
+                                                    0 ETH{' '}
+                                                    <Text color="textSecondary">
+                                                        $0.00
+                                                    </Text>
+                                                </Text>
+                                            </Flex>
+                                            <Button
+                                                ml="auto"
+                                                variant="circle"
+                                                p={0}
+                                                sx={{
+                                                    flexShrink: 0,
+                                                }}
+                                            >
+                                                <ConvertIcon />
+                                            </Button>
+                                        </Flex>
+                                    </Box>
+                                    <Button
+                                        mt={16}
+                                        variant="border"
+                                        sx={{ width: '100%' }}
+                                    >
+                                        Add funds width <MasterCardIcon />{' '}
+                                        <VisaIcon />
+                                    </Button>
+                                </Box>
+                                <Box
+                                    bg="borderColor"
+                                    my={12}
+                                    sx={{ height: 1 }}
+                                />
+                                <TooltipItem
+                                    label="My items"
+                                    onClick={() => router.push('/my_items')}
+                                />
+                                <TooltipItem
+                                    label="Edit profile"
+                                    onClick={() => router.push('/setting')}
+                                />
+                                <TooltipItem
+                                    label="Manage funds"
+                                    onClick={() => router.push('/my_items')}
+                                />
+                                <TooltipItem
+                                    label="Auto play"
+                                    rightStatic={() => (
+                                        <ToggleButton
+                                            toggle={autoPlay}
+                                            setToggle={() =>
+                                                setAutoPlay(!autoPlay)
+                                            }
+                                        />
+                                    )}
+                                />
+                                <TooltipItem
+                                    label="Dark theme"
+                                    rightStatic={() => (
+                                        <ToggleButton
+                                            toggle={colorMode === 'dark'}
+                                            setToggle={() =>
+                                                setColorMode(
+                                                    colorMode === 'default'
+                                                        ? 'dark'
+                                                        : 'default'
+                                                )
+                                            }
+                                        />
+                                    )}
+                                />
+                                <TooltipItem label="Disconnect" />
+                            </Tooltip>
+                        }
+                        place="below"
+                        tipSize={0.01}
                     >
-                        O RARI
-                        <Avatar
-                            src="https://via.placeholder.com/500x100"
-                            alt="avatar"
+                        <Button
+                            variant="border"
+                            pl={20}
+                            pr={55}
                             sx={{
-                                position: 'absolute',
-                                top: 0,
-                                right: 0,
-                                objectFit: 'cover',
+                                position: 'relative',
                             }}
-                        />
-                    </Button>
+                            onClick={() => setShowDetail(!showDetail)}
+                        >
+                            O RARI
+                            <Avatar
+                                src="https://via.placeholder.com/500x100"
+                                alt="avatar"
+                                sx={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    objectFit: 'cover',
+                                }}
+                            />
+                        </Button>
+                    </Popover>
                 </Flex>
             </Flex>
         </Flex>

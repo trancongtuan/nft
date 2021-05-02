@@ -59,7 +59,7 @@ const Selection: FC<SelectionProps> = ({
                             {item.label}
                         </Text>
                         {item.isNew && (
-                            <Box ml={8}>
+                            <Box ml={8} sx={{ cursor: 'default' }}>
                                 <NewIcon />
                             </Box>
                         )}
