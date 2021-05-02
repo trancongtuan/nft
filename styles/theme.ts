@@ -207,9 +207,10 @@ export const theme: Theme = {
             width: '40px',
             height: '40px',
             transition: 'all 0.12s ease-in-out 0s',
-            color: '#040405',
-            background: '#FFF',
-            border: '1px #E1E1E1 solid',
+            color: 'text',
+            backgroundColor: 'background',
+            border: '1px solid',
+            borderColor: '#aaa',
             cursor: 'pointer',
             ':hover': {
                 border: '1px #ccc solid',

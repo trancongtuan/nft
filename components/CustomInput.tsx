@@ -3,6 +3,7 @@ import React, { FC, ReactChild } from 'react'
 
 interface CustomInputProps {
     label: string
+    optionLabel?: string
     value: string
     placeholder: string
     subLabel?: string
@@ -11,12 +12,12 @@ interface CustomInputProps {
     staticRight?: ReactChild
     staticBottom?: ReactChild
     Icon?: ReactChild
-    optional?: boolean
     onChange: (value: string) => void
 }
 
 const CustomInput: FC<CustomInputProps> = ({
     label,
+    optionLabel,
     placeholder,
     value,
     subLabel,
@@ -25,7 +26,6 @@ const CustomInput: FC<CustomInputProps> = ({
     staticRight,
     staticBottom,
     Icon,
-    optional,
     onChange,
 }) => {
     return (
@@ -37,7 +37,7 @@ const CustomInput: FC<CustomInputProps> = ({
                 >
                     {label}
                 </Text>
-                {optional && (
+                {optionLabel && (
                     <Text
                         ml={2}
                         sx={{
@@ -47,7 +47,7 @@ const CustomInput: FC<CustomInputProps> = ({
                             lineHeight: 1.3,
                         }}
                     >
-                        (Optional)
+                        ({optionLabel})
                     </Text>
                 )}
             </Flex>
@@ -74,7 +74,17 @@ const CustomInput: FC<CustomInputProps> = ({
                     variant="input"
                     onChange={(event) => onChange(event.target.value)}
                 />
-                {staticRight && staticRight}
+                {staticRight && (
+                    <Box
+                        sx={{
+                            fontWeight: 600,
+                            color: 'textSecondary',
+                            fontSize: 1,
+                        }}
+                    >
+                        {staticRight}
+                    </Box>
+                )}
                 {Icon && Icon}
             </Flex>
             {staticBottom && (
