@@ -1,8 +1,9 @@
 /* eslint-disable no-irregular-whitespace */
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Box, Button, Flex, Text } from 'theme-ui'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
+import Popover from 'react-popover'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
 import EdgeOverflow from '../components/EdgeOverflow'
@@ -12,6 +13,7 @@ import DropdownIcon from '../public/assets/images/icons/drop-down.svg'
 import FilterIcon from '../public/assets/images/icons/filter.svg'
 import TopSellerCard from '../components/TopSellerCard'
 import HomeCard from '../components/HomeCard'
+import Tooltip from '../components/Tooltip'
 
 const carouselItems = [
     {
@@ -123,10 +125,11 @@ const bidItems = [
             src: 'https://picsum.photos/200/400',
             verified: true,
         },
-        name: 'Test',
-        bid: 50,
+        name: 'Long Test Test Test Test Test Test',
         currency: 'WETH',
         liked: true,
+        gradientColor: true,
+        countDown: true,
     },
     {
         id: 2,
@@ -237,6 +240,9 @@ const bidItems = [
 
 const Home: FC = () => {
     const router = useRouter()
+    const [countItems, setCountItems] = useState(10)
+    const [showSellers, setShowSellers] = useState(false)
+    const [showDays, setShowDays] = useState(false)
     return (
         <Layout>
             <Box
@@ -250,7 +256,7 @@ const Home: FC = () => {
             >
                 <Box sx={{ position: 'relative' }}>
                     <Flex sx={{ overflowX: 'auto' }} mb={30}>
-                        {new Array(5).fill(0).map((item, index) => (
+                        {new Array(5).fill(0).map(() => (
                             <HomeCard
                                 label="Pink Cat"
                                 subLabel="FLOSSTRADAMUS"
@@ -267,42 +273,96 @@ const Home: FC = () => {
                         sx={{ fontSize: [24, 27, 30], fontWeight: 700 }}
                     >
                         Top
-                        <Text
-                            mx={8}
-                            sx={{
-                                svg: {
-                                    fill: 'primary',
-                                    width: 13,
-                                    height: 13,
-                                },
-                            }}
+                        <Popover
+                            onOuterAction={() => setShowSellers(false)}
+                            isOpen={showSellers}
+                            body={
+                                <Tooltip
+                                    items={[
+                                        {
+                                            id: 1,
+                                            label: 'sellers',
+                                            checked: true,
+                                        },
+                                        {
+                                            id: 2,
+                                            label: 'buyer',
+                                        },
+                                    ]}
+                                    minWidth={124}
+                                />
+                            }
+                            place="below"
+                            tipSize={0.01}
                         >
-                            <Text mr="4px" color="primary">
-                                sellers
+                            <Text
+                                onClick={() => setShowSellers(!showSellers)}
+                                mx={8}
+                                sx={{
+                                    svg: {
+                                        fill: 'primary',
+                                        width: 13,
+                                        height: 13,
+                                    },
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <Text mr="4px" color="primary">
+                                    sellers
+                                </Text>
+                                <DropdownIcon />
                             </Text>
-                            <DropdownIcon />
-                        </Text>
+                        </Popover>
                         in
-                        <Text
-                            mx={8}
-                            sx={{
-                                svg: {
-                                    fill: 'primary',
-                                    width: 13,
-                                    height: 13,
-                                },
-                            }}
+                        <Popover
+                            onOuterAction={() => setShowDays(false)}
+                            isOpen={showDays}
+                            body={
+                                <Tooltip
+                                    items={[
+                                        {
+                                            id: 1,
+                                            label: '1 day',
+                                            checked: true,
+                                        },
+                                        {
+                                            id: 2,
+                                            label: '7 days',
+                                        },
+                                        {
+                                            id: 3,
+                                            label: '30 days',
+                                        },
+                                    ]}
+                                    minWidth={124}
+                                />
+                            }
+                            place="below"
+                            tipSize={0.01}
                         >
-                            <Text mr="4px" color="primary">
-                                1 day
+                            <Text
+                                onClick={() => setShowDays(!showDays)}
+                                mx={8}
+                                sx={{
+                                    svg: {
+                                        fill: 'primary',
+                                        width: 13,
+                                        height: 13,
+                                    },
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <Text mr="4px" color="primary">
+                                    1 day
+                                </Text>
+                                <DropdownIcon />
                             </Text>
-                            <DropdownIcon />
-                        </Text>
+                        </Popover>
                     </Text>
                 </Flex>
                 <Box sx={{ position: 'relative' }}>
                     <Flex ml={-20} sx={{ overflowX: 'auto' }}>
-                        {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
+                        {_.chunk(new Array(15).fill(0), 3).map((item, idx) => (
                             <Box pl={20} sx={{ width: 258, flexShrink: 0 }}>
                                 {item.map((x, index) => (
                                     <Box mb={20}>
@@ -485,7 +545,7 @@ const Home: FC = () => {
                     </Button>
                 </Flex>
                 <Flex mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {new Array(10).fill(0).map((x) => (
+                    {new Array(countItems).fill(0).map(() => (
                         <Box
                             p={10}
                             sx={{
@@ -526,7 +586,11 @@ const Home: FC = () => {
                         </Box>
                     ))}
                 </Flex>
-                <Button variant="border" sx={{ height: 48, width: '100%' }}>
+                <Button
+                    onClick={() => setCountItems(countItems + 10)}
+                    variant="border"
+                    sx={{ height: 48, width: '100%' }}
+                >
                     Load more
                 </Button>
             </Box>

@@ -1,33 +1,32 @@
 import { alpha } from '@theme-ui/color'
 import React, { FC, PropsWithChildren } from 'react'
-import { Box, Button, Text, useColorMode } from 'theme-ui'
+import { Box, Button, Flex, Text, useColorMode } from 'theme-ui'
+import CheckedIcon from '../public/assets/images/icons/checked.svg'
 
 interface TooltipItemProps {
     id: string | number
     label: string
+    checked?: boolean
 }
 
 export interface TooltipProps {
     items?: TooltipItemProps[]
     onClick?: (item: TooltipItemProps) => void
-    visible?: boolean
     minWidth?: number
 }
 
 const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     items,
     onClick,
-    visible,
     minWidth,
     children,
 }) => {
     const [colorMode] = useColorMode()
     return (
-        <Box
+        <Flex
             py={16}
             bg="background"
             sx={{
-                display: visible ? 'flex' : 'none',
                 flexDirection: 'column',
                 flexGrow: 1,
                 boxShadow: (t) =>
@@ -67,24 +66,31 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
                         key={item.id}
                         onClick={() => onClick && onClick(item)}
                     >
-                        <Text
-                            sx={{
-                                color: 'text',
-                                fontSize: 1,
-                                lineHeight: '19px',
-                                fontWeight: 'heading',
-                                textOverflow: 'ellipsis',
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                maxWidth: '100%',
-                            }}
-                        >
-                            {item.label}
-                        </Text>
+                        <Flex sx={{ justifyContent: 'space-between' }}>
+                            <Text
+                                sx={{
+                                    color: 'text',
+                                    fontSize: 1,
+                                    lineHeight: '19px',
+                                    fontWeight: 'heading',
+                                    textOverflow: 'ellipsis',
+                                    overflow: 'hidden',
+                                    whiteSpace: 'nowrap',
+                                    maxWidth: '100%',
+                                }}
+                            >
+                                {item.label}
+                            </Text>
+                            {item.checked && (
+                                <Box color="primary">
+                                    <CheckedIcon />
+                                </Box>
+                            )}
+                        </Flex>
                     </Button>
                 ))}
             {children}
-        </Box>
+        </Flex>
     )
 }
 

@@ -81,7 +81,7 @@ const Following: FC = () => {
                 <Popover
                     onOuterAction={() => setShowFilter(false)}
                     isOpen={showFilter}
-                    body={<Tooltip visible={showFilter} items={tooltipItems} />}
+                    body={<Tooltip items={tooltipItems} />}
                     place="below"
                     tipSize={0.01}
                 >

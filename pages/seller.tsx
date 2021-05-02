@@ -481,7 +481,7 @@ const Items: FC = () => {
                             onOuterAction={() => setShowShare(false)}
                             isOpen={showShare}
                             body={
-                                <Tooltip visible={showShare}>
+                                <Tooltip>
                                     <Flex
                                         p={16}
                                         sx={{
@@ -657,7 +657,6 @@ const Items: FC = () => {
                             isOpen={showReport}
                             body={
                                 <Tooltip
-                                    visible={showReport}
                                     items={[{ id: '1', label: 'Report page' }]}
                                     minWidth={159}
                                 />

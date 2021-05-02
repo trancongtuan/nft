@@ -114,6 +114,9 @@ export const theme: Theme = {
             ':focus': {
                 outline: 'none',
             },
+            ':active': {
+                transform: 'scale(0.95)',
+            },
         },
         borderActive: {
             display: 'flex',
@@ -141,6 +144,9 @@ export const theme: Theme = {
             ':focus': {
                 outline: 'none',
             },
+            ':active': {
+                transform: 'scale(0.95)',
+            },
         },
         primary: {
             display: 'flex',
@@ -165,6 +171,9 @@ export const theme: Theme = {
             },
             ':focus': {
                 outline: 'none',
+            },
+            ':active': {
+                transform: 'scale(0.95)',
             },
         },
         secondary: {
@@ -191,6 +200,9 @@ export const theme: Theme = {
             ':focus': {
                 outline: 'none',
             },
+            ':active': {
+                transform: 'scale(0.95)',
+            },
         },
         circle: {
             padding: '0 10px',
@@ -210,6 +222,9 @@ export const theme: Theme = {
             },
             ':focus': {
                 outline: 'none',
+            },
+            ':active': {
+                transform: 'scale(0.95)',
             },
         },
     },
