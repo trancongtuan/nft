@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Input, Text, useColorMode } from 'theme-ui'
 import React, { FC } from 'react'
+import Link from 'next/link'
 import ArrowDown from '../public/assets/images/icons/arrowDown.svg'
 import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 import FacebookIcon from '../public/assets/images/icons/facebook.svg'
@@ -326,6 +327,7 @@ const Footer: FC = () => {
                                 © Rarible, Inc. All rights reserved.
                             </Text>
                         </Box>
+
                         <Flex
                             mr={[0, 0, 0, 32]}
                             mt={[16, 16, 16, 0]}
@@ -341,12 +343,16 @@ const Footer: FC = () => {
                                 },
                             }}
                         >
-                            <Text mx={16} sx={{ fontSize: 14 }}>
-                                Terms
-                            </Text>
-                            <Text mx={16} sx={{ fontSize: 14 }}>
-                                Privacy
-                            </Text>
+                            <Link href="/files/terms.pdf">
+                                <Text mx={16} sx={{ fontSize: 14 }}>
+                                    Terms
+                                </Text>
+                            </Link>
+                            <Link href="/files/privacy.pdf">
+                                <Text mx={16} sx={{ fontSize: 14 }}>
+                                    Privacy
+                                </Text>
+                            </Link>
                         </Flex>
                         <Flex
                             mt={[16, 16, 16, 0]}
