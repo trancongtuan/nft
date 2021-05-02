@@ -35,8 +35,6 @@ export interface BidCardProps {
     quantity?: number
     price?: number
     favorite?: number
-    liked?: boolean
-    onLike?: () => void
 }
 
 const BidCard: FC<BidCardProps> = ({
@@ -49,11 +47,11 @@ const BidCard: FC<BidCardProps> = ({
     quantity = 1,
     price = 0,
     favorite = 0,
-    liked,
-    onLike,
 }) => {
     const [visible, setVisible] = useState(false)
+    const [liked, setLiked] = useState(false)
     const [colorMode] = useColorMode()
+
     return (
         <Box
             sx={{
@@ -262,7 +260,7 @@ const BidCard: FC<BidCardProps> = ({
                         </Text>
                     </Text>
                     <Button
-                        onClick={onLike}
+                        onClick={() => setLiked(!liked)}
                         color="#040405"
                         mr={-8}
                         mb={-8}
