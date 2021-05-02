@@ -238,7 +238,6 @@ export const BidCardStory: FC = () => {
                     verified: true,
                 }}
                 name="Test"
-                bid={50}
                 currency="WETH"
             />
             <BidCard
@@ -262,7 +261,7 @@ export const BidCardStory: FC = () => {
     )
 }
 export const ActivityCardStory: FC = () => (
-    <>
+    <Flex sx={{ flexDirection: 'column' }}>
         <ActivityCard
             type="follow"
             src="https://via.placeholder.com/500x100"
@@ -357,7 +356,64 @@ export const ActivityCardStory: FC = () => (
             }}
             time="6 days ago"
         />
-    </>
+        <br />
+        <ActivityCard
+            type="listing"
+            src="https://via.placeholder.com/500x100"
+            verified
+            name="Ahihihi"
+            content={{
+                from: {
+                    name: 'Han Khung',
+                    src: 'https://via.placeholder.com/500x100',
+                },
+                to: {
+                    name: 'Han Dien',
+                    src: 'https://via.placeholder.com/500x100',
+                },
+                value: 200,
+            }}
+            time="6 days ago"
+        />
+        <br />
+        <ActivityCard
+            type="sale"
+            src="https://via.placeholder.com/500x100"
+            verified
+            name="Ahihihi"
+            content={{
+                from: {
+                    name: 'Han Khung',
+                    src: 'https://via.placeholder.com/500x100',
+                },
+                to: {
+                    name: 'Han Dien',
+                    src: 'https://via.placeholder.com/500x100',
+                },
+                value: 200,
+            }}
+            time="6 days ago"
+        />
+        <br />
+        <ActivityCard
+            type="burn"
+            src="https://via.placeholder.com/500x100"
+            verified
+            name="Ahihihi"
+            content={{
+                from: {
+                    name: 'Han Khung',
+                    src: 'https://via.placeholder.com/500x100',
+                },
+                to: {
+                    name: 'Han Dien',
+                    src: 'https://via.placeholder.com/500x100',
+                },
+                value: 200,
+            }}
+            time="6 days ago"
+        />
+    </Flex>
 )
 export const FooterStory: FC = () => <Footer />
 //         </Box>

@@ -313,7 +313,6 @@ const Simple: FC = () => {
                                                 isOpen={showTypePrice}
                                                 body={
                                                     <Tooltip
-                                                        visible={showTypePrice}
                                                         items={tooltipItems}
                                                     />
                                                 }
@@ -578,7 +577,7 @@ const Simple: FC = () => {
                                 <Popover
                                     isOpen={showHelp}
                                     body={
-                                        <Tooltip visible={showHelp}>
+                                        <Tooltip>
                                             <Flex
                                                 px={8}
                                                 sx={{

@@ -6,10 +6,21 @@ import FavoriteIcon from '../public/assets/images/icons/favorite.svg'
 import OfferIcon from '../public/assets/images/icons/offer.svg'
 import TransferIcon from '../public/assets/images/icons/transfer.svg'
 import PurchaseIcon from '../public/assets/images/icons/purchase.svg'
+import ListingIcon from '../public/assets/images/icons/listing.svg'
+import SaleIcon from '../public/assets/images/icons/sale.svg'
+import BurnIcon from '../public/assets/images/icons/burn.svg'
 
 type Size = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
-type Type = 'offer' | 'transfer' | 'like' | 'purchase' | 'follow'
+type Type =
+    | 'offer'
+    | 'transfer'
+    | 'like'
+    | 'purchase'
+    | 'follow'
+    | 'listing'
+    | 'sale'
+    | 'burn'
 export interface AvatarProps {
     src: string
     verified?: boolean
@@ -56,6 +67,12 @@ const useIcon = (type: Type): [string, () => ReactNode] => {
             return ['#ffc75a', () => <PurchaseIcon />]
         case 'follow':
             return ['#6dbc00', () => <CheckedIcon />]
+        case 'listing':
+            return ['#0093ff', () => <ListingIcon />]
+        case 'sale':
+            return ['#eb5849', () => <SaleIcon />]
+        case 'burn':
+            return ['#4663e2', () => <BurnIcon />]
         default:
             return [
                 '#ff9012',
@@ -89,6 +106,7 @@ const Avatar: FC<AvatarProps> = ({
                 borderColor: 'background',
                 borderWidth: borderSize,
                 borderStyle: 'solid',
+                color: 'white',
                 '>svg': {
                     position: 'absolute',
                     bottom: '-4px',
@@ -112,8 +130,8 @@ const Avatar: FC<AvatarProps> = ({
             {showType && (
                 <Flex
                     sx={{
-                        top: -8,
-                        left: -8,
+                        top: type === 'follow' ? -8 : 0,
+                        left: type === 'follow' ? -8 : 0,
                         position: 'absolute',
                         borderRadius: 9999,
                         width: 26,
