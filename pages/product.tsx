@@ -168,12 +168,7 @@ const Product: FC = () => {
                                 <Popover
                                     onOuterAction={() => setShowProduct(false)}
                                     isOpen={showProduct}
-                                    body={
-                                        <Tooltip
-                                            visible={showProduct}
-                                            items={tooltipItems}
-                                        />
-                                    }
+                                    body={<Tooltip items={tooltipItems} />}
                                     place="below"
                                     tipSize={0.01}
                                 >
