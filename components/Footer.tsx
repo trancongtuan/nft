@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Input, Text, useColorMode } from 'theme-ui'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
+import Popover from 'react-popover'
 import Link from 'next/link'
 import ArrowDown from '../public/assets/images/icons/arrowDown.svg'
 import TwitterIcon from '../public/assets/images/icons/twitter.svg'
@@ -8,9 +9,31 @@ import TelegramIcon from '../public/assets/images/icons/telegram.svg'
 import InstagramIcon from '../public/assets/images/icons/instagram.svg'
 import EmailIcon from '../public/assets/images/icons/email.svg'
 import DiscordIcon from '../public/assets/images/icons/discord.svg'
+import Tooltip from './Tooltip'
+
+const tooltipItems = [
+    {
+        id: '1',
+        label: 'English',
+    },
+    {
+        id: '2',
+        label: '中文',
+    },
+    {
+        id: '3',
+        label: '한국어',
+    },
+    {
+        id: '4',
+        label: '日本語',
+        isNew: true,
+    },
+]
 
 const Footer: FC = () => {
     const [colorMode] = useColorMode()
+    const [visible, setVisible] = useState(false)
     return (
         <Flex
             mt={32}
@@ -95,6 +118,10 @@ const Footer: FC = () => {
                                         top: 0,
                                         right: 0,
                                         fontSize: 1,
+                                        transition: 'all 0.12s ease-in-out 0s',
+                                        ':active': {
+                                            transform: 'scale(0.95)',
+                                        },
                                     }}
                                 >
                                     I am in
@@ -270,33 +297,52 @@ const Footer: FC = () => {
                             >
                                 Language
                             </Text>
-                            <Box mt={16}>
-                                <Flex
-                                    px={20}
-                                    sx={{
-                                        cursor: 'pointer',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        width: '100%',
-                                        height: '48px',
-                                        borderRadius: 48,
-                                        fontSize: 1,
-                                        fontWeight: 'heading',
-                                        color: 'textSecondary',
-                                        background:
-                                            colorMode === 'dark'
-                                                ? '#181818'
-                                                : '#FFF',
-                                        border:
-                                            colorMode === 'dark'
-                                                ? '1px rgba(255, 255, 255, 0.1) solid'
-                                                : 'none',
-                                    }}
-                                >
-                                    <Text>English</Text>
-                                    <ArrowDown />
-                                </Flex>
-                            </Box>
+                            <Popover
+                                onOuterAction={() => setVisible(false)}
+                                isOpen={visible}
+                                body={
+                                    <Tooltip
+                                        visible={visible}
+                                        items={tooltipItems}
+                                    />
+                                }
+                                place="below"
+                                tipSize={0.01}
+                            >
+                                <Box mt={16}>
+                                    <Flex
+                                        px={20}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            width: '100%',
+                                            height: '48px',
+                                            borderRadius: 48,
+                                            fontSize: 1,
+                                            fontWeight: 'heading',
+                                            color: 'textSecondary',
+                                            background:
+                                                colorMode === 'dark'
+                                                    ? '#181818'
+                                                    : '#FFF',
+                                            border:
+                                                colorMode === 'dark'
+                                                    ? '1px rgba(255, 255, 255, 0.1) solid'
+                                                    : 'none',
+                                            transition:
+                                                'all 0.12s ease-in-out 0s',
+                                            ':active': {
+                                                transform: 'scale(0.95)',
+                                            },
+                                        }}
+                                        onClick={() => setVisible(!visible)}
+                                    >
+                                        <Text>English</Text>
+                                        <ArrowDown />
+                                    </Flex>
+                                </Box>
+                            </Popover>
                         </Box>
                     </Flex>
                     <Flex
