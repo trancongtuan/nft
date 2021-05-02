@@ -303,12 +303,18 @@ const Home: FC = () => {
                 <Box sx={{ position: 'relative' }}>
                     <Flex ml={-20} sx={{ overflowX: 'auto' }}>
                         {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
-                            <Box pl={20} sx={{ width: 258, flexShrink: 0 }}>
+                            <Box
+                                pl={20}
+                                sx={{
+                                    width: [260, 214, '25%', '20%'],
+                                    flexShrink: 0,
+                                }}
+                            >
                                 {item.map((x, index) => (
                                     <Box mb={20}>
                                         <TopSellerCard
-                                            id={idx * 3 + index}
-                                            name="Ahihi"
+                                            id={idx * 3 + index || '0'}
+                                            name="Ahihi asd asd zx asd zxc"
                                             wallet={24}
                                             user={{
                                                 src:

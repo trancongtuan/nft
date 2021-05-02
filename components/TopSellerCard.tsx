@@ -6,7 +6,7 @@ type UserProps = Pick<AvatarProps, 'src' | 'verified'>
 type Size = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 interface TopSellerCardProps {
-    id?: number
+    id?: number | string
     name: string
     wallet: number
     user: UserProps
@@ -20,6 +20,13 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
     size,
     wallet,
 }) => {
+    const styles = {
+        // Theme-ui does not support these CSS so...
+        '-webkit-box-orient': 'vertical',
+        display: '-webkit-box',
+        '-webkit-line-clamp': '1',
+    } as const
+
     return (
         <Flex sx={{ alignItems: 'center' }}>
             {id && (
@@ -27,10 +34,30 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                     {id}
                 </Text>
             )}
-            <Flex sx={{ alignItems: 'center' }}>
+            <Flex sx={{ alignItems: 'center', flexGrow: 1 }}>
                 <Avatar {...user} size={size || 'sm'} />
-                <Flex ml={16} sx={{ flexDirection: 'column' }}>
-                    <Text color="text" sx={{ fontSize: 15, fontWeight: 600 }}>
+                <Flex
+                    ml={16}
+                    sx={{
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        flexGrow: 1,
+                    }}
+                >
+                    <Text
+                        color="text"
+                        mb={1}
+                        sx={{
+                            fontSize: 15,
+                            display: 'block',
+                            fontWeight: 600,
+                            maxWidth: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontFamily: 'sans-serif',
+                        }}
+                        style={styles}
+                    >
                         {name}
                     </Text>
                     <Text color="textSecondary" sx={{ fontSize: 14 }}>

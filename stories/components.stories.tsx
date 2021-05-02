@@ -328,7 +328,7 @@ export const HotCollectionStory: FC = () => (
 export const TopSellerCardStory: FC = () => (
     <TopSellerCard
         id={1}
-        name="Ahihi"
+        name="AhihiAhihiAhihiAhihiAhihiAhihiAhihiAhihiAhihi"
         wallet={24}
         user={{
             src: 'https://picsum.photos/200/300',
