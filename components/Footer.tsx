@@ -300,12 +300,7 @@ const Footer: FC = () => {
                             <Popover
                                 onOuterAction={() => setVisible(false)}
                                 isOpen={visible}
-                                body={
-                                    <Tooltip
-                                        visible={visible}
-                                        items={tooltipItems}
-                                    />
-                                }
+                                body={<Tooltip items={tooltipItems} />}
                                 place="below"
                                 tipSize={0.01}
                             >
