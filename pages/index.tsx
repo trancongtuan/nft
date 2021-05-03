@@ -14,6 +14,7 @@ import FilterIcon from '../public/assets/images/icons/filter.svg'
 import TopSellerCard from '../components/TopSellerCard'
 import HomeCard from '../components/HomeCard'
 import Tooltip from '../components/Tooltip'
+import useHorizontalScroll from '../hooks/horizontalScroll'
 
 const carouselItems = [
     {
@@ -243,6 +244,7 @@ const Home: FC = () => {
     const [countItems, setCountItems] = useState(10)
     const [showSellers, setShowSellers] = useState(false)
     const [showDays, setShowDays] = useState(false)
+    const ref = useHorizontalScroll()
     return (
         <Layout>
             <Box
@@ -255,7 +257,7 @@ const Home: FC = () => {
                 }}
             >
                 <Box sx={{ position: 'relative' }}>
-                    <Flex sx={{ overflowX: 'auto' }} mb={30}>
+                    <Flex ref={ref} sx={{ overflowX: 'auto' }} mb={30}>
                         {new Array(5).fill(0).map(() => (
                             <HomeCard
                                 label="Pink Cat"
