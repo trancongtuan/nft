@@ -9,14 +9,9 @@ import Footer from '../components/Footer'
 import HomeCard from '../components/HomeCard'
 import HotCollection from '../components/HotCollection'
 import NavigationBar from '../components/NavigationBar'
-import Popup from '../components/Popup'
 import Selection from '../components/Selection'
 import ToggleButton from '../components/ToggleButton'
 import TopSellerCard from '../components/TopSellerCard'
-import EmailIcon from '../public/assets/images/icons/email.svg'
-import FacebookIcon from '../public/assets/images/icons/facebook.svg'
-import TelegramIcon from '../public/assets/images/icons/telegram.svg'
-import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 
 const carouselItems = [
     {
@@ -161,128 +156,17 @@ export const CarouselStory: FC = () => (
         </Carousel>
     </Box>
 )
-export const ToggleButtonStory: FC = () => <ToggleButton />
-export const PopupStory: FC = () => {
-    const [openPopup, setOpenPopup] = useState(false)
-    return (
-        <Box sx={{ maxWidth: 500 }}>
-            <Button
-                variant="primary"
-                onClick={() => {
-                    setOpenPopup(true)
-                }}
-            >
-                Open Popup
-            </Button>
-            <Popup
-                isOpen={openPopup}
-                onClose={() => {
-                    setOpenPopup(false)
-                }}
-                label="Share this NFT"
-            >
-                <Flex
-                    p={3}
-                    sx={{
-                        width: '100%',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Box>
-                        <Button
-                            variant="circle"
-                            sx={{ width: '56px', height: '56px' }}
-                        >
-                            <TwitterIcon />
-                        </Button>
-                        <Box
-                            mt={1}
-                            sx={{
-                                width: '56px',
-                                color: 'rgba(4, 4, 5, 0.5)',
-                                fontSize: '11px',
-                                lineHeight: '16.56px',
-                                textAlign: 'center',
-                                fontWeight: '600',
-                            }}
-                        >
-                            Twitter
-                        </Box>
-                    </Box>
-                    <Box>
-                        <Button
-                            variant="circle"
-                            sx={{ width: '56px', height: '56px' }}
-                        >
-                            <FacebookIcon />
-                        </Button>
-                        <Box
-                            mt={1}
-                            sx={{
-                                width: '56px',
-                                color: 'rgba(4, 4, 5, 0.5)',
-                                fontSize: '11px',
-                                lineHeight: '16.56px',
-                                textAlign: 'center',
-                                fontWeight: '600',
-                            }}
-                        >
-                            Facebook
-                        </Box>
-                    </Box>
-                    <Box>
-                        <Button
-                            variant="circle"
-                            sx={{ width: '56px', height: '56px' }}
-                        >
-                            <TelegramIcon />
-                        </Button>
-                        <Box
-                            mt={1}
-                            sx={{
-                                width: '56px',
-                                color: 'rgba(4, 4, 5, 0.5)',
-                                fontSize: '11px',
-                                lineHeight: '16.56px',
-                                textAlign: 'center',
-                                fontWeight: '600',
-                            }}
-                        >
-                            Telegram
-                        </Box>
-                    </Box>
-                    <Box>
-                        <Button
-                            variant="circle"
-                            sx={{ width: '56px', height: '56px' }}
-                        >
-                            <EmailIcon />
-                        </Button>
-                        <Box
-                            mt={1}
-                            sx={{
-                                width: '56px',
-                                color: 'rgba(4, 4, 5, 0.5)',
-                                fontSize: '11px',
-                                lineHeight: '16.56px',
-                                textAlign: 'center',
-                                fontWeight: '600',
-                            }}
-                        >
-                            E-mail
-                        </Box>
-                    </Box>
-                </Flex>
-            </Popup>
-        </Box>
-    )
+export const ToggleButtonStory: FC = () => {
+    const [toggle, setToggle] = useState(false)
+    return <ToggleButton toggle={toggle} setToggle={setToggle} />
 }
 export const CustomInputStory: FC = () => (
     <CustomInput
         label="Name"
+        optionLabel="Optional"
         placeholder='e. g. "Redeemable T-shirt with logo"'
         value=""
+        staticBottom="With preserved line-break"
         onChange={(value) => console.log(value)}
     />
 )
@@ -328,7 +212,7 @@ export const HotCollectionStory: FC = () => (
 export const TopSellerCardStory: FC = () => (
     <TopSellerCard
         id={1}
-        name="Ahihi"
+        name="AhihiAhihiAhihiAhihiAhihiAhihiAhihiAhihiAhihi"
         wallet={24}
         user={{
             src: 'https://picsum.photos/200/300',
@@ -337,7 +221,6 @@ export const TopSellerCardStory: FC = () => (
     />
 )
 export const BidCardStory: FC = () => {
-    const [liked, setLiked] = useState(false)
     return (
         <>
             <BidCard
@@ -356,9 +239,6 @@ export const BidCardStory: FC = () => {
                 }}
                 name="Test"
                 currency="WETH"
-                liked={liked}
-                onLike={() => setLiked(!liked)}
-                gradientColor
             />
             <BidCard
                 favorite={10}
@@ -376,8 +256,6 @@ export const BidCardStory: FC = () => {
                 name="Test"
                 bid={50}
                 currency="WETH"
-                liked={liked}
-                onLike={() => setLiked(!liked)}
             />
         </>
     )

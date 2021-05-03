@@ -20,9 +20,7 @@ const ToggleButton: FC<ToggleButtonProps> = ({
                 padding: 1,
                 width: size === 'small' ? 28 : 40,
                 height: size === 'small' ? 16 : 20,
-                background: toggle
-                    ? 'rgb(45, 129, 255)'
-                    : 'rgba(45, 129, 255,0.1)',
+                backgroundColor: toggle ? 'toggleButtonOn' : 'toggleButtonOff',
             }}
             onClick={() => {
                 if (setToggle) {
@@ -36,7 +34,9 @@ const ToggleButton: FC<ToggleButtonProps> = ({
                     height: size === 'small' ? 8 : 12,
                     borderRadius: '50%',
                     transition: 'all 0.12s ease-in-out 0s',
-                    bg: `${toggle ? 'background' : 'rgb(45, 129, 255)'}`,
+                    backgroundColor: `${
+                        toggle ? 'toggleCircle' : 'rgb(45, 129, 255)'
+                    }`,
                     transform: `${
                         toggle
                             ? `translateX(${

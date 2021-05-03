@@ -3,35 +3,54 @@ import React, { FC, ReactChild } from 'react'
 
 interface CustomInputProps {
     label: string
+    optionLabel?: string
     value: string
     placeholder: string
     subLabel?: string
     type?: string
     staticLeft?: ReactChild
     staticRight?: ReactChild
+    staticBottom?: ReactChild
     Icon?: ReactChild
     onChange: (value: string) => void
 }
 
 const CustomInput: FC<CustomInputProps> = ({
     label,
+    optionLabel,
     placeholder,
     value,
     subLabel,
     type,
     staticLeft,
     staticRight,
+    staticBottom,
     Icon,
     onChange,
 }) => {
     return (
         <Box>
-            <Text
-                variant="heading"
-                sx={{ display: 'block', marginBottom: '7px' }}
-            >
-                {label}
-            </Text>
+            <Flex sx={{ marginBottom: '7px' }}>
+                <Text
+                    variant="heading"
+                    sx={{ display: 'block', lineHeight: 1 }}
+                >
+                    {label}
+                </Text>
+                {optionLabel && (
+                    <Text
+                        ml={2}
+                        sx={{
+                            fontSize: 13,
+                            color: 'textSecondary',
+                            fontWeight: 500,
+                            lineHeight: 1.3,
+                        }}
+                    >
+                        ({optionLabel})
+                    </Text>
+                )}
+            </Flex>
             <Text
                 sx={{
                     fontWeight: 'heading',
@@ -55,9 +74,33 @@ const CustomInput: FC<CustomInputProps> = ({
                     variant="input"
                     onChange={(event) => onChange(event.target.value)}
                 />
-                {staticRight && staticRight}
+                {staticRight && (
+                    <Box
+                        sx={{
+                            fontWeight: 600,
+                            color: 'textSecondary',
+                            fontSize: 1,
+                        }}
+                    >
+                        {staticRight}
+                    </Box>
+                )}
                 {Icon && Icon}
             </Flex>
+            {staticBottom && (
+                <Box mt={2}>
+                    <Text
+                        sx={{
+                            fontSize: 13,
+                            color: 'textSecondary',
+                            fontWeight: 500,
+                            lineHeight: 1.3,
+                        }}
+                    >
+                        {staticBottom}
+                    </Text>
+                </Box>
+            )}
         </Box>
     )
 }

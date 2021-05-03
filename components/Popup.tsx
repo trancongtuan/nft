@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from 'theme-ui'
+import { Box, Flex, Text } from 'theme-ui'
 import React, { FC, useEffect } from 'react'
 import CloseIcon from '../public/assets/images/icons/close.svg'
 
@@ -36,19 +36,41 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
             }}
         >
             <Box
+                onClick={onClose}
                 sx={{
-                    px: 20,
+                    position: 'absolute',
+                    top: 20,
+                    right: 20,
+                    borderRadius: 'none',
+                    color: '#aaa',
+                    ':hover': {
+                        color: '#FFF',
+                    },
+                }}
+            >
+                <CloseIcon />
+            </Box>
+            <Box
+                sx={{
+                    px: 30,
                     py: 28,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'flex-start',
-                    background: 'white',
+                    backgroundColor: 'background',
                     borderRadius: 20,
                     borderBottomLeftRadius: [0, 20, 20, 20],
                     borderBottomRightRadius: [0, 20, 20, 20],
-                    minWidth: ['100%', '400px', '400px', '400px'],
+                    minWidth: [
+                        '100%',
+                        'max-content',
+                        'max-content',
+                        'max-content',
+                    ],
+                    maxWidth: 380,
                     transition: 'all .5s',
+                    border: '1px #292929 solid',
                 }}
             >
                 <Flex
@@ -64,14 +86,11 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
                         sx={{
                             fontSize: '28px',
                             fontWeight: 'heading',
-                            color: '#000',
+                            color: 'text',
                         }}
                     >
                         {label}
                     </Text>
-                    <Button variant="circle" onClick={onClose}>
-                        <CloseIcon />
-                    </Button>
                 </Flex>
                 {children}
             </Box>

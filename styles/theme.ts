@@ -18,6 +18,9 @@ export const theme: Theme = {
         hover: 'rgba(4, 4, 5, 0.05)',
         primary: '#0066ff',
         red: '#ff5757',
+        toggleButtonOff: 'rgba(45, 129, 255, 0.1)',
+        toggleButtonOn: 'rgba(45, 129, 255)',
+        toggleCircle: '#FFF',
         modes: {
             dark: {
                 text: '#FFF',
@@ -32,6 +35,9 @@ export const theme: Theme = {
                 backgroundButtonActive: '#FFF',
                 backgroundYellow: 'rgba(255, 255, 255, 0.1)',
                 hover: 'rgba(255, 255, 255, 0.05)',
+                toggleButtonOff: 'rgba(45, 129, 255, 0.3)',
+                toggleButtonOn: 'rgba(45, 129, 255)',
+                toggleCircle: '#111',
             },
         },
     },
@@ -213,9 +219,10 @@ export const theme: Theme = {
             width: '40px',
             height: '40px',
             transition: 'all 0.12s ease-in-out 0s',
-            color: '#040405',
-            background: '#FFF',
-            border: '1px #E1E1E1 solid',
+            color: 'text',
+            backgroundColor: 'background',
+            border: '1px solid',
+            borderColor: '#aaa',
             cursor: 'pointer',
             ':hover': {
                 border: '1px #ccc solid',
