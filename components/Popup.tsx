@@ -14,6 +14,9 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
         if (isOpen) document.body.style.overflow = 'hidden'
         else document.body.style.overflow = 'unset'
     }, [isOpen])
+
+    const handleOnClose = () => {}
+
     return (
         <Box
             sx={{
@@ -34,9 +37,12 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
                     transform: isOpen ? 'translateY(0)' : 'translateY(100vh)',
                 },
             }}
+            id="box"
+            onClick={(event) => {
+                if ((event.target as HTMLElement).id === 'box') onClose()
+            }}
         >
             <Box
-                onClick={onClose}
                 sx={{
                     position: 'absolute',
                     top: 20,
@@ -47,6 +53,7 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
                         color: '#FFF',
                     },
                 }}
+                onClick={onClose}
             >
                 <CloseIcon />
             </Box>
@@ -72,6 +79,7 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
                     transition: 'all .5s',
                     border: '1px #292929 solid',
                 }}
+                id="content"
             >
                 <Flex
                     mb={3}
