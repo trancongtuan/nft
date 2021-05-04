@@ -15,8 +15,6 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
         else document.body.style.overflow = 'unset'
     }, [isOpen])
 
-    const handleOnClose = () => {}
-
     return (
         <Box
             sx={{

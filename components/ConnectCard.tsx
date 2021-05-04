@@ -13,6 +13,7 @@ interface ConnectCardProps {
 
 const ConnectCard: FC<ConnectCardProps> = ({ title, text, images, button }) => {
     const [colorMode] = useColorMode()
+
     return (
         <Flex
             px={24}
@@ -21,14 +22,17 @@ const ConnectCard: FC<ConnectCardProps> = ({ title, text, images, button }) => {
                 borderRadius: 16,
                 border: (t) =>
                     colorMode === 'dark'
-                        ? `1px solid ${alpha('white', 0.1)(t)}`
-                        : `1px solid ${alpha('text', 0.1)(t)}`,
+                        ? `2px solid ${alpha('#FFF', 0.2)(t)}`
+                        : `2px solid ${alpha('#000', 0.2)(t)}`,
                 height: 154,
                 cursor: 'pointer',
                 position: 'relative',
                 flexDirection: 'column',
                 justifyContent: text ? 'space-between' : 'center',
                 width: '100%',
+                ':hover': {
+                    borderColor: 'textSecondary',
+                },
             }}
         >
             {button && (

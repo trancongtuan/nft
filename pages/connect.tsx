@@ -89,10 +89,23 @@ const Connect: FC = () => {
             <Box
                 mt={[100, 0, 0, 0]}
                 py={[32, 32, 32, 64]}
-                px={[20, 50, 100, 100]}
-                sx={{ width: '100%', overflow: 'scroll' }}
+                px={[20, 50, 50, 100]}
+                sx={{
+                    width: '100%',
+                    overflow: 'scroll',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    '@media screen and (max-width: 83.125em)': {
+                        display: 'block',
+                    },
+                    '@media screen and (max-width: 62.5em)': {
+                        display: 'block',
+                    },
+                }}
             >
                 <Flex
+                    mx={8}
                     sx={{
                         alignItems: 'center',
                         svg: {
@@ -101,14 +114,21 @@ const Connect: FC = () => {
                     }}
                 >
                     <ArrowIcon />
-                    <Text
-                        sx={{ fontWeight: 700, fontSize: 2, color: 'text' }}
-                        ml={2}
-                    >
-                        Go back
-                    </Text>
+                    <Link href="/">
+                        <Text
+                            sx={{
+                                fontWeight: 700,
+                                fontSize: 2,
+                                color: 'text',
+                                cursor: 'pointer',
+                            }}
+                            ml={2}
+                        >
+                            Go back
+                        </Text>
+                    </Link>
                 </Flex>
-                <Box mt={16}>
+                <Box mt={16} mx={8}>
                     <Text
                         sx={{
                             fontSize: [32, 36, 36, 36],
@@ -121,30 +141,43 @@ const Connect: FC = () => {
                     <Text
                         mt={16}
                         sx={{
-                            fontSize: '15px',
+                            fontSize: 2,
                             display: 'block',
                             maxWidth: '400px',
-                            color: 'textSecondary',
                             fontWeight: 500,
                         }}
                     >
-                        Connect with one of available wallet providers or create
-                        a new wallet. What is a wallet?
+                        <Text sx={{ color: 'textSecondary' }}>
+                            Connect with one of available wallet providers or
+                            create a new wallet.
+                        </Text>
+                        <Text
+                            sx={{
+                                color: 'primary',
+                                cursor: 'pointer',
+                                ':hover': {
+                                    color: 'text',
+                                },
+                            }}
+                        >
+                            {' '}
+                            What is a wallet?
+                        </Text>
                     </Text>
                 </Box>
                 <Flex mt={32} sx={{ flexWrap: 'wrap', width: '100%' }}>
                     {connectItems.map((item) => (
                         <Box
                             key={item.id}
-                            mb={18}
-                            mr={18}
+                            m={8}
                             sx={{
-                                width: [
-                                    'calc(100% - 18px)',
-                                    'calc(100% - 18px)',
-                                    'calc(100% - 18px)',
-                                    'calc(33.33333% - 18px)',
-                                ],
+                                width: 'calc(33.33333% - 16px)',
+                                '@media screen and (max-width: 83.125em)': {
+                                    width: 'calc(50% - 16px)',
+                                },
+                                '@media screen and (max-width: 62.5em)': {
+                                    width: 'calc(100%)',
+                                },
                             }}
                         >
                             <ConnectCard
