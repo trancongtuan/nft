@@ -2,7 +2,11 @@ import { Box, Button, Flex, Text } from 'theme-ui'
 import React, { FC } from 'react'
 import CustomInput from './CustomInput'
 
-export const PopupShare: FC = () => {
+interface PopupCancelProps {
+    onClose: () => void
+}
+
+export const PopupShare: FC<PopupCancelProps> = ({ onClose }) => {
     return (
         <Flex
             sx={{
@@ -33,6 +37,7 @@ export const PopupShare: FC = () => {
                 Report
             </Button>
             <Button
+                onClick={onClose}
                 variant="secondary"
                 mr={10}
                 mt={2}

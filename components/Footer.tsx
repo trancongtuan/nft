@@ -144,21 +144,24 @@ const Footer: FC = () => {
                                 Rarible
                             </Text>
                             <Flex mt={16} sx={{ flexDirection: 'column' }}>
-                                <Text
-                                    mb={12}
-                                    sx={{
-                                        cursor: 'pointer',
-                                        color: 'textSecondary',
-                                        fontSize: '16px',
-                                        fontWeight: 'heading',
-                                        transition: 'all 0.12s ease-in-out 0s',
-                                        ':hover': {
-                                            color: 'text',
-                                        },
-                                    }}
-                                >
-                                    Explore
-                                </Text>
+                                <Link href="/">
+                                    <Text
+                                        mb={12}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            color: 'textSecondary',
+                                            fontSize: '16px',
+                                            fontWeight: 'heading',
+                                            transition:
+                                                'all 0.12s ease-in-out 0s',
+                                            ':hover': {
+                                                color: 'text',
+                                            },
+                                        }}
+                                    >
+                                        Explore
+                                    </Text>
+                                </Link>
                                 <Text
                                     mb={12}
                                     sx={{
@@ -174,21 +177,24 @@ const Footer: FC = () => {
                                 >
                                     How it work
                                 </Text>
-                                <Text
-                                    mb={12}
-                                    sx={{
-                                        cursor: 'pointer',
-                                        color: 'textSecondary',
-                                        fontSize: '16px',
-                                        fontWeight: 'heading',
-                                        transition: 'all 0.12s ease-in-out 0s',
-                                        ':hover': {
-                                            color: 'text',
-                                        },
-                                    }}
-                                >
-                                    Create
-                                </Text>
+                                <Link href="/create">
+                                    <Text
+                                        mb={12}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            color: 'textSecondary',
+                                            fontSize: '16px',
+                                            fontWeight: 'heading',
+                                            transition:
+                                                'all 0.12s ease-in-out 0s',
+                                            ':hover': {
+                                                color: 'text',
+                                            },
+                                        }}
+                                    >
+                                        Create
+                                    </Text>
+                                </Link>
                                 <Text
                                     mb={12}
                                     sx={{
