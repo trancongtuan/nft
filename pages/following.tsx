@@ -1,45 +1,49 @@
-import React, { FC, useState } from 'react'
+import React, { FC, ReactNode, useState } from 'react'
 import { Box, Text, Flex, Button } from 'theme-ui'
 import Popover from 'react-popover'
+import Link from 'next/link'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import Question from '../public/assets/images/icons/question.svg'
 import FilterIcon from '../public/assets/images/icons/filter.svg'
-import Tooltip from '../components/Tooltip'
+import Tooltip, { TooltipItemProps } from '../components/Tooltip'
+import ToggleButton from '../components/ToggleButton'
+import TooltipItem from '../components/TooltipItem'
 
 const tooltipItems = [
     {
-        id: 1,
-        label: 'Sort by',
-    },
-    {
-        id: 2,
+        id: '1',
         label: 'Recently added',
+        disable: true,
     },
     {
-        id: 3,
+        id: '2',
         label: 'Cheapest',
+        disable: false,
     },
     {
-        id: 4,
+        id: '3',
         label: 'Highest price',
+        disable: false,
     },
     {
-        id: 5,
+        id: '4',
         label: 'Most liked',
+        disable: false,
     },
     {
-        id: 6,
+        id: '5',
         label: 'Options',
-    },
-    {
-        id: 7,
-        label: 'Verified only',
+        disable: true,
     },
 ]
 
 const Following: FC = () => {
+    const [showHelp, setShowHelp] = useState(false)
     const [showFilter, setShowFilter] = useState(false)
+    const [currency, setCurrency] = useState(tooltipItems[0].id)
+    const [verified, setVerified] = useState(false)
+
     return (
         <Box>
             <NavigationBar />
@@ -62,26 +66,82 @@ const Following: FC = () => {
                     >
                         Following
                     </Text>
-                    <Flex
-                        ml={10}
-                        sx={{
-                            borderRadius: '50%',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: '20px',
-                            height: '20px',
-                            border: '1px solid',
-                            borderColor: 'textSecondary',
-                            color: 'textSecondary',
-                        }}
+                    <Popover
+                        isOpen={showHelp}
+                        body={
+                            <Tooltip>
+                                <Flex
+                                    px={8}
+                                    sx={{
+                                        width: '100%',
+                                        maxWidth: 200,
+                                    }}
+                                >
+                                    <Text
+                                        color="text"
+                                        sx={{
+                                            fontWeight: 600,
+                                            fontSize: 14,
+                                            textAlign: 'center',
+                                        }}
+                                    >
+                                        NTFs from creators you follow. Follow
+                                        more users to see more
+                                    </Text>
+                                </Flex>
+                            </Tooltip>
+                        }
+                        place="above"
+                        tipSize={0.01}
                     >
-                        <Question />
-                    </Flex>
+                        <Button
+                            onMouseEnter={() => setShowHelp(true)}
+                            onMouseLeave={() => setShowHelp(false)}
+                            variant="border"
+                            p={0}
+                            sx={{
+                                width: 20,
+                                height: 20,
+                                marginTop: '10px',
+                            }}
+                            color="textSecondary"
+                        >
+                            <Question />
+                        </Button>
+                    </Popover>
                 </Flex>
                 <Popover
                     onOuterAction={() => setShowFilter(false)}
                     isOpen={showFilter}
-                    body={<Tooltip items={tooltipItems} />}
+                    body={
+                        <Tooltip>
+                            {tooltipItems.map((item) => {
+                                return (
+                                    <TooltipItem
+                                        id={item.id}
+                                        key={item.id}
+                                        label={item.label}
+                                        onClick={() =>
+                                            !item.disable &&
+                                            setCurrency(item.id)
+                                        }
+                                        disable={item.disable}
+                                        selectedItem={currency}
+                                    />
+                                )
+                            })}
+                            <TooltipItem
+                                id="6"
+                                label="Verified only"
+                                rightStatic={() => (
+                                    <ToggleButton
+                                        toggle={verified}
+                                        setToggle={() => setVerified(!verified)}
+                                    />
+                                )}
+                            />
+                        </Tooltip>
+                    }
                     place="below"
                     tipSize={0.01}
                 >
@@ -137,7 +197,7 @@ const Following: FC = () => {
                             height: 40,
                         }}
                     >
-                        Browse Marketplace
+                        <Link href="/">Browse Marketplace</Link>
                     </Button>
                 </Flex>
             </Box>
