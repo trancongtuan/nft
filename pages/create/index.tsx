@@ -17,7 +17,7 @@ const Create: FC = () => {
                 >
                     <Flex
                         color="text"
-                        onClick={() => router.back()}
+                        onClick={() => router.push('/')}
                         sx={{
                             alignItems: 'center',
                             cursor: 'pointer',

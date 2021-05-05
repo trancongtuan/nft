@@ -1,18 +1,19 @@
 import { alpha } from '@theme-ui/color'
-import React, { FC, PropsWithChildren } from 'react'
+import React, { FC, PropsWithChildren, ReactNode } from 'react'
 import { Box, Button, Flex, Text, useColorMode } from 'theme-ui'
 import CheckedIcon from '../public/assets/images/icons/checked.svg'
 
-interface TooltipItemProps {
+export interface TooltipItemProps {
     id: string | number
     label: string
-    checked?: boolean
+    icon?: () => ReactNode
 }
 
 export interface TooltipProps {
     items?: TooltipItemProps[]
     onClick?: (item: TooltipItemProps) => void
     minWidth?: number
+    selectedItem?: TooltipItemProps
 }
 
 const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
@@ -20,6 +21,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     onClick,
     minWidth,
     children,
+    selectedItem,
 }) => {
     const [colorMode] = useColorMode()
     return (
@@ -66,22 +68,30 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
                         key={item.id}
                         onClick={() => onClick && onClick(item)}
                     >
-                        <Flex sx={{ justifyContent: 'space-between' }}>
-                            <Text
-                                sx={{
-                                    color: 'text',
-                                    fontSize: 1,
-                                    lineHeight: '19px',
-                                    fontWeight: 'heading',
-                                    textOverflow: 'ellipsis',
-                                    overflow: 'hidden',
-                                    whiteSpace: 'nowrap',
-                                    maxWidth: '100%',
-                                }}
-                            >
-                                {item.label}
-                            </Text>
-                            {item.checked && (
+                        <Flex
+                            sx={{
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Flex sx={{ alignItems: 'center' }}>
+                                {!!item.icon && item.icon()}
+                                <Text
+                                    sx={{
+                                        color: 'text',
+                                        fontSize: 1,
+                                        lineHeight: '19px',
+                                        fontWeight: 'heading',
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden',
+                                        whiteSpace: 'nowrap',
+                                        maxWidth: '100%',
+                                    }}
+                                >
+                                    {item.label}
+                                </Text>
+                            </Flex>
+                            {selectedItem === item && (
                                 <Box color="primary">
                                     <CheckedIcon />
                                 </Box>
