@@ -1,4 +1,5 @@
 import React, { FC, useState, ReactNode, useEffect } from 'react'
+import Link from 'next/link'
 import { Box, Text, Flex, Button } from 'theme-ui'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -20,6 +21,7 @@ import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import ActivityCard from '../components/ActivityCard'
 import WorldIcon from '../public/assets/images/icons/world.svg'
+import PopupReport from '../components/PopupReport'
 
 const selectionItems = [
     {
@@ -60,6 +62,7 @@ const Items: FC = () => {
     const [openPopup, setOpenPopup] = useState(false)
     const [resetFilter, setResetFilter] = useState(false)
     const [showReset, setShowReset] = useState(false)
+    const [showReportPopup, setShowReportPopup] = useState(false)
 
     const toogleResetFilter = (): void => {
         setResetFilter(true)
@@ -371,7 +374,7 @@ const Items: FC = () => {
                             height: 40,
                         }}
                     >
-                        Browse Marketplace
+                        <Link href="/">Browse Marketplace</Link>
                     </Button>
                 </Flex>
             </Box>
@@ -659,6 +662,10 @@ const Items: FC = () => {
                                 <Tooltip
                                     items={[{ id: '1', label: 'Report page' }]}
                                     minWidth={159}
+                                    onClick={() => {
+                                        setShowReportPopup(true)
+                                        setShowReport(false)
+                                    }}
                                 />
                             }
                             place="below"
@@ -790,6 +797,15 @@ const Items: FC = () => {
                 {renderCards()}
             </Box>
             <Footer />
+            <Popup
+                isOpen={showReportPopup}
+                onClose={() => {
+                    setShowReportPopup(false)
+                }}
+                label="Why are you reporting?"
+            >
+                <PopupReport onClose={() => setShowReportPopup(false)} />
+            </Popup>
             <Popup
                 isOpen={showFollowers}
                 onClose={() => {
