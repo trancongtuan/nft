@@ -80,6 +80,7 @@ const CustomInput: FC<CustomInputProps> = ({
                             fontWeight: 600,
                             color: 'textSecondary',
                             fontSize: 1,
+                            minWidth: 'max-content',
                         }}
                     >
                         {staticRight}

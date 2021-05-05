@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useRef, useState } from 'react'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
@@ -7,6 +7,13 @@ import CustomInput from '../components/CustomInput'
 import LockIcon from '../public/assets/images/icons/lock.svg'
 
 const Setting: FC = () => {
+    const inputFile = useRef(null)
+    const [reLink, setReLink] = useState(false)
+
+    const handleOnClick = (): void => {
+        inputFile.current.click()
+    }
+
     return (
         <Box>
             <NavigationBar />
@@ -107,16 +114,24 @@ const Setting: FC = () => {
                             value=""
                             placeholder="@"
                             staticRight={
-                                <Text
+                                <Box
                                     sx={{
                                         fontWeight: 'heading',
                                         color: 'primary',
                                         fontSize: 1,
                                         cursor: 'pointer',
                                     }}
+                                    onClick={() => setReLink(!reLink)}
                                 >
-                                    Link
-                                </Text>
+                                    {reLink ? (
+                                        <Flex sx={{ width: 'max-content' }}>
+                                            <Text mr={8}>Check</Text>
+                                            <Text ml={8}>Tweet again</Text>
+                                        </Flex>
+                                    ) : (
+                                        <Text>Link</Text>
+                                    )}
+                                </Box>
                             }
                             onChange={(value) => {
                                 console.log(value)
@@ -140,6 +155,27 @@ const Setting: FC = () => {
                             onChange={(value) => {
                                 console.log(value)
                             }}
+                            staticBottom={
+                                <Box
+                                    sx={{
+                                        fontWeight: 'bold',
+                                        color: 'textSecondary',
+                                    }}
+                                >
+                                    <Text>
+                                        You must sign message to view or manage
+                                        your email.
+                                    </Text>{' '}
+                                    <Text
+                                        sx={{
+                                            color: 'primary',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Sign message
+                                    </Text>
+                                </Box>
+                            }
                         />
                         <Flex>
                             <Box>
@@ -224,7 +260,14 @@ const Setting: FC = () => {
                             <Button
                                 variant="secondary"
                                 sx={{ fontSize: '12px' }}
+                                onClick={handleOnClick}
                             >
+                                <input
+                                    type="file"
+                                    id="file"
+                                    ref={inputFile}
+                                    style={{ display: 'none' }}
+                                />
                                 Choose file
                             </Button>
                         </Box>
