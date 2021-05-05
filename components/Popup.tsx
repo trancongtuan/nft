@@ -29,7 +29,7 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
                 left: 0,
                 opacity: isOpen ? 1 : 0,
                 visibility: isOpen ? 'visible' : 'hidden',
-                zIndex: 9,
+                zIndex: 9999,
                 transition: 'all 0.22s ease-in-out 0s',
                 '>div': {
                     transform: isOpen ? 'translateY(0)' : 'translateY(100vh)',
@@ -46,6 +46,7 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
                     top: 20,
                     right: 20,
                     borderRadius: 'none',
+                    cursor: 'pointer',
                     color: '#aaa',
                     ':hover': {
                         color: '#FFF',
