@@ -7,6 +7,7 @@ interface CustomInputProps {
     value: string
     placeholder: string
     subLabel?: string
+    optional?: boolean
     type?: string
     staticLeft?: ReactChild
     staticRight?: ReactChild
@@ -21,6 +22,7 @@ const CustomInput: FC<CustomInputProps> = ({
     placeholder,
     value,
     subLabel,
+    optional,
     type,
     staticLeft,
     staticRight,
@@ -36,6 +38,15 @@ const CustomInput: FC<CustomInputProps> = ({
                     sx={{ display: 'block', lineHeight: 1 }}
                 >
                     {label}
+                    {optional && (
+                        <Text
+                            ml={8}
+                            color="textSecondary"
+                            sx={{ fontSize: 1, fontWeight: 500 }}
+                        >
+                            (Optional)
+                        </Text>
+                    )}
                 </Text>
                 {optionLabel && (
                     <Text
@@ -73,17 +84,19 @@ const CustomInput: FC<CustomInputProps> = ({
                     defaultValue={value}
                     variant="input"
                     onChange={(event) => onChange(event.target.value)}
+                    value={value}
                 />
                 {staticRight && (
-                    <Box
+                    <Flex
                         sx={{
                             fontWeight: 600,
                             color: 'textSecondary',
                             fontSize: 1,
+                            flexShrink: 0,
                         }}
                     >
                         {staticRight}
-                    </Box>
+                    </Flex>
                 )}
                 {Icon && Icon}
             </Flex>
