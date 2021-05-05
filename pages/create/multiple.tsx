@@ -20,11 +20,9 @@ import Popover from 'react-popover'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 
-import { format } from 'date-fns'
 import Layout from '../../containers/Layout'
 import ToggleButton from '../../components/ToggleButton'
 import PriceIcon from '../../public/assets/images/icons/price.svg'
-import TimedIcon from '../../public/assets/images/icons/timed.svg'
 import UnlimitedIcon from '../../public/assets/images/icons/unlimited.svg'
 import CloseIcon from '../../public/assets/images/icons/close.svg'
 import DropdownIcon from '../../public/assets/images/icons/drop-down.svg'
@@ -34,8 +32,6 @@ import CreateIcon from '../../public/assets/images/icons/create.svg'
 import BidCard from '../../components/BidCard'
 import CustomInput from '../../components/CustomInput'
 import Tooltip, { TooltipItemProps } from '../../components/Tooltip'
-import DateTimePicker from '../../components/DateTimePicker'
-import Popup from '../../components/Popup'
 
 interface CurrencyIconProps {
     name: string
@@ -94,40 +90,6 @@ const currencyList = [
     },
 ]
 
-const currencyTimedList = [
-    {
-        id: 1,
-        label: 'WETH',
-        icon: () => <CurrencyIcon name="WETH" />,
-        checked: true,
-    },
-    {
-        id: 2,
-        label: 'DAI',
-        icon: () => <CurrencyIcon name="DAI" />,
-    },
-    {
-        id: 3,
-        label: 'RARI',
-        icon: () => <CurrencyIcon name="RARI" />,
-    },
-    {
-        id: 4,
-        label: 'ATRI',
-        icon: () => <CurrencyIcon name="ATRI" />,
-    },
-    {
-        id: 5,
-        label: 'ABST',
-        icon: () => <CurrencyIcon name="ABST" />,
-    },
-    {
-        id: 6,
-        label: 'ADORs',
-        icon: () => <CurrencyIcon name="ADORs" />,
-    },
-]
-
 const marketplaceList = [
     {
         id: 1,
@@ -138,40 +100,6 @@ const marketplaceList = [
         id: 2,
         icon: () => <UnlimitedIcon />,
         label: 'Unlimited auction',
-    },
-]
-
-const startingDateList = [
-    {
-        id: 1,
-        label: 'Right after listing',
-    },
-    {
-        id: 2,
-        label: 'Pick specific date',
-    },
-]
-
-const expirationDateList = [
-    {
-        id: 1,
-        label: '1 day',
-    },
-    {
-        id: 2,
-        label: '3 day',
-    },
-    {
-        id: 3,
-        label: '5 day',
-    },
-    {
-        id: 4,
-        label: '7 day',
-    },
-    {
-        id: 5,
-        label: 'Pick specific date',
     },
 ]
 
@@ -328,17 +256,6 @@ const Multiple: FC = () => {
     const [marketplace, setMarketplace] = useState(marketplaceList[0])
     const [collection, setCollection] = useState(collectionList[1])
     const [currency, setCurrency] = useState<TooltipItemProps>(currencyList[0])
-    const [expirationDate, setExpirationDate] = useState<string>(
-        expirationDateList[0].label
-    )
-    const [showExpirationDate, setShowExpirationDate] = useState(false)
-    const [showStartingDate, setShowStartingDate] = useState(false)
-    const [startingDate, setStartingDate] = useState<string>(
-        startingDateList[0].label
-    )
-    const [currencyTimed, setCurrencyTimed] = useState<TooltipItemProps>(
-        currencyTimedList[0]
-    )
     const router = useRouter()
     const content = useMemo<string>(() => {
         if (showMarketplace) {
@@ -350,50 +267,8 @@ const Multiple: FC = () => {
         }
         return `Put your new NFT on Rarible's marketplace`
     }, [marketplace, showMarketplace])
-    const [showStartingDatePopup, setShowStartingDatePopup] = useState(false)
-    const [showExpirationDatePopup, setShowExpirationDatePopup] = useState(
-        false
-    )
     return (
         <Layout>
-            <Popup
-                isOpen={showStartingDatePopup}
-                onClose={() => setShowStartingDatePopup(false)}
-                label="Choose starting date"
-                closeType="inside"
-            >
-                <DateTimePicker
-                    onChange={(value) =>
-                        setStartingDate(format(value, 'MM.dd.yyyy hh:mm a'))
-                    }
-                />
-                <Button
-                    onClick={() => setShowStartingDatePopup(false)}
-                    mt={16}
-                    sx={{ height: 40, width: '100%' }}
-                >
-                    Apply
-                </Button>
-            </Popup>
-            <Popup
-                isOpen={showExpirationDatePopup}
-                onClose={() => setShowExpirationDatePopup(false)}
-                label="Choose expiration date"
-                closeType="inside"
-            >
-                <DateTimePicker
-                    onChange={(value) =>
-                        setExpirationDate(format(value, 'MM.dd.yyyy hh:mm a'))
-                    }
-                />
-                <Button
-                    onClick={() => setShowExpirationDatePopup(false)}
-                    mt={16}
-                    sx={{ height: 40, width: '100%' }}
-                >
-                    Apply
-                </Button>
-            </Popup>
             <Box mx="auto" sx={{ maxWidth: 815 }}>
                 <Flex
                     py={[28, 48]}
