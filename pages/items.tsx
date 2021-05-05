@@ -20,10 +20,7 @@ import UploadIcon from '../public/assets/images/icons/upload.svg'
 import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import ActivityCard from '../components/ActivityCard'
-<<<<<<< HEAD
-=======
 import PopupReport from '../components/PopupReport'
->>>>>>> nam/fix-following
 import SettingIcon from '../public/assets/images/icons/setting.svg'
 
 const selectionItems = [
