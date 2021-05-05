@@ -63,6 +63,7 @@ const BidCard: FC<BidCardProps> = ({
 }) => {
     const [visible, setVisible] = useState(false)
     const [colorMode] = useColorMode()
+    const [like, setLike] = useState(liked)
     return (
         <Box
             sx={{
@@ -352,7 +353,10 @@ const BidCard: FC<BidCardProps> = ({
                         </Text>
                     </Text>
                     <Button
-                        onClick={onLike}
+                        onClick={() => {
+                            if (onLike) onLike()
+                            setLike(!like)
+                        }}
                         color="#040405"
                         mr={-8}
                         mb={-8}
@@ -369,10 +373,10 @@ const BidCard: FC<BidCardProps> = ({
                                 outline: 'none',
                             },
                             cursor: 'pointer',
-                            opacity: liked ? 1 : 0.5,
+                            opacity: like ? 1 : 0.5,
                             svg: {
-                                stroke: liked ? 'red' : 'text',
-                                fill: liked ? 'red' : undefined,
+                                stroke: like ? 'red' : 'text',
+                                fill: like ? 'red' : undefined,
                             },
                             ':hover': {
                                 backgroundColor:

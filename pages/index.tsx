@@ -13,7 +13,7 @@ import DropdownIcon from '../public/assets/images/icons/drop-down.svg'
 import FilterIcon from '../public/assets/images/icons/filter.svg'
 import TopSellerCard from '../components/TopSellerCard'
 import HomeCard from '../components/HomeCard'
-import Tooltip from '../components/Tooltip'
+import Tooltip, { TooltipItemProps } from '../components/Tooltip'
 import useHorizontalScroll from '../hooks/horizontalScroll'
 
 const carouselItems = [
@@ -239,11 +239,39 @@ const bidItems = [
     },
 ]
 
+const sellerList = [
+    {
+        id: 1,
+        label: 'sellers',
+    },
+    {
+        id: 2,
+        label: 'buyer',
+    },
+]
+
+const dayList = [
+    {
+        id: 1,
+        label: '1 day',
+    },
+    {
+        id: 2,
+        label: '7 days',
+    },
+    {
+        id: 3,
+        label: '30 days',
+    },
+]
+
 const Home: FC = () => {
     const router = useRouter()
     const [countItems, setCountItems] = useState(10)
     const [showSellers, setShowSellers] = useState(false)
     const [showDays, setShowDays] = useState(false)
+    const [seller, setSeller] = useState<TooltipItemProps>(sellerList[0])
+    const [day, setDay] = useState<TooltipItemProps>(dayList[0])
     const ref = useHorizontalScroll()
     return (
         <Layout>
@@ -280,18 +308,10 @@ const Home: FC = () => {
                             isOpen={showSellers}
                             body={
                                 <Tooltip
-                                    items={[
-                                        {
-                                            id: 1,
-                                            label: 'sellers',
-                                            checked: true,
-                                        },
-                                        {
-                                            id: 2,
-                                            label: 'buyer',
-                                        },
-                                    ]}
+                                    items={sellerList}
                                     minWidth={124}
+                                    selectedItem={seller}
+                                    onClick={(item) => setSeller(item)}
                                 />
                             }
                             place="below"
@@ -310,7 +330,7 @@ const Home: FC = () => {
                                 }}
                             >
                                 <Text mr="4px" color="primary">
-                                    sellers
+                                    {seller.label}
                                 </Text>
                                 <DropdownIcon />
                             </Text>
@@ -321,22 +341,10 @@ const Home: FC = () => {
                             isOpen={showDays}
                             body={
                                 <Tooltip
-                                    items={[
-                                        {
-                                            id: 1,
-                                            label: '1 day',
-                                            checked: true,
-                                        },
-                                        {
-                                            id: 2,
-                                            label: '7 days',
-                                        },
-                                        {
-                                            id: 3,
-                                            label: '30 days',
-                                        },
-                                    ]}
+                                    items={dayList}
                                     minWidth={124}
+                                    selectedItem={day}
+                                    onClick={(item) => setDay(item)}
                                 />
                             }
                             place="below"
@@ -355,7 +363,7 @@ const Home: FC = () => {
                                 }}
                             >
                                 <Text mr="4px" color="primary">
-                                    1 day
+                                    {day.label}
                                 </Text>
                                 <DropdownIcon />
                             </Text>
