@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, ReactNode } from 'react'
 import { Box, Text, Heading, Flex, Button } from 'theme-ui'
 import NavigationBar from '../components/NavigationBar'
 import ActivityCard from '../components/ActivityCard'
@@ -6,10 +6,78 @@ import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import Selection from '../components/Selection'
 
+const renderNone = (): ReactNode => {
+    return (
+        <Box sx={{ margin: '0 auto' }}>
+            <Flex
+                px={16}
+                mt={8}
+                mb={16}
+                sx={{ flexDirection: 'column', alignItems: 'center' }}
+            >
+                <Text color="text" sx={{ fontWeight: 900, fontSize: 28 }}>
+                    Nothing yet
+                </Text>
+                <Text color="textSecondary" sx={{ fontWeight: 900 }} mt={20}>
+                    Activity will be shown here
+                </Text>
+
+                <Button
+                    mt={20}
+                    variant="primary"
+                    sx={{
+                        fontSize: 1,
+                        height: 40,
+                    }}
+                >
+                    Explore Radible
+                </Button>
+            </Flex>
+        </Box>
+    )
+}
+
+const renderCards = (): ReactNode => {
+    return (
+        <Box
+            sx={{
+                width: '65%',
+                '@media screen and (max-width: 776px)': {
+                    width: '100%',
+                },
+            }}
+        >
+            {new Array(10).fill(0).map((x) => (
+                <Box sx={{ marginBottom: '12px' }}>
+                    <ActivityCard
+                        type="follow"
+                        src="https://via.placeholder.com/500x100"
+                        verified
+                        name="Ahihihi"
+                        content={{
+                            from: {
+                                name: 'Han Khung',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            to: {
+                                name: 'Han Dien',
+                                src: 'https://via.placeholder.com/500x100',
+                            },
+                            value: 200,
+                        }}
+                        time="6 days ago"
+                    />
+                </Box>
+            ))}
+        </Box>
+    )
+}
+
 const Activity: FC = () => {
     const [openPopup, setOpenPopup] = useState(false)
     const [resetFilter, setResetFilter] = useState(false)
     const [showReset, setShowReset] = useState(false)
+    const [showCards, setShowCards] = useState(false)
 
     const toogleResetFilter = (): void => {
         setResetFilter(true)
@@ -25,7 +93,7 @@ const Activity: FC = () => {
         <Box>
             <NavigationBar />
             <Box
-                pt={116}
+                pt={32}
                 pl={24}
                 pr={24}
                 sx={{ maxWidth: 934, margin: '0 auto' }}
@@ -41,216 +109,17 @@ const Activity: FC = () => {
                             { id: '2', label: 'Following' },
                             { id: '3', label: 'My Activity' },
                         ]}
+                        onChange={(id) => {
+                            if (id === '1') {
+                                setShowCards(true)
+                            } else {
+                                setShowCards(false)
+                            }
+                        }}
                     />
                 </Box>
                 <Flex sx={{ marginTop: '17px' }}>
-                    <Box
-                        sx={{
-                            width: '65%',
-                            '@media screen and (max-width: 776px)': {
-                                width: '100%',
-                            },
-                        }}
-                    >
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <ActivityCard
-                                type="follow"
-                                src="https://via.placeholder.com/500x100"
-                                verified
-                                name="Ahihihi"
-                                content={{
-                                    from: {
-                                        name: 'Han Khung',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    to: {
-                                        name: 'Han Dien',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    value: 200,
-                                }}
-                                time="6 days ago"
-                            />
-                        </Box>
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <ActivityCard
-                                type="follow"
-                                src="https://via.placeholder.com/500x100"
-                                verified
-                                name="Ahihihi"
-                                content={{
-                                    from: {
-                                        name: 'Han Khung',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    to: {
-                                        name: 'Han Dien',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    value: 200,
-                                }}
-                                time="6 days ago"
-                            />
-                        </Box>
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <ActivityCard
-                                type="follow"
-                                src="https://via.placeholder.com/500x100"
-                                verified
-                                name="Ahihihi"
-                                content={{
-                                    from: {
-                                        name: 'Han Khung',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    to: {
-                                        name: 'Han Dien',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    value: 200,
-                                }}
-                                time="6 days ago"
-                            />
-                        </Box>
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <ActivityCard
-                                type="follow"
-                                src="https://via.placeholder.com/500x100"
-                                verified
-                                name="Ahihihi"
-                                content={{
-                                    from: {
-                                        name: 'Han Khung',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    to: {
-                                        name: 'Han Dien',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    value: 200,
-                                }}
-                                time="6 days ago"
-                            />
-                        </Box>
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <ActivityCard
-                                type="follow"
-                                src="https://via.placeholder.com/500x100"
-                                verified
-                                name="Ahihihi"
-                                content={{
-                                    from: {
-                                        name: 'Han Khung',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    to: {
-                                        name: 'Han Dien',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    value: 200,
-                                }}
-                                time="6 days ago"
-                            />
-                        </Box>
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <ActivityCard
-                                type="follow"
-                                src="https://via.placeholder.com/500x100"
-                                verified
-                                name="Ahihihi"
-                                content={{
-                                    from: {
-                                        name: 'Han Khung',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    to: {
-                                        name: 'Han Dien',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    value: 200,
-                                }}
-                                time="6 days ago"
-                            />
-                        </Box>
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <ActivityCard
-                                type="follow"
-                                src="https://via.placeholder.com/500x100"
-                                verified
-                                name="Ahihihi"
-                                content={{
-                                    from: {
-                                        name: 'Han Khung',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    to: {
-                                        name: 'Han Dien',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    value: 200,
-                                }}
-                                time="6 days ago"
-                            />
-                        </Box>
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <ActivityCard
-                                type="follow"
-                                src="https://via.placeholder.com/500x100"
-                                verified
-                                name="Ahihihi"
-                                content={{
-                                    from: {
-                                        name: 'Han Khung',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    to: {
-                                        name: 'Han Dien',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    value: 200,
-                                }}
-                                time="6 days ago"
-                            />
-                        </Box>
-                        <Box sx={{ marginBottom: '12px' }}>
-                            <ActivityCard
-                                type="follow"
-                                src="https://via.placeholder.com/500x100"
-                                verified
-                                name="Ahihihi"
-                                content={{
-                                    from: {
-                                        name: 'Han Khung',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    to: {
-                                        name: 'Han Dien',
-                                        src:
-                                            'https://via.placeholder.com/500x100',
-                                    },
-                                    value: 200,
-                                }}
-                                time="6 days ago"
-                            />
-                        </Box>
-                    </Box>
+                    {showCards ? renderCards() : renderNone()}
                     <Box
                         sx={{
                             marginLeft: '32px',

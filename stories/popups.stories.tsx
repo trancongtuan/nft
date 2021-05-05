@@ -49,7 +49,7 @@ export const PopupReportStory: FC = () => {
                 }}
                 label="Why are you reporting?"
             >
-                <PopupReport />
+                <PopupReport onClose={() => setOpenPopup(false)} />
             </Popup>
         </Box>
     )

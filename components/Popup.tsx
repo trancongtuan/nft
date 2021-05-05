@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from 'theme-ui'
+import { Box, Button, Flex, Text } from 'theme-ui'
 import React, { FC, useEffect } from 'react'
 import CloseIcon from '../public/assets/images/icons/close.svg'
 
@@ -7,9 +7,16 @@ interface PopupProps {
     onClose: () => void
     children: React.ReactNode
     label: string
+    closeType?: 'inside' | 'outside'
 }
 
-const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
+const Popup: FC<PopupProps> = ({
+    isOpen,
+    onClose,
+    children,
+    label,
+    closeType = 'outside',
+}) => {
     useEffect(() => {
         if (isOpen) document.body.style.overflow = 'hidden'
         else document.body.style.overflow = 'unset'
@@ -28,28 +35,31 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
                 left: 0,
                 opacity: isOpen ? 1 : 0,
                 visibility: isOpen ? 'visible' : 'hidden',
-                zIndex: 9,
+                zIndex: 9999,
                 transition: 'all 0.22s ease-in-out 0s',
                 '>div': {
                     transform: isOpen ? 'translateY(0)' : 'translateY(100vh)',
                 },
             }}
         >
-            <Box
-                onClick={onClose}
-                sx={{
-                    position: 'absolute',
-                    top: 20,
-                    right: 20,
-                    borderRadius: 'none',
-                    color: '#aaa',
-                    ':hover': {
-                        color: '#FFF',
-                    },
-                }}
-            >
-                <CloseIcon />
-            </Box>
+            {closeType === 'outside' && (
+                <Box
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        top: 20,
+                        right: 20,
+                        borderRadius: 'none',
+                        color: '#aaa',
+                        ':hover': {
+                            color: '#FFF',
+                        },
+                        cursor: 'pointer',
+                    }}
+                >
+                    <CloseIcon />
+                </Box>
+            )}
             <Box
                 sx={{
                     px: 30,
@@ -82,15 +92,41 @@ const Popup: FC<PopupProps> = ({ isOpen, onClose, children, label }) => {
                         height: '40px',
                     }}
                 >
-                    <Text
+                    <Flex
                         sx={{
-                            fontSize: '28px',
-                            fontWeight: 'heading',
-                            color: 'text',
+                            flex: 1,
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
                         }}
                     >
-                        {label}
-                    </Text>
+                        <Text
+                            sx={{
+                                fontSize: closeType === 'inside' ? 20 : 28,
+                                fontWeight: 'heading',
+                                color: 'text',
+                            }}
+                        >
+                            {label}
+                        </Text>
+                        {closeType === 'inside' && (
+                            <Button
+                                onClick={onClose}
+                                p={0}
+                                variant="border"
+                                color="text"
+                                sx={{
+                                    width: 40,
+                                    svg: {
+                                        width: 13,
+                                        height: 13,
+                                    },
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <CloseIcon />
+                            </Button>
+                        )}
+                    </Flex>
                 </Flex>
                 {children}
             </Box>

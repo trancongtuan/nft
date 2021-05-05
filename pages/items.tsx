@@ -21,6 +21,7 @@ import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import ActivityCard from '../components/ActivityCard'
 import PopupReport from '../components/PopupReport'
+import SettingIcon from '../public/assets/images/icons/setting.svg'
 
 const selectionItems = [
     {
@@ -55,6 +56,7 @@ const Items: FC = () => {
     const [showReport, setShowReport] = useState(false)
     const [showReportPopup, setShowReportPopup] = useState(false)
     const [showShare, setShowShare] = useState(false)
+    const [showAddCover, setShowAddCover] = useState(false)
     const [showFollowing, setShowFollowing] = useState(false)
     const [showFollowers, setShowFollowers] = useState(false)
     const [showActivity, setShowActivity] = useState(false)
@@ -385,7 +387,16 @@ const Items: FC = () => {
             <NavigationBar />
             <Flex
                 mb={52}
-                sx={{ justifyContent: 'center', position: 'relative' }}
+                sx={{
+                    justifyContent: 'center',
+                    position: 'relative',
+                    '&:hover': {
+                        '& .add-cover': {
+                            opacity: 1,
+                            bottom: 28,
+                        },
+                    },
+                }}
             >
                 <Flex
                     sx={{
@@ -399,13 +410,85 @@ const Items: FC = () => {
                         backgroundSize: 'cover',
                     }}
                 />
-                <Box sx={{ position: 'absolute', bottom: -30 }}>
-                    <Avatar
-                        src="https://picsum.photos/500/300"
-                        size="xl"
-                        verified
-                    />
+                <Button
+                    onClick={() => {
+                        setShowAddCover(true)
+                    }}
+                    variant="border"
+                    className="add-cover"
+                    sx={{
+                        '@media screen and (max-width: 776px)': {
+                            display: 'none',
+                        },
+                        display: 'block',
+                        backgroundColor: 'white',
+                        position: 'absolute',
+                        right: 28,
+                        bottom: 0,
+                        transition: 'all .1s',
+                        opacity: 0,
+                    }}
+                >
+                    Add Cover
+                </Button>
+                <Button
+                    onClick={() => {
+                        setShowAddCover(true)
+                    }}
+                    className="add-cover"
+                    mr={8}
+                    variant="border"
+                    sx={{
+                        width: 40,
+                        p: 0,
+                        '@media screen and (max-width: 776px)': {
+                            display: 'block',
+                        },
+                        svg: {
+                            fill: 'text',
+                            width: 14,
+                            height: 14,
+                        },
+                        display: 'none',
+                        backgroundColor: 'white',
+                        position: 'absolute',
+                        right: 28,
+                        bottom: 0,
+                        transition: 'all .1s',
+                        opacity: 0,
+                    }}
+                >
+                    <SettingIcon />
+                </Button>
+
+                <Box sx={{ position: 'absolute', bottom: -30, zIndex: 5 }}>
+                    <Avatar src="https://picsum.photos/500/300" size="xl" />
                 </Box>
+                <Button
+                    variant="border"
+                    sx={{
+                        '&:hover': { opacity: 1 },
+                        svg: {
+                            fill: 'text',
+                            width: 24,
+                            height: 24,
+                        },
+                        textAlign: 'center',
+                        lineHeight: '128px',
+                        backgroundColor: 'white',
+                        width: 128,
+                        height: 128,
+                        bottom: -30,
+                        zIndex: 10,
+                        position: 'absolute',
+                        transition: 'all .1s',
+                        borderRadius: 9999,
+                        opacity: 0,
+                    }}
+                    className="profile-pic"
+                >
+                    <SettingIcon />
+                </Button>
             </Flex>
 
             <Box sx={{ margin: '0 auto', maxWidth: '500px' }}>
@@ -822,6 +905,27 @@ const Items: FC = () => {
                         </Flex>
                         <Button variant="primary">Follow</Button>
                     </Flex>
+                </Flex>
+            </Popup>
+            <Popup
+                isOpen={showAddCover}
+                onClose={() => {
+                    setShowAddCover(false)
+                }}
+                label="Update Cover"
+            >
+                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
+                    <Text
+                        color="textSecondary"
+                        sx={{ fontSize: 14, fontWeight: 700 }}
+                    >
+                        Upload new cover for your profile page. We recommend to
+                        upload images in 1440x260 resolution
+                    </Text>
+
+                    <Button mt={20} sx={{ width: '100%' }} variant="primary">
+                        Choose Image
+                    </Button>
                 </Flex>
             </Popup>
             <Popup
