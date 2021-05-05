@@ -10,6 +10,7 @@ import Popover from 'react-popover'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import CopyToClipboard from 'react-copy-to-clipboard'
+import Image from 'next/image'
 import LogoIcon from '../public/assets/images/icons/logo.svg'
 import SearchIcon from '../public/assets/images/icons/search.svg'
 import DropDownIcon from '../public/assets/images/icons/drop-down.svg'
@@ -31,7 +32,7 @@ import PurchaseIcon from '../public/assets/images/icons/purchase.svg'
 import ConvertIcon from '../public/assets/images/icons/convert.svg'
 import HelpIcon from '../public/assets/images/icons/help.svg'
 import Selection from './Selection'
-import Tooltip from './Tooltip'
+import Tooltip, { TooltipItemProps as TooltiProps } from './Tooltip'
 import ToggleButton from './ToggleButton'
 
 const selectionItems = [
@@ -57,23 +58,46 @@ const selectionItems = [
 const tooltipItems = [
     {
         id: 1,
-        label: 'RARI Token',
+        label: 'How it works',
     },
     {
         id: 2,
-        label: 'Discussion',
+        label: 'RARI Token',
     },
     {
         id: 3,
-        label: 'Voting',
+        label: 'Discussion',
     },
     {
         id: 4,
-        label: 'Suggest feature',
+        label: 'Voting',
     },
     {
         id: 5,
+        label: 'Suggest feature',
+    },
+    {
+        id: 6,
         label: 'Subscribe',
+    },
+]
+
+const languageList = [
+    {
+        id: 1,
+        label: 'English',
+    },
+    {
+        id: 2,
+        label: '中文',
+    },
+    {
+        id: 3,
+        label: '한국어',
+    },
+    {
+        id: 4,
+        label: '日本語',
     },
 ]
 
@@ -183,9 +207,6 @@ const SearchInput: FC = () => {
                     height: 14,
                 },
                 boxShadow,
-                '@media screen and (max-width: 1110px)': {
-                    display: 'none',
-                },
             }}
         >
             <Box
@@ -251,6 +272,384 @@ const SearchInput: FC = () => {
     )
 }
 
+interface SearchProps {
+    onClose: () => void
+}
+
+const Search: FC<SearchProps> = ({ onClose }) => {
+    return (
+        <Flex
+            bg="background"
+            sx={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 99999,
+                flexDirection: 'column',
+            }}
+        >
+            <Box sx={{ width: '100%' }}>
+                <Flex
+                    px={[24, 28, 32]}
+                    sx={{
+                        flex: 1,
+                        alignItems: 'center',
+                        height: 78,
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'borderColor',
+                        borderBottomStyle: 'solid',
+                    }}
+                >
+                    <Button
+                        onClick={onClose}
+                        p={0}
+                        variant="border"
+                        color="text"
+                        mr={16}
+                        sx={{
+                            width: 40,
+                            svg: {
+                                width: 13,
+                                height: 13,
+                            },
+                        }}
+                    >
+                        <CloseIcon />
+                    </Button>
+                    <SearchInput />
+                </Flex>
+            </Box>
+            <Box py={16} sx={{ width: '100%' }}>
+                <Flex
+                    px={24}
+                    py={8}
+                    sx={{ alignItems: 'center', justifyContent: 'center' }}
+                >
+                    <Text
+                        color="textSecondary"
+                        py={32}
+                        sx={{
+                            maxWidth: 215,
+                            textAlign: 'center',
+                            fontSize: 2,
+                        }}
+                    >
+                        Search by creator, collectible or collection
+                    </Text>
+                </Flex>
+            </Box>
+        </Flex>
+    )
+}
+
+interface CatalogProps {
+    onClose: () => void
+}
+
+const Catalog: FC<CatalogProps> = ({ onClose }) => {
+    const [showLanguage, setShowLanguage] = useState(false)
+    const [language, setLanguage] = useState<TooltiProps>(languageList[0])
+    const router = useRouter()
+    return (
+        <Flex
+            bg="background"
+            sx={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 99999,
+                flexDirection: 'column',
+            }}
+        >
+            <Box sx={{ width: '100%' }}>
+                <Flex
+                    bg="background"
+                    px={[24, 28, 32]}
+                    sx={{
+                        height: 84,
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <Flex>
+                        <Link href="/">
+                            <Box mr={16} sx={{ cursor: 'pointer' }}>
+                                <LogoIcon />
+                            </Box>
+                        </Link>
+                        <Popover
+                            onOuterAction={() => setShowLanguage(false)}
+                            isOpen={showLanguage}
+                            body={
+                                <Tooltip
+                                    onClick={(item) => setLanguage(item)}
+                                    items={languageList}
+                                    selectedItem={language}
+                                />
+                            }
+                            place="below"
+                            tipSize={0.01}
+                        >
+                            <Button
+                                onClick={() => setShowLanguage(!showLanguage)}
+                                variant="border"
+                            >
+                                {language.label}
+                            </Button>
+                        </Popover>
+                    </Flex>
+                    <Button
+                        onClick={onClose}
+                        p={0}
+                        variant="border"
+                        color="text"
+                        sx={{
+                            width: 40,
+                            svg: {
+                                width: 13,
+                                height: 13,
+                            },
+                        }}
+                    >
+                        <CloseIcon />
+                    </Button>
+                </Flex>
+            </Box>
+            <Box px={16} mt={8} sx={{ width: '100%' }}>
+                <Flex sx={{ flexDirection: 'column' }}>
+                    <Text
+                        mb={8}
+                        color="text"
+                        sx={{
+                            fontSize: 20,
+                            fontWeight: 900,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Explore
+                    </Text>
+                    <Text
+                        mb={8}
+                        color="text"
+                        sx={{
+                            fontSize: 20,
+                            fontWeight: 900,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        My items
+                    </Text>
+                    <Text
+                        mb={8}
+                        color="text"
+                        sx={{
+                            fontSize: 20,
+                            fontWeight: 900,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Following
+                    </Text>
+                    <Flex sx={{ alignItems: 'center', cursor: 'pointer' }}>
+                        <Text
+                            mb={8}
+                            color="text"
+                            sx={{
+                                fontSize: 20,
+                                fontWeight: 900,
+                            }}
+                        >
+                            Activity
+                        </Text>
+                        <Box ml={8}>
+                            <Image
+                                src="/assets/images/icons/new.svg"
+                                width={30}
+                                height={14}
+                            />
+                        </Box>
+                    </Flex>
+                    <Text
+                        mb={8}
+                        color="text"
+                        sx={{
+                            fontSize: 20,
+                            fontWeight: 900,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        How it works
+                    </Text>
+                </Flex>
+                <Box mt={16}>
+                    <Text
+                        sx={{
+                            fontSize: 18,
+                            fontWeight: 900,
+                            color: 'rgb(12, 80, 255)',
+                            WebkitTextFillColor: 'transparent',
+                            WebkitBackgroundClip: 'text',
+                            backgroundImage:
+                                'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
+                        }}
+                    >
+                        Community
+                    </Text>
+                </Box>
+                <Flex mt={8} sx={{ flexDirection: 'column' }}>
+                    <Text
+                        mb={8}
+                        color="text"
+                        sx={{
+                            fontSize: 20,
+                            fontWeight: 900,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        RARI Token
+                    </Text>
+                    <Text
+                        mb={8}
+                        color="text"
+                        sx={{
+                            fontSize: 20,
+                            fontWeight: 900,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Discussion
+                    </Text>
+                    <Text
+                        mb={8}
+                        color="text"
+                        sx={{
+                            fontSize: 20,
+                            fontWeight: 900,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Voting
+                    </Text>
+                    <Text
+                        mb={8}
+                        color="text"
+                        sx={{
+                            fontSize: 20,
+                            fontWeight: 900,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Suggest feature
+                    </Text>
+                    <Text
+                        mb={8}
+                        color="text"
+                        sx={{
+                            fontSize: 20,
+                            fontWeight: 900,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Subscribe
+                    </Text>
+                </Flex>
+            </Box>
+            <Box mt="auto" p={16}>
+                <Box bg="borderColor" sx={{ width: '100%', height: 1 }} />
+                <Flex
+                    mt={28}
+                    sx={{
+                        justifyContent: 'space-around',
+                    }}
+                    color="rgba(4, 4, 5, 0.6)"
+                >
+                    <Box
+                        sx={{
+                            ':hover': {
+                                color: 'text',
+                            },
+                            transition: 'all 0.12s ease-in-out 0s',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        <TwitterIcon />
+                    </Box>
+                    <Box
+                        sx={{
+                            ':hover': {
+                                color: 'text',
+                            },
+                            transition: 'all 0.12s ease-in-out 0s',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        <TelegramIcon />
+                    </Box>
+                    <Box
+                        sx={{
+                            ':hover': {
+                                color: 'text',
+                            },
+                            transition: 'all 0.12s ease-in-out 0s',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        <InstagramIcon />
+                    </Box>
+                    <Box
+                        sx={{
+                            ':hover': {
+                                color: 'text',
+                            },
+                            transition: 'all 0.12s ease-in-out 0s',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        <DiscordIcon />
+                    </Box>
+                    <Box
+                        sx={{
+                            ':hover': {
+                                color: 'text',
+                            },
+                            transition: 'all 0.12s ease-in-out 0s',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        <YoutubeIcon />
+                    </Box>
+                    <Box
+                        sx={{
+                            ':hover': {
+                                color: 'text',
+                            },
+                            transition: 'all 0.12s ease-in-out 0s',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        <MediumIcon />
+                    </Box>
+                </Flex>
+                <Button
+                    mt={16}
+                    variant="secondary"
+                    sx={{ width: '100%', height: 48, borderRadius: 48 }}
+                    onClick={() => {
+                        router.push('/create')
+                        onClose()
+                    }}
+                >
+                    Create collectible
+                </Button>
+            </Box>
+        </Flex>
+    )
+}
+
 const NavigationBar: FC = () => {
     const [visible, setVisible] = useState(false)
     const [visibleNoti, setVisibleNoti] = useState(false)
@@ -259,6 +658,8 @@ const NavigationBar: FC = () => {
     const [colorMode, setColorMode] = useColorMode()
     const [counter, setCounter] = useState(0)
     const [autoPlay, setAutoPlay] = useState(true)
+    const [showSearch, setShowSearch] = useState(false)
+    const [showCatalog, setShowCatalog] = useState(false)
     useEffect(() => {
         if (counter > 0) {
             const timer = setInterval(() => setCounter(counter - 1), 1000)
@@ -276,10 +677,9 @@ const NavigationBar: FC = () => {
                 left: 0,
                 right: 0,
                 top: 0,
-                borderBottom:
-                    colorMode === 'dark'
-                        ? '1px solid rgba(255, 255, 255, 0.1)'
-                        : '1px solid rgba(4, 4, 5, 0.1)',
+                borderBottomWidth: 1,
+                borderBottomColor: 'borderColor',
+                borderBottomStyle: 'solid',
                 height: 84,
                 alignItems: 'center',
             }}
@@ -289,7 +689,16 @@ const NavigationBar: FC = () => {
                     <LogoIcon />
                 </Box>
             </Link>
-            <SearchInput />
+            <Flex
+                sx={{
+                    flex: 1,
+                    '@media screen and (max-width: 1110px)': {
+                        display: 'none',
+                    },
+                }}
+            >
+                <SearchInput />
+            </Flex>
             <Flex
                 sx={{
                     alignItems: 'center',
@@ -523,6 +932,7 @@ const NavigationBar: FC = () => {
                         Create
                     </Button>
                     <Button
+                        onClick={() => setShowSearch(true)}
                         mr={8}
                         variant="border"
                         sx={{
@@ -631,6 +1041,7 @@ const NavigationBar: FC = () => {
                         </Button>
                     </Popover>
                     <Button
+                        onClick={() => setShowCatalog(true)}
                         mr={8}
                         variant="border"
                         sx={{
@@ -872,10 +1283,22 @@ const NavigationBar: FC = () => {
                             pr={55}
                             sx={{
                                 position: 'relative',
+                                '@media screen and (max-width: 400px)': {
+                                    p: 0,
+                                    width: 40,
+                                },
                             }}
                             onClick={() => setShowDetail(!showDetail)}
                         >
-                            O RARI
+                            <Text
+                                sx={{
+                                    '@media screen and (max-width: 400px)': {
+                                        display: 'none',
+                                    },
+                                }}
+                            >
+                                O RARI
+                            </Text>
                             <Avatar
                                 src="https://via.placeholder.com/500x100"
                                 alt="avatar"
@@ -890,6 +1313,8 @@ const NavigationBar: FC = () => {
                     </Popover>
                 </Flex>
             </Flex>
+            {showSearch && <Search onClose={() => setShowSearch(false)} />}
+            {showCatalog && <Catalog onClose={() => setShowCatalog(false)} />}
         </Flex>
     )
 }
