@@ -261,8 +261,6 @@ const Multiple: FC = () => {
         if (showMarketplace) {
             if (marketplace === marketplaceList[0])
                 return 'Enter price to allow users instantly purchase your NFT'
-            if (marketplace === marketplaceList[1])
-                return 'Set a period of time for which buyers can place bids'
             return 'Allow other users to make bids on your NFT'
         }
         return `Put your new NFT on Rarible's marketplace`
