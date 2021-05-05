@@ -1,4 +1,5 @@
 import React, { FC, useState, ReactNode, useEffect } from 'react'
+import Link from 'next/link'
 import { Box, Text, Flex, Button } from 'theme-ui'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -19,6 +20,7 @@ import UploadIcon from '../public/assets/images/icons/upload.svg'
 import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import ActivityCard from '../components/ActivityCard'
+import PopupReport from '../components/PopupReport'
 
 const selectionItems = [
     {
@@ -51,6 +53,7 @@ const selectionItems = [
 const Items: FC = () => {
     const [showCards, setShowCards] = useState(false)
     const [showReport, setShowReport] = useState(false)
+    const [showReportPopup, setShowReportPopup] = useState(false)
     const [showShare, setShowShare] = useState(false)
     const [showFollowing, setShowFollowing] = useState(false)
     const [showFollowers, setShowFollowers] = useState(false)
@@ -370,7 +373,7 @@ const Items: FC = () => {
                             height: 40,
                         }}
                     >
-                        Browse Marketplace
+                        <Link href="/">Browse Marketplace</Link>
                     </Button>
                 </Flex>
             </Box>
@@ -453,7 +456,7 @@ const Items: FC = () => {
                                 height: 40,
                             }}
                         >
-                            Edit Profile
+                            <Link href="/setting">Edit Profile</Link>
                         </Button>
                         <Popover
                             onOuterAction={() => setShowShare(false)}
@@ -637,6 +640,10 @@ const Items: FC = () => {
                                 <Tooltip
                                     items={[{ id: '1', label: 'Report page' }]}
                                     minWidth={159}
+                                    onClick={() => {
+                                        setShowReportPopup(true)
+                                        setShowReport(false)
+                                    }}
                                 />
                             }
                             place="below"
@@ -768,6 +775,15 @@ const Items: FC = () => {
                 {renderCards()}
             </Box>
             <Footer />
+            <Popup
+                isOpen={showReportPopup}
+                onClose={() => {
+                    setShowReportPopup(false)
+                }}
+                label="Why are you reporting?"
+            >
+                <PopupReport onClose={() => setShowReportPopup(false)} />
+            </Popup>
             <Popup
                 isOpen={showFollowers}
                 onClose={() => {
