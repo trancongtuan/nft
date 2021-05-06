@@ -32,6 +32,7 @@ import CreateIcon from '../../public/assets/images/icons/create.svg'
 import BidCard from '../../components/BidCard'
 import CustomInput from '../../components/CustomInput'
 import Tooltip, { TooltipItemProps } from '../../components/Tooltip'
+import Popup from '../../components/Popup'
 
 interface CurrencyIconProps {
     name: string
@@ -240,6 +241,111 @@ const CollectionItem: FC<CollectionItemProps> = ({
     </Flex>
 )
 
+const Create: FC = () => {
+    const ref = useRef<HTMLInputElement>(null)
+    const [file, setFile] = useState<string>('/assets/images/avt-default.svg')
+    const onChangeFile: ChangeEventHandler<HTMLInputElement> = (event) => {
+        event.stopPropagation()
+        event.preventDefault()
+        setFile(URL.createObjectURL(event.target.files[0]))
+    }
+    return (
+        <Flex sx={{ width: 324, flexDirection: 'column' }}>
+            <Flex sx={{ alignItems: 'center' }}>
+                <Flex
+                    sx={{
+                        borderRadius: 9999,
+                        overflow: 'hidden',
+                        flexShrink: 0,
+                    }}
+                >
+                    <UIIMage
+                        src={file}
+                        sx={{
+                            width: 100,
+                            height: 100,
+                            objectFit: 'cover',
+                        }}
+                    />
+                    <Input
+                        sx={{
+                            display: 'none',
+                        }}
+                        ref={ref}
+                        type="file"
+                        onChange={onChangeFile}
+                    />
+                </Flex>
+                <Flex ml={16} sx={{ flexDirection: 'column' }}>
+                    <Text
+                        color="textSecondary"
+                        sx={{ fontSize: 1, fontWeight: 500 }}
+                    >
+                        We recommend an image of at least 400x400. Gifs work
+                        too.
+                    </Text>
+                    <Button
+                        onClick={() => ref.current.click()}
+                        mt={16}
+                        variant="secondary"
+                        sx={{ width: 120 }}
+                    >
+                        Choose file
+                    </Button>
+                </Flex>
+            </Flex>
+            <Box mt={16}>
+                <CustomInput
+                    label="Display name"
+                    optionLabel="required"
+                    placeholder="Enter token name"
+                    value=""
+                    onChange={(text) => console.log(text)}
+                    staticBottom="Token name cannot be changed in future"
+                />
+            </Box>
+            <Box mt={16}>
+                <CustomInput
+                    label="Symbol"
+                    optionLabel="required"
+                    placeholder="Enter token symbol"
+                    value=""
+                    onChange={(text) => console.log(text)}
+                />
+            </Box>
+            <Box mt={16}>
+                <CustomInput
+                    label="Description"
+                    optionLabel="optional"
+                    placeholder="Spread some words about your token collection"
+                    value=""
+                    onChange={(text) => console.log(text)}
+                />
+            </Box>
+            <Box mt={16}>
+                <CustomInput
+                    label="Short url"
+                    placeholder="Enter short url"
+                    value=""
+                    onChange={(text) => console.log(text)}
+                    staticLeft={
+                        <Flex mr={8} sx={{ flexShrink: 0 }}>
+                            <Text
+                                color="text"
+                                sx={{ fontWeight: 500, fontSize: 16 }}
+                            >
+                                rarible.com/
+                            </Text>
+                        </Flex>
+                    }
+                    staticBottom="Will be used as public URL"
+                />
+            </Box>
+            <Button mt={16}>Create collection</Button>
+        </Flex>
+    )
+}
+
 const Multiple: FC = () => {
     const ref = useRef<HTMLInputElement>(null)
     const [file, setFile] = useState<string | null>(null)
@@ -265,8 +371,17 @@ const Multiple: FC = () => {
         }
         return `Put your new NFT on Rarible's marketplace`
     }, [marketplace, showMarketplace])
+    const [showCreatePopup, setShowCreatePopup] = useState(false)
     return (
         <Layout>
+            <Popup
+                isOpen={showCreatePopup}
+                onClose={() => setShowCreatePopup(false)}
+                label="Collection"
+                closeType="outside"
+            >
+                <Create />
+            </Popup>
             <Box mx="auto" sx={{ maxWidth: 815 }}>
                 <Flex
                     py={[28, 48]}
@@ -601,7 +716,11 @@ const Multiple: FC = () => {
                             <Grid gap={16} width={1 / 3} mt={16} mb={40}>
                                 {collectionList.map((item) => (
                                     <CollectionItem
-                                        onClick={() => setCollection(item)}
+                                        onClick={() => {
+                                            setCollection(item)
+                                            if (item === collectionList[0])
+                                                setShowCreatePopup(true)
+                                        }}
                                         key={item.id}
                                         {...item}
                                         selected={collection === item}
@@ -624,38 +743,41 @@ const Multiple: FC = () => {
                             <Box mt={40}>
                                 <CustomInput
                                     label="Description"
-                                    optional
+                                    optionLabel="Optional"
                                     placeholder={`e. g. "After purchasing you’ll be able to get the real T-Shirt"`}
                                     value=""
                                     onChange={(text) => console.log(text)}
                                 />
                             </Box>
                             <Box mt={40}>
-                                <CustomInput
-                                    label="Royalties"
-                                    placeholder={`E. g. 10%"`}
-                                    value="10"
-                                    staticRight={
-                                        <Text
-                                            color="textSecondary"
-                                            sx={{
-                                                fontSize: 16,
-                                                fontWeight: 500,
-                                            }}
-                                        >
-                                            %
-                                        </Text>
-                                    }
-                                    onChange={(text) => console.log(text)}
-                                />
+                                <Grid gap={16} width="40%">
+                                    <CustomInput
+                                        label="Royalties"
+                                        placeholder={`E. g. 10%"`}
+                                        value="10"
+                                        staticRight={
+                                            <Text
+                                                color="textSecondary"
+                                                sx={{
+                                                    fontSize: 16,
+                                                    fontWeight: 500,
+                                                }}
+                                            >
+                                                %
+                                            </Text>
+                                        }
+                                        onChange={(text) => console.log(text)}
+                                        staticBottom="Suggested: 10%, 20%, 30%"
+                                    />
+                                    <CustomInput
+                                        label="Number of copies"
+                                        placeholder={`E. g. 10"`}
+                                        value=""
+                                        onChange={(text) => console.log(text)}
+                                        staticBottom="Amount of tokens"
+                                    />
+                                </Grid>
                             </Box>
-                            <Text
-                                mt={8}
-                                color="textSecondary"
-                                sx={{ fontSize: 14, fontWeight: 500 }}
-                            >
-                                Suggested: 10%, 20%, 30%
-                            </Text>
                             <Text
                                 mt={40}
                                 color="text"
