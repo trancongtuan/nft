@@ -11,6 +11,7 @@ import TopSellerCard from '../components/TopSellerCard'
 import Popup from '../components/Popup'
 import PopupPlaceABid from '../components/PopupPurchase'
 import PopupShare from '../components/PopupShare'
+import PreviewProduct from '../components/PreviewProduct'
 
 const tooltipItems = [
     {
@@ -80,6 +81,7 @@ const Product: FC = () => {
     const [selectedTab, setSelectedTab] = useState(selectionItems[0].id)
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
     const [openPopupShare, setOpenPopupShare] = useState(false)
+    const [openPreview, setOpenPreview] = useState(false)
 
     return (
         <Box>
@@ -113,7 +115,16 @@ const Product: FC = () => {
                             maxWidth: '588px',
                             maxHeight: '588px',
                             borderRadius: 10,
+                            cursor: 'zoom-in',
                         }}
+                        onClick={() => setOpenPreview(true)}
+                    />
+                    <PreviewProduct
+                        isOpen={openPreview}
+                        onClose={() => {
+                            setOpenPreview(false)
+                        }}
+                        image="https://picsum.photos/200/300"
                     />
                 </Flex>
                 <Flex
@@ -131,11 +142,13 @@ const Product: FC = () => {
                             height: '100%',
                             overflow: 'scroll',
                             '::-webkit-scrollbar': {
+                                display: 'block',
                                 width: '0',
-                                background: 'transparent',
+                                height: 0,
                             },
                             '::-webkit-scrollbar-thumb': {
-                                background: '#FF0000',
+                                background: '#fff',
+                                display: 'block',
                             },
                         }}
                     >
@@ -456,22 +469,155 @@ const Product: FC = () => {
                             }}
                         />
                         <Box
-                            p={24}
+                            p={18}
                             sx={{
                                 backgroundColor: 'background',
                                 height: '185px',
                             }}
                         >
-                            <TopSellerCard
-                                name="Highest bid by Aito"
-                                wallet={24}
-                                size="sm"
-                                user={{
-                                    src: 'https://picsum.photos/200/300',
-                                    verified: true,
+                            <Flex
+                                mb={14}
+                                sx={{
+                                    borderBottom: '1px solid',
+                                    borderColor: 'placeHolder',
                                 }}
-                            />
-                            <Flex mt={32}>
+                            >
+                                <Box
+                                    sx={{
+                                        width: '50%',
+                                    }}
+                                    pr={18}
+                                    pb={16}
+                                >
+                                    <Text
+                                        mb={14}
+                                        sx={{
+                                            display: 'block',
+                                            color: 'textSecondary',
+                                            fontWeight: 600,
+                                            fontSize: 1,
+                                        }}
+                                    >
+                                        Auction ends in
+                                    </Text>
+                                    <TopSellerCard
+                                        name="Highest bid by Aito"
+                                        wallet={24}
+                                        size="sm"
+                                        user={{
+                                            src:
+                                                'https://picsum.photos/200/300',
+                                            verified: true,
+                                        }}
+                                    />
+                                </Box>
+                                <Box
+                                    sx={{
+                                        width: '50%',
+                                        borderLeft: '1px solid',
+                                        borderColor: 'placeHolder',
+                                    }}
+                                    pl={18}
+                                >
+                                    <Text
+                                        mb={14}
+                                        sx={{
+                                            display: 'block',
+                                            color: 'textSecondary',
+                                            fontWeight: 600,
+                                            fontSize: 1,
+                                        }}
+                                    >
+                                        Auction ends in
+                                    </Text>
+                                    <Flex
+                                        sx={{ justifyContent: 'space-between' }}
+                                    >
+                                        <Box>
+                                            <Text
+                                                sx={{
+                                                    display: 'block',
+                                                    color: 'text',
+                                                    fontWeight: '600',
+                                                }}
+                                            >
+                                                0
+                                            </Text>
+                                            <Text
+                                                sx={{
+                                                    color: 'textSecondary',
+                                                    fontWeight: 600,
+                                                    fontSize: 1,
+                                                }}
+                                            >
+                                                Days
+                                            </Text>
+                                        </Box>
+                                        <Box>
+                                            <Text
+                                                sx={{
+                                                    display: 'block',
+                                                    color: 'text',
+                                                    fontWeight: '600',
+                                                }}
+                                            >
+                                                4
+                                            </Text>
+                                            <Text
+                                                sx={{
+                                                    color: 'textSecondary',
+                                                    fontWeight: 600,
+                                                    fontSize: 1,
+                                                }}
+                                            >
+                                                Hours
+                                            </Text>
+                                        </Box>
+                                        <Box>
+                                            <Text
+                                                sx={{
+                                                    display: 'block',
+                                                    color: 'text',
+                                                    fontWeight: '600',
+                                                }}
+                                            >
+                                                55
+                                            </Text>
+                                            <Text
+                                                sx={{
+                                                    color: 'textSecondary',
+                                                    fontWeight: 600,
+                                                    fontSize: 1,
+                                                }}
+                                            >
+                                                Minutes
+                                            </Text>
+                                        </Box>
+                                        <Box>
+                                            <Text
+                                                sx={{
+                                                    display: 'block',
+                                                    color: 'text',
+                                                    fontWeight: '600',
+                                                }}
+                                            >
+                                                55
+                                            </Text>
+                                            <Text
+                                                sx={{
+                                                    color: 'textSecondary',
+                                                    fontWeight: 600,
+                                                    fontSize: 1,
+                                                }}
+                                            >
+                                                Seconds
+                                            </Text>
+                                        </Box>
+                                    </Flex>
+                                </Box>
+                            </Flex>
+
+                            <Flex>
                                 <Button
                                     variant="primary"
                                     mr={10}
