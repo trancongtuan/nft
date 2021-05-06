@@ -1,6 +1,6 @@
 import React, { FC, useState, ReactNode, useEffect } from 'react'
 import Link from 'next/link'
-import { Box, Text, Flex, Button } from 'theme-ui'
+import { Box, Text, Flex, Button, useColorMode } from 'theme-ui'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import Avatar from '../components/Avatar'
@@ -52,6 +52,7 @@ const selectionItems = [
 ]
 
 const Items: FC = () => {
+    const [colorMode] = useColorMode()
     const [showCards, setShowCards] = useState(false)
     const [showReport, setShowReport] = useState(false)
     const [showReportPopup, setShowReportPopup] = useState(false)
@@ -421,7 +422,8 @@ const Items: FC = () => {
                             display: 'none',
                         },
                         display: 'block',
-                        backgroundColor: 'white',
+                        backgroundColor:
+                            colorMode === 'dark' ? 'black' : 'white',
                         position: 'absolute',
                         right: 28,
                         bottom: 0,
@@ -450,7 +452,8 @@ const Items: FC = () => {
                             height: 14,
                         },
                         display: 'none',
-                        backgroundColor: 'white',
+                        backgroundColor:
+                            colorMode === 'dark' ? 'black' : 'white',
                         position: 'absolute',
                         right: 28,
                         bottom: 0,
@@ -467,7 +470,9 @@ const Items: FC = () => {
                 <Button
                     variant="border"
                     sx={{
-                        '&:hover': { opacity: 1 },
+                        '&:hover': {
+                            opacity: `${colorMode === 'dark' ? 0.6 : 1}`,
+                        },
                         svg: {
                             fill: 'text',
                             width: 24,
@@ -475,7 +480,8 @@ const Items: FC = () => {
                         },
                         textAlign: 'center',
                         lineHeight: '128px',
-                        backgroundColor: 'white',
+                        backgroundColor:
+                            colorMode === 'dark' ? 'black' : 'white',
                         width: 128,
                         height: 128,
                         bottom: -30,
