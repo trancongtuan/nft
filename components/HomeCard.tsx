@@ -24,10 +24,8 @@ const HomeCard: FC<HomeCardProps> = ({
             sx={{
                 display: 'inline-block',
                 position: 'relative',
-                width: 'calc(20% - 16px)',
-                minWidth: '200px',
-                maxWidth: '270px',
-                maxHeight: '270px',
+                width: '100%',
+                height: '100%',
                 overflow: 'hidden',
                 borderRadius: 20,
                 cursor: 'pointer',

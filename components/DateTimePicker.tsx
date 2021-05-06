@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Box, Flex, Text, useColorMode } from 'theme-ui'
 import DatePicker from 'react-datepicker'
 import { getMonth } from 'date-fns'

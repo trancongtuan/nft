@@ -287,12 +287,29 @@ const Home: FC = () => {
                 <Box sx={{ position: 'relative' }}>
                     <Flex ref={ref} sx={{ overflowX: 'auto' }} mb={30}>
                         {new Array(10).fill(0).map(() => (
-                            <HomeCard
-                                label="Pink Cat"
-                                subLabel="FLOSSTRADAMUS"
-                                image="https://dl.airtable.com/.attachments/58cc8ae0a4cf13909f4b85322ab688ad/cfa6de0d/Screenshot2021-04-20at22_32_23.png"
-                                darkText={false}
-                            />
+                            <Flex
+                                mr={16}
+                                sx={{
+                                    width: [
+                                        200,
+                                        205,
+                                        229,
+                                        167,
+                                        'calc(20% - 16px)',
+                                    ],
+                                    flexShrink: 0,
+                                    ':last-child': {
+                                        mr: 0,
+                                    },
+                                }}
+                            >
+                                <HomeCard
+                                    label="Pink Cat"
+                                    subLabel="FLOSSTRADAMUS"
+                                    image="https://dl.airtable.com/.attachments/58cc8ae0a4cf13909f4b85322ab688ad/cfa6de0d/Screenshot2021-04-20at22_32_23.png"
+                                    darkText={false}
+                                />
+                            </Flex>
                         ))}
                     </Flex>
                     <EdgeOverflow />
