@@ -226,6 +226,50 @@ export const BidCardStory: FC = () => {
             <BidCard
                 favorite={10}
                 price={10}
+                type="single"
+                image="https://picsum.photos/200/400"
+                collection={{
+                    src: 'https://picsum.photos/300/300',
+                    verified: true,
+                }}
+                owner={{ src: 'https://picsum.photos/200/300' }}
+                creator={{
+                    src: 'https://picsum.photos/200/400',
+                    verified: true,
+                }}
+                name="Test"
+                currency="WETH"
+            />
+            <BidCard
+                favorite={10}
+                price={10}
+                type="single"
+                image="https://picsum.photos/200/400"
+                collection={{
+                    src: 'https://picsum.photos/300/300',
+                    verified: true,
+                }}
+                owner={{ src: 'https://picsum.photos/200/300' }}
+                creator={{
+                    src: 'https://picsum.photos/200/400',
+                    verified: true,
+                }}
+                name="Test"
+                currency="WETH"
+                gradientColor
+                countDown={10000}
+                bid={10}
+            />
+        </>
+    )
+}
+
+export const ExploreCard: FC = () => {
+    return (
+        <>
+            <BidCard
+                favorite={10}
+                price={10}
                 type="multiple"
                 image="https://picsum.photos/200/400"
                 collection={{
@@ -243,6 +287,7 @@ export const BidCardStory: FC = () => {
             <BidCard
                 favorite={10}
                 price={10}
+                type="multiple"
                 image="https://picsum.photos/200/400"
                 collection={{
                     src: 'https://picsum.photos/300/300',
@@ -254,12 +299,15 @@ export const BidCardStory: FC = () => {
                     verified: true,
                 }}
                 name="Test"
-                bid={50}
                 currency="WETH"
+                gradientColor
+                countDown={10000}
+                bid={10}
             />
         </>
     )
 }
+
 export const ActivityCardStory: FC = () => (
     <Flex sx={{ flexDirection: 'column' }}>
         <ActivityCard

@@ -130,7 +130,7 @@ const bidItems = [
         currency: 'WETH',
         liked: true,
         gradientColor: true,
-        countDown: true,
+        countDown: 10000,
     },
     {
         id: 2,

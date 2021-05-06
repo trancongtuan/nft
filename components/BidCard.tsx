@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Text, Box, Flex, Image, Button, useColorMode } from 'theme-ui'
 import Popover from 'react-popover'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
@@ -43,7 +43,15 @@ export interface BidCardProps {
     liked?: boolean
     onLike?: () => void
     gradientColor?: boolean
-    countDown?: boolean
+    countDown?: number
+}
+
+const getStringTime: (s: number) => string = (s) => {
+    const [hour, minute, second] = new Date(s * 1000)
+        .toISOString()
+        .substr(11, 8)
+        .split(':') as [string, string, string]
+    return `${hour}h ${minute}m ${second}s`
 }
 
 const BidCard: FC<BidCardProps> = ({
@@ -65,6 +73,14 @@ const BidCard: FC<BidCardProps> = ({
     const [visible, setVisible] = useState(false)
     const [colorMode] = useColorMode()
     const [like, setLike] = useState(liked)
+    const [counter, setCounter] = useState(countDown)
+    useEffect(() => {
+        if (counter > 0) {
+            const timer = setInterval(() => setCounter(counter - 1), 1000)
+            return () => clearInterval(timer)
+        }
+        return setCounter(0)
+    }, [counter])
     return (
         <Box
             sx={{
@@ -265,7 +281,7 @@ const BidCard: FC<BidCardProps> = ({
                                         cursor: 'pointer',
                                     }}
                                 >
-                                    04h 06m 23s left 🔥
+                                    {getStringTime(counter)} 🔥
                                 </Flex>
                             </Box>
                         )}
