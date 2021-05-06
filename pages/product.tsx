@@ -8,6 +8,9 @@ import ThreeDos from '../public/assets/images/icons/threedos.svg'
 import FavoriteIcon from '../public/assets/images/icons/favorite.svg'
 import Selection from '../components/Selection'
 import TopSellerCard from '../components/TopSellerCard'
+import Popup from '../components/Popup'
+import PopupPlaceABid from '../components/PopupPurchase'
+import PopupShare from '../components/PopupShare'
 
 const tooltipItems = [
     {
@@ -75,6 +78,8 @@ const Product: FC = () => {
     const [liked, setLiked] = useState(false)
     const [showProduct, setShowProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(selectionItems[0].id)
+    const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
+    const [openPopupShare, setOpenPopupShare] = useState(false)
 
     return (
         <Box>
@@ -125,6 +130,13 @@ const Product: FC = () => {
                         sx={{
                             height: '100%',
                             overflow: 'scroll',
+                            '::-webkit-scrollbar': {
+                                width: '0',
+                                background: 'transparent',
+                            },
+                            '::-webkit-scrollbar-thumb': {
+                                background: '#FF0000',
+                            },
                         }}
                     >
                         <Flex
@@ -464,6 +476,7 @@ const Product: FC = () => {
                                     variant="primary"
                                     mr={10}
                                     sx={{ width: '50%', height: '40px' }}
+                                    onClick={() => setOpenPopupPlaceABid(true)}
                                 >
                                     Place a bid
                                 </Button>
@@ -471,10 +484,29 @@ const Product: FC = () => {
                                     variant="secondary"
                                     ml={10}
                                     sx={{ width: '50%', height: '40px' }}
+                                    onClick={() => setOpenPopupShare(true)}
                                 >
                                     Share
                                 </Button>
                             </Flex>
+                            <Popup
+                                isOpen={openPopupPlaceABid}
+                                onClose={() => {
+                                    setOpenPopupPlaceABid(false)
+                                }}
+                                label="Place a bid"
+                            >
+                                <PopupPlaceABid />
+                            </Popup>
+                            <Popup
+                                isOpen={openPopupShare}
+                                onClose={() => {
+                                    setOpenPopupShare(false)
+                                }}
+                                label="Share this NFT"
+                            >
+                                <PopupShare />
+                            </Popup>
                         </Box>
                     </Box>
                 </Flex>
