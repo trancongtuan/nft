@@ -460,11 +460,11 @@ const Single: FC = () => {
         }
         return `Put your new NFT on Rarible's marketplace`
     }, [marketplace, showMarketplace])
-    const [showCreatePopup, setShowCreatePopup] = useState(false)
     const [showStartingDatePopup, setShowStartingDatePopup] = useState(false)
     const [showExpirationDatePopup, setShowExpirationDatePopup] = useState(
         false
     )
+    const [showCreatePopup, setShowCreatePopup] = useState(false)
     return (
         <Layout>
             <Popup
