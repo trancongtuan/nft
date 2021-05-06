@@ -147,8 +147,8 @@ const Product: FC = () => {
                                 height: 0,
                             },
                             '::-webkit-scrollbar-thumb': {
-                                background: '#fff',
                                 display: 'block',
+                                background: '#fff',
                             },
                         }}
                     >
