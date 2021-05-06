@@ -565,12 +565,13 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     sx={{
                         justifyContent: 'space-around',
                     }}
-                    color="rgba(4, 4, 5, 0.6)"
+                    color="text"
                 >
                     <Box
                         sx={{
+                            opacity: 0.6,
                             ':hover': {
-                                color: 'text',
+                                opacity: 1,
                             },
                             transition: 'all 0.12s ease-in-out 0s',
                             cursor: 'pointer',
@@ -580,8 +581,9 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     </Box>
                     <Box
                         sx={{
+                            opacity: 0.6,
                             ':hover': {
-                                color: 'text',
+                                opacity: 1,
                             },
                             transition: 'all 0.12s ease-in-out 0s',
                             cursor: 'pointer',
@@ -591,8 +593,9 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     </Box>
                     <Box
                         sx={{
+                            opacity: 0.6,
                             ':hover': {
-                                color: 'text',
+                                opacity: 1,
                             },
                             transition: 'all 0.12s ease-in-out 0s',
                             cursor: 'pointer',
@@ -602,8 +605,9 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     </Box>
                     <Box
                         sx={{
+                            opacity: 0.6,
                             ':hover': {
-                                color: 'text',
+                                opacity: 1,
                             },
                             transition: 'all 0.12s ease-in-out 0s',
                             cursor: 'pointer',
@@ -613,8 +617,9 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     </Box>
                     <Box
                         sx={{
+                            opacity: 0.6,
                             ':hover': {
-                                color: 'text',
+                                opacity: 1,
                             },
                             transition: 'all 0.12s ease-in-out 0s',
                             cursor: 'pointer',
@@ -624,8 +629,9 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     </Box>
                     <Box
                         sx={{
+                            opacity: 0.6,
                             ':hover': {
-                                color: 'text',
+                                opacity: 1,
                             },
                             transition: 'all 0.12s ease-in-out 0s',
                             cursor: 'pointer',
@@ -776,12 +782,13 @@ const NavigationBar: FC = () => {
                                         sx={{
                                             justifyContent: 'space-around',
                                         }}
-                                        color="rgba(4, 4, 5, 0.6)"
+                                        color="text"
                                     >
                                         <Box
                                             sx={{
+                                                opacity: 0.6,
                                                 ':hover': {
-                                                    color: 'text',
+                                                    opacity: 1,
                                                 },
                                                 transition:
                                                     'all 0.12s ease-in-out 0s',
@@ -792,8 +799,9 @@ const NavigationBar: FC = () => {
                                         </Box>
                                         <Box
                                             sx={{
+                                                opacity: 0.6,
                                                 ':hover': {
-                                                    color: 'text',
+                                                    opacity: 1,
                                                 },
                                                 transition:
                                                     'all 0.12s ease-in-out 0s',
@@ -804,8 +812,9 @@ const NavigationBar: FC = () => {
                                         </Box>
                                         <Box
                                             sx={{
+                                                opacity: 0.6,
                                                 ':hover': {
-                                                    color: 'text',
+                                                    opacity: 1,
                                                 },
                                                 transition:
                                                     'all 0.12s ease-in-out 0s',
@@ -816,8 +825,9 @@ const NavigationBar: FC = () => {
                                         </Box>
                                         <Box
                                             sx={{
+                                                opacity: 0.6,
                                                 ':hover': {
-                                                    color: 'text',
+                                                    opacity: 1,
                                                 },
                                                 transition:
                                                     'all 0.12s ease-in-out 0s',
@@ -828,8 +838,9 @@ const NavigationBar: FC = () => {
                                         </Box>
                                         <Box
                                             sx={{
+                                                opacity: 0.6,
                                                 ':hover': {
-                                                    color: 'text',
+                                                    opacity: 1,
                                                 },
                                                 transition:
                                                     'all 0.12s ease-in-out 0s',
@@ -840,8 +851,9 @@ const NavigationBar: FC = () => {
                                         </Box>
                                         <Box
                                             sx={{
+                                                opacity: 0.6,
                                                 ':hover': {
-                                                    color: 'text',
+                                                    opacity: 1,
                                                 },
                                                 transition:
                                                     'all 0.12s ease-in-out 0s',

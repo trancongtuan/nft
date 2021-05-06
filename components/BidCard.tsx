@@ -255,7 +255,7 @@ const BidCard: FC<BidCardProps> = ({
                                 <Flex
                                     pl={8}
                                     pr={10}
-                                    bg="white"
+                                    bg="background"
                                     m="2px"
                                     sx={{
                                         position: 'relative',
