@@ -390,16 +390,16 @@ const Footer: FC = () => {
                                 },
                             }}
                         >
-                            <Link href="/files/terms.pdf">
+                            <a href="/files/terms.pdf" target="_blank">
                                 <Text mx={16} sx={{ fontSize: 14 }}>
                                     Terms
                                 </Text>
-                            </Link>
-                            <Link href="/files/privacy.pdf">
+                            </a>
+                            <a href="/files/privacy.pdf" target="_blank">
                                 <Text mx={16} sx={{ fontSize: 14 }}>
                                     Privacy
                                 </Text>
-                            </Link>
+                            </a>
                         </Flex>
                         <Flex
                             mt={[16, 16, 16, 0]}
