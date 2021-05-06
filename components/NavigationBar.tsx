@@ -1288,18 +1288,20 @@ const NavigationBar: FC = () => {
                                     width: 40,
                                 },
                             }}
-                            onClick={() => setShowDetail(!showDetail)}
                         >
                             <Text
+                                onClick={() => router.push('/rari')}
                                 sx={{
                                     '@media screen and (max-width: 400px)': {
                                         display: 'none',
                                     },
+                                    cursor: 'pointer',
                                 }}
                             >
                                 O RARI
                             </Text>
                             <Avatar
+                                onClick={() => setShowDetail(!showDetail)}
                                 src="https://via.placeholder.com/500x100"
                                 alt="avatar"
                                 sx={{
@@ -1307,6 +1309,7 @@ const NavigationBar: FC = () => {
                                     top: 0,
                                     right: 0,
                                     objectFit: 'cover',
+                                    cursor: 'pointer',
                                 }}
                             />
                         </Button>
