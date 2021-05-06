@@ -5,6 +5,7 @@ import ThreeDos from '../public/assets/images/icons/threedos.svg'
 import FavoriteIcon from '../public/assets/images/icons/favorite.svg'
 import Avatar, { AvatarProps } from './Avatar'
 import Tooltip from './Tooltip'
+import TextWithTooltip from './TextWithTooltip'
 
 const items = [
     {
@@ -303,7 +304,12 @@ const BidCard: FC<BidCardProps> = ({
                             fontWeight: 900,
                         }}
                     >
-                        <Text
+                        <TextWithTooltip
+                            tooltipContent={
+                                gradientColor
+                                    ? 'Additional content will be unlocked after purchase'
+                                    : undefined
+                            }
                             mr={8}
                             sx={{
                                 color: gradientColor
@@ -318,13 +324,19 @@ const BidCard: FC<BidCardProps> = ({
                                 backgroundImage: gradientColor
                                     ? 'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)'
                                     : undefined,
+                                cursor: 'text',
                             }}
                         >
                             {price} ETH
-                        </Text>
+                        </TextWithTooltip>
                         <Text color="textSecondary">1 of {quantity}</Text>
                         <br />
-                        <Text
+                        <TextWithTooltip
+                            tooltipContent={
+                                bid
+                                    ? 'Highest bid by Crypto Demalis'
+                                    : undefined
+                            }
                             sx={{
                                 color: 'rgb(12, 80, 255)',
                                 WebkitTextFillColor: 'transparent',
@@ -338,6 +350,7 @@ const BidCard: FC<BidCardProps> = ({
                                     color="textSecondary"
                                     sx={{
                                         fontSize: 0,
+                                        cursor: 'text',
                                     }}
                                 >
                                     {bid}{' '}
@@ -346,11 +359,14 @@ const BidCard: FC<BidCardProps> = ({
                                     </Text>
                                 </Text>
                             ) : (
-                                <Text color="primary" sx={{ fontSize: 0 }}>
+                                <Text
+                                    color="primary"
+                                    sx={{ fontSize: 0, cursor: 'pointer' }}
+                                >
                                     Place a bid
                                 </Text>
                             )}
-                        </Text>
+                        </TextWithTooltip>
                     </Text>
                     <Button
                         onClick={() => {

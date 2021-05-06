@@ -286,7 +286,7 @@ const Home: FC = () => {
             >
                 <Box sx={{ position: 'relative' }}>
                     <Flex ref={ref} sx={{ overflowX: 'auto' }} mb={30}>
-                        {new Array(5).fill(0).map(() => (
+                        {new Array(10).fill(0).map(() => (
                             <HomeCard
                                 label="Pink Cat"
                                 subLabel="FLOSSTRADAMUS"

@@ -181,6 +181,9 @@ export const theme: Theme = {
             ':active': {
                 transform: 'scale(0.95)',
             },
+            ':disabled': {
+                bg: 'borderColor',
+            },
         },
         secondary: {
             display: 'flex',
