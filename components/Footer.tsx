@@ -44,8 +44,9 @@ const Footer: FC = () => {
     const router = useRouter()
     const [locale, setLocale] = useState<TooltipItemProps>(
         () =>
-            tooltipItems.find((item) => item.value === router.locale) ??
-            tooltipItems[0]
+            tooltipItems.find(
+                (item) => item.value === router?.locale ?? 'en'
+            ) ?? tooltipItems[0]
     )
     return (
         <Flex
