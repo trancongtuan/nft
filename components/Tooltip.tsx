@@ -6,6 +6,7 @@ import CheckedIcon from '../public/assets/images/icons/checked.svg'
 export interface TooltipItemProps {
     id: string | number
     label: string
+    value?: string
     icon?: () => ReactNode
 }
 

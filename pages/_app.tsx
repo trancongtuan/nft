@@ -4,6 +4,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import React, { FC } from 'react'
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'theme-ui'
+import { appWithTranslation } from 'next-i18next'
 import { theme } from '../styles/theme'
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
@@ -14,4 +15,4 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     )
 }
 
-export default App
+export default appWithTranslation(App)
