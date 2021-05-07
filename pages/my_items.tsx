@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Box, Text, Flex, Button } from 'theme-ui'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { v4 as uuidv4 } from 'uuid'
 import Avatar from '../components/Avatar'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
@@ -94,8 +95,11 @@ const Items: FC = () => {
                                 },
                             }}
                         >
-                            {new Array(10).fill(0).map((x) => (
-                                <Box sx={{ marginBottom: '12px' }}>
+                            {new Array(10).fill(0).map(() => (
+                                <Box
+                                    key={uuidv4()}
+                                    sx={{ marginBottom: '12px' }}
+                                >
                                     <ActivityCard
                                         type="follow"
                                         src="https://via.placeholder.com/500x100"
@@ -121,7 +125,7 @@ const Items: FC = () => {
                         </Box>
                         <Box
                             sx={{
-                                marginLeft: '32px',
+                                ml: 4,
                                 width: '35%',
                                 '@media screen and (max-width: 776px)': {
                                     display: 'none',
@@ -144,7 +148,7 @@ const Items: FC = () => {
                                     </Text>
                                 )}
                             </Flex>
-                            <Flex sx={{ marginTop: '16px', flexWrap: 'wrap' }}>
+                            <Flex sx={{ mt: 3, flexWrap: 'wrap' }}>
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
@@ -232,7 +236,7 @@ const Items: FC = () => {
                     <Flex
                         sx={{
                             width: 400,
-                            marginTop: '16px',
+                            mt: 3,
                             flexWrap: 'wrap',
                         }}
                     >
@@ -305,8 +309,9 @@ const Items: FC = () => {
         if (showCards && !showActivity) {
             return (
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {new Array(10).fill(0).map((x) => (
+                    {new Array(10).fill(0).map(() => (
                         <Box
+                            key={uuidv4()}
                             p={10}
                             sx={{
                                 maxWidth: [
@@ -796,7 +801,7 @@ const Items: FC = () => {
                 }}
                 label="Followers"
             >
-                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
+                <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <Flex
                         sx={{
                             alignItems: 'center',
@@ -836,7 +841,7 @@ const Items: FC = () => {
                 }}
                 label="Following"
             >
-                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
+                <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <Flex
                         sx={{
                             alignItems: 'center',

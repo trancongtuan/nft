@@ -12,7 +12,7 @@ interface CustomInputProps {
     staticRight?: ReactChild
     staticBottom?: ReactChild
     Icon?: ReactChild
-    onChange: (value: string) => void
+    onChange?: (value: string) => void
 }
 
 const CustomInput: FC<CustomInputProps> = ({
@@ -72,7 +72,9 @@ const CustomInput: FC<CustomInputProps> = ({
                     placeholder={placeholder}
                     defaultValue={value}
                     variant="input"
-                    onChange={(event) => onChange(event.target.value)}
+                    onChange={(event) => {
+                        if (onChange) onChange(event.target.value)
+                    }}
                     value={value}
                 />
                 {staticRight && (

@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { Box, Button, Flex, Text } from 'theme-ui'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { v4 as uuidv4 } from 'uuid'
 import Avatar from '../components/Avatar'
 import Selection from '../components/Selection'
 import Layout from '../containers/Layout'
@@ -307,8 +308,9 @@ const Collection: FC = () => {
                     ]}
                 />
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {new Array(10).fill(0).map((x) => (
+                    {new Array(10).fill(0).map(() => (
                         <Box
+                            key={uuidv4()}
                             p={10}
                             sx={{
                                 maxWidth: [

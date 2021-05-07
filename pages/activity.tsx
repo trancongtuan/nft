@@ -1,5 +1,6 @@
 import React, { FC, useState, ReactNode } from 'react'
 import { Box, Text, Heading, Flex, Button } from 'theme-ui'
+import { v4 as uuidv4 } from 'uuid'
 import NavigationBar from '../components/NavigationBar'
 import ActivityCard from '../components/ActivityCard'
 import FilterButton from '../components/FilterButton'
@@ -51,8 +52,8 @@ const renderCards = (): ReactNode => {
                 },
             }}
         >
-            {new Array(10).fill(0).map((x) => (
-                <Box sx={{ marginBottom: '12px' }}>
+            {new Array(10).fill(0).map(() => (
+                <Box key={uuidv4()} sx={{ marginBottom: '12px' }}>
                     <ActivityCard
                         type="follow"
                         src="https://via.placeholder.com/500x100"
@@ -105,7 +106,7 @@ const Activity: FC = () => {
                 <Heading sx={{ fontSize: '36px', fontWeight: '900' }}>
                     Activity
                 </Heading>
-                <Box sx={{ marginTop: '16px' }}>
+                <Box sx={{ mt: 3 }}>
                     <Selection
                         borderBottom
                         items={[
@@ -126,7 +127,7 @@ const Activity: FC = () => {
                     {showCards ? renderCards() : renderNone()}
                     <Box
                         sx={{
-                            marginLeft: '32px',
+                            ml: 4,
                             width: '35%',
                             '@media screen and (max-width: 776px)': {
                                 display: 'none',
@@ -149,7 +150,7 @@ const Activity: FC = () => {
                                 </Text>
                             )}
                         </Flex>
-                        <Flex sx={{ marginTop: '16px', flexWrap: 'wrap' }}>
+                        <Flex sx={{ mt: 3, flexWrap: 'wrap' }}>
                             <FilterButton
                                 toggleShowReset={() => toggleShowReset()}
                                 reset={resetFilter}
@@ -234,7 +235,7 @@ const Activity: FC = () => {
                 }}
                 label="Filters"
             >
-                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
+                <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <FilterButton
                         toggleShowReset={() => toggleShowReset()}
                         reset={false}

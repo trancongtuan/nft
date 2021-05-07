@@ -376,7 +376,6 @@ const Create: FC = () => {
                     optionLabel="required"
                     placeholder="Enter token name"
                     value=""
-                    onChange={(text) => console.log(text)}
                     staticBottom="Token name cannot be changed in future"
                 />
             </Box>
@@ -386,7 +385,6 @@ const Create: FC = () => {
                     optionLabel="required"
                     placeholder="Enter token symbol"
                     value=""
-                    onChange={(text) => console.log(text)}
                 />
             </Box>
             <Box mt={16}>
@@ -395,7 +393,6 @@ const Create: FC = () => {
                     optionLabel="optional"
                     placeholder="Spread some words about your token collection"
                     value=""
-                    onChange={(text) => console.log(text)}
                 />
             </Box>
             <Box mt={16}>
@@ -403,7 +400,6 @@ const Create: FC = () => {
                     label="Short url"
                     placeholder="Enter short url"
                     value=""
-                    onChange={(text) => console.log(text)}
                     staticLeft={
                         <Flex mr={8} sx={{ flexShrink: 0 }}>
                             <Text
@@ -681,9 +677,6 @@ const Single: FC = () => {
                                                 label="Price"
                                                 value=""
                                                 placeholder="Enter price for one piece"
-                                                onChange={(value) => {
-                                                    console.log(value)
-                                                }}
                                                 staticRight={
                                                     <Popover
                                                         onOuterAction={() =>
@@ -785,9 +778,6 @@ const Single: FC = () => {
                                                 label="Minimum bid"
                                                 value=""
                                                 placeholder="Enter minimum bid"
-                                                onChange={(value) => {
-                                                    console.log(value)
-                                                }}
                                                 staticRight={
                                                     <Popover
                                                         onOuterAction={() =>
@@ -978,9 +968,6 @@ const Single: FC = () => {
                                                     label="Starting Date"
                                                     placeholder="e.g Size"
                                                     value={startingDate}
-                                                    onChange={(text) =>
-                                                        console.log(text)
-                                                    }
                                                     staticRight={
                                                         <Popover
                                                             onOuterAction={() =>
@@ -1060,9 +1047,6 @@ const Single: FC = () => {
                                                     label="Expiration Date"
                                                     placeholder="e.g Size"
                                                     value={expirationDate}
-                                                    onChange={(text) =>
-                                                        console.log(text)
-                                                    }
                                                     staticRight={
                                                         <Popover
                                                             onOuterAction={() =>
@@ -1256,7 +1240,6 @@ const Single: FC = () => {
                                 label="Title"
                                 placeholder={`e. g. "Redeemable T-Shirt with logo"`}
                                 value=""
-                                onChange={(text) => console.log(text)}
                             />
                             <Box mt={40}>
                                 <CustomInput
@@ -1264,7 +1247,6 @@ const Single: FC = () => {
                                     optionLabel="Optional"
                                     placeholder={`e. g. "After purchasing you’ll be able to get the real T-Shirt"`}
                                     value=""
-                                    onChange={(text) => console.log(text)}
                                 />
                             </Box>
                             <Box mt={40}>
@@ -1283,7 +1265,6 @@ const Single: FC = () => {
                                             %
                                         </Text>
                                     }
-                                    onChange={(text) => console.log(text)}
                                     staticBottom="Suggested: 10%, 20%, 30%"
                                 />
                             </Box>
@@ -1306,13 +1287,11 @@ const Single: FC = () => {
                                     label=""
                                     placeholder="e.g Size"
                                     value=""
-                                    onChange={(text) => console.log(text)}
                                 />
                                 <CustomInput
                                     label=""
                                     placeholder="e.g M"
                                     value=""
-                                    onChange={(text) => console.log(text)}
                                 />
                             </Grid>
                             <Flex mt={32} sx={{ alignItems: 'center' }}>

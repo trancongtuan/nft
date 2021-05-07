@@ -4,6 +4,7 @@ import { Box, Button, Flex, Text } from 'theme-ui'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import Popover from 'react-popover'
+import { v4 as uuidv4 } from 'uuid'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
 import EdgeOverflow from '../components/EdgeOverflow'
@@ -288,6 +289,7 @@ const Home: FC = () => {
                     <Flex ref={ref} sx={{ overflowX: 'auto' }} mb={30}>
                         {new Array(10).fill(0).map(() => (
                             <Flex
+                                key={uuidv4()}
                                 mr={16}
                                 sx={{
                                     width: [
@@ -391,6 +393,7 @@ const Home: FC = () => {
                     <Flex ml={-20} sx={{ overflowX: 'auto' }}>
                         {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
                             <Box
+                                key={uuidv4()}
                                 pl={20}
                                 sx={{
                                     width: [260, 214, '25%', '20%'],
@@ -580,6 +583,7 @@ const Home: FC = () => {
                 <Flex mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
                     {new Array(countItems).fill(0).map(() => (
                         <Box
+                            key={uuidv4()}
                             p={10}
                             sx={{
                                 maxWidth: [
