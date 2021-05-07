@@ -20,9 +20,6 @@ export const PopupPlaceABid: FC = () => {
                     label=""
                     value="1"
                     placeholder="Enter quantity"
-                    onChange={(value) => {
-                        console.log(value)
-                    }}
                     staticBottom="Enter quantity. 20 available"
                 />
             </Box>
@@ -31,9 +28,6 @@ export const PopupPlaceABid: FC = () => {
                     label=""
                     value="0.025"
                     placeholder="Enter quantity"
-                    onChange={(value) => {
-                        console.log(value)
-                    }}
                     staticRight="ETH"
                 />
             </Box>

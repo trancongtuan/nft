@@ -75,9 +75,6 @@ const Setting: FC = () => {
                             label="Display name"
                             value=""
                             placeholder="Enter your display name"
-                            onChange={(value) => {
-                                console.log(value)
-                            }}
                         />
                         <CustomInput
                             label="Custom URL"
@@ -96,17 +93,11 @@ const Setting: FC = () => {
                                 </Text>
                             }
                             placeholder="Enter your custom url"
-                            onChange={(value) => {
-                                console.log(value)
-                            }}
                         />
                         <CustomInput
                             label="Bio"
                             value=""
                             placeholder="Tell about yourself in a few words"
-                            onChange={(value) => {
-                                console.log(value)
-                            }}
                         />
                         <CustomInput
                             label="Twitter username"
@@ -133,17 +124,11 @@ const Setting: FC = () => {
                                     )}
                                 </Box>
                             }
-                            onChange={(value) => {
-                                console.log(value)
-                            }}
                         />
                         <CustomInput
                             label="Personal site or portfolio"
                             value=""
                             placeholder="https://"
-                            onChange={(value) => {
-                                console.log(value)
-                            }}
                         />
                         <CustomInput
                             label="Email"
@@ -152,9 +137,6 @@ const Setting: FC = () => {
                             value=""
                             Icon={<LockIcon />}
                             placeholder="Enter your email"
-                            onChange={(value) => {
-                                console.log(value)
-                            }}
                             staticBottom={
                                 <Box
                                     sx={{

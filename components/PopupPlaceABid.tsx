@@ -20,9 +20,6 @@ export const PopupPurchase: FC = () => {
                     label="Your bid"
                     value=""
                     placeholder="Enter bid"
-                    onChange={(value) => {
-                        console.log(value)
-                    }}
                     staticRight="WETH"
                 />
             </Box>
@@ -32,9 +29,6 @@ export const PopupPurchase: FC = () => {
                     optionLabel="69 available"
                     value="1"
                     placeholder="Enter quantity"
-                    onChange={(value) => {
-                        console.log(value)
-                    }}
                 />
             </Box>
             <Box sx={{ width: '100%' }} mt={2}>

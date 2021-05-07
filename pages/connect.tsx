@@ -1,4 +1,3 @@
-import es from 'date-fns/esm/locale/es/index.js'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { FC, useState } from 'react'

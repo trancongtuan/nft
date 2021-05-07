@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Image } from 'theme-ui'
+import { Box, Flex, Text, Image } from 'theme-ui'
 import React, { FC, useEffect } from 'react'
 import PreviewIcon from '../public/assets/images/icons/preview.svg'
 
