@@ -2,7 +2,7 @@ import { Box, Button, Flex, Input, Text, useColorMode } from 'theme-ui'
 import React, { FC, useState } from 'react'
 import Popover from 'react-popover'
 import Link from 'next/link'
-import { useTranslation, i18n } from 'next-i18next'
+import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import ArrowDown from '../public/assets/images/icons/arrowDown.svg'
 import TwitterIcon from '../public/assets/images/icons/twitter.svg'
@@ -41,11 +41,10 @@ const Footer: FC = () => {
     const [colorMode] = useColorMode()
     const [visible, setVisible] = useState(false)
     const { t } = useTranslation('footer')
-    const { language = 'en' } = i18n
     const router = useRouter()
     const [locale, setLocale] = useState<TooltipItemProps>(
         () =>
-            tooltipItems.find((item) => item.value === language) ??
+            tooltipItems.find((item) => item.value === router.locale) ??
             tooltipItems[0]
     )
     return (
