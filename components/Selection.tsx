@@ -49,7 +49,7 @@ const Selection: FC<SelectionProps> = ({
                                     item.id === selectedTab
                                         ? 'text'
                                         : 'textSecondary',
-                                fontWeight: 'heading',
+                                fontWeight: 'bold',
                                 fontSize: fontSize || 1,
                                 lineHeight: '30px',
                                 transition: 'all 0.12s ease-in-out 0s',
@@ -72,7 +72,7 @@ const Selection: FC<SelectionProps> = ({
                                     ml: '4px',
                                     color: 'textSecondary',
                                     fontSize: 0,
-                                    fontWeight: 900,
+                                    fontWeight: 'heavy',
                                     lineHeight: '22px',
                                     mb: '4px',
                                 }}

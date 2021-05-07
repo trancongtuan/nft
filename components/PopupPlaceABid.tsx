@@ -44,7 +44,7 @@ export const PopupPurchase: FC = () => {
                     </Text>
                     <Text
                         sx={{
-                            fontWeight: 600,
+                            fontWeight: 'semiBold',
                             color: 'text',
                             fontSize: 1,
                         }}
@@ -58,7 +58,7 @@ export const PopupPurchase: FC = () => {
                     </Text>
                     <Text
                         sx={{
-                            fontWeight: 600,
+                            fontWeight: 'semiBold',
                             color: 'text',
                             fontSize: 1,
                         }}
@@ -72,7 +72,7 @@ export const PopupPurchase: FC = () => {
                     </Text>
                     <Text
                         sx={{
-                            fontWeight: 600,
+                            fontWeight: 'semiBold',
                             color: 'text',
                             fontSize: 1,
                         }}
@@ -86,7 +86,7 @@ export const PopupPurchase: FC = () => {
                     </Text>
                     <Text
                         sx={{
-                            fontWeight: 600,
+                            fontWeight: 'semiBold',
                             color: 'text',
                             fontSize: 1,
                         }}

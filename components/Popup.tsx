@@ -108,7 +108,7 @@ const Popup: FC<PopupProps> = ({
                         <Text
                             sx={{
                                 fontSize: closeType === 'inside' ? 20 : 28,
-                                fontWeight: 'heading',
+                                fontWeight: 'bold',
                                 color: 'text',
                             }}
                         >

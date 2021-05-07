@@ -27,7 +27,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     const [colorMode] = useColorMode()
     return (
         <Flex
-            py={16}
+            py={3}
             bg="background"
             sx={{
                 flexDirection: 'column',
@@ -57,7 +57,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
                             transition: 'all 0.12s ease-in-out 0s',
                             textAlign: 'left',
                             minHeight: 32,
-                            borderRadius: 6,
+                            borderRadius: 0,
                             ':hover': {
                                 backgroundColor: 'hover',
                             },
@@ -82,7 +82,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
                                         color: 'text',
                                         fontSize: 1,
                                         lineHeight: '19px',
-                                        fontWeight: 'heading',
+                                        fontWeight: 'bold',
                                         textOverflow: 'ellipsis',
                                         overflow: 'hidden',
                                         whiteSpace: 'nowrap',

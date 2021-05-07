@@ -86,7 +86,7 @@ const PreviewProduct: FC<PreviewProductProps> = ({
                     bottom: 30,
                     left: 30,
                     color: 'text',
-                    fontWeight: 600,
+                    fontWeight: 'semiBold',
                     maxWidth: '300px',
                 }}
             >

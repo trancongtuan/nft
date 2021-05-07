@@ -158,7 +158,7 @@ const Product: FC = () => {
                                 alignItems: 'flex-start',
                             }}
                         >
-                            <Text sx={{ fontSize: 5, fontWeight: 'heading' }}>
+                            <Text sx={{ fontSize: 5, fontWeight: 'bold' }}>
                                 LAVA GUMBO 05
                             </Text>
                             <Flex>
@@ -183,7 +183,7 @@ const Product: FC = () => {
                                         ml="4px"
                                         sx={{
                                             fontSize: '14px',
-                                            fontWeight: 900,
+                                            fontWeight: 'heavy',
                                             color: 'text',
                                         }}
                                     >
@@ -214,7 +214,7 @@ const Product: FC = () => {
                         <Box
                             mt={3}
                             sx={{
-                                fontWeight: 'heading',
+                                fontWeight: 'bold',
                                 fontSize: '13px',
                             }}
                         >
@@ -244,7 +244,7 @@ const Product: FC = () => {
                                 span: {
                                     display: 'block',
                                     marginTop: '22px',
-                                    fontWeight: 500,
+                                    fontWeight: 'body',
                                     fontSize: 2,
                                 },
                             }}
@@ -264,7 +264,7 @@ const Product: FC = () => {
                             <Box sx={{ width: '50%' }} mt={3}>
                                 <Text
                                     sx={{
-                                        fontWeight: 'heading',
+                                        fontWeight: 'bold',
                                         fontSize: 0,
                                         color: 'textSecondary',
                                     }}
@@ -293,7 +293,7 @@ const Product: FC = () => {
                             <Box sx={{ width: '50%' }} mt={3}>
                                 <Text
                                     sx={{
-                                        fontWeight: 'heading',
+                                        fontWeight: 'bold',
                                         fontSize: 0,
                                         color: 'textSecondary',
                                     }}
@@ -322,9 +322,9 @@ const Product: FC = () => {
                         </Flex>
                         <Box
                             mt={3}
+                            px={22}
                             sx={{
                                 width: '100%',
-                                padding: '0px 22px',
                                 borderRadius: 30,
                                 backgroundColor: 'backgroundYellow',
                             }}
@@ -336,7 +336,7 @@ const Product: FC = () => {
                                     textAlign: 'center',
                                     color: 'textSecondary',
                                     fontSize: 1,
-                                    fontWeight: 'heading',
+                                    fontWeight: 'bold',
                                 }}
                             >
                                 10% of sales will go to creator
@@ -374,7 +374,7 @@ const Product: FC = () => {
                                     <Box sx={{ width: '100%' }} mt={3}>
                                         <Text
                                             sx={{
-                                                fontWeight: 'heading',
+                                                fontWeight: 'bold',
                                                 fontSize: 0,
                                                 color: 'textSecondary',
                                             }}
@@ -415,7 +415,7 @@ const Product: FC = () => {
                                                     mb={2}
                                                     sx={{
                                                         display: 'block',
-                                                        fontWeight: 'heading',
+                                                        fontWeight: 'bold',
                                                         fontSize: 0,
                                                         color: 'textSecondary',
                                                     }}
@@ -494,7 +494,7 @@ const Product: FC = () => {
                                         sx={{
                                             display: 'block',
                                             color: 'textSecondary',
-                                            fontWeight: 600,
+                                            fontWeight: 'semiBold',
                                             fontSize: 1,
                                         }}
                                     >
@@ -524,7 +524,7 @@ const Product: FC = () => {
                                         sx={{
                                             display: 'block',
                                             color: 'textSecondary',
-                                            fontWeight: 600,
+                                            fontWeight: 'semiBold',
                                             fontSize: 1,
                                         }}
                                     >
@@ -546,7 +546,7 @@ const Product: FC = () => {
                                             <Text
                                                 sx={{
                                                     color: 'textSecondary',
-                                                    fontWeight: 600,
+                                                    fontWeight: 'semiBold',
                                                     fontSize: 1,
                                                 }}
                                             >
@@ -566,7 +566,7 @@ const Product: FC = () => {
                                             <Text
                                                 sx={{
                                                     color: 'textSecondary',
-                                                    fontWeight: 600,
+                                                    fontWeight: 'semiBold',
                                                     fontSize: 1,
                                                 }}
                                             >
@@ -586,7 +586,7 @@ const Product: FC = () => {
                                             <Text
                                                 sx={{
                                                     color: 'textSecondary',
-                                                    fontWeight: 600,
+                                                    fontWeight: 'semiBold',
                                                     fontSize: 1,
                                                 }}
                                             >
@@ -606,7 +606,7 @@ const Product: FC = () => {
                                             <Text
                                                 sx={{
                                                     color: 'textSecondary',
-                                                    fontWeight: 600,
+                                                    fontWeight: 'semiBold',
                                                     fontSize: 1,
                                                 }}
                                             >

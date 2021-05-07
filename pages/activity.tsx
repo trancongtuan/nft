@@ -10,15 +10,19 @@ const renderNone = (): ReactNode => {
     return (
         <Box sx={{ margin: '0 auto' }}>
             <Flex
-                px={16}
+                px={3}
                 mt={8}
                 mb={16}
                 sx={{ flexDirection: 'column', alignItems: 'center' }}
             >
-                <Text color="text" sx={{ fontWeight: 900, fontSize: 28 }}>
+                <Text color="text" sx={{ fontWeight: 'heavy', fontSize: 28 }}>
                     Nothing yet
                 </Text>
-                <Text color="textSecondary" sx={{ fontWeight: 900 }} mt={20}>
+                <Text
+                    color="textSecondary"
+                    sx={{ fontWeight: 'heavy' }}
+                    mt={20}
+                >
                     Activity will be shown here
                 </Text>
 
@@ -93,7 +97,7 @@ const Activity: FC = () => {
         <Box>
             <NavigationBar />
             <Box
-                pt={32}
+                pt={4}
                 pl={24}
                 pr={24}
                 sx={{ maxWidth: 934, margin: '0 auto' }}
@@ -199,11 +203,10 @@ const Activity: FC = () => {
                 </Flex>
             </Box>
             <Box
+                px={24}
                 sx={{
                     display: 'none',
                     width: '100%',
-                    paddingLeft: '24px',
-                    paddingRight: '24px',
                     position: 'fixed',
                     bottom: '0',
                     '@media screen and (max-width: 776px)': {

@@ -43,7 +43,7 @@ const CustomInput: FC<CustomInputProps> = ({
                         sx={{
                             fontSize: 13,
                             color: 'textSecondary',
-                            fontWeight: 500,
+                            fontWeight: 'body',
                             lineHeight: 1.3,
                         }}
                     >
@@ -53,7 +53,7 @@ const CustomInput: FC<CustomInputProps> = ({
             </Flex>
             <Text
                 sx={{
-                    fontWeight: 'heading',
+                    fontWeight: 'bold',
                     fontSize: '13px',
                     display: 'block',
                     marginBottom: '7px',
@@ -78,7 +78,7 @@ const CustomInput: FC<CustomInputProps> = ({
                 {staticRight && (
                     <Flex
                         sx={{
-                            fontWeight: 600,
+                            fontWeight: 'semiBold',
                             color: 'textSecondary',
                             fontSize: 1,
                             minWidth: 'max-content',
@@ -95,7 +95,7 @@ const CustomInput: FC<CustomInputProps> = ({
                         sx={{
                             fontSize: 13,
                             color: 'textSecondary',
-                            fontWeight: 500,
+                            fontWeight: 'body',
                             lineHeight: 1.3,
                         }}
                     >

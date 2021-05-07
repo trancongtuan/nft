@@ -61,7 +61,7 @@ const Footer: FC = () => {
             }}
         >
             <Box
-                pt={64}
+                pt={5}
                 sx={{
                     width: ' 100%',
                     marginTop: '0px',
@@ -84,13 +84,15 @@ const Footer: FC = () => {
                             <Text
                                 sx={{
                                     fontSize: [26, 26, 26, 18],
-                                    fontWeight: 'heading',
+                                    fontWeight: 'bold',
                                 }}
                             >
                                 Get the latest Rarible updates
                             </Text>
                             <Flex
                                 mt={16}
+                                pl={20}
+                                pr={95}
                                 sx={{
                                     position: 'relative',
                                     width: '100%',
@@ -104,10 +106,8 @@ const Footer: FC = () => {
                                         colorMode === 'dark'
                                             ? '1px rgba(255, 255, 255, 0.1) solid'
                                             : 'none',
-                                    borderRadius: 48,
+                                    borderRadius: 5,
                                     overflow: 'hidden',
-                                    paddingLeft: '20px',
-                                    paddingRight: '95px',
                                 }}
                             >
                                 <Input
@@ -152,7 +152,7 @@ const Footer: FC = () => {
                             <Text
                                 sx={{
                                     fontSize: '18px',
-                                    fontWeight: 'heading',
+                                    fontWeight: 'bold',
                                 }}
                             >
                                 Rarible
@@ -165,7 +165,7 @@ const Footer: FC = () => {
                                             cursor: 'pointer',
                                             color: 'textSecondary',
                                             fontSize: '16px',
-                                            fontWeight: 'heading',
+                                            fontWeight: 'bold',
                                             transition:
                                                 'all 0.12s ease-in-out 0s',
                                             ':hover': {
@@ -182,7 +182,7 @@ const Footer: FC = () => {
                                         cursor: 'pointer',
                                         color: 'textSecondary',
                                         fontSize: '16px',
-                                        fontWeight: 'heading',
+                                        fontWeight: 'bold',
                                         transition: 'all 0.12s ease-in-out 0s',
                                         ':hover': {
                                             color: 'text',
@@ -198,7 +198,7 @@ const Footer: FC = () => {
                                             cursor: 'pointer',
                                             color: 'textSecondary',
                                             fontSize: '16px',
-                                            fontWeight: 'heading',
+                                            fontWeight: 'bold',
                                             transition:
                                                 'all 0.12s ease-in-out 0s',
                                             ':hover': {
@@ -215,7 +215,7 @@ const Footer: FC = () => {
                                         cursor: 'pointer',
                                         color: 'textSecondary',
                                         fontSize: '16px',
-                                        fontWeight: 'heading',
+                                        fontWeight: 'bold',
                                         transition: 'all 0.12s ease-in-out 0s',
                                         ':hover': {
                                             color: 'text',
@@ -236,7 +236,7 @@ const Footer: FC = () => {
                             <Text
                                 sx={{
                                     fontSize: '18px',
-                                    fontWeight: 'heading',
+                                    fontWeight: 'bold',
                                 }}
                             >
                                 Community
@@ -248,7 +248,7 @@ const Footer: FC = () => {
                                         cursor: 'pointer',
                                         color: 'textSecondary',
                                         fontSize: '16px',
-                                        fontWeight: 'heading',
+                                        fontWeight: 'bold',
                                         transition: 'all 0.12s ease-in-out 0s',
                                         ':hover': {
                                             color: 'text',
@@ -263,7 +263,7 @@ const Footer: FC = () => {
                                         cursor: 'pointer',
                                         color: 'textSecondary',
                                         fontSize: '16px',
-                                        fontWeight: 'heading',
+                                        fontWeight: 'bold',
                                         transition: 'all 0.12s ease-in-out 0s',
                                         ':hover': {
                                             color: 'text',
@@ -278,7 +278,7 @@ const Footer: FC = () => {
                                         cursor: 'pointer',
                                         color: 'textSecondary',
                                         fontSize: '16px',
-                                        fontWeight: 'heading',
+                                        fontWeight: 'bold',
                                         transition: 'all 0.12s ease-in-out 0s',
                                         ':hover': {
                                             color: 'text',
@@ -293,7 +293,7 @@ const Footer: FC = () => {
                                         cursor: 'pointer',
                                         color: 'textSecondary',
                                         fontSize: '16px',
-                                        fontWeight: 'heading',
+                                        fontWeight: 'bold',
                                         transition: 'all 0.12s ease-in-out 0s',
                                         ':hover': {
                                             color: 'text',
@@ -312,7 +312,7 @@ const Footer: FC = () => {
                             <Text
                                 sx={{
                                     fontSize: '18px',
-                                    fontWeight: 'heading',
+                                    fontWeight: 'bold',
                                 }}
                             >
                                 {t('language')}
@@ -348,9 +348,9 @@ const Footer: FC = () => {
                                             alignItems: 'center',
                                             width: '100%',
                                             height: '48px',
-                                            borderRadius: 48,
+                                            borderRadius: 5,
                                             fontSize: 1,
-                                            fontWeight: 'heading',
+                                            fontWeight: 'bold',
                                             color: 'textSecondary',
                                             background:
                                                 colorMode === 'dark'
@@ -376,12 +376,11 @@ const Footer: FC = () => {
                         </Box>
                     </Flex>
                     <Flex
-                        py={32}
+                        py={4}
                         sx={{
-                            borderTop:
-                                colorMode === 'dark'
-                                    ? '1px rgba(255, 255, 255, 0.1) solid'
-                                    : '1px rgba(4, 4, 5, 0.1) solid',
+                            borderTopWidth: 1,
+                            borderTopColor: 'borderColor',
+                            borderTopStyle: 'solid',
                             color: 'textSecondary',
                             flexDirection: [
                                 'column',
@@ -409,7 +408,7 @@ const Footer: FC = () => {
                             mt={[16, 16, 16, 0]}
                             sx={{
                                 flexGrow: 1,
-                                fontWeight: 'heading',
+                                fontWeight: 'bold',
                                 order: [-1, -1, -1, 2],
                                 span: {
                                     cursor: 'pointer',
@@ -420,12 +419,12 @@ const Footer: FC = () => {
                             }}
                         >
                             <a href="/files/terms.pdf" target="_blank">
-                                <Text mx={16} sx={{ fontSize: 14 }}>
+                                <Text mx={16} sx={{ fontSize: 1 }}>
                                     Terms
                                 </Text>
                             </a>
                             <a href="/files/privacy.pdf" target="_blank">
-                                <Text mx={16} sx={{ fontSize: 14 }}>
+                                <Text mx={16} sx={{ fontSize: 1 }}>
                                     Privacy
                                 </Text>
                             </a>

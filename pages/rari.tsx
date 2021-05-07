@@ -8,7 +8,7 @@ const Rari: FC = () => {
     return (
         <Layout>
             <Flex
-                py={64}
+                py={5}
                 px={[28, 32]}
                 sx={{ alignItems: 'center', flexDirection: 'column' }}
             >
@@ -71,7 +71,7 @@ const Rari: FC = () => {
                         color="text"
                         sx={{
                             fontSize: 42,
-                            fontWeight: 900,
+                            fontWeight: 'heavy',
                             textAlign: 'center',
                         }}
                     >
@@ -81,8 +81,8 @@ const Rari: FC = () => {
                         mt={32}
                         color="textSecondary"
                         sx={{
-                            fontSize: 16,
-                            fontWeight: 500,
+                            fontSize: 2,
+                            fontWeight: 'body',
                             textAlign: 'center',
                             lineHeight: '22px',
                         }}
@@ -107,7 +107,7 @@ const Rari: FC = () => {
                             flexDirection: ['column', 'row'],
                             maxWidth: 720,
                             width: '100%',
-                            borderRadius: 16,
+                            borderRadius: 1,
                             boxShadow: 'rgb(4 4 5 / 10%) 0px 2px 24px',
                             minHeight: 92,
                             justifyContent: 'center',
@@ -129,7 +129,7 @@ const Rari: FC = () => {
                                     color="textSecondary"
                                     sx={{
                                         fontSize: 13,
-                                        fontWeight: 700,
+                                        fontWeight: 'bold',
                                         lineHeight: '18px',
                                     }}
                                 >
@@ -139,8 +139,8 @@ const Rari: FC = () => {
                                     mt="4px"
                                     color="text"
                                     sx={{
-                                        fontSize: 24,
-                                        fontWeight: 900,
+                                        fontSize: 4,
+                                        fontWeight: 'heavy',
                                         lineHeight: '33px',
                                     }}
                                 >
@@ -158,7 +158,7 @@ const Rari: FC = () => {
                                     color="textSecondary"
                                     sx={{
                                         fontSize: 13,
-                                        fontWeight: 700,
+                                        fontWeight: 'bold',
                                         lineHeight: '18px',
                                     }}
                                 >
@@ -168,8 +168,8 @@ const Rari: FC = () => {
                                     mt="4px"
                                     color="text"
                                     sx={{
-                                        fontSize: 24,
-                                        fontWeight: 900,
+                                        fontSize: 4,
+                                        fontWeight: 'heavy',
                                         lineHeight: '33px',
                                     }}
                                 >
@@ -227,9 +227,9 @@ const Rari: FC = () => {
                             color="text"
                             sx={{
                                 textAlign: 'center',
-                                fontSize: 32,
+                                fontSize: 5,
                                 lineHeight: '44px',
-                                fontWeight: 900,
+                                fontWeight: 'heavy',
                             }}
                         >
                             Who is eligible to participate
@@ -265,8 +265,8 @@ const Rari: FC = () => {
                                             'rgb(4 4 5 / 10%) 0px 2px 24px',
                                         borderRadius: 9999,
                                         color: 'text',
-                                        fontWeight: 900,
-                                        fontSize: 24,
+                                        fontWeight: 'heavy',
+                                        fontSize: 4,
                                         zIndex: 10,
                                     }}
                                 >
@@ -281,20 +281,23 @@ const Rari: FC = () => {
                                 >
                                     <Text
                                         color="text"
-                                        sx={{ fontSize: 18, fontWeight: 900 }}
+                                        sx={{
+                                            fontSize: 18,
+                                            fontWeight: 'heavy',
+                                        }}
                                     >
                                         Existing Rarible users
                                     </Text>
                                     <Text
                                         color="textSecondary"
-                                        sx={{ fontSize: 16, fontWeight: 500 }}
+                                        sx={{ fontSize: 2, fontWeight: 'body' }}
                                     >
                                         15/07/2020
                                     </Text>
                                     <Text
                                         mt={16}
                                         color="textSecondary"
-                                        sx={{ fontSize: 16, fontWeight: 500 }}
+                                        sx={{ fontSize: 2, fontWeight: 'body' }}
                                     >
                                         Active users will receive 2% of the
                                         total RARI supply according to the
@@ -335,8 +338,8 @@ const Rari: FC = () => {
                                             'rgb(4 4 5 / 10%) 0px 2px 24px',
                                         borderRadius: 9999,
                                         color: 'text',
-                                        fontWeight: 900,
-                                        fontSize: 24,
+                                        fontWeight: 'heavy',
+                                        fontSize: 4,
                                         zIndex: 10,
                                     }}
                                 >
@@ -351,20 +354,23 @@ const Rari: FC = () => {
                                 >
                                     <Text
                                         color="text"
-                                        sx={{ fontSize: 18, fontWeight: 900 }}
+                                        sx={{
+                                            fontSize: 18,
+                                            fontWeight: 'heavy',
+                                        }}
                                     >
                                         Documented NFT holders/buyers
                                     </Text>
                                     <Text
                                         color="textSecondary"
-                                        sx={{ fontSize: 16, fontWeight: 500 }}
+                                        sx={{ fontSize: 2, fontWeight: 'body' }}
                                     >
                                         by Monday 20/07/2020
                                     </Text>
                                     <Text
                                         mt={16}
                                         color="textSecondary"
-                                        sx={{ fontSize: 16, fontWeight: 500 }}
+                                        sx={{ fontSize: 2, fontWeight: 'body' }}
                                     >
                                         In this stage, 4% will be distributed
                                         amoung Ethereum addresses of all NFTs
@@ -392,8 +398,8 @@ const Rari: FC = () => {
                                             'rgb(4 4 5 / 10%) 0px 2px 24px',
                                         borderRadius: 9999,
                                         color: 'text',
-                                        fontWeight: 900,
-                                        fontSize: 24,
+                                        fontWeight: 'heavy',
+                                        fontSize: 4,
                                         zIndex: 10,
                                     }}
                                 >
@@ -408,20 +414,23 @@ const Rari: FC = () => {
                                 >
                                     <Text
                                         color="text"
-                                        sx={{ fontSize: 18, fontWeight: 900 }}
+                                        sx={{
+                                            fontSize: 18,
+                                            fontWeight: 'heavy',
+                                        }}
                                     >
                                         Remaining NFT owners
                                     </Text>
                                     <Text
                                         color="textSecondary"
-                                        sx={{ fontSize: 16, fontWeight: 500 }}
+                                        sx={{ fontSize: 2, fontWeight: 'body' }}
                                     >
                                         to be announced
                                     </Text>
                                     <Text
                                         mt={16}
                                         color="textSecondary"
-                                        sx={{ fontSize: 16, fontWeight: 500 }}
+                                        sx={{ fontSize: 2, fontWeight: 'body' }}
                                     >
                                         As we believe that Dune Analytics might
                                         not hold all the data, we introduced the
@@ -445,8 +454,8 @@ const Rari: FC = () => {
                             <Text
                                 color="text"
                                 sx={{
-                                    fontWeight: 900,
-                                    fontSize: 32,
+                                    fontWeight: 'heavy',
+                                    fontSize: 5,
                                     textAlign: 'center',
                                 }}
                             >
@@ -457,8 +466,8 @@ const Rari: FC = () => {
                                     color="textSecondary"
                                     sx={{
                                         textAlign: 'center',
-                                        fontSize: 16,
-                                        fontWeight: 500,
+                                        fontSize: 2,
+                                        fontWeight: 'body',
                                     }}
                                 >
                                     RARI is not an investment and should be
@@ -492,7 +501,7 @@ const Rari: FC = () => {
                                     color="text"
                                     sx={{
                                         fontSize: 18,
-                                        fontWeight: 900,
+                                        fontWeight: 'heavy',
                                         textAlign: 'center',
                                     }}
                                 >
@@ -517,7 +526,7 @@ const Rari: FC = () => {
                                     color="text"
                                     sx={{
                                         fontSize: 18,
-                                        fontWeight: 900,
+                                        fontWeight: 'heavy',
                                         textAlign: 'center',
                                     }}
                                 >
@@ -542,7 +551,7 @@ const Rari: FC = () => {
                                     color="text"
                                     sx={{
                                         fontSize: 18,
-                                        fontWeight: 900,
+                                        fontWeight: 'heavy',
                                         textAlign: 'center',
                                     }}
                                 >
@@ -567,7 +576,7 @@ const Rari: FC = () => {
                                     color="text"
                                     sx={{
                                         fontSize: 18,
-                                        fontWeight: 900,
+                                        fontWeight: 'heavy',
                                         textAlign: 'center',
                                     }}
                                 >
@@ -579,8 +588,8 @@ const Rari: FC = () => {
                             mt={48}
                             color="text"
                             sx={{
-                                fontSize: 32,
-                                fontWeight: 900,
+                                fontSize: 5,
+                                fontWeight: 'heavy',
                                 textAlign: 'center',
                             }}
                         >
@@ -610,7 +619,7 @@ const Rari: FC = () => {
                                     color="text"
                                     sx={{
                                         fontSize: 18,
-                                        fontWeight: 900,
+                                        fontWeight: 'heavy',
                                         textAlign: 'center',
                                     }}
                                 >
@@ -635,7 +644,7 @@ const Rari: FC = () => {
                                     color="text"
                                     sx={{
                                         fontSize: 18,
-                                        fontWeight: 900,
+                                        fontWeight: 'heavy',
                                         textAlign: 'center',
                                     }}
                                 >
@@ -660,7 +669,7 @@ const Rari: FC = () => {
                                     color="text"
                                     sx={{
                                         fontSize: 18,
-                                        fontWeight: 900,
+                                        fontWeight: 'heavy',
                                         textAlign: 'center',
                                     }}
                                 >
@@ -685,7 +694,7 @@ const Rari: FC = () => {
                                     color="text"
                                     sx={{
                                         fontSize: 18,
-                                        fontWeight: 900,
+                                        fontWeight: 'heavy',
                                         textAlign: 'center',
                                     }}
                                 >

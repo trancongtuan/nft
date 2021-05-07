@@ -65,7 +65,7 @@ const Collection: FC = () => {
                             fontSize: 28,
                             lineHeight: '34px',
                             color: 'text',
-                            fontWeight: 900,
+                            fontWeight: 'heavy',
                         }}
                     >
                         Beeple Round 2 Open Edition
@@ -73,10 +73,10 @@ const Collection: FC = () => {
                     <Flex mb={20} sx={{ alignItems: 'center' }}>
                         <Text
                             sx={{
-                                fontSize: 16,
+                                fontSize: 2,
                                 lineHeight: '22px',
                                 color: 'text',
-                                fontWeight: 700,
+                                fontWeight: 'bold',
                             }}
                         >
                             0xd92e44ac213b9...fa96
@@ -107,7 +107,7 @@ const Collection: FC = () => {
                             body={
                                 <Tooltip>
                                     <Flex
-                                        p={16}
+                                        p={3}
                                         sx={{
                                             alignItems: 'center',
                                             flexDirection: 'column',
@@ -119,7 +119,7 @@ const Collection: FC = () => {
                                             color="text"
                                             sx={{
                                                 fontSize: 18,
-                                                fontWeight: 900,
+                                                fontWeight: 'heavy',
                                                 lineHeight: '25px',
                                             }}
                                         >
@@ -155,9 +155,9 @@ const Collection: FC = () => {
                                                     color="textSecondary"
                                                     mt={8}
                                                     sx={{
-                                                        fontSize: 12,
+                                                        fontSize: 0,
                                                         lineHeight: '17px',
-                                                        fontWeight: 700,
+                                                        fontWeight: 'bold',
                                                     }}
                                                 >
                                                     Twitter
@@ -187,9 +187,9 @@ const Collection: FC = () => {
                                                     color="textSecondary"
                                                     mt={8}
                                                     sx={{
-                                                        fontSize: 12,
+                                                        fontSize: 0,
                                                         lineHeight: '17px',
-                                                        fontWeight: 700,
+                                                        fontWeight: 'bold',
                                                     }}
                                                 >
                                                     Facebook
@@ -219,9 +219,9 @@ const Collection: FC = () => {
                                                     color="textSecondary"
                                                     mt={8}
                                                     sx={{
-                                                        fontSize: 12,
+                                                        fontSize: 0,
                                                         lineHeight: '17px',
-                                                        fontWeight: 700,
+                                                        fontWeight: 'bold',
                                                     }}
                                                 >
                                                     Telegram
@@ -251,9 +251,9 @@ const Collection: FC = () => {
                                                     color="textSecondary"
                                                     mt={8}
                                                     sx={{
-                                                        fontSize: 12,
+                                                        fontSize: 0,
                                                         lineHeight: '17px',
-                                                        fontWeight: 700,
+                                                        fontWeight: 'bold',
                                                     }}
                                                 >
                                                     E-mail

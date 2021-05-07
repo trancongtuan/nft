@@ -276,7 +276,7 @@ const Home: FC = () => {
     return (
         <Layout>
             <Box
-                py={32}
+                py={4}
                 px={[24, 28, 32]}
                 mx="auto"
                 sx={{
@@ -317,7 +317,7 @@ const Home: FC = () => {
                 <Flex mb={30}>
                     <Text
                         color="text"
-                        sx={{ fontSize: [24, 27, 30], fontWeight: 700 }}
+                        sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
                         Top
                         <Popover
@@ -420,7 +420,7 @@ const Home: FC = () => {
                     <Text
                         mb={24}
                         color="text"
-                        sx={{ fontSize: [24, 27, 30], fontWeight: 700 }}
+                        sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
                         Hot bids 🔥
                     </Text>
@@ -436,7 +436,7 @@ const Home: FC = () => {
                     <Text
                         mb={24}
                         color="text"
-                        sx={{ fontSize: [24, 27, 30], fontWeight: 700 }}
+                        sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
                         Hot collections 💥
                     </Text>
@@ -452,11 +452,11 @@ const Home: FC = () => {
                     </Carousel>
                 </Flex>
                 <Box
+                    bg="borderColor"
                     mb={28}
                     sx={{
                         width: '100%',
                         height: 1,
-                        background: 'rgba(4, 4, 5, 0.1)',
                     }}
                 />
                 <Flex>
@@ -465,7 +465,7 @@ const Home: FC = () => {
                         color="text"
                         sx={{
                             fontSize: [24, 27, 30],
-                            fontWeight: 700,
+                            fontWeight: 'bold',
                             flexShrink: 0,
                         }}
                     >

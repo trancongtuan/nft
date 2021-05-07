@@ -18,7 +18,7 @@ const Setting: FC = () => {
         <Box>
             <NavigationBar />
             <Box
-                py={32}
+                py={4}
                 px={[16, 18, 24, 24]}
                 sx={{ width: '100%', margin: '0px auto', maxWidth: '815px' }}
             >
@@ -27,7 +27,7 @@ const Setting: FC = () => {
                         sx={{
                             display: 'block',
                             fontSize: [24, 24, 32, 36],
-                            fontWeight: 'heading',
+                            fontWeight: 'bold',
                             color: 'text',
                         }}
                     >
@@ -40,7 +40,7 @@ const Setting: FC = () => {
                             fontSize: [20, 22, 22, 22],
                             color: 'textSecondary',
                             lineHeight: 1.4,
-                            fontWeight: 500,
+                            fontWeight: 'body',
                         }}
                     >
                         You can set preferred display name, create your branded
@@ -87,7 +87,7 @@ const Setting: FC = () => {
                                     mr={2}
                                     sx={{
                                         fontSize: '15px',
-                                        fontWeight: 600,
+                                        fontWeight: 'semiBold',
                                         marginTop: '-2px',
                                         minWidth: 'max-content',
                                     }}
@@ -116,7 +116,7 @@ const Setting: FC = () => {
                             staticRight={
                                 <Box
                                     sx={{
-                                        fontWeight: 'heading',
+                                        fontWeight: 'bold',
                                         color: 'primary',
                                         fontSize: 1,
                                         cursor: 'pointer',
@@ -186,7 +186,7 @@ const Setting: FC = () => {
                                         display: 'block',
                                         color: 'textSecondary',
                                         fontSize: '13px',
-                                        fontWeight: 600,
+                                        fontWeight: 'semiBold',
                                     }}
                                 >
                                     Procceed with verification proccess to get
@@ -250,7 +250,7 @@ const Setting: FC = () => {
                                     display: 'block',
                                     color: 'textSecondary',
                                     fontSize: '13px',
-                                    fontWeight: 600,
+                                    fontWeight: 'semiBold',
                                     maxWidth: '200px',
                                 }}
                             >

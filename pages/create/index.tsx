@@ -27,7 +27,7 @@ const Create: FC = () => {
                         }}
                     >
                         <BackIcon />
-                        <Text ml={8} sx={{ fontWeight: 700, fontSize: 16 }}>
+                        <Text ml={8} sx={{ fontWeight: 'bold', fontSize: 2 }}>
                             Go back
                         </Text>
                     </Flex>
@@ -36,7 +36,7 @@ const Create: FC = () => {
                         sx={{
                             color: 'text',
                             fontSize: [24, 32, 36],
-                            fontWeight: 900,
+                            fontWeight: 'heavy',
                         }}
                     >
                         Create collectible
@@ -46,8 +46,8 @@ const Create: FC = () => {
                         mb={40}
                         color="textSecondary"
                         sx={{
-                            fontWeight: 500,
-                            fontSize: 16,
+                            fontWeight: 'body',
+                            fontSize: 2,
                         }}
                     >
                         Choose “Single” if you want your collectible to be one
@@ -56,7 +56,7 @@ const Create: FC = () => {
                     </Text>
                     <Flex m={-8} sx={{ flexWrap: 'wrap' }}>
                         <Flex
-                            p={8}
+                            p={2}
                             sx={{
                                 maxWidth: ['100%', '50%'],
                                 flex: ['0 0 100%', '0 0 50%'],
@@ -65,7 +65,7 @@ const Create: FC = () => {
                             <Flex
                                 onClick={() => router.push('/create/single')}
                                 pt={49}
-                                px={16}
+                                px={3}
                                 pb={33}
                                 sx={{
                                     position: 'relative',
@@ -75,7 +75,7 @@ const Create: FC = () => {
                                     borderWidth: 2,
                                     borderStyle: 'solid',
                                     borderColor: 'borderColor',
-                                    borderRadius: 16,
+                                    borderRadius: 1,
                                     flexDirection: 'column',
                                     cursor: 'pointer',
                                     ':hover': {
@@ -106,14 +106,14 @@ const Create: FC = () => {
                                 <Text
                                     mt={32}
                                     color="text"
-                                    sx={{ fontWeight: 700, fontSize: 16 }}
+                                    sx={{ fontWeight: 'bold', fontSize: 2 }}
                                 >
                                     Single
                                 </Text>
                             </Flex>
                         </Flex>
                         <Flex
-                            p={8}
+                            p={2}
                             sx={{
                                 maxWidth: ['100%', '50%'],
                                 flex: ['0 0 100%', '0 0 50%'],
@@ -122,7 +122,7 @@ const Create: FC = () => {
                             <Flex
                                 onClick={() => router.push('/create/multiple')}
                                 pt={49}
-                                px={16}
+                                px={3}
                                 pb={33}
                                 sx={{
                                     flex: 1,
@@ -131,7 +131,7 @@ const Create: FC = () => {
                                     borderWidth: 2,
                                     borderStyle: 'solid',
                                     borderColor: 'borderColor',
-                                    borderRadius: 16,
+                                    borderRadius: 1,
                                     flexDirection: 'column',
                                     cursor: 'pointer',
                                     ':hover': {
@@ -148,7 +148,7 @@ const Create: FC = () => {
                                 <Text
                                     mt={32}
                                     color="text"
-                                    sx={{ fontWeight: 700, fontSize: 16 }}
+                                    sx={{ fontWeight: 'bold', fontSize: 2 }}
                                 >
                                     Multiple
                                 </Text>
@@ -159,8 +159,8 @@ const Create: FC = () => {
                         mt={32}
                         color="textSecondary"
                         sx={{
-                            fontWeight: 500,
-                            fontSize: 16,
+                            fontWeight: 'body',
+                            fontSize: 2,
                         }}
                     >
                         We do not own your private keys and cannot access your

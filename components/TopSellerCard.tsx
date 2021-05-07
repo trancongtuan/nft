@@ -30,7 +30,7 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
     return (
         <Flex sx={{ alignItems: 'center' }}>
             {id && (
-                <Text color="textSecondary" sx={{ fontSize: 14 }} px={16}>
+                <Text color="textSecondary" sx={{ fontSize: 1 }} px={3}>
                     {id}
                 </Text>
             )}
@@ -50,7 +50,7 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                         sx={{
                             fontSize: 15,
                             display: 'block',
-                            fontWeight: 600,
+                            fontWeight: 'semiBold',
                             maxWidth: '167px',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -60,7 +60,7 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                     >
                         {name}
                     </Text>
-                    <Text color="textSecondary" sx={{ fontSize: 14 }}>
+                    <Text color="textSecondary" sx={{ fontSize: 1 }}>
                         {wallet} ETH
                     </Text>
                 </Flex>

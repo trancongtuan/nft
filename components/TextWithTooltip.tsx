@@ -29,8 +29,8 @@ const TextWithTooltip: FC<TextWithTooltipProps> = ({
                         <Text
                             color="text"
                             sx={{
-                                fontWeight: 700,
-                                fontSize: 12,
+                                fontWeight: 'bold',
+                                fontSize: 0,
                                 textAlign: 'center',
                             }}
                         >
