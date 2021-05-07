@@ -422,8 +422,7 @@ const Items: FC = () => {
                             display: 'none',
                         },
                         display: 'block',
-                        backgroundColor:
-                            colorMode === 'dark' ? 'black' : 'white',
+                        background: '#121212',
                         position: 'absolute',
                         right: 28,
                         bottom: 0,
@@ -452,8 +451,7 @@ const Items: FC = () => {
                             height: 14,
                         },
                         display: 'none',
-                        backgroundColor:
-                            colorMode === 'dark' ? 'black' : 'white',
+                        background: '#121212',
                         position: 'absolute',
                         right: 28,
                         bottom: 0,
@@ -480,8 +478,7 @@ const Items: FC = () => {
                         },
                         textAlign: 'center',
                         lineHeight: '128px',
-                        backgroundColor:
-                            colorMode === 'dark' ? 'black' : 'white',
+                        background: '#121212',
                         width: 128,
                         height: 128,
                         bottom: -30,
