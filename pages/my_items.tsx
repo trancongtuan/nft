@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Box, Text, Flex, Button } from 'theme-ui'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { v4 as uuidv4 } from 'uuid'
 import Avatar from '../components/Avatar'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
@@ -94,8 +95,11 @@ const Items: FC = () => {
                                 },
                             }}
                         >
-                            {new Array(10).fill(0).map((x) => (
-                                <Box sx={{ marginBottom: '12px' }}>
+                            {new Array(10).fill(0).map(() => (
+                                <Box
+                                    key={uuidv4()}
+                                    sx={{ marginBottom: '12px' }}
+                                >
                                     <ActivityCard
                                         type="follow"
                                         src="https://via.placeholder.com/500x100"
@@ -121,7 +125,7 @@ const Items: FC = () => {
                         </Box>
                         <Box
                             sx={{
-                                marginLeft: '32px',
+                                ml: 4,
                                 width: '35%',
                                 '@media screen and (max-width: 776px)': {
                                     display: 'none',
@@ -144,7 +148,7 @@ const Items: FC = () => {
                                     </Text>
                                 )}
                             </Flex>
-                            <Flex sx={{ marginTop: '16px', flexWrap: 'wrap' }}>
+                            <Flex sx={{ mt: 3, flexWrap: 'wrap' }}>
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
@@ -198,11 +202,10 @@ const Items: FC = () => {
                     </Flex>
                 </Box>
                 <Box
+                    px={24}
                     sx={{
                         display: 'none',
                         width: '100%',
-                        paddingLeft: '24px',
-                        paddingRight: '24px',
                         position: 'fixed',
                         bottom: '0',
                         '@media screen and (max-width: 776px)': {
@@ -233,7 +236,7 @@ const Items: FC = () => {
                     <Flex
                         sx={{
                             width: 400,
-                            marginTop: '16px',
+                            mt: 3,
                             flexWrap: 'wrap',
                         }}
                     >
@@ -306,8 +309,9 @@ const Items: FC = () => {
         if (showCards && !showActivity) {
             return (
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {new Array(10).fill(0).map((x) => (
+                    {new Array(10).fill(0).map(() => (
                         <Box
+                            key={uuidv4()}
                             p={10}
                             sx={{
                                 maxWidth: [
@@ -352,12 +356,15 @@ const Items: FC = () => {
         return (
             <Box sx={{ margin: '60px auto', maxWidth: '360px' }}>
                 <Flex
-                    px={16}
+                    px={3}
                     mt={8}
                     mb={16}
                     sx={{ flexDirection: 'column', alignItems: 'center' }}
                 >
-                    <Text color="text" sx={{ fontWeight: 900, fontSize: 28 }}>
+                    <Text
+                        color="text"
+                        sx={{ fontWeight: 'heavy', fontSize: 28 }}
+                    >
                         No items found
                     </Text>
                     <Text mt={20}>
@@ -410,21 +417,24 @@ const Items: FC = () => {
 
             <Box sx={{ margin: '0 auto', maxWidth: '500px' }}>
                 <Flex
-                    px={16}
+                    px={3}
                     mt={8}
                     mb={16}
                     sx={{ flexDirection: 'column', alignItems: 'center' }}
                 >
-                    <Text color="text" sx={{ fontWeight: 900, fontSize: 28 }}>
+                    <Text
+                        color="text"
+                        sx={{ fontWeight: 'heavy', fontSize: 28 }}
+                    >
                         Christopher Nolan
                     </Text>
                     <Flex mb={20} sx={{ alignItems: 'center' }}>
                         <Text
                             sx={{
-                                fontSize: 16,
+                                fontSize: 2,
                                 lineHeight: '22px',
                                 color: 'text',
-                                fontWeight: 700,
+                                fontWeight: 'bold',
                             }}
                         >
                             0xd92e44ac213b9...fa96
@@ -464,7 +474,7 @@ const Items: FC = () => {
                             body={
                                 <Tooltip>
                                     <Flex
-                                        p={16}
+                                        p={3}
                                         sx={{
                                             alignItems: 'center',
                                             flexDirection: 'column',
@@ -476,7 +486,7 @@ const Items: FC = () => {
                                             color="text"
                                             sx={{
                                                 fontSize: 18,
-                                                fontWeight: 900,
+                                                fontWeight: 'heavy',
                                                 lineHeight: '25px',
                                             }}
                                         >
@@ -512,9 +522,9 @@ const Items: FC = () => {
                                                     color="textSecondary"
                                                     mt={8}
                                                     sx={{
-                                                        fontSize: 12,
+                                                        fontSize: 0,
                                                         lineHeight: '17px',
-                                                        fontWeight: 700,
+                                                        fontWeight: 'bold',
                                                     }}
                                                 >
                                                     Twitter
@@ -544,9 +554,9 @@ const Items: FC = () => {
                                                     color="textSecondary"
                                                     mt={8}
                                                     sx={{
-                                                        fontSize: 12,
+                                                        fontSize: 0,
                                                         lineHeight: '17px',
-                                                        fontWeight: 700,
+                                                        fontWeight: 'bold',
                                                     }}
                                                 >
                                                     Facebook
@@ -576,9 +586,9 @@ const Items: FC = () => {
                                                     color="textSecondary"
                                                     mt={8}
                                                     sx={{
-                                                        fontSize: 12,
+                                                        fontSize: 0,
                                                         lineHeight: '17px',
-                                                        fontWeight: 700,
+                                                        fontWeight: 'bold',
                                                     }}
                                                 >
                                                     Telegram
@@ -608,9 +618,9 @@ const Items: FC = () => {
                                                     color="textSecondary"
                                                     mt={8}
                                                     sx={{
-                                                        fontSize: 12,
+                                                        fontSize: 0,
                                                         lineHeight: '17px',
-                                                        fontWeight: 700,
+                                                        fontWeight: 'bold',
                                                     }}
                                                 >
                                                     E-mail
@@ -663,7 +673,7 @@ const Items: FC = () => {
                 </Flex>
             </Box>
             <Box
-                py={32}
+                py={4}
                 px={[24, 28, 32]}
                 mx="auto"
                 sx={{
@@ -701,7 +711,7 @@ const Items: FC = () => {
                             <Text
                                 sx={{
                                     color: 'textSecondary',
-                                    fontWeight: 'heading',
+                                    fontWeight: 'bold',
                                     fontSize: 1,
                                     lineHeight: '30px',
                                     transition: 'all 0.12s ease-in-out 0s',
@@ -719,7 +729,7 @@ const Items: FC = () => {
                                     ml: '4px',
                                     color: 'textSecondary',
                                     fontSize: 0,
-                                    fontWeight: 900,
+                                    fontWeight: 'heavy',
                                     lineHeight: '22px',
                                     mb: '4px',
                                 }}
@@ -743,7 +753,7 @@ const Items: FC = () => {
                             <Text
                                 sx={{
                                     color: 'textSecondary',
-                                    fontWeight: 'heading',
+                                    fontWeight: 'bold',
                                     fontSize: 1,
                                     lineHeight: '30px',
                                     transition: 'all 0.12s ease-in-out 0s',
@@ -761,7 +771,7 @@ const Items: FC = () => {
                                     ml: '4px',
                                     color: 'textSecondary',
                                     fontSize: 0,
-                                    fontWeight: 900,
+                                    fontWeight: 'heavy',
                                     lineHeight: '22px',
                                     mb: '4px',
                                 }}
@@ -791,7 +801,7 @@ const Items: FC = () => {
                 }}
                 label="Followers"
             >
-                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
+                <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <Flex
                         sx={{
                             alignItems: 'center',
@@ -808,13 +818,13 @@ const Items: FC = () => {
                             <Flex ml={16} sx={{ flexDirection: 'column' }}>
                                 <Text
                                     color="textSecondary"
-                                    sx={{ fontSize: 14, fontWeight: 700 }}
+                                    sx={{ fontSize: 1, fontWeight: 'bold' }}
                                 >
                                     999 Followers
                                 </Text>
                                 <Text
                                     color="text"
-                                    sx={{ fontSize: 15, fontWeight: 900 }}
+                                    sx={{ fontSize: 15, fontWeight: 'heavy' }}
                                 >
                                     Kyle Le
                                 </Text>
@@ -831,7 +841,7 @@ const Items: FC = () => {
                 }}
                 label="Following"
             >
-                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
+                <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <Flex
                         sx={{
                             alignItems: 'center',
@@ -848,13 +858,13 @@ const Items: FC = () => {
                             <Flex ml={16} sx={{ flexDirection: 'column' }}>
                                 <Text
                                     color="textSecondary"
-                                    sx={{ fontSize: 14, fontWeight: 700 }}
+                                    sx={{ fontSize: 1, fontWeight: 'bold' }}
                                 >
                                     999 Followers
                                 </Text>
                                 <Text
                                     color="text"
-                                    sx={{ fontSize: 15, fontWeight: 900 }}
+                                    sx={{ fontSize: 15, fontWeight: 'heavy' }}
                                 >
                                     Kyle Le
                                 </Text>

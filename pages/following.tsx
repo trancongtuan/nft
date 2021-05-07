@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Box, Text, Flex, Button } from 'theme-ui'
 import Popover from 'react-popover'
 import Link from 'next/link'
@@ -6,7 +6,7 @@ import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import Question from '../public/assets/images/icons/question.svg'
 import FilterIcon from '../public/assets/images/icons/filter.svg'
-import Tooltip, { TooltipItemProps } from '../components/Tooltip'
+import Tooltip from '../components/Tooltip'
 import ToggleButton from '../components/ToggleButton'
 import TooltipItem from '../components/TooltipItem'
 
@@ -60,7 +60,7 @@ const Following: FC = () => {
                         mr={[1, 1, 2, 2]}
                         sx={{
                             fontSize: [24, 24, 32, 36],
-                            fontWeight: 'heading',
+                            fontWeight: 'bold',
                             color: 'text',
                         }}
                     >
@@ -71,7 +71,7 @@ const Following: FC = () => {
                         body={
                             <Tooltip>
                                 <Flex
-                                    px={8}
+                                    px={2}
                                     sx={{
                                         width: '100%',
                                         maxWidth: 200,
@@ -80,8 +80,8 @@ const Following: FC = () => {
                                     <Text
                                         color="text"
                                         sx={{
-                                            fontWeight: 600,
-                                            fontSize: 14,
+                                            fontWeight: 'semiBold',
+                                            fontSize: 1,
                                             textAlign: 'center',
                                         }}
                                     >
@@ -176,12 +176,15 @@ const Following: FC = () => {
             </Flex>
             <Box sx={{ margin: '60px auto', maxWidth: '360px' }}>
                 <Flex
-                    px={16}
+                    px={3}
                     mt={8}
                     mb={16}
                     sx={{ flexDirection: 'column', alignItems: 'center' }}
                 >
-                    <Text color="text" sx={{ fontWeight: 900, fontSize: 28 }}>
+                    <Text
+                        color="text"
+                        sx={{ fontWeight: 'heavy', fontSize: 28 }}
+                    >
                         No items found
                     </Text>
                     <Text mt={20} sx={{ textAlign: 'center' }}>

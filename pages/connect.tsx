@@ -1,4 +1,3 @@
-import es from 'date-fns/esm/locale/es/index.js'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { FC, useState } from 'react'
@@ -141,7 +140,7 @@ const Connect: FC = () => {
                     <ArrowIcon />
                     <Text
                         sx={{
-                            fontWeight: 700,
+                            fontWeight: 'bold',
                             fontSize: 2,
                             color: 'text',
                         }}
@@ -154,7 +153,7 @@ const Connect: FC = () => {
                     <Text
                         sx={{
                             fontSize: [32, 36, 36, 36],
-                            fontWeight: 'heading',
+                            fontWeight: 'bold',
                             color: 'text',
                         }}
                     >
@@ -166,7 +165,7 @@ const Connect: FC = () => {
                             fontSize: 2,
                             display: 'block',
                             maxWidth: '400px',
-                            fontWeight: 500,
+                            fontWeight: 'body',
                         }}
                     >
                         <Text sx={{ color: 'textSecondary' }}>
@@ -197,7 +196,7 @@ const Connect: FC = () => {
                         <Flex
                             sx={{
                                 flexWrap: 'wrap',
-                                fontWeight: 500,
+                                fontWeight: 'body',
                                 color: 'text',
                             }}
                         >
@@ -284,7 +283,7 @@ const Connect: FC = () => {
                         fontSize: 1,
                         maxWidth: 400,
                         display: 'block',
-                        fontWeight: 500,
+                        fontWeight: 'body',
                     }}
                 >
                     We do not own your private keys and cannot access your funds

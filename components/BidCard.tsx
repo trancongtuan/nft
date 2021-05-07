@@ -103,7 +103,7 @@ const BidCard: FC<BidCardProps> = ({
                             content: '""',
                             height: '40px',
                             display: 'block',
-                            borderRadius: '16px',
+                            borderRadius: 3,
                             border:
                                 colorMode === 'dark'
                                     ? '1px solid rgba(255, 255, 255, 0.1)'
@@ -119,7 +119,7 @@ const BidCard: FC<BidCardProps> = ({
                             content: '""',
                             height: '40px',
                             display: 'block',
-                            borderRadius: '16px',
+                            borderRadius: 3,
                             border:
                                 colorMode === 'dark'
                                     ? '1px solid rgba(255, 255, 255, 0.1)'
@@ -136,7 +136,7 @@ const BidCard: FC<BidCardProps> = ({
                     height: '100%',
                     width: '100%',
                     position: 'relative',
-                    borderRadius: 16,
+                    borderRadius: 1,
                     border:
                         colorMode === 'dark'
                             ? '1px solid rgba(255, 255, 255, 0.1)'
@@ -238,7 +238,7 @@ const BidCard: FC<BidCardProps> = ({
                                 right: 0,
                                 mx: 'auto',
                                 my: 'auto',
-                                borderRadius: 6,
+                                borderRadius: 0,
                                 cursor: 'pointer',
                             }}
                             src={image}
@@ -253,7 +253,7 @@ const BidCard: FC<BidCardProps> = ({
                                 }}
                             >
                                 <Flex
-                                    pl={8}
+                                    pl={2}
                                     pr={10}
                                     bg="background"
                                     m="2px"
@@ -261,7 +261,7 @@ const BidCard: FC<BidCardProps> = ({
                                         position: 'relative',
                                         border: '2px solid transparent',
                                         height: 32,
-                                        borderRadius: 32,
+                                        borderRadius: 3,
                                         textAlign: 'center',
                                         justifyContent: 'center',
                                         alignItems: 'center',
@@ -271,13 +271,13 @@ const BidCard: FC<BidCardProps> = ({
                                             inset: 0,
                                             zIndex: -1,
                                             m: '-4px',
-                                            borderRadius: 32,
+                                            borderRadius: 3,
                                             background:
                                                 'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
                                         },
                                         fontSize: 13,
                                         color: 'text',
-                                        fontWeight: 900,
+                                        fontWeight: 'heavy',
                                         cursor: 'pointer',
                                     }}
                                 >
@@ -297,7 +297,7 @@ const BidCard: FC<BidCardProps> = ({
                         sx={{
                             fontSize: '15px',
                             lineHeight: '20.7px',
-                            fontWeight: 900,
+                            fontWeight: 'heavy',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -317,7 +317,7 @@ const BidCard: FC<BidCardProps> = ({
                         sx={{
                             fontSize: '14px',
                             lineHeight: '19.32px',
-                            fontWeight: 900,
+                            fontWeight: 'heavy',
                         }}
                     >
                         <TextWithTooltip
@@ -389,7 +389,6 @@ const BidCard: FC<BidCardProps> = ({
                             if (onLike) onLike()
                             setLike(!like)
                         }}
-                        color="#040405"
                         mr={-8}
                         mb={-8}
                         bg="transparent"
@@ -425,7 +424,7 @@ const BidCard: FC<BidCardProps> = ({
                             ml="4px"
                             sx={{
                                 fontSize: '14px',
-                                fontWeight: 900,
+                                fontWeight: 'heavy',
                                 color: 'text',
                             }}
                         >

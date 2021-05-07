@@ -55,12 +55,12 @@ const DateTimePicker: FC<DateTimePickerProps> = ({ onChange }) => {
                     color: 'text',
                 },
                 '.react-datepicker-time__caption': {
-                    fontSize: 16,
+                    fontSize: 2,
                 },
                 '.react-datepicker-time__input': {
                     bg: 'transparent',
                     color: 'text',
-                    fontSize: 16,
+                    fontSize: 2,
                     outline: 'none',
                     border: 0,
                     px: 12,
@@ -71,7 +71,7 @@ const DateTimePicker: FC<DateTimePickerProps> = ({ onChange }) => {
                     borderWidth: 1,
                     borderColor: 'rgba(4, 4, 5, 0.1)',
                     borderStyle: 'solid',
-                    borderRadius: 40,
+                    borderRadius: 4,
                     ':hover': {
                         borderColor: 'rgba(4, 4, 5, 0.2)',
                     },
@@ -98,14 +98,14 @@ const DateTimePicker: FC<DateTimePickerProps> = ({ onChange }) => {
                 }) => (
                     <Flex
                         color="text"
-                        px={16}
+                        px={3}
                         pb={16}
                         sx={{
                             svg: { fill: 'text' },
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            fontSize: 16,
-                            fontWeight: 900,
+                            fontSize: 2,
+                            fontWeight: 'heavy',
                         }}
                     >
                         <Box onClick={decreaseMonth} sx={{ cursor: 'pointer' }}>

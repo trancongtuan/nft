@@ -23,9 +23,6 @@ export const PopupShare: FC<PopupCancelProps> = ({ onClose }) => {
                     label="Message"
                     value=""
                     placeholder="Tell us some detail"
-                    onChange={(value) => {
-                        console.log(value)
-                    }}
                 />
             </Box>
             <Button

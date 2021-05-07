@@ -118,7 +118,7 @@ const TooltipItem: FC<TooltipItemProps> = ({ onClick, label, rightStatic }) => (
             transition: 'all 0.12s ease-in-out 0s',
             textAlign: 'left',
             minHeight: 32,
-            borderRadius: 6,
+            borderRadius: 0,
             ':hover': {
                 backgroundColor: 'hover',
             },
@@ -135,7 +135,7 @@ const TooltipItem: FC<TooltipItemProps> = ({ onClick, label, rightStatic }) => (
                     color: 'text',
                     fontSize: 1,
                     lineHeight: '19px',
-                    fontWeight: 'heading',
+                    fontWeight: 'bold',
                     textOverflow: 'ellipsis',
                     overflow: 'hidden',
                     whiteSpace: 'nowrap',
@@ -188,8 +188,8 @@ const SearchInput: FC = () => {
     const [bg, borderColor, boxShadow] = useColorInput(focus, colorMode)
     return (
         <Flex
-            pl={16}
-            pr={8}
+            pl={3}
+            pr={2}
             bg={bg}
             mr={24}
             color="text"
@@ -237,7 +237,7 @@ const SearchInput: FC = () => {
                             colorMode === 'dark'
                                 ? 'rgba(255, 255, 255, 0.5)'
                                 : 'rgba(4, 4, 5, 0.4)',
-                        fontWeight: 900,
+                        fontWeight: 'heavy',
                         fontSize: 1,
                     },
                 }}
@@ -321,15 +321,15 @@ const Search: FC<SearchProps> = ({ onClose }) => {
                     <SearchInput />
                 </Flex>
             </Box>
-            <Box py={16} sx={{ width: '100%' }}>
+            <Box py={3} sx={{ width: '100%' }}>
                 <Flex
                     px={24}
-                    py={8}
+                    py={2}
                     sx={{ alignItems: 'center', justifyContent: 'center' }}
                 >
                     <Text
                         color="textSecondary"
-                        py={32}
+                        py={4}
                         sx={{
                             maxWidth: 215,
                             textAlign: 'center',
@@ -419,14 +419,14 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     </Button>
                 </Flex>
             </Box>
-            <Box px={16} mt={8} sx={{ width: '100%' }}>
+            <Box px={3} mt={8} sx={{ width: '100%' }}>
                 <Flex sx={{ flexDirection: 'column' }}>
                     <Text
                         mb={8}
                         color="text"
                         sx={{
-                            fontSize: 20,
-                            fontWeight: 900,
+                            fontSize: 3,
+                            fontWeight: 'heavy',
                             cursor: 'pointer',
                         }}
                     >
@@ -436,8 +436,8 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         mb={8}
                         color="text"
                         sx={{
-                            fontSize: 20,
-                            fontWeight: 900,
+                            fontSize: 3,
+                            fontWeight: 'heavy',
                             cursor: 'pointer',
                         }}
                     >
@@ -447,8 +447,8 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         mb={8}
                         color="text"
                         sx={{
-                            fontSize: 20,
-                            fontWeight: 900,
+                            fontSize: 3,
+                            fontWeight: 'heavy',
                             cursor: 'pointer',
                         }}
                     >
@@ -459,8 +459,8 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             mb={8}
                             color="text"
                             sx={{
-                                fontSize: 20,
-                                fontWeight: 900,
+                                fontSize: 3,
+                                fontWeight: 'heavy',
                             }}
                         >
                             Activity
@@ -477,8 +477,8 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         mb={8}
                         color="text"
                         sx={{
-                            fontSize: 20,
-                            fontWeight: 900,
+                            fontSize: 3,
+                            fontWeight: 'heavy',
                             cursor: 'pointer',
                         }}
                     >
@@ -489,7 +489,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     <Text
                         sx={{
                             fontSize: 18,
-                            fontWeight: 900,
+                            fontWeight: 'heavy',
                             color: 'rgb(12, 80, 255)',
                             WebkitTextFillColor: 'transparent',
                             WebkitBackgroundClip: 'text',
@@ -505,8 +505,8 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         mb={8}
                         color="text"
                         sx={{
-                            fontSize: 20,
-                            fontWeight: 900,
+                            fontSize: 3,
+                            fontWeight: 'heavy',
                             cursor: 'pointer',
                         }}
                     >
@@ -516,8 +516,8 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         mb={8}
                         color="text"
                         sx={{
-                            fontSize: 20,
-                            fontWeight: 900,
+                            fontSize: 3,
+                            fontWeight: 'heavy',
                             cursor: 'pointer',
                         }}
                     >
@@ -527,8 +527,8 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         mb={8}
                         color="text"
                         sx={{
-                            fontSize: 20,
-                            fontWeight: 900,
+                            fontSize: 3,
+                            fontWeight: 'heavy',
                             cursor: 'pointer',
                         }}
                     >
@@ -538,8 +538,8 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         mb={8}
                         color="text"
                         sx={{
-                            fontSize: 20,
-                            fontWeight: 900,
+                            fontSize: 3,
+                            fontWeight: 'heavy',
                             cursor: 'pointer',
                         }}
                     >
@@ -549,8 +549,8 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         mb={8}
                         color="text"
                         sx={{
-                            fontSize: 20,
-                            fontWeight: 900,
+                            fontSize: 3,
+                            fontWeight: 'heavy',
                             cursor: 'pointer',
                         }}
                     >
@@ -558,7 +558,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     </Text>
                 </Flex>
             </Box>
-            <Box mt="auto" p={16}>
+            <Box mt="auto" p={3}>
                 <Box bg="borderColor" sx={{ width: '100%', height: 1 }} />
                 <Flex
                     mt={28}
@@ -643,7 +643,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                 <Button
                     mt={16}
                     variant="secondary"
-                    sx={{ width: '100%', height: 48, borderRadius: 48 }}
+                    sx={{ width: '100%', height: 48, borderRadius: 5 }}
                     onClick={() => {
                         router.push('/create')
                         onClose()
@@ -729,10 +729,10 @@ const NavigationBar: FC = () => {
                         }
                     />
                     <Box
+                        bg="borderColor"
                         sx={{
                             height: 24,
                             width: 1,
-                            background: 'rgba(4, 4, 5, 0.1)',
                             mx: 18,
                         }}
                     />
@@ -754,7 +754,7 @@ const NavigationBar: FC = () => {
                             <Text
                                 sx={{
                                     color: 'textSecondary',
-                                    fontWeight: 'heading',
+                                    fontWeight: 'bold',
                                     fontSize: 1,
                                     lineHeight: '30px',
                                     transition: 'all 0.12s ease-in-out 0s',
@@ -777,7 +777,7 @@ const NavigationBar: FC = () => {
                                         sx={{ height: 1 }}
                                     />
                                     <Flex
-                                        py={8}
+                                        py={2}
                                         px={24}
                                         sx={{
                                             justifyContent: 'space-around',
@@ -894,7 +894,7 @@ const NavigationBar: FC = () => {
                                         mr="4px"
                                         ml={20}
                                         sx={{
-                                            fontWeight: 'heading',
+                                            fontWeight: 'bold',
                                             fontSize: 1,
                                             lineHeight: '30px',
                                             transition:
@@ -968,7 +968,7 @@ const NavigationBar: FC = () => {
                         body={
                             <Tooltip minWidth={295}>
                                 <Flex
-                                    py={8}
+                                    py={2}
                                     px={24}
                                     sx={{
                                         justifyContent: 'space-around',
@@ -986,7 +986,7 @@ const NavigationBar: FC = () => {
                                             color="text"
                                             sx={{
                                                 fontSize: 1,
-                                                fontWeight: 900,
+                                                fontWeight: 'heavy',
                                             }}
                                         >
                                             Notifications
@@ -996,7 +996,7 @@ const NavigationBar: FC = () => {
                                                 color="primary"
                                                 sx={{
                                                     fontSize: 1,
-                                                    fontWeight: 700,
+                                                    fontWeight: 'bold',
                                                     cursor: 'pointer',
                                                 }}
                                             >
@@ -1023,7 +1023,7 @@ const NavigationBar: FC = () => {
                                             sx={{
                                                 textAlign: 'center',
                                                 fontSize: 18,
-                                                fontWeight: 500,
+                                                fontWeight: 'body',
                                             }}
                                         >
                                             No new notifications
@@ -1071,14 +1071,14 @@ const NavigationBar: FC = () => {
                         isOpen={showDetail}
                         body={
                             <Tooltip minWidth={318}>
-                                <Box py={8} px={24}>
+                                <Box py={2} px={24}>
                                     <Flex sx={{ alignItems: 'center' }}>
                                         <Text
                                             sx={{
-                                                fontSize: 16,
+                                                fontSize: 2,
                                                 lineHeight: '22px',
                                                 color: 'text',
-                                                fontWeight: 700,
+                                                fontWeight: 'bold',
                                             }}
                                         >
                                             0xd92e44ac213b9...fa96
@@ -1127,7 +1127,7 @@ const NavigationBar: FC = () => {
                                                 sx={{
                                                     width: 40,
                                                     height: 40,
-                                                    borderRadius: 40,
+                                                    borderRadius: 4,
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                     svg: {
@@ -1142,7 +1142,7 @@ const NavigationBar: FC = () => {
                                                 sx={{
                                                     flexDirection: 'column',
                                                     fontSize: 1,
-                                                    fontWeight: 700,
+                                                    fontWeight: 'bold',
                                                 }}
                                             >
                                                 <Text
@@ -1167,7 +1167,7 @@ const NavigationBar: FC = () => {
                                                 sx={{
                                                     width: 40,
                                                     height: 40,
-                                                    borderRadius: 40,
+                                                    borderRadius: 4,
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                     svg: {
@@ -1182,7 +1182,7 @@ const NavigationBar: FC = () => {
                                                 sx={{
                                                     flexDirection: 'column',
                                                     fontSize: 1,
-                                                    fontWeight: 700,
+                                                    fontWeight: 'bold',
                                                 }}
                                             >
                                                 <Flex

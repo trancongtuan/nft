@@ -1,4 +1,4 @@
-import { Flex, Text, useColorMode } from 'theme-ui'
+import { Flex, Text } from 'theme-ui'
 import React, { FC, ReactNode, useCallback } from 'react'
 import Avatar, { AvatarProps } from './Avatar'
 
@@ -278,22 +278,17 @@ const ActivityCard: FC<ActivityCardProps> = ({
         },
         [type]
     )
-    const [colorMode] = useColorMode()
     return (
         <Flex
             sx={{
-                border:
-                    colorMode === 'dark'
-                        ? '1px solid rgba(255, 255, 255, 0.1)'
-                        : '1px solid rgba(4, 4, 5, 0.1)',
-                borderRadius: 16,
+                borderWidth: 1,
+                borderStyle: 'solid',
+                borderColor: 'borderColor',
+                borderRadius: 1,
                 p: 24,
                 transition: 'all 0.12s ease-in-out 0s',
                 ':hover': {
-                    bg:
-                        colorMode === 'dark'
-                            ? 'rgba(255, 255, 255, 0.05)'
-                            : 'rgba(4, 4, 5, 0.05)',
+                    bg: 'hover',
                     borderColor: 'transparent',
                 },
                 alignItems: 'center',
@@ -302,11 +297,15 @@ const ActivityCard: FC<ActivityCardProps> = ({
             onClick={onCLick}
         >
             <Avatar {...avatarProps} type={type} showType size="lg" />
-            <Flex px={16} sx={{ flexDirection: 'column' }}>
+            <Flex px={3} sx={{ flexDirection: 'column' }}>
                 <Text
                     mb="4px"
                     color="text"
-                    sx={{ fontWeight: 900, fontSize: 2, lineHeight: '22px' }}
+                    sx={{
+                        fontWeight: 'heavy',
+                        fontSize: 2,
+                        lineHeight: '22px',
+                    }}
                 >
                     {name}
                 </Text>

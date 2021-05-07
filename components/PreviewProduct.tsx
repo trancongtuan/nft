@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Image } from 'theme-ui'
+import { Box, Flex, Text, Image } from 'theme-ui'
 import React, { FC, useEffect } from 'react'
 import PreviewIcon from '../public/assets/images/icons/preview.svg'
 
@@ -86,7 +86,7 @@ const PreviewProduct: FC<PreviewProductProps> = ({
                     bottom: 30,
                     left: 30,
                     color: 'text',
-                    fontWeight: 600,
+                    fontWeight: 'semiBold',
                     maxWidth: '300px',
                 }}
             >

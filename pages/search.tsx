@@ -36,7 +36,7 @@ const Search: FC = () => {
                         mr={[1, 1, 2, 2]}
                         sx={{
                             fontSize: [24, 24, 32, 36],
-                            fontWeight: 'heading',
+                            fontWeight: 'bold',
                             color: 'textSecondary',
                         }}
                     >
@@ -45,7 +45,7 @@ const Search: FC = () => {
                     <Text
                         sx={{
                             fontSize: [24, 24, 32, 36],
-                            fontWeight: 'heading',
+                            fontWeight: 'bold',
                             color: 'text',
                         }}
                     >

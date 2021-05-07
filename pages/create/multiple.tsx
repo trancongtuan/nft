@@ -44,7 +44,7 @@ const CurrencyIcon: FC<CurrencyIconProps> = ({ name }) => (
         sx={{
             width: 24,
             height: 24,
-            borderRadius: 24,
+            borderRadius: 2,
             overflow: 'hidden',
         }}
     >
@@ -161,7 +161,7 @@ const MarketplaceItem: FC<MarketplaceItemProps> = ({
             borderWidth: 2,
             borderStyle: 'solid',
             borderColor: selected ? 'primary' : 'borderColor',
-            borderRadius: 16,
+            borderRadius: 1,
             ':hover': {
                 borderColor: selected ? 'primary' : 'borderHoverColor',
             },
@@ -177,7 +177,7 @@ const MarketplaceItem: FC<MarketplaceItemProps> = ({
                 maxWidth: 60,
                 textAlign: 'center',
                 fontSize: [12, 14],
-                fontWeight: 900,
+                fontWeight: 'heavy',
             }}
         >
             {label}
@@ -214,7 +214,7 @@ const CollectionItem: FC<CollectionItemProps> = ({
             borderWidth: 2,
             borderStyle: 'solid',
             borderColor: selected ? 'primary' : 'borderColor',
-            borderRadius: 16,
+            borderRadius: 1,
             ':hover': {
                 borderColor: selected ? 'primary' : 'borderHoverColor',
             },
@@ -229,13 +229,13 @@ const CollectionItem: FC<CollectionItemProps> = ({
             sx={{
                 maxWidth: 60,
                 textAlign: 'center',
-                fontSize: 16,
-                fontWeight: 900,
+                fontSize: 2,
+                fontWeight: 'heavy',
             }}
         >
             {label}
         </Text>
-        <Text color="textSecondary" sx={{ fontSize: 12 }}>
+        <Text color="textSecondary" sx={{ fontSize: 0 }}>
             {subLabel}
         </Text>
     </Flex>
@@ -279,7 +279,7 @@ const Create: FC = () => {
                 <Flex ml={16} sx={{ flexDirection: 'column' }}>
                     <Text
                         color="textSecondary"
-                        sx={{ fontSize: 1, fontWeight: 500 }}
+                        sx={{ fontSize: 1, fontWeight: 'body' }}
                     >
                         We recommend an image of at least 400x400. Gifs work
                         too.
@@ -300,7 +300,6 @@ const Create: FC = () => {
                     optionLabel="required"
                     placeholder="Enter token name"
                     value=""
-                    onChange={(text) => console.log(text)}
                     staticBottom="Token name cannot be changed in future"
                 />
             </Box>
@@ -310,7 +309,6 @@ const Create: FC = () => {
                     optionLabel="required"
                     placeholder="Enter token symbol"
                     value=""
-                    onChange={(text) => console.log(text)}
                 />
             </Box>
             <Box mt={16}>
@@ -319,7 +317,6 @@ const Create: FC = () => {
                     optionLabel="optional"
                     placeholder="Spread some words about your token collection"
                     value=""
-                    onChange={(text) => console.log(text)}
                 />
             </Box>
             <Box mt={16}>
@@ -327,12 +324,11 @@ const Create: FC = () => {
                     label="Short url"
                     placeholder="Enter short url"
                     value=""
-                    onChange={(text) => console.log(text)}
                     staticLeft={
                         <Flex mr={8} sx={{ flexShrink: 0 }}>
                             <Text
                                 color="text"
-                                sx={{ fontWeight: 500, fontSize: 16 }}
+                                sx={{ fontWeight: 'body', fontSize: 2 }}
                             >
                                 rarible.com/
                             </Text>
@@ -398,7 +394,7 @@ const Multiple: FC = () => {
                         }}
                     >
                         <BackIcon />
-                        <Text ml={8} sx={{ fontWeight: 700, fontSize: 16 }}>
+                        <Text ml={8} sx={{ fontWeight: 'bold', fontSize: 2 }}>
                             Manage collectible type
                         </Text>
                     </Flex>
@@ -406,7 +402,7 @@ const Multiple: FC = () => {
                         mt={16}
                         color="text"
                         mb={32}
-                        sx={{ fontSize: [24, 32, 36], fontWeight: 900 }}
+                        sx={{ fontSize: [24, 32, 36], fontWeight: 'heavy' }}
                     >
                         Create multiple collectible
                     </Text>
@@ -419,12 +415,12 @@ const Multiple: FC = () => {
                             <Text
                                 mb={8}
                                 color="text"
-                                sx={{ fontSize: 17, fontWeight: 900 }}
+                                sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
                                 Upload file
                             </Text>
                             <Flex
-                                py={32}
+                                py={4}
                                 px={60}
                                 mb={40}
                                 sx={{
@@ -432,7 +428,7 @@ const Multiple: FC = () => {
                                     borderWidth: 2,
                                     borderStyle: 'dashed',
                                     borderColor: 'borderColor',
-                                    borderRadius: 16,
+                                    borderRadius: 1,
                                     minHeight: 140,
                                     alignItems: 'center',
                                     justifyContent: 'center',
@@ -462,7 +458,7 @@ const Multiple: FC = () => {
                                             src={file}
                                             sx={{
                                                 width: 300,
-                                                borderRadius: 6,
+                                                borderRadius: 0,
                                             }}
                                         />
                                     </>
@@ -472,7 +468,7 @@ const Multiple: FC = () => {
                                             mb={16}
                                             color="textSecondary"
                                             sx={{
-                                                fontWeight: 500,
+                                                fontWeight: 'body',
                                                 fontSize: 15,
                                                 textAlign: 'center',
                                             }}
@@ -508,13 +504,16 @@ const Multiple: FC = () => {
                                     <Text
                                         mb="4px"
                                         color="text"
-                                        sx={{ fontSize: 17, fontWeight: 900 }}
+                                        sx={{
+                                            fontSize: 17,
+                                            fontWeight: 'heavy',
+                                        }}
                                     >
                                         Put on marketplace
                                     </Text>
                                     <Text
                                         color="textSecondary"
-                                        sx={{ fontSize: 14, fontWeight: 500 }}
+                                        sx={{ fontSize: 1, fontWeight: 'body' }}
                                     >
                                         {content}
                                     </Text>
@@ -547,9 +546,6 @@ const Multiple: FC = () => {
                                                 label="Price"
                                                 value=""
                                                 placeholder="Enter price for one piece"
-                                                onChange={(value) => {
-                                                    console.log(value)
-                                                }}
                                                 staticRight={
                                                     <Popover
                                                         onOuterAction={() =>
@@ -600,8 +596,9 @@ const Multiple: FC = () => {
                                                             <Text
                                                                 mr={8}
                                                                 sx={{
-                                                                    fontSize: 14,
-                                                                    fontWeight: 700,
+                                                                    fontSize: 1,
+                                                                    fontWeight:
+                                                                        'bold',
                                                                 }}
                                                             >
                                                                 {currency.label}
@@ -618,7 +615,7 @@ const Multiple: FC = () => {
                                                     color="textSecondary"
                                                     sx={{
                                                         fontSize: 15,
-                                                        fontWeight: 500,
+                                                        fontWeight: 'body',
                                                         lineHeight: '20.7px',
                                                     }}
                                                 >
@@ -631,7 +628,7 @@ const Multiple: FC = () => {
                                                     color="textSecondary"
                                                     sx={{
                                                         fontSize: 15,
-                                                        fontWeight: 500,
+                                                        fontWeight: 'body',
                                                         lineHeight: '20.7px',
                                                     }}
                                                 >
@@ -659,7 +656,7 @@ const Multiple: FC = () => {
                                             color="primary"
                                             sx={{
                                                 fontSize: 17,
-                                                fontWeight: 900,
+                                                fontWeight: 'heavy',
                                                 WebkitTextFillColor:
                                                     'transparent',
                                                 WebkitBackgroundClip: 'text',
@@ -672,7 +669,7 @@ const Multiple: FC = () => {
                                     </Text>
                                     <Text
                                         color="textSecondary"
-                                        sx={{ fontSize: 14, fontWeight: 500 }}
+                                        sx={{ fontSize: 1, fontWeight: 'body' }}
                                     >
                                         Content will be unlocked after
                                         successful transaction
@@ -699,7 +696,7 @@ const Multiple: FC = () => {
                                     <Text
                                         mt={8}
                                         color="textSecondary"
-                                        sx={{ fontSize: 14, fontWeight: 500 }}
+                                        sx={{ fontSize: 1, fontWeight: 'body' }}
                                     >
                                         Tip: Markdown syntax is supported
                                     </Text>
@@ -709,7 +706,7 @@ const Multiple: FC = () => {
                                 mt={40}
                                 mb="4px"
                                 color="text"
-                                sx={{ fontSize: 17, fontWeight: 900 }}
+                                sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
                                 Choose collection
                             </Text>
@@ -738,7 +735,6 @@ const Multiple: FC = () => {
                                 label="Title"
                                 placeholder={`e. g. "Redeemable T-Shirt with logo"`}
                                 value=""
-                                onChange={(text) => console.log(text)}
                             />
                             <Box mt={40}>
                                 <CustomInput
@@ -746,7 +742,6 @@ const Multiple: FC = () => {
                                     optionLabel="Optional"
                                     placeholder={`e. g. "After purchasing you’ll be able to get the real T-Shirt"`}
                                     value=""
-                                    onChange={(text) => console.log(text)}
                                 />
                             </Box>
                             <Box mt={40}>
@@ -759,21 +754,19 @@ const Multiple: FC = () => {
                                             <Text
                                                 color="textSecondary"
                                                 sx={{
-                                                    fontSize: 16,
-                                                    fontWeight: 500,
+                                                    fontSize: 2,
+                                                    fontWeight: 'body',
                                                 }}
                                             >
                                                 %
                                             </Text>
                                         }
-                                        onChange={(text) => console.log(text)}
                                         staticBottom="Suggested: 10%, 20%, 30%"
                                     />
                                     <CustomInput
                                         label="Number of copies"
                                         placeholder={`E. g. 10"`}
                                         value=""
-                                        onChange={(text) => console.log(text)}
                                         staticBottom="Amount of tokens"
                                     />
                                 </Grid>
@@ -781,13 +774,13 @@ const Multiple: FC = () => {
                             <Text
                                 mt={40}
                                 color="text"
-                                sx={{ fontWeight: 700, fontSize: 16 }}
+                                sx={{ fontWeight: 'bold', fontSize: 2 }}
                             >
                                 Properties
                                 <Text
                                     ml={8}
                                     color="textSecondary"
-                                    sx={{ fontSize: 1, fontWeight: 500 }}
+                                    sx={{ fontSize: 1, fontWeight: 'body' }}
                                 >
                                     (Optional)
                                 </Text>
@@ -797,13 +790,11 @@ const Multiple: FC = () => {
                                     label=""
                                     placeholder="e.g Size"
                                     value=""
-                                    onChange={(text) => console.log(text)}
                                 />
                                 <CustomInput
                                     label=""
                                     placeholder="e.g M"
                                     value=""
-                                    onChange={(text) => console.log(text)}
                                 />
                             </Grid>
                             <Flex mt={32} sx={{ alignItems: 'center' }}>
@@ -813,7 +804,7 @@ const Multiple: FC = () => {
                                 <Text
                                     ml="auto"
                                     color="textSecondary"
-                                    sx={{ fontSize: 14, fontWeight: 500 }}
+                                    sx={{ fontSize: 1, fontWeight: 'body' }}
                                 >
                                     Saved 8 minutes ago
                                 </Text>
@@ -822,7 +813,7 @@ const Multiple: FC = () => {
                                     body={
                                         <Tooltip>
                                             <Flex
-                                                px={8}
+                                                px={2}
                                                 sx={{
                                                     width: '100%',
                                                     maxWidth: 200,
@@ -831,8 +822,8 @@ const Multiple: FC = () => {
                                                 <Text
                                                     color="text"
                                                     sx={{
-                                                        fontWeight: 500,
-                                                        fontSize: 12,
+                                                        fontWeight: 'body',
+                                                        fontSize: 0,
                                                         textAlign: 'center',
                                                     }}
                                                 >
@@ -879,7 +870,7 @@ const Multiple: FC = () => {
                             <Text
                                 mb={8}
                                 color="text"
-                                sx={{ fontSize: 17, fontWeight: 900 }}
+                                sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
                                 Preview
                             </Text>
@@ -909,7 +900,7 @@ const Multiple: FC = () => {
                                     sx={{
                                         with: '100%',
                                         height: '100%',
-                                        borderRadius: 16,
+                                        borderRadius: 1,
                                         borderWidth: 1,
                                         borderColor: 'borderColor',
                                         borderStyle: 'solid',
@@ -929,7 +920,7 @@ const Multiple: FC = () => {
                                             sx={{
                                                 textAlign: 'center',
                                                 fontSize: 15,
-                                                fontWeight: 500,
+                                                fontWeight: 'body',
                                             }}
                                         >
                                             Upload file to preview your brand
@@ -944,7 +935,7 @@ const Multiple: FC = () => {
                                     sx={{
                                         with: '100%',
                                         height: '100%',
-                                        borderRadius: 16,
+                                        borderRadius: 1,
                                         borderWidth: 1,
                                         borderColor: 'borderColor',
                                         borderStyle: 'solid',
@@ -957,7 +948,7 @@ const Multiple: FC = () => {
                                             color="text"
                                             sx={{
                                                 fontSize: 15,
-                                                fontWeight: 700,
+                                                fontWeight: 'bold',
                                             }}
                                         >
                                             {unlockValue}
@@ -968,7 +959,7 @@ const Multiple: FC = () => {
                                             sx={{
                                                 width: '100%',
                                                 fontSize: 15,
-                                                fontWeight: 700,
+                                                fontWeight: 'bold',
                                                 textAlign: 'center',
                                             }}
                                         >

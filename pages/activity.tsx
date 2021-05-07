@@ -1,5 +1,6 @@
 import React, { FC, useState, ReactNode } from 'react'
 import { Box, Text, Heading, Flex, Button } from 'theme-ui'
+import { v4 as uuidv4 } from 'uuid'
 import NavigationBar from '../components/NavigationBar'
 import ActivityCard from '../components/ActivityCard'
 import FilterButton from '../components/FilterButton'
@@ -10,15 +11,19 @@ const renderNone = (): ReactNode => {
     return (
         <Box sx={{ margin: '0 auto' }}>
             <Flex
-                px={16}
+                px={3}
                 mt={8}
                 mb={16}
                 sx={{ flexDirection: 'column', alignItems: 'center' }}
             >
-                <Text color="text" sx={{ fontWeight: 900, fontSize: 28 }}>
+                <Text color="text" sx={{ fontWeight: 'heavy', fontSize: 28 }}>
                     Nothing yet
                 </Text>
-                <Text color="textSecondary" sx={{ fontWeight: 900 }} mt={20}>
+                <Text
+                    color="textSecondary"
+                    sx={{ fontWeight: 'heavy' }}
+                    mt={20}
+                >
                     Activity will be shown here
                 </Text>
 
@@ -47,8 +52,8 @@ const renderCards = (): ReactNode => {
                 },
             }}
         >
-            {new Array(10).fill(0).map((x) => (
-                <Box sx={{ marginBottom: '12px' }}>
+            {new Array(10).fill(0).map(() => (
+                <Box key={uuidv4()} sx={{ marginBottom: '12px' }}>
                     <ActivityCard
                         type="follow"
                         src="https://via.placeholder.com/500x100"
@@ -93,7 +98,7 @@ const Activity: FC = () => {
         <Box>
             <NavigationBar />
             <Box
-                pt={32}
+                pt={4}
                 pl={24}
                 pr={24}
                 sx={{ maxWidth: 934, margin: '0 auto' }}
@@ -101,7 +106,7 @@ const Activity: FC = () => {
                 <Heading sx={{ fontSize: '36px', fontWeight: '900' }}>
                     Activity
                 </Heading>
-                <Box sx={{ marginTop: '16px' }}>
+                <Box sx={{ mt: 3 }}>
                     <Selection
                         borderBottom
                         items={[
@@ -122,7 +127,7 @@ const Activity: FC = () => {
                     {showCards ? renderCards() : renderNone()}
                     <Box
                         sx={{
-                            marginLeft: '32px',
+                            ml: 4,
                             width: '35%',
                             '@media screen and (max-width: 776px)': {
                                 display: 'none',
@@ -145,7 +150,7 @@ const Activity: FC = () => {
                                 </Text>
                             )}
                         </Flex>
-                        <Flex sx={{ marginTop: '16px', flexWrap: 'wrap' }}>
+                        <Flex sx={{ mt: 3, flexWrap: 'wrap' }}>
                             <FilterButton
                                 toggleShowReset={() => toggleShowReset()}
                                 reset={resetFilter}
@@ -199,11 +204,10 @@ const Activity: FC = () => {
                 </Flex>
             </Box>
             <Box
+                px={24}
                 sx={{
                     display: 'none',
                     width: '100%',
-                    paddingLeft: '24px',
-                    paddingRight: '24px',
                     position: 'fixed',
                     bottom: '0',
                     '@media screen and (max-width: 776px)': {
@@ -231,7 +235,7 @@ const Activity: FC = () => {
                 }}
                 label="Filters"
             >
-                <Flex sx={{ width: 400, marginTop: '16px', flexWrap: 'wrap' }}>
+                <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <FilterButton
                         toggleShowReset={() => toggleShowReset()}
                         reset={false}

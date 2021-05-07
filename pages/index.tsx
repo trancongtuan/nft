@@ -4,6 +4,7 @@ import { Box, Button, Flex, Text } from 'theme-ui'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import Popover from 'react-popover'
+import { v4 as uuidv4 } from 'uuid'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
 import EdgeOverflow from '../components/EdgeOverflow'
@@ -276,7 +277,7 @@ const Home: FC = () => {
     return (
         <Layout>
             <Box
-                py={32}
+                py={4}
                 px={[24, 28, 32]}
                 mx="auto"
                 sx={{
@@ -288,6 +289,7 @@ const Home: FC = () => {
                     <Flex ref={ref} sx={{ overflowX: 'auto' }} mb={30}>
                         {new Array(10).fill(0).map(() => (
                             <Flex
+                                key={uuidv4()}
                                 mr={16}
                                 sx={{
                                     width: [
@@ -317,7 +319,7 @@ const Home: FC = () => {
                 <Flex mb={30}>
                     <Text
                         color="text"
-                        sx={{ fontSize: [24, 27, 30], fontWeight: 700 }}
+                        sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
                         Top
                         <Popover
@@ -391,6 +393,7 @@ const Home: FC = () => {
                     <Flex ml={-20} sx={{ overflowX: 'auto' }}>
                         {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
                             <Box
+                                key={uuidv4()}
                                 pl={20}
                                 sx={{
                                     width: [260, 214, '25%', '20%'],
@@ -420,7 +423,7 @@ const Home: FC = () => {
                     <Text
                         mb={24}
                         color="text"
-                        sx={{ fontSize: [24, 27, 30], fontWeight: 700 }}
+                        sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
                         Hot bids 🔥
                     </Text>
@@ -436,7 +439,7 @@ const Home: FC = () => {
                     <Text
                         mb={24}
                         color="text"
-                        sx={{ fontSize: [24, 27, 30], fontWeight: 700 }}
+                        sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
                         Hot collections 💥
                     </Text>
@@ -452,11 +455,11 @@ const Home: FC = () => {
                     </Carousel>
                 </Flex>
                 <Box
+                    bg="borderColor"
                     mb={28}
                     sx={{
                         width: '100%',
                         height: 1,
-                        background: 'rgba(4, 4, 5, 0.1)',
                     }}
                 />
                 <Flex>
@@ -465,7 +468,7 @@ const Home: FC = () => {
                         color="text"
                         sx={{
                             fontSize: [24, 27, 30],
-                            fontWeight: 700,
+                            fontWeight: 'bold',
                             flexShrink: 0,
                         }}
                     >
@@ -580,6 +583,7 @@ const Home: FC = () => {
                 <Flex mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
                     {new Array(countItems).fill(0).map(() => (
                         <Box
+                            key={uuidv4()}
                             p={10}
                             sx={{
                                 maxWidth: [

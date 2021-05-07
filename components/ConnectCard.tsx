@@ -19,7 +19,7 @@ const ConnectCard: FC<ConnectCardProps> = ({ title, text, images, button }) => {
             px={24}
             py={20}
             sx={{
-                borderRadius: 16,
+                borderRadius: 1,
                 border: (t) =>
                     colorMode === 'dark'
                         ? `2px solid ${alpha('#FFF', 0.2)(t)}`
@@ -71,7 +71,7 @@ const ConnectCard: FC<ConnectCardProps> = ({ title, text, images, button }) => {
                     sx={{
                         display: 'block',
                         lineHeight: '24.84px',
-                        fontWeight: 'heading',
+                        fontWeight: 'bold',
                         color: 'text',
                         fontSize: '18px',
                     }}

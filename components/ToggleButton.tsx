@@ -14,10 +14,10 @@ const ToggleButton: FC<ToggleButtonProps> = ({
 }) => {
     return (
         <Box
+            p={1}
             sx={{
                 cursor: 'pointer',
                 borderRadius: size === 'small' ? 28 : 40,
-                padding: 1,
                 width: size === 'small' ? 28 : 40,
                 height: size === 'small' ? 16 : 20,
                 backgroundColor: toggle ? 'toggleButtonOn' : 'toggleButtonOff',

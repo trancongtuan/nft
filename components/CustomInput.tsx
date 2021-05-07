@@ -12,7 +12,7 @@ interface CustomInputProps {
     staticRight?: ReactChild
     staticBottom?: ReactChild
     Icon?: ReactChild
-    onChange: (value: string) => void
+    onChange?: (value: string) => void
 }
 
 const CustomInput: FC<CustomInputProps> = ({
@@ -43,7 +43,7 @@ const CustomInput: FC<CustomInputProps> = ({
                         sx={{
                             fontSize: 13,
                             color: 'textSecondary',
-                            fontWeight: 500,
+                            fontWeight: 'body',
                             lineHeight: 1.3,
                         }}
                     >
@@ -53,7 +53,7 @@ const CustomInput: FC<CustomInputProps> = ({
             </Flex>
             <Text
                 sx={{
-                    fontWeight: 'heading',
+                    fontWeight: 'bold',
                     fontSize: '13px',
                     display: 'block',
                     marginBottom: '7px',
@@ -72,13 +72,15 @@ const CustomInput: FC<CustomInputProps> = ({
                     placeholder={placeholder}
                     defaultValue={value}
                     variant="input"
-                    onChange={(event) => onChange(event.target.value)}
+                    onChange={(event) => {
+                        if (onChange) onChange(event.target.value)
+                    }}
                     value={value}
                 />
                 {staticRight && (
                     <Flex
                         sx={{
-                            fontWeight: 600,
+                            fontWeight: 'semiBold',
                             color: 'textSecondary',
                             fontSize: 1,
                             minWidth: 'max-content',
@@ -95,7 +97,7 @@ const CustomInput: FC<CustomInputProps> = ({
                         sx={{
                             fontSize: 13,
                             color: 'textSecondary',
-                            fontWeight: 500,
+                            fontWeight: 'body',
                             lineHeight: 1.3,
                         }}
                     >

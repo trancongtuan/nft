@@ -25,7 +25,7 @@ const HotCollection: FC<HotCollectionProps> = ({
         <Box
             onClick={onClick}
             sx={{
-                borderRadius: 16,
+                borderRadius: 1,
                 border: (t) =>
                     colorMode === 'dark'
                         ? `1px solid ${alpha('white', 0.1)(t)}`
@@ -47,18 +47,21 @@ const HotCollection: FC<HotCollectionProps> = ({
                     <Avatar {...owner} size="md" />
                 </Box>
                 <Flex
-                    px={16}
+                    px={3}
                     mt={8}
                     mb={16}
                     sx={{ flexDirection: 'column', alignItems: 'center' }}
                 >
-                    <Text color="text" sx={{ fontWeight: 900, fontSize: 16 }}>
+                    <Text
+                        color="text"
+                        sx={{ fontWeight: 'heavy', fontSize: 2 }}
+                    >
                         {name}
                     </Text>
                     <Text
                         mt="4px"
                         color="textSecondary"
-                        sx={{ fontWeight: 700, fontSize: 13 }}
+                        sx={{ fontWeight: 'bold', fontSize: 13 }}
                     >
                         {code}
                     </Text>

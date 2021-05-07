@@ -30,7 +30,7 @@ const TooltipItem: FC<TooltipItemProps> = ({
                 transition: 'all 0.12s ease-in-out 0s',
                 textAlign: 'left',
                 minHeight: 32,
-                borderRadius: 6,
+                borderRadius: 0,
                 ':hover': {
                     backgroundColor: disable ? 'null' : 'hover',
                 },
@@ -48,7 +48,7 @@ const TooltipItem: FC<TooltipItemProps> = ({
                         cursor: disable ? 'text' : 'pointer',
                         fontSize: 1,
                         lineHeight: '19px',
-                        fontWeight: 'heading',
+                        fontWeight: 'bold',
                         textOverflow: 'ellipsis',
                         overflow: 'hidden',
                         whiteSpace: 'nowrap',

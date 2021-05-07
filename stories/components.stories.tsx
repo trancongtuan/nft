@@ -167,7 +167,6 @@ export const CustomInputStory: FC = () => (
         placeholder='e. g. "Redeemable T-shirt with logo"'
         value=""
         staticBottom="With preserved line-break"
-        onChange={(value) => console.log(value)}
     />
 )
 export const SelectionStory: FC = () => <Selection items={selectionItems} />
