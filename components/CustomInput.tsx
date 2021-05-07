@@ -70,7 +70,6 @@ const CustomInput: FC<CustomInputProps> = ({
                     color="text"
                     type={type}
                     placeholder={placeholder}
-                    defaultValue={value}
                     variant="input"
                     onChange={(event) => {
                         if (onChange) onChange(event.target.value)

@@ -401,7 +401,7 @@ const Home: FC = () => {
                                 }}
                             >
                                 {item.map((x, index) => (
-                                    <Box mb={20}>
+                                    <Box key={uuidv4()} mb={20}>
                                         <TopSellerCard
                                             id={idx * 3 + index + 1}
                                             name="Ahihi asd asd zx asd zxc"

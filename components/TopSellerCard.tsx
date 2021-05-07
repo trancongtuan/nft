@@ -20,13 +20,6 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
     size,
     wallet,
 }) => {
-    const styles = {
-        // Theme-ui does not support these CSS so...
-        '-webkit-box-orient': 'vertical',
-        display: '-webkit-box',
-        '-webkit-line-clamp': '1',
-    } as const
-
     return (
         <Flex sx={{ alignItems: 'center' }}>
             {id && (
@@ -52,11 +45,10 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                             display: 'block',
                             fontWeight: 'semiBold',
                             maxWidth: '167px',
+                            whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            fontFamily: 'sans-serif',
                         }}
-                        style={styles}
                     >
                         {name}
                     </Text>
