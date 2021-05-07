@@ -2,6 +2,8 @@ import { Box, Button, Flex, Input, Text, useColorMode } from 'theme-ui'
 import React, { FC, useState } from 'react'
 import Popover from 'react-popover'
 import Link from 'next/link'
+import { useTranslation } from 'next-i18next'
+import { useRouter } from 'next/router'
 import ArrowDown from '../public/assets/images/icons/arrowDown.svg'
 import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 import FacebookIcon from '../public/assets/images/icons/facebook.svg'
@@ -9,31 +11,43 @@ import TelegramIcon from '../public/assets/images/icons/telegram.svg'
 import InstagramIcon from '../public/assets/images/icons/instagram.svg'
 import EmailIcon from '../public/assets/images/icons/email.svg'
 import DiscordIcon from '../public/assets/images/icons/discord.svg'
-import Tooltip from './Tooltip'
+import Tooltip, { TooltipItemProps } from './Tooltip'
 
 const tooltipItems = [
     {
         id: '1',
         label: 'English',
+        value: 'en',
     },
     {
         id: '2',
         label: '中文',
+        value: 'zh',
     },
     {
         id: '3',
         label: '한국어',
+        value: 'ko',
     },
     {
         id: '4',
         label: '日本語',
         isNew: true,
+        value: 'ja',
     },
 ]
 
 const Footer: FC = () => {
     const [colorMode] = useColorMode()
     const [visible, setVisible] = useState(false)
+    const { t } = useTranslation('footer')
+    const router = useRouter()
+    const [locale, setLocale] = useState<TooltipItemProps>(
+        () =>
+            tooltipItems.find(
+                (item) => item.value === router?.locale ?? 'en'
+            ) ?? tooltipItems[0]
+    )
     return (
         <Flex
             mt={32}
@@ -301,12 +315,27 @@ const Footer: FC = () => {
                                     fontWeight: 'heading',
                                 }}
                             >
-                                Language
+                                {t('language')}
                             </Text>
                             <Popover
                                 onOuterAction={() => setVisible(false)}
                                 isOpen={visible}
-                                body={<Tooltip items={tooltipItems} />}
+                                body={
+                                    <Tooltip
+                                        items={tooltipItems}
+                                        onClick={(item) => {
+                                            setLocale(item)
+                                            router.push(
+                                                router.pathname,
+                                                router.pathname,
+                                                {
+                                                    locale: item.value,
+                                                }
+                                            )
+                                        }}
+                                        selectedItem={locale}
+                                    />
+                                }
                                 place="below"
                                 tipSize={0.01}
                             >
@@ -339,7 +368,7 @@ const Footer: FC = () => {
                                         }}
                                         onClick={() => setVisible(!visible)}
                                     >
-                                        <Text>English</Text>
+                                        <Text>{locale.label}</Text>
                                         <ArrowDown />
                                     </Flex>
                                 </Box>
