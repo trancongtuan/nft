@@ -16,11 +16,15 @@ import TelegramIcon from '../public/assets/images/icons/telegram.svg'
 import EmailIcon from '../public/assets/images/icons/email.svg'
 import BidCard from '../components/BidCard'
 import Tooltip from '../components/Tooltip'
+import Popup from '../components/Popup'
+import PopupReport from '../components/PopupReport'
 
 const Collection: FC = () => {
     const [showReport, setShowReport] = useState(false)
     const [showShare, setShowShare] = useState(false)
     const [counter, setCounter] = useState(0)
+    const [showReportPopup, setShowReportPopup] = useState(false)
+
     useEffect(() => {
         if (counter > 0) {
             const timer = setInterval(() => setCounter(counter - 1), 1000)
@@ -284,19 +288,36 @@ const Collection: FC = () => {
                                 <Tooltip
                                     items={[{ id: '1', label: 'Report page' }]}
                                     minWidth={159}
+                                    onClick={() => {
+                                        setShowReportPopup(true)
+                                        setShowReport(false)
+                                    }}
                                 />
                             }
                             place="below"
                             tipSize={0.01}
                         >
                             <Button
-                                onClick={() => setShowReport(!showReport)}
+                                onClick={() => {
+                                    setShowReport(!showReport)
+                                }}
                                 variant="border"
                                 p={0}
                                 sx={{ width: 40 }}
                             >
                                 <ThreeDos />
                             </Button>
+                            <Popup
+                                isOpen={showReportPopup}
+                                onClose={() => {
+                                    setShowReportPopup(false)
+                                }}
+                                label="Why are you reporting?"
+                            >
+                                <PopupReport
+                                    onClose={() => setShowReportPopup(false)}
+                                />
+                            </Popup>
                         </Popover>
                     </Flex>
                 </Flex>
