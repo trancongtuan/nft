@@ -602,17 +602,6 @@ const Home: FC = () => {
                         </Flex>
                         <EdgeOverflow />
                     </Box>
-                    <Button
-                        ml={8}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
-                    >
-                        <FilterIcon />
-                        Filter & Sort
-                    </Button>
-
                     <Popover
                         onOuterAction={() => setShowFilter(false)}
                         isOpen={showFilter}
