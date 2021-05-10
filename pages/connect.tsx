@@ -224,6 +224,10 @@ const Connect: FC = () => {
                     <Flex mt={32} sx={{ flexWrap: 'wrap', width: '100%' }}>
                         {connectItems.map((item) => (
                             <Box
+                                onClick={() => {
+                                    setConnected(true)
+                                    router.push('/')
+                                }}
                                 key={item.id}
                                 m={8}
                                 sx={{
