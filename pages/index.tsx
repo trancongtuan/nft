@@ -1,11 +1,12 @@
 /* eslint-disable no-irregular-whitespace */
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { Box, Button, Flex, Text } from 'theme-ui'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { v4 as uuidv4 } from 'uuid'
-import BidCard from '../components/BidCard'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import BidCard, { BidCardProps } from '../components/BidCard'
 import Carousel from '../components/Carousel'
 import EdgeOverflow from '../components/EdgeOverflow'
 import HotCollection from '../components/HotCollection'
@@ -18,6 +19,25 @@ import Tooltip, { TooltipItemProps } from '../components/Tooltip'
 import useHorizontalScroll from '../hooks/horizontalScroll'
 import TooltipItem from '../components/TooltipItem'
 import ToggleButton from '../components/ToggleButton'
+
+const exploreItem: BidCardProps = {
+    favorite: 10,
+    price: 10,
+    type: 'multiple',
+    image: 'https://picsum.photos/200/400',
+    collection: {
+        src: 'https://picsum.photos/300/300',
+        verified: true,
+    },
+    owner: { src: 'https://picsum.photos/200/300' },
+    creator: {
+        src: 'https://picsum.photos/200/400',
+        verified: true,
+    },
+    name: 'Test',
+    bid: 50,
+    currency: 'WETH',
+}
 
 const carouselItems = [
     {
@@ -298,7 +318,6 @@ const filterItems = [
 
 const Home: FC = () => {
     const router = useRouter()
-    const [countItems, setCountItems] = useState(10)
     const [showSellers, setShowSellers] = useState(false)
     const [showDays, setShowDays] = useState(false)
     const [showFilter, setShowFilter] = useState(false)
@@ -307,6 +326,14 @@ const Home: FC = () => {
     const [seller, setSeller] = useState<TooltipItemProps>(sellerList[0])
     const [day, setDay] = useState<TooltipItemProps>(dayList[0])
     const ref = useHorizontalScroll()
+    const [showLoadMore, setShowLoadMore] = useState(true)
+    const [exploreItems, setExploreItems] = useState(
+        Array(15).fill(exploreItem)
+    )
+    const fetchData = useCallback(() => {
+        const newItems = Array(15).fill(exploreItem)
+        setExploreItems((rev) => rev.concat(newItems))
+    }, [])
     return (
         <Layout>
             <Box
@@ -673,56 +700,85 @@ const Home: FC = () => {
                         </Button>
                     </Popover>
                 </Flex>
-                <Flex mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {new Array(countItems).fill(0).map(() => (
-                        <Box
-                            key={uuidv4()}
-                            p={10}
-                            sx={{
-                                maxWidth: [
-                                    '100%',
-                                    '50%',
-                                    '33.3333%',
-                                    '25%',
-                                    '20%',
-                                ],
-                                flex: [
-                                    '0 0 100%',
-                                    '0 0 50%',
-                                    '0 0 33.3333%',
-                                    '0 0 25%',
-                                    '0 0 20%',
-                                ],
+                {showLoadMore ? (
+                    <>
+                        <Flex mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
+                            {exploreItems.map((item) => (
+                                <Box
+                                    key={uuidv4()}
+                                    p={10}
+                                    sx={{
+                                        maxWidth: [
+                                            '100%',
+                                            '50%',
+                                            '33.3333%',
+                                            '25%',
+                                            '20%',
+                                        ],
+                                        flex: [
+                                            '0 0 100%',
+                                            '0 0 50%',
+                                            '0 0 33.3333%',
+                                            '0 0 25%',
+                                            '0 0 20%',
+                                        ],
+                                    }}
+                                >
+                                    <BidCard {...item} />
+                                </Box>
+                            ))}
+                        </Flex>
+                        <Button
+                            onClick={() => {
+                                setShowLoadMore(false)
+                                fetchData()
                             }}
+                            variant="border"
+                            sx={{ height: 48, width: '100%' }}
                         >
-                            <BidCard
-                                favorite={10}
-                                price={10}
-                                type="multiple"
-                                image="https://picsum.photos/200/400"
-                                collection={{
-                                    src: 'https://picsum.photos/300/300',
-                                    verified: true,
+                            Load more
+                        </Button>
+                    </>
+                ) : (
+                    <InfiniteScroll
+                        dataLength={exploreItems.length}
+                        next={fetchData}
+                        hasMore
+                        loader={null}
+                        style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            marginLeft: '-10px',
+                            marginRight: '-10px',
+                            marginBottom: '28px',
+                        }}
+                    >
+                        {exploreItems.map((item) => (
+                            <Box
+                                key={uuidv4()}
+                                p={10}
+                                sx={{
+                                    maxWidth: [
+                                        '100%',
+                                        '50%',
+                                        '33.3333%',
+                                        '25%',
+                                        '20%',
+                                    ],
+                                    flex: [
+                                        '0 0 100%',
+                                        '0 0 50%',
+                                        '0 0 33.3333%',
+                                        '0 0 25%',
+                                        '0 0 20%',
+                                    ],
                                 }}
-                                owner={{ src: 'https://picsum.photos/200/300' }}
-                                creator={{
-                                    src: 'https://picsum.photos/200/400',
-                                    verified: true,
-                                }}
-                                name="Test"
-                                bid={50}
-                                currency="WETH"
-                            />
-                        </Box>
-                    ))}
-                </Flex>
-                <Button
-                    onClick={() => setCountItems(countItems + 10)}
-                    variant="border"
-                    sx={{ height: 48, width: '100%' }}
-                >
-                    Load more
-                </Button>
+                            >
+                                <BidCard {...item} />
+                            </Box>
+                        ))}
+                    </InfiniteScroll>
+                )}
             </Box>
         </Layout>
     )

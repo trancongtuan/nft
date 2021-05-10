@@ -5,13 +5,8 @@ import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import ArrowDown from '../public/assets/images/icons/arrowDown.svg'
-import TwitterIcon from '../public/assets/images/icons/twitter.svg'
-import FacebookIcon from '../public/assets/images/icons/facebook.svg'
-import TelegramIcon from '../public/assets/images/icons/telegram.svg'
-import InstagramIcon from '../public/assets/images/icons/instagram.svg'
-import EmailIcon from '../public/assets/images/icons/email.svg'
-import DiscordIcon from '../public/assets/images/icons/discord.svg'
 import Tooltip, { TooltipItemProps } from './Tooltip'
+import Social from './Social'
 
 const tooltipItems = [
     {
@@ -433,34 +428,10 @@ const Footer: FC = () => {
                             mt={[16, 16, 16, 0]}
                             sx={{
                                 width: '230px',
-                                justifyContent: 'space-between',
                                 order: [-1, -1, -1, 3],
-                                div: {
-                                    cursor: 'pointer',
-                                    ':hover': {
-                                        color: 'text',
-                                    },
-                                },
                             }}
                         >
-                            <Box>
-                                <TwitterIcon />
-                            </Box>
-                            <Box>
-                                <TelegramIcon />
-                            </Box>
-                            <Box>
-                                <InstagramIcon />
-                            </Box>
-                            <Box>
-                                <FacebookIcon />
-                            </Box>
-                            <Box>
-                                <DiscordIcon />
-                            </Box>
-                            <Box>
-                                <EmailIcon />
-                            </Box>
+                            <Social />
                         </Flex>
                     </Flex>
                 </Box>
