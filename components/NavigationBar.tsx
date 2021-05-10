@@ -29,6 +29,7 @@ import Selection from './Selection'
 import Tooltip, { TooltipItemProps as TooltiProps } from './Tooltip'
 import ToggleButton from './ToggleButton'
 import Social from './Social'
+import { useAuth } from '../hooks/auth'
 
 const selectionItems = [
     {
@@ -573,7 +574,6 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
         </Flex>
     )
 }
-
 const NavigationBar: FC = () => {
     const [visible, setVisible] = useState(false)
     const [visibleNoti, setVisibleNoti] = useState(false)
@@ -584,6 +584,7 @@ const NavigationBar: FC = () => {
     const [autoPlay, setAutoPlay] = useState(true)
     const [showSearch, setShowSearch] = useState(false)
     const [showCatalog, setShowCatalog] = useState(false)
+    const { connected, setConnected } = useAuth()
     useEffect(() => {
         if (counter > 0) {
             const timer = setInterval(() => setCounter(counter - 1), 1000)
@@ -789,7 +790,8 @@ const NavigationBar: FC = () => {
                     </Button>
                     <Button
                         onClick={() => setShowSearch(true)}
-                        mr={8}
+                        mr={connected ? 8 : 0}
+                        ml={connected ? 0 : 8}
                         variant="border"
                         sx={{
                             width: 40,
@@ -802,100 +804,103 @@ const NavigationBar: FC = () => {
                                 width: 14,
                                 height: 14,
                             },
+                            order: connected ? 0 : 1,
                         }}
                     >
                         <SearchIcon />
                     </Button>
-                    <Popover
-                        onOuterAction={() => setVisibleNoti(false)}
-                        isOpen={visibleNoti}
-                        body={
-                            <Tooltip minWidth={295}>
-                                <Flex
-                                    py={2}
-                                    px={24}
-                                    sx={{
-                                        justifyContent: 'space-around',
-                                        flexDirection: 'column',
-                                    }}
-                                    color="rgba(4, 4, 5, 0.6)"
-                                >
+                    {connected && (
+                        <Popover
+                            onOuterAction={() => setVisibleNoti(false)}
+                            isOpen={visibleNoti}
+                            body={
+                                <Tooltip minWidth={295}>
                                     <Flex
+                                        py={2}
+                                        px={24}
                                         sx={{
-                                            justifyContent: 'space-between',
-                                            width: '100%',
+                                            justifyContent: 'space-around',
+                                            flexDirection: 'column',
                                         }}
+                                        color="rgba(4, 4, 5, 0.6)"
                                     >
-                                        <Text
-                                            color="text"
+                                        <Flex
                                             sx={{
-                                                fontSize: 1,
-                                                fontWeight: 'heavy',
+                                                justifyContent: 'space-between',
+                                                width: '100%',
                                             }}
                                         >
-                                            Notifications
-                                        </Text>
-                                        <Link href="/activity">
                                             <Text
-                                                color="primary"
+                                                color="text"
                                                 sx={{
                                                     fontSize: 1,
-                                                    fontWeight: 'bold',
-                                                    cursor: 'pointer',
+                                                    fontWeight: 'heavy',
                                                 }}
                                             >
-                                                See all
+                                                Notifications
                                             </Text>
-                                        </Link>
-                                    </Flex>
-                                    <Flex
-                                        sx={{
-                                            height: 240,
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            flexDirection: 'column',
-                                            svg: {
-                                                width: 38,
-                                                height: 38,
-                                            },
-                                        }}
-                                    >
-                                        <NotificationIcon />
-                                        <Text
-                                            mt={8}
-                                            color="textSecondary"
+                                            <Link href="/activity">
+                                                <Text
+                                                    color="primary"
+                                                    sx={{
+                                                        fontSize: 1,
+                                                        fontWeight: 'bold',
+                                                        cursor: 'pointer',
+                                                    }}
+                                                >
+                                                    See all
+                                                </Text>
+                                            </Link>
+                                        </Flex>
+                                        <Flex
                                             sx={{
-                                                textAlign: 'center',
-                                                fontSize: 18,
-                                                fontWeight: 'body',
+                                                height: 240,
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                flexDirection: 'column',
+                                                svg: {
+                                                    width: 38,
+                                                    height: 38,
+                                                },
                                             }}
                                         >
-                                            No new notifications
-                                        </Text>
+                                            <NotificationIcon />
+                                            <Text
+                                                mt={8}
+                                                color="textSecondary"
+                                                sx={{
+                                                    textAlign: 'center',
+                                                    fontSize: 18,
+                                                    fontWeight: 'body',
+                                                }}
+                                            >
+                                                No new notifications
+                                            </Text>
+                                        </Flex>
+                                        <Link href="/setting">
+                                            <Button variant="border">
+                                                Receive email notifications
+                                            </Button>
+                                        </Link>
                                     </Flex>
-                                    <Link href="/setting">
-                                        <Button variant="border">
-                                            Receive email notifications
-                                        </Button>
-                                    </Link>
-                                </Flex>
-                            </Tooltip>
-                        }
-                        place="below"
-                        tipSize={0.01}
-                    >
-                        <Button
-                            mr={8}
-                            variant="border"
-                            sx={{
-                                width: 40,
-                                p: 0,
-                            }}
-                            onClick={() => setVisibleNoti(!visibleNoti)}
+                                </Tooltip>
+                            }
+                            place="below"
+                            tipSize={0.01}
                         >
-                            <NotificationIcon />
-                        </Button>
-                    </Popover>
+                            <Button
+                                mr={8}
+                                variant="border"
+                                sx={{
+                                    width: 40,
+                                    p: 0,
+                                }}
+                                onClick={() => setVisibleNoti(!visibleNoti)}
+                            >
+                                <NotificationIcon />
+                            </Button>
+                        </Popover>
+                    )}
                     <Button
                         onClick={() => setShowCatalog(true)}
                         mr={8}
@@ -1127,48 +1132,65 @@ const NavigationBar: FC = () => {
                                         />
                                     )}
                                 />
-                                <TooltipItem label="Disconnect" />
+                                <TooltipItem
+                                    onClick={() => setConnected(false)}
+                                    label="Disconnect"
+                                />
                             </Tooltip>
                         }
                         place="below"
                         tipSize={0.01}
                     >
-                        <Button
-                            variant="border"
-                            pl={20}
-                            pr={55}
-                            sx={{
-                                position: 'relative',
-                                '@media screen and (max-width: 400px)': {
-                                    p: 0,
-                                    width: 40,
-                                },
-                            }}
-                        >
-                            <Text
-                                onClick={() => router.push('/rari')}
+                        {connected ? (
+                            <Button
+                                variant="border"
+                                pl={20}
+                                pr={55}
                                 sx={{
+                                    position: 'relative',
                                     '@media screen and (max-width: 400px)': {
-                                        display: 'none',
+                                        p: 0,
+                                        width: 40,
                                     },
-                                    cursor: 'pointer',
                                 }}
                             >
-                                O RARI
-                            </Text>
-                            <Avatar
-                                onClick={() => setShowDetail(!showDetail)}
-                                src="https://via.placeholder.com/500x100"
-                                alt="avatar"
+                                <Text
+                                    onClick={() => router.push('/rari')}
+                                    sx={{
+                                        '@media screen and (max-width: 400px)': {
+                                            display: 'none',
+                                        },
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    O RARI
+                                </Text>
+                                <Avatar
+                                    onClick={() => setShowDetail(!showDetail)}
+                                    src="https://via.placeholder.com/500x100"
+                                    alt="avatar"
+                                    sx={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        right: 0,
+                                        objectFit: 'cover',
+                                        cursor: 'pointer',
+                                    }}
+                                />
+                            </Button>
+                        ) : (
+                            <Button
+                                onClick={() => router.push('/connect')}
+                                variant="border"
                                 sx={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 0,
-                                    objectFit: 'cover',
-                                    cursor: 'pointer',
+                                    '@media screen and (max-width: 890px)': {
+                                        display: 'none',
+                                    },
                                 }}
-                            />
-                        </Button>
+                            >
+                                <Text>Connect wallet</Text>
+                            </Button>
+                        )}
                     </Popover>
                 </Flex>
             </Flex>

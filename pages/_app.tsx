@@ -6,11 +6,14 @@ import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'theme-ui'
 import { appWithTranslation } from 'next-i18next'
 import { theme } from '../styles/theme'
+import { AuthProvider } from '../hooks/auth'
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
     return (
         <ThemeProvider theme={theme}>
-            <Component {...pageProps} />
+            <AuthProvider>
+                <Component {...pageProps} />
+            </AuthProvider>
         </ThemeProvider>
     )
 }
