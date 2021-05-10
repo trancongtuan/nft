@@ -16,6 +16,8 @@ import TopSellerCard from '../components/TopSellerCard'
 import HomeCard from '../components/HomeCard'
 import Tooltip, { TooltipItemProps } from '../components/Tooltip'
 import useHorizontalScroll from '../hooks/horizontalScroll'
+import TooltipItem from '../components/TooltipItem'
+import ToggleButton from '../components/ToggleButton'
 
 const carouselItems = [
     {
@@ -266,11 +268,42 @@ const dayList = [
     },
 ]
 
+const filterItems = [
+    {
+        id: '1',
+        label: 'Recently added',
+        disable: true,
+    },
+    {
+        id: '2',
+        label: 'Cheapest',
+        disable: false,
+    },
+    {
+        id: '3',
+        label: 'Highest price',
+        disable: false,
+    },
+    {
+        id: '4',
+        label: 'Most liked',
+        disable: false,
+    },
+    {
+        id: '5',
+        label: 'Options',
+        disable: true,
+    },
+]
+
 const Home: FC = () => {
     const router = useRouter()
     const [countItems, setCountItems] = useState(10)
     const [showSellers, setShowSellers] = useState(false)
     const [showDays, setShowDays] = useState(false)
+    const [showFilter, setShowFilter] = useState(false)
+    const [currency, setCurrency] = useState(filterItems[0].id)
+    const [verified, setVerified] = useState(false)
     const [seller, setSeller] = useState<TooltipItemProps>(sellerList[0])
     const [day, setDay] = useState<TooltipItemProps>(dayList[0])
     const ref = useHorizontalScroll()
@@ -569,16 +602,76 @@ const Home: FC = () => {
                         </Flex>
                         <EdgeOverflow />
                     </Box>
-                    <Button
-                        ml={8}
-                        variant="border"
-                        sx={{
-                            flexShrink: 0,
-                        }}
+                    <Popover
+                        onOuterAction={() => setShowFilter(false)}
+                        isOpen={showFilter}
+                        body={
+                            <Tooltip>
+                                {filterItems.map((item) => {
+                                    return (
+                                        <TooltipItem
+                                            id={item.id}
+                                            key={item.id}
+                                            label={item.label}
+                                            onClick={() =>
+                                                !item.disable &&
+                                                setCurrency(item.id)
+                                            }
+                                            disable={item.disable}
+                                            selectedItem={currency}
+                                        />
+                                    )
+                                })}
+                                <TooltipItem
+                                    id="6"
+                                    label="Verified only"
+                                    rightStatic={() => (
+                                        <ToggleButton
+                                            toggle={verified}
+                                            setToggle={() =>
+                                                setVerified(!verified)
+                                            }
+                                        />
+                                    )}
+                                />
+                            </Tooltip>
+                        }
+                        place="below"
+                        tipSize={0.01}
                     >
-                        <FilterIcon />
-                        Filter & Sort
-                    </Button>
+                        <Button
+                            onClick={() => setShowFilter(!showFilter)}
+                            ml={[0, 8, 8, 8]}
+                            px={[0, 20, 20, 20]}
+                            variant="border"
+                            sx={{
+                                flexShrink: 0,
+                                width: [
+                                    '40px',
+                                    'max-content',
+                                    'max-content',
+                                    'max-content',
+                                ],
+                                height: '40px',
+                                display: ['inline', 'flex', 'flex', 'flex'],
+                            }}
+                        >
+                            <FilterIcon />
+                            <Text
+                                ml={2}
+                                sx={{
+                                    display: [
+                                        'none',
+                                        'block',
+                                        'block',
+                                        'block',
+                                    ],
+                                }}
+                            >
+                                Filter & Sort
+                            </Text>
+                        </Button>
+                    </Popover>
                 </Flex>
                 <Flex mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
                     {new Array(countItems).fill(0).map(() => (

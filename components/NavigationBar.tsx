@@ -691,7 +691,16 @@ const NavigationBar: FC = () => {
             }}
         >
             <Link href="/">
-                <Box mr={24} sx={{ cursor: 'pointer' }}>
+                <Box
+                    mr={24}
+                    sx={{
+                        cursor: 'pointer',
+                        transition: 'all 0.12s ease-in-out 0s',
+                        ':active': {
+                            transform: 'scale(0.95)',
+                        },
+                    }}
+                >
                     <LogoIcon />
                 </Box>
             </Link>
@@ -727,6 +736,7 @@ const NavigationBar: FC = () => {
                         onChange={(id) =>
                             id === '4' && router.push('/activity')
                         }
+                        selectedAtZero={false}
                     />
                     <Box
                         bg="borderColor"

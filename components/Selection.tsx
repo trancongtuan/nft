@@ -14,6 +14,7 @@ interface SelectionProps {
     fontSize?: string | number
     onChange?: (value: string | number) => void
     borderBottom?: boolean
+    selectedAtZero?: boolean
 }
 
 const Selection: FC<SelectionProps> = ({
@@ -21,8 +22,12 @@ const Selection: FC<SelectionProps> = ({
     onChange,
     fontSize,
     borderBottom = true,
+    selectedAtZero = true,
 }) => {
-    const [selectedTab, setSelectedTab] = useState(items[0].id)
+    const [selectedTab, setSelectedTab] = useState(
+        selectedAtZero ? items[0].id : ''
+    )
+
     useEffect(() => onChange && onChange(selectedTab), [selectedTab, onChange])
     return (
         <Box sx={{ overflow: 'auto', whiteSpace: 'nowrap' }}>
