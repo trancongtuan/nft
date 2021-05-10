@@ -124,6 +124,15 @@ const Connect: FC = () => {
                     '@media screen and (max-width: 62.5em)': {
                         display: 'block',
                     },
+                    '::-webkit-scrollbar': {
+                        display: 'block',
+                        width: '0',
+                        height: 0,
+                    },
+                    '::-webkit-scrollbar-thumb': {
+                        display: 'block',
+                        background: '#fff',
+                    },
                 }}
             >
                 <Flex
@@ -196,8 +205,9 @@ const Connect: FC = () => {
                         <Flex
                             sx={{
                                 flexWrap: 'wrap',
-                                fontWeight: 'body',
+                                fontWeight: 400,
                                 color: 'text',
+                                maxWidth: '320px',
                             }}
                         >
                             Wallets are used to send, receive, and store digital
