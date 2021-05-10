@@ -331,7 +331,7 @@ const Home: FC = () => {
         Array(15).fill(exploreItem)
     )
     const fetchData = useCallback(() => {
-        const newItems = Array.from({ length: 15 })
+        const newItems = Array(15).fill(exploreItem)
         setExploreItems((rev) => rev.concat(newItems))
     }, [])
     return (
