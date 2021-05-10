@@ -1,4 +1,5 @@
 import React, { FC, useContext, useState } from 'react'
+import useLocalStorage from './localStorage'
 
 interface AuthContextProps {
     connected: boolean
@@ -13,7 +14,7 @@ const AuthContext = React.createContext<AuthContextProps>({
 export const AuthProvider: FC<
     React.PropsWithChildren<Record<string, unknown>>
 > = ({ children }) => {
-    const [connected, setConnected] = useState(false)
+    const [connected, setConnected] = useLocalStorage('connected', false)
     return (
         <AuthContext.Provider value={{ connected, setConnected }}>
             {children}
