@@ -4,6 +4,7 @@ import React, { FC, useState } from 'react'
 import { Box, Text, Flex, Image } from 'theme-ui'
 import ConnectCard from '../components/ConnectCard'
 import Popup from '../components/Popup'
+import { useAuth } from '../hooks/auth'
 import ArrowIcon from '../public/assets/images/icons/arrowLeft.svg'
 import LogoIcon from '../public/assets/images/icons/logo.svg'
 
@@ -11,6 +12,7 @@ const Connect: FC = () => {
     const router = useRouter()
     const [openWalletPopup, setOpenWalletPopup] = useState(false)
     const [showMore, setShowMore] = useState(false)
+    const { setConnected } = useAuth()
     const [connectItems, setConnectItems] = useState([
         {
             id: '1',
@@ -211,6 +213,10 @@ const Connect: FC = () => {
                 <Flex mt={32} sx={{ flexWrap: 'wrap', width: '100%' }}>
                     {connectItems.map((item) => (
                         <Box
+                            onClick={() => {
+                                setConnected(true)
+                                router.push('/')
+                            }}
                             key={item.id}
                             m={8}
                             sx={{
