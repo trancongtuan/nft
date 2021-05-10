@@ -249,6 +249,11 @@ const Connect: FC = () => {
                             </Box>
                         ))}
                         <Box
+                            onClick={() => {
+                                setConnected(true)
+                                router.push('/')
+                            }}
+                            key={item.id}
                             m={8}
                             sx={{
                                 width: 'calc(33.33333% - 16px)',
