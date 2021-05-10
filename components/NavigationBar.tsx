@@ -1133,10 +1133,14 @@ const NavigationBar: FC = () => {
                                     )}
                                 />
                                 <TooltipItem
+<<<<<<< HEAD
                                     onClick={() => {
                                         setConnected(false)
                                         setShowDetail(false)
                                     }}
+=======
+                                    onClick={() => setConnected(false)}
+>>>>>>> fix conflict
                                     label="Disconnect"
                                 />
                             </Tooltip>
