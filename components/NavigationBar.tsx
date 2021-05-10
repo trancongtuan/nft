@@ -18,12 +18,6 @@ import NotificationIcon from '../public/assets/images/icons/notification.svg'
 import ThreeDosIcon from '../public/assets/images/icons/threedos.svg'
 import CatalogIcon from '../public/assets/images/icons/catalog.svg'
 import CloseIcon from '../public/assets/images/icons/close.svg'
-import TwitterIcon from '../public/assets/images/icons/twitter.svg'
-import TelegramIcon from '../public/assets/images/icons/telegram.svg'
-import InstagramIcon from '../public/assets/images/icons/instagram.svg'
-import DiscordIcon from '../public/assets/images/icons/discord.svg'
-import YoutubeIcon from '../public/assets/images/icons/youtube.svg'
-import MediumIcon from '../public/assets/images/icons/medium.svg'
 import CheckedIcon from '../public/assets/images/icons/checked.svg'
 import CopyIcon from '../public/assets/images/icons/copy.svg'
 import MasterCardIcon from '../public/assets/images/icons/master-card.svg'
@@ -34,6 +28,7 @@ import HelpIcon from '../public/assets/images/icons/help.svg'
 import Selection from './Selection'
 import Tooltip, { TooltipItemProps as TooltiProps } from './Tooltip'
 import ToggleButton from './ToggleButton'
+import Social from './Social'
 
 const selectionItems = [
     {
@@ -560,85 +555,8 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
             </Box>
             <Box mt="auto" p={3}>
                 <Box bg="borderColor" sx={{ width: '100%', height: 1 }} />
-                <Flex
-                    mt={28}
-                    sx={{
-                        justifyContent: 'space-around',
-                    }}
-                    color="text"
-                >
-                    <Box
-                        sx={{
-                            opacity: 0.6,
-                            ':hover': {
-                                opacity: 1,
-                            },
-                            transition: 'all 0.12s ease-in-out 0s',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        <TwitterIcon />
-                    </Box>
-                    <Box
-                        sx={{
-                            opacity: 0.6,
-                            ':hover': {
-                                opacity: 1,
-                            },
-                            transition: 'all 0.12s ease-in-out 0s',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        <TelegramIcon />
-                    </Box>
-                    <Box
-                        sx={{
-                            opacity: 0.6,
-                            ':hover': {
-                                opacity: 1,
-                            },
-                            transition: 'all 0.12s ease-in-out 0s',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        <InstagramIcon />
-                    </Box>
-                    <Box
-                        sx={{
-                            opacity: 0.6,
-                            ':hover': {
-                                opacity: 1,
-                            },
-                            transition: 'all 0.12s ease-in-out 0s',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        <DiscordIcon />
-                    </Box>
-                    <Box
-                        sx={{
-                            opacity: 0.6,
-                            ':hover': {
-                                opacity: 1,
-                            },
-                            transition: 'all 0.12s ease-in-out 0s',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        <YoutubeIcon />
-                    </Box>
-                    <Box
-                        sx={{
-                            opacity: 0.6,
-                            ':hover': {
-                                opacity: 1,
-                            },
-                            transition: 'all 0.12s ease-in-out 0s',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        <MediumIcon />
-                    </Box>
+                <Flex mt={28}>
+                    <Social />
                 </Flex>
                 <Button
                     mt={16}
@@ -786,92 +704,8 @@ const NavigationBar: FC = () => {
                                         my={12}
                                         sx={{ height: 1 }}
                                     />
-                                    <Flex
-                                        py={2}
-                                        px={24}
-                                        sx={{
-                                            justifyContent: 'space-around',
-                                        }}
-                                        color="text"
-                                    >
-                                        <Box
-                                            sx={{
-                                                opacity: 0.6,
-                                                ':hover': {
-                                                    opacity: 1,
-                                                },
-                                                transition:
-                                                    'all 0.12s ease-in-out 0s',
-                                                cursor: 'pointer',
-                                            }}
-                                        >
-                                            <TwitterIcon />
-                                        </Box>
-                                        <Box
-                                            sx={{
-                                                opacity: 0.6,
-                                                ':hover': {
-                                                    opacity: 1,
-                                                },
-                                                transition:
-                                                    'all 0.12s ease-in-out 0s',
-                                                cursor: 'pointer',
-                                            }}
-                                        >
-                                            <TelegramIcon />
-                                        </Box>
-                                        <Box
-                                            sx={{
-                                                opacity: 0.6,
-                                                ':hover': {
-                                                    opacity: 1,
-                                                },
-                                                transition:
-                                                    'all 0.12s ease-in-out 0s',
-                                                cursor: 'pointer',
-                                            }}
-                                        >
-                                            <InstagramIcon />
-                                        </Box>
-                                        <Box
-                                            sx={{
-                                                opacity: 0.6,
-                                                ':hover': {
-                                                    opacity: 1,
-                                                },
-                                                transition:
-                                                    'all 0.12s ease-in-out 0s',
-                                                cursor: 'pointer',
-                                            }}
-                                        >
-                                            <DiscordIcon />
-                                        </Box>
-                                        <Box
-                                            sx={{
-                                                opacity: 0.6,
-                                                ':hover': {
-                                                    opacity: 1,
-                                                },
-                                                transition:
-                                                    'all 0.12s ease-in-out 0s',
-                                                cursor: 'pointer',
-                                            }}
-                                        >
-                                            <YoutubeIcon />
-                                        </Box>
-                                        <Box
-                                            sx={{
-                                                opacity: 0.6,
-                                                ':hover': {
-                                                    opacity: 1,
-                                                },
-                                                transition:
-                                                    'all 0.12s ease-in-out 0s',
-                                                cursor: 'pointer',
-                                            }}
-                                        >
-                                            <MediumIcon />
-                                        </Box>
+                                    <Flex py={2} px={24}>
+                                        <Social />
                                     </Flex>
                                 </Tooltip>
                             }
