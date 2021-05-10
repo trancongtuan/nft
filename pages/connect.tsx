@@ -116,7 +116,6 @@ const Connect: FC = () => {
                     width: '100%',
                     overflow: 'scroll',
                     display: 'flex',
-                    justifyContent: 'center',
                     flexDirection: 'column',
                     '@media screen and (max-width: 83.125em)': {
                         display: 'block',
@@ -135,93 +134,115 @@ const Connect: FC = () => {
                     },
                 }}
             >
-                <Flex
-                    mx={8}
-                    sx={{
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                        svg: {
-                            fill: 'text',
-                        },
-                    }}
-                    onClick={() => router.back()}
-                >
-                    <ArrowIcon />
-                    <Text
+                <Box sx={{ margin: 'auto 0' }}>
+                    <Flex
+                        mx={8}
                         sx={{
-                            fontWeight: 'bold',
-                            fontSize: 2,
-                            color: 'text',
+                            alignItems: 'center',
+                            cursor: 'pointer',
+                            svg: {
+                                fill: 'text',
+                            },
                         }}
-                        ml={2}
+                        onClick={() => router.back()}
                     >
-                        Go back
-                    </Text>
-                </Flex>
-                <Box mt={16} mx={8}>
-                    <Text
-                        sx={{
-                            fontSize: [32, 36, 36, 36],
-                            fontWeight: 'bold',
-                            color: 'text',
-                        }}
-                    >
-                        Connect your wallet
-                    </Text>
-                    <Text
-                        mt={16}
-                        sx={{
-                            fontSize: 2,
-                            display: 'block',
-                            maxWidth: '400px',
-                            fontWeight: 'body',
-                        }}
-                    >
-                        <Text sx={{ color: 'textSecondary' }}>
-                            Connect with one of available wallet providers or
-                            create a new wallet.
-                        </Text>
+                        <ArrowIcon />
                         <Text
                             sx={{
-                                color: 'primary',
-                                cursor: 'pointer',
-                                ':hover': {
-                                    color: 'text',
-                                },
-                            }}
-                            onClick={() => setOpenWalletPopup(true)}
-                        >
-                            {' '}
-                            What is a wallet?
-                        </Text>
-                    </Text>
-                    <Popup
-                        isOpen={openWalletPopup}
-                        onClose={() => {
-                            setOpenWalletPopup(false)
-                        }}
-                        label="What is a wallet?"
-                    >
-                        <Flex
-                            sx={{
-                                flexWrap: 'wrap',
-                                fontWeight: 400,
+                                fontWeight: 'bold',
+                                fontSize: 2,
                                 color: 'text',
-                                maxWidth: '320px',
+                            }}
+                            ml={2}
+                        >
+                            Go back
+                        </Text>
+                    </Flex>
+                    <Box mt={16} mx={8}>
+                        <Text
+                            sx={{
+                                fontSize: [32, 36, 36, 36],
+                                fontWeight: 'bold',
+                                color: 'text',
                             }}
                         >
-                            Wallets are used to send, receive, and store digital
-                            assets like Ether. Wallets come in many forms. They
-                            are either built into your browser, an extension
-                            added to your browser, a piece of hardware plugged
-                            into your computer, or even an app on your phone.
-                        </Flex>
-                    </Popup>
-                </Box>
-                <Flex mt={32} sx={{ flexWrap: 'wrap', width: '100%' }}>
-                    {connectItems.map((item) => (
+                            Connect your wallet
+                        </Text>
+                        <Text
+                            mt={16}
+                            sx={{
+                                fontSize: 2,
+                                display: 'block',
+                                maxWidth: '400px',
+                                fontWeight: 'body',
+                            }}
+                        >
+                            <Text sx={{ color: 'textSecondary' }}>
+                                Connect with one of available wallet providers
+                                or create a new wallet.
+                            </Text>
+                            <Text
+                                sx={{
+                                    color: 'primary',
+                                    cursor: 'pointer',
+                                    ':hover': {
+                                        color: 'text',
+                                    },
+                                }}
+                                onClick={() => setOpenWalletPopup(true)}
+                            >
+                                {' '}
+                                What is a wallet?
+                            </Text>
+                        </Text>
+                        <Popup
+                            isOpen={openWalletPopup}
+                            onClose={() => {
+                                setOpenWalletPopup(false)
+                            }}
+                            label="What is a wallet?"
+                        >
+                            <Flex
+                                sx={{
+                                    flexWrap: 'wrap',
+                                    fontWeight: 400,
+                                    color: 'text',
+                                    maxWidth: '320px',
+                                }}
+                            >
+                                Wallets are used to send, receive, and store
+                                digital assets like Ether. Wallets come in many
+                                forms. They are either built into your browser,
+                                an extension added to your browser, a piece of
+                                hardware plugged into your computer, or even an
+                                app on your phone.
+                            </Flex>
+                        </Popup>
+                    </Box>
+                    <Flex mt={32} sx={{ flexWrap: 'wrap', width: '100%' }}>
+                        {connectItems.map((item) => (
+                            <Box
+                                key={item.id}
+                                m={8}
+                                sx={{
+                                    width: 'calc(33.33333% - 16px)',
+                                    '@media screen and (max-width: 83.125em)': {
+                                        width: 'calc(50% - 16px)',
+                                    },
+                                    '@media screen and (max-width: 62.5em)': {
+                                        width: 'calc(100%)',
+                                    },
+                                }}
+                            >
+                                <ConnectCard
+                                    title={item.title}
+                                    text={item.text}
+                                    images={item.images}
+                                    button={item.button}
+                                />
+                            </Box>
+                        ))}
                         <Box
-                            key={item.id}
                             m={8}
                             sx={{
                                 width: 'calc(33.33333% - 16px)',
@@ -232,73 +253,55 @@ const Connect: FC = () => {
                                     width: 'calc(100%)',
                                 },
                             }}
+                            onClick={() => {
+                                setShowMore(!showMore)
+                                if (showMore) {
+                                    setConnectItems(connectItems.splice(0, 4))
+                                } else {
+                                    setConnectItems([
+                                        ...connectItems,
+                                        {
+                                            id: '4',
+                                            images: [
+                                                'https://rarible.com/static/9d2f89bb2f394cd58bbebe88acef00fc.svg',
+                                            ],
+                                            title: 'MyEtherWallet',
+                                            text:
+                                                'Connect via app on your phone',
+                                        },
+                                        {
+                                            id: '5',
+                                            images: [
+                                                'https://rarible.com/static/bd9302c4068517e1072e192479e2d6c8.svg',
+                                            ],
+                                            title: 'FortMatic',
+                                            text:
+                                                'Connect with phone number or email',
+                                        },
+                                    ])
+                                }
+                            }}
                         >
                             <ConnectCard
-                                title={item.title}
-                                text={item.text}
-                                images={item.images}
-                                button={item.button}
+                                title={!showMore ? 'Show more' : 'Show less'}
                             />
                         </Box>
-                    ))}
-                    <Box
-                        m={8}
+                    </Flex>
+                    <Text
+                        mx={8}
+                        mt={20}
                         sx={{
-                            width: 'calc(33.33333% - 16px)',
-                            '@media screen and (max-width: 83.125em)': {
-                                width: 'calc(50% - 16px)',
-                            },
-                            '@media screen and (max-width: 62.5em)': {
-                                width: 'calc(100%)',
-                            },
-                        }}
-                        onClick={() => {
-                            setShowMore(!showMore)
-                            if (showMore) {
-                                setConnectItems(connectItems.splice(0, 4))
-                            } else {
-                                setConnectItems([
-                                    ...connectItems,
-                                    {
-                                        id: '4',
-                                        images: [
-                                            'https://rarible.com/static/9d2f89bb2f394cd58bbebe88acef00fc.svg',
-                                        ],
-                                        title: 'MyEtherWallet',
-                                        text: 'Connect via app on your phone',
-                                    },
-                                    {
-                                        id: '5',
-                                        images: [
-                                            'https://rarible.com/static/bd9302c4068517e1072e192479e2d6c8.svg',
-                                        ],
-                                        title: 'FortMatic',
-                                        text:
-                                            'Connect with phone number or email',
-                                    },
-                                ])
-                            }
+                            color: 'textSecondary',
+                            fontSize: 1,
+                            maxWidth: 400,
+                            display: 'block',
+                            fontWeight: 'body',
                         }}
                     >
-                        <ConnectCard
-                            title={!showMore ? 'Show more' : 'Show less'}
-                        />
-                    </Box>
-                </Flex>
-                <Text
-                    mx={8}
-                    mt={20}
-                    sx={{
-                        color: 'textSecondary',
-                        fontSize: 1,
-                        maxWidth: 400,
-                        display: 'block',
-                        fontWeight: 'body',
-                    }}
-                >
-                    We do not own your private keys and cannot access your funds
-                    without your confirmation.
-                </Text>
+                        We do not own your private keys and cannot access your
+                        funds without your confirmation.
+                    </Text>
+                </Box>
             </Box>
         </Flex>
     )
