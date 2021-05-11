@@ -324,8 +324,12 @@ const Collection: FC = () => {
                 <Selection
                     borderBottom
                     items={[
-                        { id: '1', label: 'On sale' },
-                        { id: '2', label: 'Collectibles' },
+                        { id: '1', label: 'On sale', value: 'On sale' },
+                        {
+                            id: '2',
+                            label: 'Collectibles',
+                            value: 'Collectibles',
+                        },
                     ]}
                 />
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>

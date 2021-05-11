@@ -1,20 +1,21 @@
 import { Box, Flex, Text } from 'theme-ui'
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import NewIcon from '../public/assets/images/icons/new.svg'
 
-interface SelectionItemsProps {
+export interface SelectionItemsProps {
     id: string | number
     label: string
     count?: number
     isNew?: boolean
+    value: string
 }
 
 interface SelectionProps {
     items: SelectionItemsProps[]
     fontSize?: string | number
-    onChange?: (value: string | number) => void
+    onChange?: (item: SelectionItemsProps) => void
     borderBottom?: boolean
-    selectedAtZero?: boolean
+    selectedItem?: SelectionItemsProps
 }
 
 const Selection: FC<SelectionProps> = ({
@@ -22,13 +23,11 @@ const Selection: FC<SelectionProps> = ({
     onChange,
     fontSize,
     borderBottom = true,
-    selectedAtZero = true,
+    selectedItem,
 }) => {
-    const [selectedTab, setSelectedTab] = useState(
-        selectedAtZero ? items[0].id : ''
-    )
-
-    useEffect(() => onChange && onChange(selectedTab), [selectedTab, onChange])
+    const [selectedTab, setSelectedTab] = useState<
+        SelectionItemsProps | undefined
+    >(selectedItem ?? items[0])
     return (
         <Box sx={{ overflow: 'auto', whiteSpace: 'nowrap' }}>
             {items.map((item) => (
@@ -45,13 +44,16 @@ const Selection: FC<SelectionProps> = ({
                             marginRight: 0,
                         },
                     }}
-                    onClick={() => setSelectedTab(item.id)}
+                    onClick={() => {
+                        setSelectedTab(item)
+                        onChange(item)
+                    }}
                 >
                     <Flex sx={{ alignItems: 'center' }}>
                         <Text
                             sx={{
                                 color:
-                                    item.id === selectedTab
+                                    item === selectedTab
                                         ? 'text'
                                         : 'textSecondary',
                                 fontWeight: 'bold',
@@ -97,9 +99,7 @@ const Selection: FC<SelectionProps> = ({
                                 height: 2,
                                 width: '100%',
                                 visibility:
-                                    item.id === selectedTab
-                                        ? 'visible'
-                                        : 'hidden',
+                                    item === selectedTab ? 'visible' : 'hidden',
                             }}
                         />
                     )}

@@ -370,6 +370,7 @@ const Home: FC = () => {
                                     subLabel="FLOSSTRADAMUS"
                                     image="https://dl.airtable.com/.attachments/58cc8ae0a4cf13909f4b85322ab688ad/cfa6de0d/Screenshot2021-04-20at22_32_23.png"
                                     darkText={false}
+                                    onClick={() => router.push('/collection')}
                                 />
                             </Flex>
                         ))}
@@ -471,6 +472,9 @@ const Home: FC = () => {
                                                     'https://picsum.photos/200/300',
                                                 verified: true,
                                             }}
+                                            onClick={() =>
+                                                router.push('/my_items')
+                                            }
                                         />
                                     </Box>
                                 ))}
@@ -490,7 +494,10 @@ const Home: FC = () => {
                     <Carousel slidesToShow={4} length={carouselItems.length}>
                         {bidItems.map((item) => (
                             <Box key={item.id} px={10}>
-                                <BidCard {...item} />
+                                <BidCard
+                                    onCLick={() => router.push('/product')}
+                                    {...item}
+                                />
                             </Box>
                         ))}
                     </Carousel>
@@ -724,7 +731,10 @@ const Home: FC = () => {
                                         ],
                                     }}
                                 >
-                                    <BidCard {...item} />
+                                    <BidCard
+                                        onCLick={() => router.push('/product')}
+                                        {...item}
+                                    />
                                 </Box>
                             ))}
                         </Flex>
@@ -774,7 +784,10 @@ const Home: FC = () => {
                                     ],
                                 }}
                             >
-                                <BidCard {...item} />
+                                <BidCard
+                                    onCLick={() => router.push('/product')}
+                                    {...item}
+                                />
                             </Box>
                         ))}
                     </InfiniteScroll>

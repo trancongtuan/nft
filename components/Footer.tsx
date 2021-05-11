@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Input, Text, useColorMode } from 'theme-ui'
+import {
+    Box,
+    Button,
+    Flex,
+    Input,
+    Text,
+    useColorMode,
+    Link as UILink,
+} from 'theme-ui'
 import React, { FC, useState } from 'react'
 import Popover from 'react-popover'
 import Link from 'next/link'
@@ -171,7 +179,9 @@ const Footer: FC = () => {
                                         Explore
                                     </Text>
                                 </Link>
-                                <Text
+                                <UILink
+                                    href="https://www.notion.so/rarible-com-FAQ-a47b276aa1994f7c8e3bc96d700717c5"
+                                    target="_blank"
                                     mb={12}
                                     sx={{
                                         cursor: 'pointer',
@@ -185,7 +195,7 @@ const Footer: FC = () => {
                                     }}
                                 >
                                     How it work
-                                </Text>
+                                </UILink>
                                 <Link href="/create">
                                     <Text
                                         mb={12}
@@ -204,7 +214,9 @@ const Footer: FC = () => {
                                         Create
                                     </Text>
                                 </Link>
-                                <Text
+                                <UILink
+                                    href="https://rariblecom.zendesk.com/hc/en-us"
+                                    target="_blank"
                                     mb={12}
                                     sx={{
                                         cursor: 'pointer',
@@ -218,7 +230,7 @@ const Footer: FC = () => {
                                     }}
                                 >
                                     Support
-                                </Text>
+                                </UILink>
                             </Flex>
                         </Box>
                         <Box
@@ -237,22 +249,27 @@ const Footer: FC = () => {
                                 Community
                             </Text>
                             <Flex mt={16} sx={{ flexDirection: 'column' }}>
-                                <Text
-                                    mb={12}
-                                    sx={{
-                                        cursor: 'pointer',
-                                        color: 'textSecondary',
-                                        fontSize: '16px',
-                                        fontWeight: 'bold',
-                                        transition: 'all 0.12s ease-in-out 0s',
-                                        ':hover': {
-                                            color: 'text',
-                                        },
-                                    }}
-                                >
-                                    RARI Token
-                                </Text>
-                                <Text
+                                <Link href="/rari">
+                                    <Text
+                                        mb={12}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            color: 'textSecondary',
+                                            fontSize: '16px',
+                                            fontWeight: 'bold',
+                                            transition:
+                                                'all 0.12s ease-in-out 0s',
+                                            ':hover': {
+                                                color: 'text',
+                                            },
+                                        }}
+                                    >
+                                        RARI Token
+                                    </Text>
+                                </Link>
+                                <UILink
+                                    href="https://gov.rarible.com/"
+                                    target="_blank"
                                     mb={12}
                                     sx={{
                                         cursor: 'pointer',
@@ -266,8 +283,10 @@ const Footer: FC = () => {
                                     }}
                                 >
                                     Discussion
-                                </Text>
-                                <Text
+                                </UILink>
+                                <UILink
+                                    href="https://snapshot.org/#/rarible/"
+                                    target="_blank"
                                     mb={12}
                                     sx={{
                                         cursor: 'pointer',
@@ -281,8 +300,10 @@ const Footer: FC = () => {
                                     }}
                                 >
                                     Voting
-                                </Text>
-                                <Text
+                                </UILink>
+                                <UILink
+                                    href="https://rarible.nolt.io/"
+                                    target="_blank"
                                     mb={12}
                                     sx={{
                                         cursor: 'pointer',
@@ -296,7 +317,7 @@ const Footer: FC = () => {
                                     }}
                                 >
                                     Suggest feature
-                                </Text>
+                                </UILink>
                             </Flex>
                         </Box>
                         <Box
