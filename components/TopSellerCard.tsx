@@ -1,4 +1,4 @@
-import { Flex, Text } from 'theme-ui'
+import { Box, Flex, Text } from 'theme-ui'
 import React, { FC } from 'react'
 import Avatar, { AvatarProps } from './Avatar'
 
@@ -11,6 +11,7 @@ interface TopSellerCardProps {
     wallet: number
     user: UserProps
     size?: Size
+    onClick?: () => void
 }
 
 const TopSellerCard: FC<TopSellerCardProps> = ({
@@ -19,6 +20,7 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
     user,
     size,
     wallet,
+    onClick,
 }) => {
     return (
         <Flex sx={{ alignItems: 'center' }}>
@@ -28,7 +30,9 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                 </Text>
             )}
             <Flex sx={{ alignItems: 'center', flexGrow: 1 }}>
-                <Avatar {...user} size={size || 'sm'} />
+                <Box onClick={onClick}>
+                    <Avatar {...user} size={size || 'sm'} />
+                </Box>
                 <Flex
                     ml={16}
                     sx={{
@@ -38,6 +42,7 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                     }}
                 >
                     <Text
+                        onClick={onClick}
                         color="text"
                         mb={1}
                         sx={{
@@ -48,6 +53,7 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
+                            cursor: 'pointer',
                         }}
                     >
                         {name}

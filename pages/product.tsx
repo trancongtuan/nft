@@ -32,14 +32,17 @@ const selectionItems = [
     {
         id: '1',
         label: 'Bids',
+        value: 'Bids',
     },
     {
         id: '2',
         label: 'Details',
+        value: 'Details',
     },
     {
         id: '3',
         label: 'History',
+        value: 'History',
     },
 ]
 

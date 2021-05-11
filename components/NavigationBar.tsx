@@ -5,7 +5,16 @@ import React, {
     useEffect,
     useState,
 } from 'react'
-import { Avatar, Box, Button, Flex, Input, Text, useColorMode } from 'theme-ui'
+import {
+    Avatar,
+    Box,
+    Button,
+    Flex,
+    Input,
+    Text,
+    useColorMode,
+    Link as UILink,
+} from 'theme-ui'
 import Popover from 'react-popover'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -35,18 +44,22 @@ const selectionItems = [
     {
         id: '1',
         label: 'Explore',
+        value: '/',
     },
     {
         id: '2',
         label: 'My items',
+        value: '/my_items',
     },
     {
         id: '3',
         label: 'Following',
+        value: '/following',
     },
     {
         id: '4',
         label: 'Activity',
+        value: '/activity',
         isNew: true,
     },
 ]
@@ -417,50 +430,58 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
             </Box>
             <Box px={3} mt={8} sx={{ width: '100%' }}>
                 <Flex sx={{ flexDirection: 'column' }}>
-                    <Text
-                        mb={8}
-                        color="text"
-                        sx={{
-                            fontSize: 3,
-                            fontWeight: 'heavy',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        Explore
-                    </Text>
-                    <Text
-                        mb={8}
-                        color="text"
-                        sx={{
-                            fontSize: 3,
-                            fontWeight: 'heavy',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        My items
-                    </Text>
-                    <Text
-                        mb={8}
-                        color="text"
-                        sx={{
-                            fontSize: 3,
-                            fontWeight: 'heavy',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        Following
-                    </Text>
-                    <Flex sx={{ alignItems: 'center', cursor: 'pointer' }}>
+                    <Link href="/">
                         <Text
                             mb={8}
                             color="text"
                             sx={{
                                 fontSize: 3,
                                 fontWeight: 'heavy',
+                                cursor: 'pointer',
                             }}
                         >
-                            Activity
+                            Explore
                         </Text>
+                    </Link>
+                    <Link href="/my_items">
+                        <Text
+                            mb={8}
+                            color="text"
+                            sx={{
+                                fontSize: 3,
+                                fontWeight: 'heavy',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            My items
+                        </Text>
+                    </Link>
+                    <Link href="/following">
+                        <Text
+                            mb={8}
+                            color="text"
+                            sx={{
+                                fontSize: 3,
+                                fontWeight: 'heavy',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            Following
+                        </Text>
+                    </Link>
+                    <Flex sx={{ alignItems: 'center', cursor: 'pointer' }}>
+                        <Link href="/activity">
+                            <Text
+                                mb={8}
+                                color="text"
+                                sx={{
+                                    fontSize: 3,
+                                    fontWeight: 'heavy',
+                                }}
+                            >
+                                Activity
+                            </Text>
+                        </Link>
                         <Box ml={8}>
                             <Image
                                 src="/assets/images/icons/new.svg"
@@ -469,7 +490,9 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             />
                         </Box>
                     </Flex>
-                    <Text
+                    <UILink
+                        href="https://www.notion.so/rarible-com-FAQ-a47b276aa1994f7c8e3bc96d700717c5"
+                        target="_blank"
                         mb={8}
                         color="text"
                         sx={{
@@ -479,7 +502,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         }}
                     >
                         How it works
-                    </Text>
+                    </UILink>
                 </Flex>
                 <Box mt={16}>
                     <Text
@@ -497,18 +520,22 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     </Text>
                 </Box>
                 <Flex mt={8} sx={{ flexDirection: 'column' }}>
-                    <Text
-                        mb={8}
-                        color="text"
-                        sx={{
-                            fontSize: 3,
-                            fontWeight: 'heavy',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        RARI Token
-                    </Text>
-                    <Text
+                    <Link href="/rari">
+                        <Text
+                            mb={8}
+                            color="text"
+                            sx={{
+                                fontSize: 3,
+                                fontWeight: 'heavy',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            RARI Token
+                        </Text>
+                    </Link>
+                    <UILink
+                        href="https://gov.rarible.com/"
+                        target="_blank"
                         mb={8}
                         color="text"
                         sx={{
@@ -518,8 +545,10 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         }}
                     >
                         Discussion
-                    </Text>
-                    <Text
+                    </UILink>
+                    <UILink
+                        href="https://snapshot.org/#/rarible/"
+                        target="_blank"
                         mb={8}
                         color="text"
                         sx={{
@@ -529,8 +558,10 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         }}
                     >
                         Voting
-                    </Text>
-                    <Text
+                    </UILink>
+                    <UILink
+                        href="https://snapshot.org/#/rarible/"
+                        target="_blank"
                         mb={8}
                         color="text"
                         sx={{
@@ -540,8 +571,10 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         }}
                     >
                         Suggest feature
-                    </Text>
-                    <Text
+                    </UILink>
+                    <UILink
+                        href="https://rarible.nolt.io/"
+                        target="_blank"
                         mb={8}
                         color="text"
                         sx={{
@@ -551,7 +584,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         }}
                     >
                         Subscribe
-                    </Text>
+                    </UILink>
                 </Flex>
             </Box>
             <Box mt="auto" p={3}>
@@ -652,10 +685,10 @@ const NavigationBar: FC = () => {
                     <Selection
                         borderBottom={false}
                         items={selectionItems}
-                        onChange={(id) =>
-                            id === '4' && router.push('/activity')
-                        }
-                        selectedAtZero={false}
+                        onChange={(item) => router.push(item.value)}
+                        selectedItem={selectionItems.find(
+                            (item) => item.value === router.pathname
+                        )}
                     />
                     <Box
                         bg="borderColor"

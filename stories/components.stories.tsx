@@ -110,37 +110,32 @@ const selectionItems = [
     {
         id: '1',
         label: 'On sale',
+        value: 'On sale',
         count: 0,
     },
     {
         id: '2',
         label: 'Collectibles',
+        value: 'Collectibles',
         count: 0,
     },
     {
         id: '3',
         label: 'Created',
+        value: 'Created',
         count: 0,
     },
     {
         id: '4',
         label: 'Liked',
+        value: 'Liked',
         count: 2,
     },
     {
         id: '5',
         label: 'Activity',
+        value: 'Activity',
         count: 5,
-    },
-    {
-        id: '6',
-        label: 'Following',
-        count: 1,
-    },
-    {
-        id: '7',
-        label: 'Followers',
-        count: 10,
     },
 ]
 

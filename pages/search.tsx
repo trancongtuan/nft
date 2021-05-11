@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react'
 import { Box, Text, Flex } from 'theme-ui'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
-import Selection from '../components/Selection'
+import Selection, { SelectionItemsProps } from '../components/Selection'
 import BidCard from '../components/BidCard'
 import HotCollection from '../components/HotCollection'
 
@@ -10,20 +10,24 @@ const selectionItems = [
     {
         id: '1',
         label: 'Items',
+        value: 'Items',
     },
     {
         id: '2',
         label: 'Users',
+        value: 'Users',
     },
     {
         id: '3',
         label: 'Collections',
+        value: 'Collections',
     },
 ]
 
 const Search: FC = () => {
-    const [selectedTab, setSelectedTab] = useState<string | number | null>(null)
-
+    const [selectedTab, setSelectedTab] = useState<SelectionItemsProps>(
+        selectionItems[0]
+    )
     return (
         <Box>
             <NavigationBar />
@@ -55,11 +59,11 @@ const Search: FC = () => {
                 <Box my={32} mx={10}>
                     <Selection
                         items={selectionItems}
-                        onChange={(value) => setSelectedTab(value)}
+                        onChange={(item) => setSelectedTab(item)}
                     />
                 </Box>
                 <Flex sx={{ flexWrap: 'wrap' }}>
-                    {selectedTab === '1' &&
+                    {selectedTab.id === '1' &&
                         [...Array(10)].map((item) => {
                             return (
                                 <Box
@@ -108,7 +112,7 @@ const Search: FC = () => {
                                 </Box>
                             )
                         })}
-                    {selectedTab === '2' &&
+                    {selectedTab.id === '2' &&
                         [...Array(10)].map((item) => {
                             return (
                                 <Box
@@ -145,7 +149,7 @@ const Search: FC = () => {
                                 </Box>
                             )
                         })}
-                    {selectedTab === '3' &&
+                    {selectedTab.id === '3' &&
                         [...Array(10)].map((item) => {
                             return (
                                 <Box

@@ -44,6 +44,7 @@ export interface BidCardProps {
     onLike?: () => void
     gradientColor?: boolean
     countDown?: number
+    onCLick?: () => void
 }
 
 const getStringTime: (s: number) => string = (s) => {
@@ -69,6 +70,7 @@ const BidCard: FC<BidCardProps> = ({
     onLike,
     gradientColor,
     countDown,
+    onCLick,
 }) => {
     const [visible, setVisible] = useState(false)
     const [colorMode] = useColorMode()
@@ -230,6 +232,7 @@ const BidCard: FC<BidCardProps> = ({
                         }}
                     >
                         <Image
+                            onClick={onCLick}
                             sx={{
                                 position: 'absolute',
                                 maxHeight: '100%',
@@ -294,6 +297,7 @@ const BidCard: FC<BidCardProps> = ({
                     }}
                 >
                     <Text
+                        onClick={onCLick}
                         sx={{
                             fontSize: '15px',
                             lineHeight: '20.7px',
@@ -301,6 +305,7 @@ const BidCard: FC<BidCardProps> = ({
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
+                            cursor: 'pointer',
                         }}
                     >
                         {name}

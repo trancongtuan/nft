@@ -110,12 +110,16 @@ const Activity: FC = () => {
                     <Selection
                         borderBottom
                         items={[
-                            { id: '1', label: 'All' },
-                            { id: '2', label: 'Following' },
-                            { id: '3', label: 'My Activity' },
+                            { id: '1', label: 'All', value: 'all' },
+                            { id: '2', label: 'Following', value: 'following' },
+                            {
+                                id: '3',
+                                label: 'My Activity',
+                                value: 'My Activity',
+                            },
                         ]}
-                        onChange={(id) => {
-                            if (id === '1') {
+                        onChange={(item) => {
+                            if (item.id === '1') {
                                 setShowCards(true)
                             } else {
                                 setShowCards(false)
