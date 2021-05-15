@@ -2,6 +2,9 @@
 import React, { FC, useCallback, useState } from 'react'
 import { Box, Button, Flex, Text } from 'theme-ui'
 import _ from 'lodash'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { v4 as uuidv4 } from 'uuid'
@@ -276,15 +279,15 @@ const sellerList = [
 const dayList = [
     {
         id: 1,
-        label: '1 day',
+        label: '1',
     },
     {
         id: 2,
-        label: '7 days',
+        label: '7',
     },
     {
         id: 3,
-        label: '30 days',
+        label: '30',
     },
 ]
 
@@ -318,6 +321,7 @@ const filterItems = [
 
 const Home: FC = () => {
     const router = useRouter()
+    const { t } = useTranslation('common')
     const [showSellers, setShowSellers] = useState(false)
     const [showDays, setShowDays] = useState(false)
     const [showFilter, setShowFilter] = useState(false)
@@ -382,7 +386,7 @@ const Home: FC = () => {
                         color="text"
                         sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
-                        Top
+                        {t('home.top')}
                         <Popover
                             onOuterAction={() => setShowSellers(false)}
                             isOpen={showSellers}
@@ -443,7 +447,10 @@ const Home: FC = () => {
                                 }}
                             >
                                 <Text mr="4px" color="primary">
-                                    {day.label}
+                                    {day.label}{' '}
+                                    {Number(day.label) > 1
+                                        ? t('home.days')
+                                        : t('home.day')}
                                 </Text>
                                 <DropdownIcon />
                             </Text>
@@ -796,4 +803,11 @@ const Home: FC = () => {
         </Layout>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
+    },
+})
+
 export default Home

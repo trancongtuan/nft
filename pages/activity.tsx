@@ -1,5 +1,7 @@
 import React, { FC, useState, ReactNode } from 'react'
 import { Box, Text, Heading, Flex, Button } from 'theme-ui'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
 import { v4 as uuidv4 } from 'uuid'
 import NavigationBar from '../components/NavigationBar'
 import ActivityCard from '../components/ActivityCard'
@@ -304,5 +306,11 @@ const Activity: FC = () => {
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Activity

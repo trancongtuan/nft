@@ -3,6 +3,8 @@ import { Box, Button, Flex, Text } from 'theme-ui'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { v4 as uuidv4 } from 'uuid'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
 import Avatar from '../components/Avatar'
 import Selection from '../components/Selection'
 import Layout from '../containers/Layout'
@@ -379,5 +381,11 @@ const Collection: FC = () => {
         </Layout>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Collection

@@ -1,5 +1,8 @@
 import React, { FC, useState } from 'react'
 import { Box, Text, Flex, Button } from 'theme-ui'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 import Popover from 'react-popover'
 import Link from 'next/link'
 import NavigationBar from '../components/NavigationBar'
@@ -39,6 +42,7 @@ const tooltipItems = [
 ]
 
 const Following: FC = () => {
+    const { t } = useTranslation('common')
     const [showHelp, setShowHelp] = useState(false)
     const [showFilter, setShowFilter] = useState(false)
     const [currency, setCurrency] = useState(tooltipItems[0].id)
@@ -64,7 +68,7 @@ const Following: FC = () => {
                             color: 'text',
                         }}
                     >
-                        Following
+                        {t('general.following')}
                     </Text>
                     <Popover
                         isOpen={showHelp}
@@ -208,5 +212,11 @@ const Following: FC = () => {
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Following

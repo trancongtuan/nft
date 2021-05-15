@@ -18,6 +18,7 @@ import {
 import Popover from 'react-popover'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import Image from 'next/image'
 import LogoIcon from '../public/assets/images/icons/logo.svg'
@@ -358,6 +359,7 @@ interface CatalogProps {
 }
 
 const Catalog: FC<CatalogProps> = ({ onClose }) => {
+    const { t } = useTranslation('common')
     const [showLanguage, setShowLanguage] = useState(false)
     const [language, setLanguage] = useState<TooltiProps>(languageList[0])
     const router = useRouter()
@@ -466,7 +468,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            Following
+                            {t('general.following')}
                         </Text>
                     </Link>
                     <Flex sx={{ alignItems: 'center', cursor: 'pointer' }}>
@@ -501,7 +503,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        How it works
+                        {t('general.how_it_work')}
                     </UILink>
                 </Flex>
                 <Box mt={16}>
@@ -618,6 +620,7 @@ const NavigationBar: FC = () => {
     const [showSearch, setShowSearch] = useState(false)
     const [showCatalog, setShowCatalog] = useState(false)
     const { connected, setConnected } = useAuth()
+    const { t } = useTranslation('common')
     useEffect(() => {
         if (counter > 0) {
             const timer = setInterval(() => setCounter(counter - 1), 1000)
@@ -725,7 +728,7 @@ const NavigationBar: FC = () => {
                                     },
                                 }}
                             >
-                                How it works
+                                {t('general.how_it_work')}
                             </Text>
                         </Flex>
                         <Popover
@@ -819,7 +822,7 @@ const NavigationBar: FC = () => {
                             },
                         }}
                     >
-                        Create
+                        {t('general.create')}
                     </Button>
                     <Button
                         onClick={() => setShowSearch(true)}

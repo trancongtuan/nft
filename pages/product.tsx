@@ -1,6 +1,9 @@
 import React, { FC, useState } from 'react'
 import Popover from 'react-popover'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 import NavigationBar from '../components/NavigationBar'
 import Tooltip from '../components/Tooltip'
 import Avatar from '../components/Avatar'
@@ -79,6 +82,7 @@ const detailItems = [
     },
 ]
 const Product: FC = () => {
+    const { t } = useTranslation('common')
     const [liked, setLiked] = useState(false)
     const [showProduct, setShowProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(selectionItems[0].id)
@@ -272,7 +276,7 @@ const Product: FC = () => {
                                         color: 'textSecondary',
                                     }}
                                 >
-                                    Creator
+                                    {t('product.creator')}
                                 </Text>
                                 <Flex
                                     mt={2}
@@ -663,5 +667,15 @@ const Product: FC = () => {
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, [
+            'common',
+            'footer',
+            'product',
+        ])),
+    },
+})
 
 export default Product

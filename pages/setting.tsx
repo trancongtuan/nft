@@ -1,5 +1,7 @@
 import React, { FC, useRef, useState } from 'react'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import CustomInput from '../components/CustomInput'
@@ -260,5 +262,11 @@ const Setting: FC = () => {
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Setting

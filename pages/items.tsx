@@ -4,6 +4,8 @@ import { Box, Text, Flex, Button, useColorMode } from 'theme-ui'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { v4 as uuidv4 } from 'uuid'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
 import Avatar from '../components/Avatar'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
@@ -989,5 +991,11 @@ const Items: FC = () => {
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Items

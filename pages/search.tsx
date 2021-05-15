@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react'
 import { Box, Text, Flex } from 'theme-ui'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import Selection, { SelectionItemsProps } from '../components/Selection'
@@ -192,5 +194,11 @@ const Search: FC = () => {
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Search

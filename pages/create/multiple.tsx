@@ -19,6 +19,8 @@ import React, {
 import Popover from 'react-popover'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
 
 import Layout from '../../containers/Layout'
 import ToggleButton from '../../components/ToggleButton'
@@ -975,5 +977,11 @@ const Multiple: FC = () => {
         </Layout>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Multiple
