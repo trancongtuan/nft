@@ -194,7 +194,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    How it work
+                                    {t('how_it_work')}
                                 </UILink>
                                 <Link href="/create">
                                     <Text
@@ -211,7 +211,7 @@ const Footer: FC = () => {
                                             },
                                         }}
                                     >
-                                        Create
+                                        {t('create')}
                                     </Text>
                                 </Link>
                                 <UILink
@@ -282,7 +282,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    Discussion
+                                    {t('discussion')}
                                 </UILink>
                                 <UILink
                                     href="https://snapshot.org/#/rarible/"
@@ -299,7 +299,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    Voting
+                                    {t('voting')}
                                 </UILink>
                                 <UILink
                                     href="https://rarible.nolt.io/"

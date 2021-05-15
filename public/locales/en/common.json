@@ -1,0 +1,77 @@
+{
+    "general": {
+        "language": "Language",
+        "how_it_work": "How it work",
+        "create": "Create",
+        "discussion": "Discussion",
+        "voting": "Voting",
+        "following": "Following",
+        "create_collectible": "Create collectible",
+        "view_opensea": "View on OpenSea",
+        "recently_added": "Recently added",
+        "cheapest": "Cheapest",
+        "highest_price": "Highest price",
+        "Collectibles": "Collectibles",
+        "verified_only": "Verified only",
+        "sale": "On sale",
+        "created": "Created",
+        "liked": "Liked",
+        "activity": "Activity",
+        "followers": "Followers",
+        "back": "Go back"
+    },
+    "navigation": {
+        "placeholder": "Search by creator, collectible or collection",
+        "set_name": "Set display name"
+    },
+    "home": {
+        "top": "Top"
+    },
+    "create": {
+        "guide": "Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times",
+        "describe": "We do not own your private keys and cannot access your funds without your confirmation",
+        "manage": "Manage collectible type",
+        "preview": "Preview",
+        "price": "Price",
+        "unlock": "Unlock once purchased",
+        "choose": "Choose collection",
+        "preserved_line_breaks": "preserved line-breaks",
+        "suggested": "Suggested: 10%, 20%, 30%",
+        "royalties": "Royalties",
+        "properties": "Properties",
+        "token_name": "Enter token name",
+        "symbol": "Symbol",
+        "description": "Description",
+        "short_url": "Short url",
+        "single": {
+            "name": "Single",
+            "heading": "Create single collectible"
+        },
+        "multiple": {
+            "name": "Multiple",
+            "heading": "Create multiple collectible",
+            "number_of_copies": "Number of copies"
+        }
+    },
+    "rari": {
+        "meet_rari": "Meet RARI – Rarible Governance Token",
+        "description": "We think that the best way to align platform development with customers' interests is to empower the ones who actively interact with protocol: creators and collectors Learn more about RARI token",
+        "learn_more": "Learn more about RARI token",
+        "available": "Available for claim",
+        "not_available": "Not thing to claim",
+        "who_is_eligible": {
+            "heading": "Who is eligible to participate in the airdrop?",
+            "first_title": "Existing Rarible users",
+            "first_desc": "Active users will receive 2% of the total RARI supply according to the Liquidity Mining principle: based on the previous volume on Rarible marketplace. Both buyers and sellers will receive 50%.",
+            "second_title": "Documented NFT holders/buyers",
+            "second_desc": "In this stage, 4% will be distributed among Ethereum addresses of all NFTs with documented sales on Dune Analytics.",
+            "third_title": "Remaining NFT owners",
+            "third_desc": "As we believe that Dune Analytics might not hold all the data, we introduced the third stage for corrections. If you haven’t found yourself on the list, but you know you have significant NFT holdings — please reach out to us! The second airdrop wave will be announced later."
+        },
+        "how_get_RARI": "How you can get RARI",
+        "how_get_RARI_desc": "RARI is not an investment and should be earned by active participation on the platform. 75,000 tokens are issued every week, with 50% reserved for buyers, and 50% for sellers",
+        "create_and_sell": "Create and sell",
+        "collect_nfts": "Collect NFTs",
+        "how_to_use": "How to users"
+    }
+}

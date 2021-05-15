@@ -1,3 +1,7 @@
 {
-    "language": "Language"
+    "language": "Language",
+    "discussion": "Discussion",
+    "voting": "Voting",
+    "how_it_work": "How it work",
+    "create": "Create"
 }
