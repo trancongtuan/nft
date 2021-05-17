@@ -2,6 +2,7 @@ import React, { FC, useRef, useState } from 'react'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import CustomInput from '../components/CustomInput'
@@ -9,6 +10,7 @@ import CustomInput from '../components/CustomInput'
 import LockIcon from '../public/assets/images/icons/lock.svg'
 
 const Setting: FC = () => {
+    const { t } = useTranslation('common')
     const inputFile = useRef(null)
     const [reLink, setReLink] = useState(false)
 
@@ -33,7 +35,7 @@ const Setting: FC = () => {
                             color: 'text',
                         }}
                     >
-                        Edit profile
+                        {t('setting.edit_profile')}
                     </Text>
                     <Text
                         mt={24}
@@ -45,8 +47,7 @@ const Setting: FC = () => {
                             fontWeight: 'body',
                         }}
                     >
-                        You can set preferred display name, create your branded
-                        profile URL and manage other personal settings
+                        {t('setting.edit_profile_description')}
                     </Text>
                 </Box>
                 <Flex
@@ -74,12 +75,12 @@ const Setting: FC = () => {
                         mr={[0, 0, 0, 40]}
                     >
                         <CustomInput
-                            label="Display name"
+                            label={t('setting.display_name')}
                             value=""
-                            placeholder="Enter your display name"
+                            placeholder={t('setting.display_name_placeholder')}
                         />
                         <CustomInput
-                            label="Custom URL"
+                            label={t('setting.custom_URL')}
                             value=""
                             staticLeft={
                                 <Text
@@ -94,16 +95,16 @@ const Setting: FC = () => {
                                     rarible.com/
                                 </Text>
                             }
-                            placeholder="Enter your custom url"
+                            placeholder={t('setting.custom_URL_placeholder')}
                         />
                         <CustomInput
-                            label="Bio"
+                            label={t('setting.bio')}
                             value=""
-                            placeholder="Tell about yourself in a few words"
+                            placeholder={t('setting.bio_placeholder')}
                         />
                         <CustomInput
-                            label="Twitter username"
-                            subLabel="Link your Twitter account to gain more trust on the marketplace"
+                            label={t('setting.twitter_username')}
+                            subLabel={t('setting.twitter_username_sub')}
                             value=""
                             placeholder="@"
                             staticRight={
@@ -118,27 +119,31 @@ const Setting: FC = () => {
                                 >
                                     {reLink ? (
                                         <Flex sx={{ width: 'max-content' }}>
-                                            <Text mr={8}>Check</Text>
-                                            <Text ml={8}>Tweet again</Text>
+                                            <Text mr={8}>
+                                                {t('setting.check')}
+                                            </Text>
+                                            <Text ml={8}>
+                                                {t('setting.tweet_again')}
+                                            </Text>
                                         </Flex>
                                     ) : (
-                                        <Text>Link</Text>
+                                        <Text>{t('setting.link')}</Text>
                                     )}
                                 </Box>
                             }
                         />
                         <CustomInput
-                            label="Personal site or portfolio"
+                            label={t('setting.personal_site_or_portfolio')}
                             value=""
                             placeholder="https://"
                         />
                         <CustomInput
-                            label="Email"
+                            label={t('setting.email')}
                             type="password"
-                            subLabel="Your email for marketplace notifications"
+                            subLabel={t('setting.email_sub')}
                             value=""
                             Icon={<LockIcon />}
-                            placeholder="Enter your email"
+                            placeholder={t('setting.email_placeholder')}
                             staticBottom={
                                 <Box
                                     sx={{
@@ -146,24 +151,23 @@ const Setting: FC = () => {
                                         color: 'textSecondary',
                                     }}
                                 >
-                                    <Text>
-                                        You must sign message to view or manage
-                                        your email.
-                                    </Text>{' '}
+                                    <Text>{t('setting.email_bottom')}</Text>{' '}
                                     <Text
                                         sx={{
                                             color: 'primary',
                                             cursor: 'pointer',
                                         }}
                                     >
-                                        Sign message
+                                        {t('setting.sign_message')}
                                     </Text>
                                 </Box>
                             }
                         />
                         <Flex>
                             <Box>
-                                <Text variant="heading">Verification</Text>
+                                <Text variant="heading">
+                                    {t('setting.verification')}
+                                </Text>
                                 <Text
                                     mt="4px"
                                     sx={{
@@ -173,10 +177,7 @@ const Setting: FC = () => {
                                         fontWeight: 'semiBold',
                                     }}
                                 >
-                                    Procceed with verification proccess to get
-                                    more visibility and gain trust on Rarible
-                                    Marketplace. Please allow up to several
-                                    weeks for the process.
+                                    {t('setting.verification_description')}
                                 </Text>
                             </Box>
                             <Box sx={{ minWidth: '120px' }} mt="4px" ml="10px">
@@ -184,7 +185,7 @@ const Setting: FC = () => {
                                     variant="secondary"
                                     sx={{ fontSize: '12px' }}
                                 >
-                                    Get verified
+                                    {t('setting.verification_btn')}
                                 </Button>
                             </Box>
                         </Flex>
@@ -193,7 +194,7 @@ const Setting: FC = () => {
                             mt={40}
                             sx={{ fontSize: '12px', width: '100%' }}
                         >
-                            Update profile
+                            {t('setting.update_profile')}
                         </Button>
                     </Box>
                     <Box
@@ -238,8 +239,7 @@ const Setting: FC = () => {
                                     maxWidth: '200px',
                                 }}
                             >
-                                We recommend an image of at least 400x400. Gift
-                                work too.
+                                {t('setting.choose_file_recommend')}
                             </Text>
                             <Button
                                 variant="secondary"
@@ -252,7 +252,7 @@ const Setting: FC = () => {
                                     ref={inputFile}
                                     style={{ display: 'none' }}
                                 />
-                                Choose file
+                                {t('setting.choose_file')}
                             </Button>
                         </Box>
                     </Box>
@@ -265,7 +265,11 @@ const Setting: FC = () => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+        ...(await serverSideTranslations(locale, [
+            'common',
+            'footer',
+            'setting',
+        ])),
     },
 })
 

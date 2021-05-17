@@ -18,7 +18,8 @@
         "liked": "Liked",
         "activity": "Activity",
         "followers": "Followers",
-        "back": "Go back"
+        "back": "Go back",
+        "filter_sort": "Filter & Sort"
     },
     "navigation": {
         "placeholder": "Search by creator, collectible or collection",
@@ -30,7 +31,11 @@
     "home": {
         "top": "Top",
         "day": "Day",
-        "days": "Days"
+        "days": "Days",
+        "hot_bids": "Hot Bids",
+        "hot_collections": "Hot collections",
+        "explore": "explore",
+        "load_more": "Load more"
     },
     "connect": {
         "connect_your_wallet": "Connect your wallet",

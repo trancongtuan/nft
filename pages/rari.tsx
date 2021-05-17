@@ -537,7 +537,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Get airdrop as Rarible user
+                                    {t('rari.get_airdrop_as_rarible_user')}
                                 </Text>
                             </Flex>
                             <Flex
@@ -562,7 +562,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Get airdrop as NFT holder
+                                    {t('rari.get_airdrop_as_NFT_holder')}
                                 </Text>
                             </Flex>
                         </Grid>
@@ -605,7 +605,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Hustle in Rarible DAO
+                                    {t('rari.hustle_in_rarible_DAO')}
                                 </Text>
                             </Flex>
                             <Flex
@@ -630,7 +630,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Vote for platform upgrades
+                                    {t('rari.vote_for_platform_upgrades')}
                                 </Text>
                             </Flex>
                             <Flex
@@ -655,7 +655,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Choose featured artworks
+                                    {t('rari.choose_featured_artworks')}
                                 </Text>
                             </Flex>
                             <Flex
@@ -680,7 +680,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Participate in moderation
+                                    {t('rari.participate_in_moderation')}
                                 </Text>
                             </Flex>
                         </Grid>

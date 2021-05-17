@@ -419,7 +419,7 @@ const Home: FC = () => {
                                 <DropdownIcon />
                             </Text>
                         </Popover>
-                        in
+                        {t('home.in')}
                         <Popover
                             onOuterAction={() => setShowDays(false)}
                             isOpen={showDays}
@@ -496,7 +496,7 @@ const Home: FC = () => {
                         color="text"
                         sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
-                        Hot bids 🔥
+                        {t('home.hot_bids')} 🔥
                     </Text>
                     <Carousel slidesToShow={4} length={carouselItems.length}>
                         {bidItems.map((item) => (
@@ -515,7 +515,7 @@ const Home: FC = () => {
                         color="text"
                         sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
-                        Hot collections 💥
+                        {t('home.hot_collections')} 💥
                     </Text>
                     <Carousel slidesToShow={4} length={carouselItems.length}>
                         {carouselItems.map((item) => (
@@ -546,7 +546,7 @@ const Home: FC = () => {
                             flexShrink: 0,
                         }}
                     >
-                        Explore ⚡
+                        {t('home.explore')} ⚡
                     </Text>
                     <Box sx={{ position: 'relative' }}>
                         <Flex ml={16} sx={{ overflowX: 'auto' }}>
@@ -709,7 +709,7 @@ const Home: FC = () => {
                                     ],
                                 }}
                             >
-                                Filter & Sort
+                                {t('general.filter_sort')}
                             </Text>
                         </Button>
                     </Popover>
@@ -753,7 +753,7 @@ const Home: FC = () => {
                             variant="border"
                             sx={{ height: 48, width: '100%' }}
                         >
-                            Load more
+                            {t('home.load_more')}
                         </Button>
                     </>
                 ) : (

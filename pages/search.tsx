@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react'
 import { Box, Text, Flex } from 'theme-ui'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import Selection, { SelectionItemsProps } from '../components/Selection'
@@ -11,22 +12,23 @@ import HotCollection from '../components/HotCollection'
 const selectionItems = [
     {
         id: '1',
-        label: 'Items',
+        label: 'search.items',
         value: 'Items',
     },
     {
         id: '2',
-        label: 'Users',
+        label: 'search.users',
         value: 'Users',
     },
     {
         id: '3',
-        label: 'Collections',
+        label: 'search.collections',
         value: 'Collections',
     },
 ]
 
 const Search: FC = () => {
+    const { t } = useTranslation('common')
     const [selectedTab, setSelectedTab] = useState<SelectionItemsProps>(
         selectionItems[0]
     )
@@ -46,7 +48,7 @@ const Search: FC = () => {
                             color: 'textSecondary',
                         }}
                     >
-                        Search results for
+                        {t('search.search_results_for')}
                     </Text>
                     <Text
                         sx={{
@@ -197,7 +199,11 @@ const Search: FC = () => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+        ...(await serverSideTranslations(locale, [
+            'common',
+            'footer',
+            'search',
+        ])),
     },
 })
 
