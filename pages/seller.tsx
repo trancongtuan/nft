@@ -27,31 +27,31 @@ import PopupShare from '../components/PopupShare'
 const selectionItems = [
     {
         id: '1',
-        label: 'seller.on_sale',
+        label: 'general.on_sale',
         value: 'On sale',
         count: 0,
     },
     {
         id: '2',
-        label: 'seller.collectibles',
+        label: 'general.collectibles',
         value: 'Collectibles',
         count: 0,
     },
     {
         id: '3',
-        label: 'seller.created',
+        label: 'general.created',
         value: 'Created',
         count: 0,
     },
     {
         id: '4',
-        label: 'seller.liked',
+        label: 'general.liked',
         value: 'Liked',
         count: 2,
     },
     {
         id: '5',
-        label: 'seller.activity',
+        label: 'general.activity',
         value: 'Activity',
         count: 5,
     },
@@ -141,7 +141,7 @@ const Items: FC = () => {
                         >
                             <Flex>
                                 <Text sx={{ fontWeight: '900' }}>
-                                    {t('seller.filters')}
+                                    {t('general.filters')}
                                 </Text>
                                 {showReset && (
                                     <Text
@@ -153,7 +153,7 @@ const Items: FC = () => {
                                             color: 'primary',
                                         }}
                                     >
-                                        {t('seller.reset_filter')}
+                                        {t('general.reset_filter')}
                                     </Text>
                                 )}
                             </Flex>
@@ -161,49 +161,49 @@ const Items: FC = () => {
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content={t('seller.listings')}
+                                    content={t('general.listings')}
                                     type="listings"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content={t('seller.purchases')}
+                                    content={t('general.purchases')}
                                     type="purchases"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
-                                    content={t('seller.sales')}
+                                    content={t('general.sales')}
                                     type="sales"
                                     reset={resetFilter}
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
-                                    content={t('seller.transfers')}
+                                    content={t('general.transfers')}
                                     type="transfers"
                                     reset={resetFilter}
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content={t('seller.burns')}
+                                    content={t('general.burns')}
                                     type="burns"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content={t('seller.bids')}
+                                    content={t('general.bids')}
                                     type="bids"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content={t('seller.likes')}
+                                    content={t('general.likes')}
                                     type="likes"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content={t('seller.followings')}
+                                    content={t('general.followings')}
                                     type="followings"
                                 />
                             </Flex>
@@ -240,7 +240,7 @@ const Items: FC = () => {
                     onClose={() => {
                         setOpenPopup(false)
                     }}
-                    label={t('seller.filters')}
+                    label={t('general.filters')}
                 >
                     <Flex
                         sx={{
@@ -252,49 +252,49 @@ const Items: FC = () => {
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content={t('seller.listings')}
+                            content={t('general.listings')}
                             type="listings"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content={t('seller.purchases')}
+                            content={t('general.purchases')}
                             type="purchases"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content={t('seller.sales')}
+                            content={t('general.sales')}
                             type="sales"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content={t('seller.transfers')}
+                            content={t('general.transfers')}
                             type="transfers"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content={t('seller.burn')}
+                            content={t('general.burn')}
                             type="burns"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content={t('seller.bids')}
+                            content={t('general.bids')}
                             type="bids"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content={t('seller.likes')}
+                            content={t('general.likes')}
                             type="likes"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content={t('seller.followings')}
+                            content={t('general.followings')}
                             type="followings"
                         />
                         <Button
@@ -374,10 +374,10 @@ const Items: FC = () => {
                         color="text"
                         sx={{ fontWeight: 'heavy', fontSize: 28 }}
                     >
-                        {t('seller.no_items_found')}
+                        {t('general.no_items_found')}
                     </Text>
                     <Text mt={20}>
-                        {t('seller.no_items_found_description')}
+                        {t('general.no_items_found_description')}
                     </Text>
 
                     <Button
@@ -388,7 +388,7 @@ const Items: FC = () => {
                             height: 40,
                         }}
                     >
-                        <Link href="/">{t('seller.browse_marketplace')}</Link>
+                        <Link href="/">{t('general.browse_marketplace')}</Link>
                     </Button>
                 </Flex>
             </Box>
@@ -495,7 +495,7 @@ const Items: FC = () => {
                                 height: 40,
                             }}
                         >
-                            {t('seller.follow')}
+                            {t('general.follow')}
                         </Button>
                         <Button
                             onClick={() => setShowShare(!showShare)}
@@ -592,7 +592,7 @@ const Items: FC = () => {
                                     },
                                 }}
                             >
-                                {t('seller.followings')}
+                                {t('general.followings')}
                             </Text>
 
                             <Text
@@ -634,7 +634,7 @@ const Items: FC = () => {
                                     },
                                 }}
                             >
-                                {t('seller.followers')}
+                                {t('general.followers')}
                             </Text>
 
                             <Text
@@ -671,7 +671,7 @@ const Items: FC = () => {
                 onClose={() => {
                     setShowFollowers(false)
                 }}
-                label="Followers"
+                label={t('general.follower')}
             >
                 <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <Flex
@@ -692,7 +692,7 @@ const Items: FC = () => {
                                     color="textSecondary"
                                     sx={{ fontSize: 1, fontWeight: 'bold' }}
                                 >
-                                    999 {t('seller.followers')}
+                                    999 {t('general.followers')}
                                 </Text>
                                 <Text
                                     color="text"
@@ -702,7 +702,7 @@ const Items: FC = () => {
                                 </Text>
                             </Flex>
                         </Flex>
-                        <Button variant="primary">{t('seller.follow')}</Button>
+                        <Button variant="primary">{t('general.follow')}</Button>
                     </Flex>
                 </Flex>
             </Popup>
@@ -711,7 +711,7 @@ const Items: FC = () => {
                 onClose={() => {
                     setShowFollowing(false)
                 }}
-                label="Following"
+                label={t('general.following')}
             >
                 <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <Flex
@@ -732,7 +732,7 @@ const Items: FC = () => {
                                     color="textSecondary"
                                     sx={{ fontSize: 1, fontWeight: 'bold' }}
                                 >
-                                    999 {t('seller.followers')}
+                                    999 {t('general.followers')}
                                 </Text>
                                 <Text
                                     color="text"
@@ -742,7 +742,7 @@ const Items: FC = () => {
                                 </Text>
                             </Flex>
                         </Flex>
-                        <Button variant="primary">{t('seller.follow')}</Button>
+                        <Button variant="primary">{t('general.follow')}</Button>
                     </Flex>
                 </Flex>
             </Popup>
@@ -752,11 +752,7 @@ const Items: FC = () => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, [
-            'common',
-            'footer',
-            'seller',
-        ])),
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
     },
 })
 

@@ -199,11 +199,7 @@ const Search: FC = () => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, [
-            'common',
-            'footer',
-            'search',
-        ])),
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
     },
 })
 

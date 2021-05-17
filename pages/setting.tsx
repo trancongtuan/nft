@@ -265,11 +265,7 @@ const Setting: FC = () => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, [
-            'common',
-            'footer',
-            'setting',
-        ])),
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
     },
 })
 

@@ -173,7 +173,7 @@ const Following: FC = () => {
                                 display: ['none', 'block', 'block', 'block'],
                             }}
                         >
-                            Filter & Sort
+                            {t('general.filter_sort')}
                         </Text>
                     </Button>
                 </Popover>
@@ -189,11 +189,10 @@ const Following: FC = () => {
                         color="text"
                         sx={{ fontWeight: 'heavy', fontSize: 28 }}
                     >
-                        No items found
+                        {t('general.no_items_found')}
                     </Text>
                     <Text mt={20} sx={{ textAlign: 'center' }}>
-                        Come back soon! Or try to browse something for you on
-                        our marketplace
+                        {t('general.no_items_found_description')}
                     </Text>
 
                     <Button
@@ -204,7 +203,7 @@ const Following: FC = () => {
                             height: 40,
                         }}
                     >
-                        <Link href="/">Browse Marketplace</Link>
+                        <Link href="/">{t('general.browse_marketplace')}</Link>
                     </Button>
                 </Flex>
             </Box>

@@ -34,17 +34,17 @@ const tooltipItems = [
 const selectionItems = [
     {
         id: '1',
-        label: 'Bids',
+        label: 'product.bids',
         value: 'Bids',
     },
     {
         id: '2',
-        label: 'Details',
+        label: 'product.details',
         value: 'Details',
     },
     {
         id: '3',
-        label: 'History',
+        label: 'product.history',
         value: 'History',
     },
 ]
@@ -226,7 +226,7 @@ const Product: FC = () => {
                             }}
                         >
                             <Text mr={2} sx={{ color: 'textSecondary' }}>
-                                Highest bid
+                                {t('product.highest_bid')}
                             </Text>
                             <Text mr={2} sx={{ color: 'primary' }}>
                                 0.633 WETH
@@ -305,7 +305,7 @@ const Product: FC = () => {
                                         color: 'textSecondary',
                                     }}
                                 >
-                                    Collection
+                                    {t('product.collection')}
                                 </Text>
                                 <Flex
                                     mt={2}
@@ -346,7 +346,7 @@ const Product: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                10% of sales will go to creator
+                                10% {t('product.of_sales_will_go_to_creator')}
                             </Text>
                         </Box>
                         <Box mt={3}>
@@ -505,7 +505,7 @@ const Product: FC = () => {
                                             fontSize: 1,
                                         }}
                                     >
-                                        Auction ends in
+                                        {t('product.auction_ends_in')}
                                     </Text>
                                     <TopSellerCard
                                         name="Highest bid by Aito"
@@ -535,7 +535,7 @@ const Product: FC = () => {
                                             fontSize: 1,
                                         }}
                                     >
-                                        Auction ends in
+                                        {t('product.auction_ends_in')}
                                     </Text>
                                     <Flex
                                         sx={{ justifyContent: 'space-between' }}
@@ -631,7 +631,7 @@ const Product: FC = () => {
                                     sx={{ width: '50%', height: '40px' }}
                                     onClick={() => setOpenPopupPlaceABid(true)}
                                 >
-                                    Place a bid
+                                    {t('product.place_a_bid')}
                                 </Button>
                                 <Button
                                     variant="secondary"
@@ -639,7 +639,7 @@ const Product: FC = () => {
                                     sx={{ width: '50%', height: '40px' }}
                                     onClick={() => setOpenPopupShare(true)}
                                 >
-                                    Share
+                                    {t('product.share')}
                                 </Button>
                             </Flex>
                             <Popup
@@ -670,11 +670,7 @@ const Product: FC = () => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
     props: {
-        ...(await serverSideTranslations(locale, [
-            'common',
-            'footer',
-            'product',
-        ])),
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
     },
 })
 
