@@ -30,7 +30,7 @@ const Create: FC = () => {
                     >
                         <BackIcon />
                         <Text ml={8} sx={{ fontWeight: 'bold', fontSize: 2 }}>
-                            {t('general.go_back')}
+                            {t('general.back')}
                         </Text>
                     </Flex>
                     <Text
