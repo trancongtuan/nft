@@ -12,14 +12,11 @@ import CopyIcon from '../public/assets/images/icons/copy.svg'
 import CheckedIcon from '../public/assets/images/icons/checked.svg'
 import UploadIcon from '../public/assets/images/icons/upload.svg'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
-import TwitterIcon from '../public/assets/images/icons/twitter.svg'
-import FacebookIcon from '../public/assets/images/icons/facebook.svg'
-import TelegramIcon from '../public/assets/images/icons/telegram.svg'
-import EmailIcon from '../public/assets/images/icons/email.svg'
 import BidCard from '../components/BidCard'
 import Tooltip from '../components/Tooltip'
 import Popup from '../components/Popup'
 import PopupReport from '../components/PopupReport'
+import PopupShare from '../components/PopupShare'
 
 const Collection: FC = () => {
     const [showReport, setShowReport] = useState(false)
@@ -108,181 +105,24 @@ const Collection: FC = () => {
                         </CopyToClipboard>
                     </Flex>
                     <Flex color="text">
-                        <Popover
-                            onOuterAction={() => setShowShare(false)}
-                            isOpen={showShare}
-                            body={
-                                <Tooltip>
-                                    <Flex
-                                        p={3}
-                                        sx={{
-                                            alignItems: 'center',
-                                            flexDirection: 'column',
-                                            minWidth: 322,
-                                        }}
-                                    >
-                                        <Text
-                                            mb={16}
-                                            color="text"
-                                            sx={{
-                                                fontSize: 18,
-                                                fontWeight: 'heavy',
-                                                lineHeight: '25px',
-                                            }}
-                                        >
-                                            Share link to this page
-                                        </Text>
-                                        <Flex
-                                            sx={{
-                                                width: '100%',
-                                                justifyContent: 'space-around',
-                                            }}
-                                        >
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <TwitterIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Twitter
-                                                </Text>
-                                            </Flex>
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <FacebookIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Facebook
-                                                </Text>
-                                            </Flex>
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <TelegramIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Telegram
-                                                </Text>
-                                            </Flex>
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <EmailIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    E-mail
-                                                </Text>
-                                            </Flex>
-                                        </Flex>
-                                    </Flex>
-                                </Tooltip>
-                            }
-                            place="below"
-                            tipSize={0.01}
+                        <Button
+                            onClick={() => setShowShare(!showShare)}
+                            mr={8}
+                            variant="border"
+                            p={0}
+                            sx={{ width: 40 }}
                         >
-                            <Button
-                                onClick={() => setShowShare(!showShare)}
-                                mr={8}
-                                variant="border"
-                                p={0}
-                                sx={{ width: 40 }}
-                            >
-                                <UploadIcon />
-                            </Button>
-                        </Popover>
+                            <UploadIcon />
+                        </Button>
+                        <Popup
+                            isOpen={showShare}
+                            onClose={() => {
+                                setShowShare(false)
+                            }}
+                            label="Share this NFT"
+                        >
+                            <PopupShare />
+                        </Popup>
                         <Popover
                             onOuterAction={() => setShowReport(false)}
                             isOpen={showReport}
@@ -326,10 +166,10 @@ const Collection: FC = () => {
                 <Selection
                     borderBottom
                     items={[
-                        { id: '1', label: 'On sale', value: 'On sale' },
+                        { id: '1', label: 'general.on_sale', value: 'On sale' },
                         {
                             id: '2',
-                            label: 'Collectibles',
+                            label: 'general.collectibles',
                             value: 'Collectibles',
                         },
                     ]}

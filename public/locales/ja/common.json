@@ -42,6 +42,9 @@
         "placeholder": "言語",
         "set_name": "言語"
     },
+    "items": {
+        "edit_profile": "言語"
+    },
     "product": {
         "creator": "言語",
         "highest_bid": "言語",
@@ -98,33 +101,73 @@
         "collections": "言語"
     },
     "connect": {
-        "connect_your_wallet": "Test Connect your wallet",
-        "note": "Test We do not own your private keys and cannot access your funds without your confirmation."
+        "connect_your_wallet": "言語",
+        "connect_your_wallet_description": "言語",
+        "what_is_a_wallet": "言語",
+        "what_is_a_wallet_description": "言語",
+        "note": "言語",
+        "show_more": "言語",
+        "show_less": "言語",
+        "connect_with": "言語"
+    },
+    "activity": {
+        "Activity": "言語",
+        "all": "言語",
+        "my_activity": "言語",
+        "nothing_yet": "言語",
+        "activity_will_be_shown_here": "言語",
+        "explore_radible": "言語"
     },
     "create": {
-        "guide": "Test Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times",
-        "describe": "Test We do not own your private keys and cannot access your funds without your confirmation",
-        "manage": "Test Manage collectible type",
-        "preview": "Test Preview",
-        "price": "Test Price",
-        "unlock": "Test Unlock once purchased",
-        "choose": "Test Choose collection",
-        "preserved_line_breaks": "Test preserved line-breaks",
-        "suggested": "Test Suggested: 10%, 20%, 30%",
-        "royalties": "Test Royalties",
-        "properties": "Test Properties",
-        "token_name": "Test Enter token name",
-        "symbol": "Test Symbol",
-        "description": "Test Description",
-        "short_url": "Test Short url",
+        "guide": "言語",
+        "note": "言語",
+        "manage": "言語",
+        "upload_file": "言語",
+        "choose_file": "言語",
+        "put_on_market": "言語",
+        "put_on_market_sub": "言語",
+        "fixed_price": "言語",
+        "unlimited_auction": "言語",
+        "price": "言語",
+        "price_placeholder": "言語",
+        "price_placeholder2": "言語",
+        "price_bottom": "言語",
+        "service_fee": "言語",
+        "you_will_receive": "言語",
+        "unlock_once_purchased": "言語",
+        "unlock_once_purchased_description": "言語",
+        "choose_collection": "言語",
+        "title": "言語",
+        "title_placeholder": "言語",
+        "description": "言語",
+        "description_placeholder": "言語",
+        "royalties": "言語",
+        "royalties_bottom": "言語",
+        "number_of_copies": "言語",
+        "number_of_copies_bottom": "言語",
+        "properties": "言語",
+        "create_item": "言語",
+        "auto_saving": "言語",
+        "preview": "言語",
+        "preview_upload": "言語",
+        "collection": "言語",
+        "unlockable_content": "言語",
+        "display_name": "言語",
+        "display_name_placeholder": "言語",
+        "symbol": "言語",
+        "symbol_placeholder": "言語",
+        "short_url": "言語",
+        "short_url_placeholder": "言語",
+        "short_url_bottom": "言語",
+        "create_collection": "言語",
         "single": {
-            "name": "Test Single",
-            "heading": "Test Create single collectible"
+            "name": "言語",
+            "heading": "言語"
         },
         "multiple": {
-            "name": "Test Multiple",
-            "heading": "Test Create multiple collectible",
-            "number_of_copies": "Test Number of copies"
+            "name": "言語",
+            "heading": "言語",
+            "number_of_copies": "言語"
         }
     },
     "rari": {

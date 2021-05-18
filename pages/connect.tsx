@@ -184,8 +184,7 @@ const Connect: FC = () => {
                             }}
                         >
                             <Text sx={{ color: 'textSecondary' }}>
-                                Connect with one of available wallet providers
-                                or create a new wallet.
+                                {t('connect.connect_your_wallet_description')}
                             </Text>
                             <Text
                                 sx={{
@@ -198,7 +197,7 @@ const Connect: FC = () => {
                                 onClick={() => setOpenWalletPopup(true)}
                             >
                                 {' '}
-                                What is a wallet?
+                                {t('connect.what_is_a_wallet')}
                             </Text>
                         </Text>
                         <Popup
@@ -206,7 +205,7 @@ const Connect: FC = () => {
                             onClose={() => {
                                 setOpenWalletPopup(false)
                             }}
-                            label="What is a wallet?"
+                            label={t('connect.what_is_a_wallet')}
                         >
                             <Flex
                                 sx={{
@@ -216,12 +215,7 @@ const Connect: FC = () => {
                                     maxWidth: '320px',
                                 }}
                             >
-                                Wallets are used to send, receive, and store
-                                digital assets like Ether. Wallets come in many
-                                forms. They are either built into your browser,
-                                an extension added to your browser, a piece of
-                                hardware plugged into your computer, or even an
-                                app on your phone.
+                                {t('connect.what_is_a_wallet_description')}
                             </Flex>
                         </Popup>
                     </Box>
@@ -289,7 +283,11 @@ const Connect: FC = () => {
                             }}
                         >
                             <ConnectCard
-                                title={!showMore ? 'Show more' : 'Show less'}
+                                title={
+                                    !showMore
+                                        ? t('connect.show_more')
+                                        : t('connect.show_less')
+                                }
                             />
                         </Box>
                     </Flex>
