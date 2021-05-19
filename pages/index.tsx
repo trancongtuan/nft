@@ -546,7 +546,7 @@ const Home: FC = () => {
                             flexShrink: 0,
                         }}
                     >
-                        {t('home.explore')} ⚡
+                        {t('general.explore')} ⚡
                     </Text>
                     <Box sx={{ position: 'relative' }}>
                         <Flex ml={16} sx={{ overflowX: 'auto' }}>

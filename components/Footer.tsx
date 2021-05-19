@@ -90,7 +90,7 @@ const Footer: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Get the latest Rarible updates
+                                {t('get_the_latest_Rarible_updates')}
                             </Text>
                             <Flex
                                 mt={16}
@@ -114,7 +114,7 @@ const Footer: FC = () => {
                                 }}
                             >
                                 <Input
-                                    placeholder="Your e-mail"
+                                    placeholder={t('your_email')}
                                     defaultValue=""
                                     variant="footerInput"
                                     sx={{
@@ -141,7 +141,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    I am in
+                                    {t('i_am_in')}
                                 </Button>
                             </Flex>
                         </Box>
@@ -176,7 +176,7 @@ const Footer: FC = () => {
                                             },
                                         }}
                                     >
-                                        Explore
+                                        {t('explore')}
                                     </Text>
                                 </Link>
                                 <UILink
@@ -229,7 +229,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    Support
+                                    {t('support')}
                                 </UILink>
                             </Flex>
                         </Box>
@@ -246,7 +246,7 @@ const Footer: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Community
+                                {t('community')}
                             </Text>
                             <Flex mt={16} sx={{ flexDirection: 'column' }}>
                                 <Link href="/rari">
@@ -264,7 +264,7 @@ const Footer: FC = () => {
                                             },
                                         }}
                                     >
-                                        RARI Token
+                                        {t('RARI_token')}
                                     </Text>
                                 </Link>
                                 <UILink
@@ -316,7 +316,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    Suggest feature
+                                    {t('suggest_feature')}
                                 </UILink>
                             </Flex>
                         </Box>
@@ -415,7 +415,7 @@ const Footer: FC = () => {
                     >
                         <Box mr={[0, 0, 0, 32]} mt={[16, 16, 16, 0]}>
                             <Text sx={{ fontSize: 1, order: [2, 2, 2, 1] }}>
-                                © Rarible, Inc. All rights reserved.
+                                © Rarible, Inc. {t('all_right_reserved')}
                             </Text>
                         </Box>
 
@@ -436,12 +436,12 @@ const Footer: FC = () => {
                         >
                             <a href="/files/terms.pdf" target="_blank">
                                 <Text mx={16} sx={{ fontSize: 1 }}>
-                                    Terms
+                                    {t('terms')}
                                 </Text>
                             </a>
                             <a href="/files/privacy.pdf" target="_blank">
                                 <Text mx={16} sx={{ fontSize: 1 }}>
-                                    Privacy
+                                    {t('privacy')}
                                 </Text>
                             </a>
                         </Flex>

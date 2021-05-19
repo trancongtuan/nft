@@ -1,5 +1,6 @@
 import { alpha } from '@theme-ui/color'
 import React, { FC, PropsWithChildren, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Button, Flex, Text, useColorMode } from 'theme-ui'
 import CheckedIcon from '../public/assets/images/icons/checked.svg'
 
@@ -24,6 +25,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     children,
     selectedItem,
 }) => {
+    const { t } = useTranslation('common')
     const [colorMode] = useColorMode()
     return (
         <Flex
@@ -32,14 +34,14 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
             sx={{
                 flexDirection: 'column',
                 flexGrow: 1,
-                boxShadow: (t) =>
+                boxShadow: (trans) =>
                     colorMode !== 'dark'
-                        ? `${alpha('text', 0.2)(t)} 0px 7px 36px -8px`
+                        ? `${alpha('text', 0.2)(trans)} 0px 7px 36px -8px`
                         : undefined,
                 borderRadius: 8,
-                border: (t) =>
+                border: (trans) =>
                     colorMode === 'dark'
-                        ? `1px solid ${alpha('white', 0.1)(t)}`
+                        ? `1px solid ${alpha('white', 0.1)(trans)}`
                         : undefined,
                 transition: 'all 0.12s ease-in-out 0s',
                 minWidth: minWidth ?? 207,
@@ -89,7 +91,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
                                         maxWidth: '100%',
                                     }}
                                 >
-                                    {item.label}
+                                    {t(item.label)}
                                 </Text>
                             </Flex>
                             {selectedItem === item && (

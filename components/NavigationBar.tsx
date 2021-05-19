@@ -44,22 +44,22 @@ import { useAuth } from '../hooks/auth'
 const selectionItems = [
     {
         id: '1',
-        label: 'Explore',
+        label: 'general.explore',
         value: '/',
     },
     {
         id: '2',
-        label: 'My items',
+        label: 'general.my_items',
         value: '/my_items',
     },
     {
         id: '3',
-        label: 'Following',
+        label: 'general.following',
         value: '/following',
     },
     {
         id: '4',
-        label: 'Activity',
+        label: 'general.activity',
         value: '/activity',
         isNew: true,
     },
@@ -68,27 +68,27 @@ const selectionItems = [
 const tooltipItems = [
     {
         id: 1,
-        label: 'How it works',
+        label: 'general.how_it_work',
     },
     {
         id: 2,
-        label: 'RARI Token',
+        label: 'general.RARI_token',
     },
     {
         id: 3,
-        label: 'Discussion',
+        label: 'general.discussion',
     },
     {
         id: 4,
-        label: 'Voting',
+        label: 'general.voting',
     },
     {
         id: 5,
-        label: 'Suggest feature',
+        label: 'general.suggest_feature',
     },
     {
         id: 6,
-        label: 'Subscribe',
+        label: 'general.subscribe',
     },
 ]
 
@@ -186,6 +186,7 @@ const useColorInput = (
 }
 
 const SearchInput: FC = () => {
+    const { t } = useTranslation('common')
     const [focus, setFocus] = useState(false)
     const router = useRouter()
     const [colorMode] = useColorMode()
@@ -233,7 +234,7 @@ const SearchInput: FC = () => {
                 onKeyPress={handleKeyPress}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
-                placeholder="Search Rarible"
+                placeholder={t('general.search_rarible')}
                 variant=""
                 sx={{
                     fontSize: 15,
@@ -442,7 +443,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            Explore
+                            {t('general.explore')}
                         </Text>
                     </Link>
                     <Link href="/my_items">
@@ -455,7 +456,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            My items
+                            {t('general.my_items')}
                         </Text>
                     </Link>
                     <Link href="/following">
@@ -481,7 +482,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                     fontWeight: 'heavy',
                                 }}
                             >
-                                Activity
+                                {t('general.activity')}
                             </Text>
                         </Link>
                         <Box ml={8}>
@@ -518,7 +519,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
                         }}
                     >
-                        Community
+                        {t('general.community')}
                     </Text>
                 </Box>
                 <Flex mt={8} sx={{ flexDirection: 'column' }}>
@@ -532,7 +533,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            RARI Token
+                            {t('general.RARI_token')}
                         </Text>
                     </Link>
                     <UILink
@@ -546,7 +547,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Discussion
+                        {t('general.discussion')}
                     </UILink>
                     <UILink
                         href="https://snapshot.org/#/rarible/"
@@ -559,7 +560,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Voting
+                        {t('general.voting')}
                     </UILink>
                     <UILink
                         href="https://snapshot.org/#/rarible/"
@@ -572,7 +573,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Suggest feature
+                        {t('general.suggest_feature')}
                     </UILink>
                     <UILink
                         href="https://rarible.nolt.io/"
@@ -585,7 +586,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Subscribe
+                        {t('general.subscribe')}
                     </UILink>
                 </Flex>
             </Box>
@@ -782,7 +783,7 @@ const NavigationBar: FC = () => {
                                                 'all 0.12s ease-in-out 0s',
                                         }}
                                     >
-                                        Community
+                                        {t('general.community')}
                                     </Text>
                                     <DropDownIcon />
                                 </Flex>
@@ -1227,7 +1228,7 @@ const NavigationBar: FC = () => {
                                     },
                                 }}
                             >
-                                <Text>Connect wallet</Text>
+                                <Text>{t('general.connect_wallet')}</Text>
                             </Button>
                         )}
                     </Popover>

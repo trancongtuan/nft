@@ -34,7 +34,7 @@ const tooltipItems = [
 const selectionItems = [
     {
         id: '1',
-        label: 'product.bids',
+        label: 'general.bids',
         value: 'Bids',
     },
     {

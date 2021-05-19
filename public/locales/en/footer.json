@@ -1,7 +1,19 @@
 {
     "language": "Language",
+    "get_the_latest_Rarible_updates": "Get the latest Rarible updates",
+    "your_email": "Your email",
+    "i_am_in": "I am in",
+    "rarible": "Rarible",
+    "explore": "Explore",
+    "how_it_work": "How it work",
+    "create": "Create",
+    "support": "Support",
+    "community": "Community",
+    "RARI_token": "RARI token",
     "discussion": "Discussion",
     "voting": "Voting",
-    "how_it_work": "How it work",
-    "create": "Create"
+    "suggest_feature": "Suggest feature",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "all_right_reserved": "All right reserved"
 }
