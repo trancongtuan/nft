@@ -1,6 +1,5 @@
-import { alpha } from '@theme-ui/color'
 import React, { FC } from 'react'
-import { Image, Box, Flex, Text, useColorMode } from 'theme-ui'
+import { Image, Box, Flex, Text } from 'theme-ui'
 import Avatar, { AvatarProps } from './Avatar'
 
 type UserProps = Pick<AvatarProps, 'src' | 'verified'>
@@ -20,28 +19,25 @@ const HotCollection: FC<HotCollectionProps> = ({
     background,
     onClick,
 }) => {
-    const [colorMode] = useColorMode()
     return (
         <Box
             onClick={onClick}
             sx={{
                 borderRadius: 1,
-                border: (t) =>
-                    colorMode === 'dark'
-                        ? `1px solid ${alpha('white', 0.1)(t)}`
-                        : `1px solid ${alpha('text', 0.1)(t)}`,
+                borderWidth: 1,
+                borderColor: 'borderColor',
+                borderStyle: 'solid',
                 overflow: 'hidden',
                 height: 220,
                 cursor: 'pointer',
             }}
         >
-            <Box>
-                <Image
-                    src={background}
-                    variant="background"
-                    sx={{ objectFit: 'cover' }}
-                />
-            </Box>
+            <Image
+                width="100%"
+                src={background}
+                variant="background"
+                sx={{ objectFit: 'cover' }}
+            />
             <Flex sx={{ flexDirection: 'column', alignItems: 'center' }}>
                 <Box mt={-42}>
                     <Avatar {...owner} size="md" />

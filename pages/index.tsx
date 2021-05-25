@@ -1,12 +1,12 @@
 /* eslint-disable no-irregular-whitespace */
-import React, { FC, useCallback, useState } from 'react'
-import { Box, Button, Flex, Text } from 'theme-ui'
+import React, { FC, useState } from 'react'
+import { Box, Button, Flex, Grid, Text } from 'theme-ui'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { v4 as uuidv4 } from 'uuid'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import BidCard, { BidCardProps } from '../components/BidCard'
+import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
 import EdgeOverflow from '../components/EdgeOverflow'
 import HotCollection from '../components/HotCollection'
@@ -19,25 +19,8 @@ import Tooltip, { TooltipItemProps } from '../components/Tooltip'
 import useHorizontalScroll from '../hooks/horizontalScroll'
 import TooltipItem from '../components/TooltipItem'
 import ToggleButton from '../components/ToggleButton'
-
-const exploreItem: BidCardProps = {
-    favorite: 10,
-    price: 10,
-    type: 'multiple',
-    image: 'https://picsum.photos/200/400',
-    collection: {
-        src: 'https://picsum.photos/300/300',
-        verified: true,
-    },
-    owner: { src: 'https://picsum.photos/200/300' },
-    creator: {
-        src: 'https://picsum.photos/200/400',
-        verified: true,
-    },
-    name: 'Test',
-    bid: 50,
-    currency: 'WETH',
-}
+import { useGetAssetsInfiniteQuery } from '../queries'
+import { useGetCollectionsQuery } from '../queries/collections'
 
 const carouselItems = [
     {
@@ -327,13 +310,16 @@ const Home: FC = () => {
     const [day, setDay] = useState<TooltipItemProps>(dayList[0])
     const ref = useHorizontalScroll()
     const [showLoadMore, setShowLoadMore] = useState(true)
-    const [exploreItems, setExploreItems] = useState(
-        Array(15).fill(exploreItem)
-    )
-    const fetchData = useCallback(() => {
-        const newItems = Array(15).fill(exploreItem)
-        setExploreItems((rev) => rev.concat(newItems))
-    }, [])
+    const {
+        data: infinityData,
+        fetchNextPage,
+        hasNextPage,
+    } = useGetAssetsInfiniteQuery()
+    const { data: collectionsData } = useGetCollectionsQuery({
+        offset: 0,
+        limit: 15,
+    })
+    const skipToCursor50: () => void = () => fetchNextPage()
     return (
         <Layout>
             <Box
@@ -510,15 +496,27 @@ const Home: FC = () => {
                     >
                         Hot collections 💥
                     </Text>
-                    <Carousel slidesToShow={4} length={carouselItems.length}>
-                        {carouselItems.map((item) => (
-                            <Box key={item.id} px={10}>
-                                <HotCollection
-                                    onClick={() => router.push('/collection')}
-                                    {...item}
-                                />
-                            </Box>
-                        ))}
+                    <Carousel
+                        slidesToShow={4}
+                        length={
+                            (collectionsData?.data?.collections ?? []).length
+                        }
+                    >
+                        {(collectionsData?.data?.collections ?? []).map(
+                            (item) => (
+                                <Box key={item.slug} px={10}>
+                                    <HotCollection
+                                        onClick={() =>
+                                            router.push('/collection')
+                                        }
+                                        name={item.name}
+                                        code={item.slug}
+                                        owner={{ src: item.image_url }}
+                                        background={item.image_url}
+                                    />
+                                </Box>
+                            )
+                        )}
                     </Carousel>
                 </Flex>
                 <Box
@@ -707,90 +705,56 @@ const Home: FC = () => {
                         </Button>
                     </Popover>
                 </Flex>
-                {showLoadMore ? (
-                    <>
-                        <Flex mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                            {exploreItems.map((item) => (
-                                <Box
-                                    key={uuidv4()}
-                                    p={10}
-                                    sx={{
-                                        maxWidth: [
-                                            '100%',
-                                            '50%',
-                                            '33.3333%',
-                                            '25%',
-                                            '20%',
-                                        ],
-                                        flex: [
-                                            '0 0 100%',
-                                            '0 0 50%',
-                                            '0 0 33.3333%',
-                                            '0 0 25%',
-                                            '0 0 20%',
-                                        ],
-                                    }}
-                                >
-                                    <BidCard
-                                        onCLick={() => router.push('/product')}
-                                        {...item}
-                                    />
-                                </Box>
-                            ))}
-                        </Flex>
-                        <Button
-                            onClick={() => {
-                                setShowLoadMore(false)
-                                fetchData()
-                            }}
-                            variant="border"
-                            sx={{ height: 48, width: '100%' }}
-                        >
-                            Load more
-                        </Button>
-                    </>
-                ) : (
-                    <InfiniteScroll
-                        dataLength={exploreItems.length}
-                        next={fetchData}
-                        hasMore
-                        loader={null}
-                        style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            marginLeft: '-10px',
-                            marginRight: '-10px',
-                            marginBottom: '28px',
-                        }}
-                    >
-                        {exploreItems.map((item) => (
-                            <Box
-                                key={uuidv4()}
-                                p={10}
-                                sx={{
-                                    maxWidth: [
-                                        '100%',
-                                        '50%',
-                                        '33.3333%',
-                                        '25%',
-                                        '20%',
-                                    ],
-                                    flex: [
-                                        '0 0 100%',
-                                        '0 0 50%',
-                                        '0 0 33.3333%',
-                                        '0 0 25%',
-                                        '0 0 20%',
-                                    ],
-                                }}
-                            >
+                <InfiniteScroll
+                    dataLength={(infinityData?.pages ?? []).length}
+                    next={skipToCursor50}
+                    hasMore={!showLoadMore && hasNextPage}
+                    loader={null}
+                >
+                    <Grid gap={20} columns={[1, 2, 3, 4, 5]}>
+                        {(infinityData?.pages ?? []).map((page) =>
+                            (page?.data?.assets ?? []).map((item) => (
                                 <BidCard
-                                    onCLick={() => router.push('/product')}
-                                    {...item}
+                                    key={item.id}
+                                    onCLick={() =>
+                                        router.push(
+                                            `/product/${item.asset_contract.address}/${item.token_id}`
+                                        )
+                                    }
+                                    name={item.name}
+                                    image={item.image_url}
+                                    currency="ETH"
+                                    {...(item?.creator && {
+                                        creator: {
+                                            src: item.creator?.profile_img_url,
+                                        },
+                                    })}
+                                    {...(item?.owner && {
+                                        owner: {
+                                            src: item.owner?.profile_img_url,
+                                        },
+                                    })}
+                                    {...(item?.collection && {
+                                        collection: {
+                                            src: item.collection?.image_url,
+                                        },
+                                    })}
                                 />
-                            </Box>
-                        ))}
-                    </InfiniteScroll>
+                            ))
+                        )}
+                    </Grid>
+                </InfiniteScroll>
+                {showLoadMore && (
+                    <Button
+                        mt={28}
+                        onClick={() => {
+                            setShowLoadMore(false)
+                        }}
+                        variant="border"
+                        sx={{ height: 48, width: '100%' }}
+                    >
+                        Load more
+                    </Button>
                 )}
             </Box>
         </Layout>

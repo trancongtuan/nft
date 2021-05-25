@@ -220,6 +220,7 @@ const BidCard: FC<BidCardProps> = ({
                     }}
                 >
                     <Flex
+                        onClick={onCLick}
                         sx={{
                             position: 'absolute',
                             top: 0,
@@ -229,10 +230,10 @@ const BidCard: FC<BidCardProps> = ({
                             margin: 'auto',
                             justifyContent: 'center',
                             alignItems: 'center',
+                            cursor: 'pointer',
                         }}
                     >
                         <Image
-                            onClick={onCLick}
                             sx={{
                                 position: 'absolute',
                                 maxHeight: '100%',
@@ -242,7 +243,6 @@ const BidCard: FC<BidCardProps> = ({
                                 mx: 'auto',
                                 my: 'auto',
                                 borderRadius: 0,
-                                cursor: 'pointer',
                             }}
                             src={image}
                         />
