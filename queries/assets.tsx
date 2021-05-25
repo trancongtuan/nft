@@ -238,7 +238,6 @@ export function useGetAssetsInfiniteQuery(): UseInfiniteQueryResult<
 > {
     return useInfiniteQuery('assets', fetchAssets, {
         getNextPageParam: (lastPage, pages) => {
-            console.log(pages.length * 15)
             return lastPage.data.assets.length === 15
                 ? pages.length * 15
                 : undefined
