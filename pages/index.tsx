@@ -352,6 +352,11 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         },
         collections
     )
+
+    React.useEffect(() => {
+        console.log(infinityData)
+    }, [infinityData])
+
     const fetchMore = useCallback(() => fetchNextPage(), [fetchNextPage])
     return (
         <Layout>
@@ -755,6 +760,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     name={item.name}
                                     image={item.image_url}
                                     currency="ETH"
+                                    price={item.top_bid ?? 0}
                                     {...(item?.creator && {
                                         creator: {
                                             src: item.creator?.profile_img_url,

@@ -124,6 +124,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         },
         asset
     )
+
     return (
         <Box>
             <NavigationBar />
@@ -203,7 +204,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             }}
                         >
                             <Text sx={{ fontSize: 5, fontWeight: 'bold' }}>
-                                {data?.asset_contract?.name}
+                                {data?.name}
                             </Text>
                             <Flex>
                                 <Button
@@ -266,7 +267,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 Highest bid
                             </Text>
                             <Text mr={2} sx={{ color: 'primary' }}>
-                                0.633 WETH
+                                {data?.top_bid ?? '0.634'} WETH
                             </Text>
                             <Text sx={{ color: 'textSecondary' }}>
                                 / 1 of 1
