@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios'
 import { useQuery, UseQueryResult } from 'react-query'
 import { client } from './client'
 
@@ -143,7 +142,7 @@ export interface TopOwnership {
     quantity: string
 }
 
-export interface Asset {
+export interface AssetResponseData {
     id: number
     token_id: string
     num_sales: number
@@ -181,23 +180,29 @@ export interface Asset {
     highest_buyer_commitment?: any
 }
 
-export function useGetSingleAssetQuery(
+export const fetchAsset: (
     variables: AssetVariables
-): UseQueryResult<AxiosResponse<Asset>, unknown> {
+) => Promise<AssetResponseData> = (variables) =>
+    client
+        .get(
+            `/asset/${variables.asset_contract_address}/${variables.token_id}`,
+            {
+                params: {
+                    account_address: variables.account_address,
+                },
+            }
+        )
+        .then((response) => response.data)
+
+export function useGetSingleAssetQuery(
+    variables: AssetVariables,
+    initialData?: AssetResponseData
+): UseQueryResult<AssetResponseData, unknown> {
     return useQuery(
         ['asset', ...Object.values(variables)],
-        async () =>
-            client.get(
-                `/asset/${variables.asset_contract_address}/${variables.token_id}`,
-                {
-                    params: {
-                        account_address: variables.account_address,
-                    },
-                }
-            ),
+        () => fetchAsset(variables),
         {
-            onSuccess: (res) => console.log(res.data),
-            onError: (data) => console.log(data),
+            initialData,
         }
     )
 }

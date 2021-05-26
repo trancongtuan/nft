@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios'
 import { useQuery, UseQueryResult } from 'react-query'
 import { client } from './client'
 
@@ -66,18 +65,28 @@ export interface Collection {
     wiki_url?: any
 }
 
-export function useGetCollectionsQuery(
+export interface CollectionsResponseData {
+    collections: Collection[]
+}
+
+export const fetchCollections: (
     variables: CollectionsVariables
-): UseQueryResult<AxiosResponse<{ collections: Collection[] }>, unknown> {
+) => Promise<CollectionsResponseData> = (variables) =>
+    client
+        .get('/collections', {
+            params: variables,
+        })
+        .then((response) => response.data)
+
+export function useGetCollectionsQuery(
+    variables: CollectionsVariables,
+    initialData?: CollectionsResponseData
+): UseQueryResult<CollectionsResponseData, unknown> {
     return useQuery(
         ['collections', ...Object.values(variables)],
-        async () =>
-            client.get('/collections', {
-                params: variables,
-            }),
+        () => fetchCollections(variables),
         {
-            onSuccess: (res) => console.log(res.data),
-            onError: (data) => console.log(data),
+            initialData,
         }
     )
 }

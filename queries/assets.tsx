@@ -1,5 +1,8 @@
-import { AxiosResponse } from 'axios'
-import { useInfiniteQuery, UseInfiniteQueryResult } from 'react-query'
+import {
+    useInfiniteQuery,
+    UseInfiniteQueryResult,
+    InfiniteData,
+} from 'react-query'
 import { client } from './client'
 
 export interface AssetContract {
@@ -220,27 +223,31 @@ export interface Asset {
     transfer_fee?: any
 }
 
-const fetchAssets: ({
+export interface AssetsResponseData {
+    assets: Asset[]
+}
+
+export const fetchAssets: ({
     pageParam,
 }: {
     pageParam?: number
-}) => Promise<AxiosResponse<{ assets: Asset[] }>> = ({ pageParam = 0 }) =>
-    client.get('/assets', {
-        params: {
-            offset: pageParam,
-            limit: 15,
-        },
-    })
+}) => Promise<AssetsResponseData> = ({ pageParam = 0 }) =>
+    client
+        .get('/assets', {
+            params: {
+                offset: pageParam,
+                limit: 15,
+            },
+        })
+        .then((response) => response.data)
 
-export function useGetAssetsInfiniteQuery(): UseInfiniteQueryResult<
-    AxiosResponse<{ assets: Asset[] }>,
-    unknown
-> {
+export function useGetAssetsInfiniteQuery(
+    initialData?: InfiniteData<AssetsResponseData>
+): UseInfiniteQueryResult<AssetsResponseData, unknown> {
     return useInfiniteQuery('assets', fetchAssets, {
         getNextPageParam: (lastPage, pages) => {
-            return lastPage.data.assets.length === 15
-                ? pages.length * 15
-                : undefined
+            return lastPage.assets.length === 15 ? pages.length * 15 : undefined
         },
+        initialData,
     })
 }

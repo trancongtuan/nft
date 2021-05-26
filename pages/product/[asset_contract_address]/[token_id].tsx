@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react'
 import Popover from 'react-popover'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
 import { useRouter } from 'next/router'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import NavigationBar from '../../../components/NavigationBar'
 import Tooltip from '../../../components/Tooltip'
 import Avatar from '../../../components/Avatar'
@@ -13,7 +14,11 @@ import Popup from '../../../components/Popup'
 import PopupPlaceABid from '../../../components/PopupPurchase'
 import PopupShare from '../../../components/PopupShare'
 import PreviewProduct from '../../../components/PreviewProduct'
-import { useGetSingleAssetQuery } from '../../../queries/asset'
+import {
+    AssetResponseData,
+    fetchAsset,
+    useGetSingleAssetQuery,
+} from '../../../queries/asset'
 
 const tooltipItems = [
     {
@@ -80,22 +85,45 @@ const detailItems = [
         value: 'Lava',
     },
 ]
-const Product: FC = () => {
-    const router = useRouter()
-    const { asset_contract_address, token_id } = router.query as {
-        asset_contract_address: string
-        token_id: string
+
+type ProductParams = {
+    asset_contract_address: string
+    token_id: string
+}
+
+export const getServerSideProps: GetServerSideProps<
+    {
+        asset: AssetResponseData
+    },
+    ProductParams
+> = async (context) => {
+    const { params } = context
+    const asset = await fetchAsset(params)
+    return {
+        props: {
+            asset,
+        },
     }
+}
+
+const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
+    asset,
+}) => {
+    const router = useRouter()
+    const { asset_contract_address, token_id } = router.query as ProductParams
     const [liked, setLiked] = useState(false)
     const [showProduct, setShowProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(selectionItems[0].id)
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
-    const { data } = useGetSingleAssetQuery({
-        asset_contract_address,
-        token_id,
-    })
+    const { data } = useGetSingleAssetQuery(
+        {
+            asset_contract_address,
+            token_id,
+        },
+        asset
+    )
     return (
         <Box>
             <NavigationBar />
@@ -121,7 +149,7 @@ const Product: FC = () => {
                 >
                     <Image
                         src={
-                            data?.data?.asset_contract?.image_url ??
+                            data?.asset_contract?.image_url ??
                             'https://picsum.photos/200/300'
                         }
                         sx={{
@@ -175,7 +203,7 @@ const Product: FC = () => {
                             }}
                         >
                             <Text sx={{ fontSize: 5, fontWeight: 'bold' }}>
-                                {data?.data?.asset_contract?.name}
+                                {data?.asset_contract?.name}
                             </Text>
                             <Flex>
                                 <Button
@@ -265,12 +293,10 @@ const Product: FC = () => {
                                 },
                             }}
                         >
-                            <Text>
-                                {data?.data?.asset_contract?.description}
-                            </Text>
+                            <Text>{data?.asset_contract?.description}</Text>
                         </Box>
                         <Flex>
-                            {data?.data?.creator && (
+                            {data?.creator && (
                                 <Box sx={{ width: '50%' }} mt={3}>
                                     <Text
                                         sx={{
@@ -288,10 +314,7 @@ const Product: FC = () => {
                                         }}
                                     >
                                         <Avatar
-                                            src={
-                                                data?.data?.creator
-                                                    ?.profile_img_url
-                                            }
+                                            src={data?.creator?.profile_img_url}
                                             verified
                                             size="sm"
                                         />
@@ -302,7 +325,7 @@ const Product: FC = () => {
                                                 fontSize: 1,
                                             }}
                                         >
-                                            {data?.data?.creator?.user.username}
+                                            {data?.creator?.user.username}
                                         </Text>
                                     </Flex>
                                 </Box>
@@ -324,7 +347,7 @@ const Product: FC = () => {
                                     }}
                                 >
                                     <Avatar
-                                        src={data?.data?.collection?.image_url}
+                                        src={data?.collection?.image_url}
                                         verified
                                         size="sm"
                                     />
@@ -332,7 +355,7 @@ const Product: FC = () => {
                                         ml={3}
                                         sx={{ fontWeight: 'bold', fontSize: 1 }}
                                     >
-                                        {data?.data?.collection?.name}
+                                        {data?.collection?.name}
                                     </Text>
                                 </Flex>
                             </Box>

@@ -1,11 +1,13 @@
 /* eslint-disable no-irregular-whitespace */
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { Box, Button, Flex, Grid, Text } from 'theme-ui'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { v4 as uuidv4 } from 'uuid'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { InfiniteData } from 'react-query'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
 import EdgeOverflow from '../components/EdgeOverflow'
@@ -19,8 +21,16 @@ import Tooltip, { TooltipItemProps } from '../components/Tooltip'
 import useHorizontalScroll from '../hooks/horizontalScroll'
 import TooltipItem from '../components/TooltipItem'
 import ToggleButton from '../components/ToggleButton'
-import { useGetAssetsInfiniteQuery } from '../queries'
-import { useGetCollectionsQuery } from '../queries/collections'
+import {
+    AssetsResponseData,
+    fetchAssets,
+    useGetAssetsInfiniteQuery,
+} from '../queries'
+import {
+    CollectionsResponseData,
+    fetchCollections,
+    useGetCollectionsQuery,
+} from '../queries/collections'
 
 const carouselItems = [
     {
@@ -299,7 +309,27 @@ const filterItems = [
     },
 ]
 
-const Home: FC = () => {
+export const getServerSideProps: GetServerSideProps<{
+    collections: CollectionsResponseData
+    assets: InfiniteData<AssetsResponseData>
+}> = async () => {
+    const collections = await fetchCollections({
+        offset: 0,
+        limit: 15,
+    })
+    const assets = await fetchAssets({ pageParam: 0 })
+    return {
+        props: {
+            collections,
+            assets: { pages: [assets], pageParams: [0] },
+        },
+    }
+}
+
+const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
+    collections,
+    assets,
+}) => {
     const router = useRouter()
     const [showSellers, setShowSellers] = useState(false)
     const [showDays, setShowDays] = useState(false)
@@ -314,12 +344,15 @@ const Home: FC = () => {
         data: infinityData,
         fetchNextPage,
         hasNextPage,
-    } = useGetAssetsInfiniteQuery()
-    const { data: collectionsData } = useGetCollectionsQuery({
-        offset: 0,
-        limit: 15,
-    })
-    const skipToCursor50: () => void = () => fetchNextPage()
+    } = useGetAssetsInfiniteQuery(assets)
+    const { data: collectionsData } = useGetCollectionsQuery(
+        {
+            offset: 0,
+            limit: 15,
+        },
+        collections
+    )
+    const fetchMore = useCallback(() => fetchNextPage(), [fetchNextPage])
     return (
         <Layout>
             <Box
@@ -498,25 +531,19 @@ const Home: FC = () => {
                     </Text>
                     <Carousel
                         slidesToShow={4}
-                        length={
-                            (collectionsData?.data?.collections ?? []).length
-                        }
+                        length={(collectionsData?.collections ?? []).length}
                     >
-                        {(collectionsData?.data?.collections ?? []).map(
-                            (item) => (
-                                <Box key={item.slug} px={10}>
-                                    <HotCollection
-                                        onClick={() =>
-                                            router.push('/collection')
-                                        }
-                                        name={item.name}
-                                        code={item.slug}
-                                        owner={{ src: item.image_url }}
-                                        background={item.image_url}
-                                    />
-                                </Box>
-                            )
-                        )}
+                        {(collectionsData?.collections ?? []).map((item) => (
+                            <Box key={item.slug} px={10}>
+                                <HotCollection
+                                    onClick={() => router.push('/collection')}
+                                    name={item.name}
+                                    code={item.slug}
+                                    owner={{ src: item.image_url }}
+                                    background={item.image_url}
+                                />
+                            </Box>
+                        ))}
                     </Carousel>
                 </Flex>
                 <Box
@@ -707,13 +734,17 @@ const Home: FC = () => {
                 </Flex>
                 <InfiniteScroll
                     dataLength={(infinityData?.pages ?? []).length}
-                    next={skipToCursor50}
+                    next={fetchMore}
                     hasMore={!showLoadMore && hasNextPage}
-                    loader={null}
+                    loader={
+                        <Flex mt={20} sx={{ justifyContent: 'center' }}>
+                            <Text>Loading...</Text>
+                        </Flex>
+                    }
                 >
                     <Grid gap={20} columns={[1, 2, 3, 4, 5]}>
                         {(infinityData?.pages ?? []).map((page) =>
-                            (page?.data?.assets ?? []).map((item) => (
+                            (page?.assets ?? []).map((item) => (
                                 <BidCard
                                     key={item.id}
                                     onCLick={() =>
