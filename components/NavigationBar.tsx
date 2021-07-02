@@ -618,6 +618,21 @@ const NavigationBar: FC = () => {
     const [showSearch, setShowSearch] = useState(false)
     const [showCatalog, setShowCatalog] = useState(false)
     const { connected, setConnected } = useAuth()
+
+    const connectWallet = async () => {
+        // Get Address
+        let accountAddress
+        try {
+            accountAddress = await window.ethereum.enable()
+            if (!accountAddress[0]) throw new Error('No account selected.')
+            accountAddress = accountAddress[0]
+            setConnected(accountAddress);
+        } catch(e) {
+            alert(e.message)
+            return
+        }
+    }
+
     useEffect(() => {
         if (counter > 0) {
             const timer = setInterval(() => setCounter(counter - 1), 1000)
@@ -963,7 +978,7 @@ const NavigationBar: FC = () => {
                                                 fontWeight: 'bold',
                                             }}
                                         >
-                                            0xd92e44ac213b9...fa96
+                                            {connected}
                                         </Text>
                                         <CopyToClipboard
                                             onCopy={() => setCounter(2)}
@@ -1223,6 +1238,7 @@ const NavigationBar: FC = () => {
                                         display: 'none',
                                     },
                                 }}
+                                onClick={connectWallet}
                             >
                                 <Text>Connect wallet</Text>
                             </Button>

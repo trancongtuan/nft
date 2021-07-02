@@ -749,9 +749,10 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 >
                     <Grid gap={20} columns={[1, 2, 3, 4, 5]}>
                         {(infinityData?.pages ?? []).map((page) =>
-                            (page?.assets ?? []).map((item) => (
+                            (page?.assets ?? []).filter(item => item.image_url).map((item) => (
                                 <BidCard
                                     key={item.id}
+                                    cons={console.log(item)}
                                     onCLick={() =>
                                         router.push(
                                             `/product/${item.asset_contract.address}/${item.token_id}`

@@ -2,7 +2,13 @@ import { Box, Button, Flex, Text } from 'theme-ui'
 import React, { FC } from 'react'
 import CustomInput from './CustomInput'
 
-export const PopupPlaceABid: FC = () => {
+interface Props {
+    onConfirm: () => {}
+    loading: boolean
+    onClose: () => {}
+}
+
+export const PopupPlaceABid: FC = ({ onConfirm, onClose, loading }: Props) => {
     return (
         <Flex
             sx={{
@@ -80,14 +86,17 @@ export const PopupPlaceABid: FC = () => {
                 mr={10}
                 mt={3}
                 sx={{ width: '100%', height: '40px' }}
+                onClick={onConfirm}
+                disabled={loading}
             >
-                Proceed to payment
+                { loading ? 'Loading...' : 'Proceed to payment' }
             </Button>
             <Button
                 variant="secondary"
                 mr={10}
                 mt={2}
                 sx={{ width: '100%', height: '40px' }}
+                onClick={onClose}
             >
                 Cancel
             </Button>
