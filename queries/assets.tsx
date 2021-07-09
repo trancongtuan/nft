@@ -223,6 +223,9 @@ export interface Asset {
     transfer_fee?: any
 }
 
+/*
+* Backend removed first layer
+*/ 
 export interface AssetsResponseData {
     assets: Asset[]
 }
@@ -231,22 +234,23 @@ export const fetchAssets: ({
     pageParam,
 }: {
     pageParam?: number
-}) => Promise<AssetsResponseData> = ({ pageParam = 0 }) =>
+}) => Promise<Asset[]> = ({ pageParam = 0 }) =>
     client
         .get('/assets', {
             params: {
-                offset: pageParam,
-                limit: 15,
+                // offset: pageParam,
+                // limit: 15,
             },
         })
         .then((response) => response.data)
 
 export function useGetAssetsInfiniteQuery(
-    initialData?: InfiniteData<AssetsResponseData>
-): UseInfiniteQueryResult<AssetsResponseData, unknown> {
+    initialData?: InfiniteData<Asset[]>
+): UseInfiniteQueryResult<Asset[], unknown> {
     return useInfiniteQuery('assets', fetchAssets, {
         getNextPageParam: (lastPage, pages) => {
-            return lastPage.assets.length === 15 ? pages.length * 15 : undefined
+            // return lastPage.assets.length === 15 ? pages.length * 15 : undefined
+            return undefined;
         },
         initialData,
     })

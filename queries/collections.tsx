@@ -3,7 +3,7 @@ import { client } from './client'
 
 export interface CollectionsVariables {
     asset_owner?: string
-    offset?: number
+    // offset?: number
     limit?: number
 }
 
@@ -65,13 +65,16 @@ export interface Collection {
     wiki_url?: any
 }
 
-export interface CollectionsResponseData {
-    collections: Collection[]
-}
+/*
+* Backend already removed first layer
+*/
+// export interface CollectionsResponseData {
+//     collections: Collection[]
+// }
 
 export const fetchCollections: (
     variables: CollectionsVariables
-) => Promise<CollectionsResponseData> = (variables) =>
+) => Promise<Collection[]> = (variables) =>
     client
         .get('/collections', {
             params: variables,
@@ -80,8 +83,8 @@ export const fetchCollections: (
 
 export function useGetCollectionsQuery(
     variables: CollectionsVariables,
-    initialData?: CollectionsResponseData
-): UseQueryResult<CollectionsResponseData, unknown> {
+    initialData?: Collection[]
+): UseQueryResult<Collection[], unknown> {
     return useQuery(
         ['collections', ...Object.values(variables)],
         () => fetchCollections(variables),

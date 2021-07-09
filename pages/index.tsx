@@ -125,136 +125,6 @@ const carouselItems = [
     },
 ]
 
-const bidItems = [
-    {
-        id: 1,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/400/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Long Test Test Test Test Test Test',
-        currency: 'WETH',
-        liked: true,
-        gradientColor: true,
-        countDown: 10000,
-    },
-    {
-        id: 2,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/300/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Test',
-        bid: 50,
-        currency: 'WETH',
-        liked: true,
-    },
-    {
-        id: 3,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/500/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Test',
-        bid: 50,
-        currency: 'WETH',
-        liked: true,
-    },
-    {
-        id: 4,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/600/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Test',
-        bid: 50,
-        currency: 'WETH',
-        liked: true,
-    },
-    {
-        id: 5,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/200/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Test',
-        bid: 50,
-        currency: 'WETH',
-        liked: true,
-    },
-    {
-        id: 6,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/200/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Test',
-        bid: 50,
-        currency: 'WETH',
-        liked: true,
-    },
-]
-
 const sellerList = [
     {
         id: 1,
@@ -314,8 +184,8 @@ export const getServerSideProps: GetServerSideProps<{
     assets: InfiniteData<AssetsResponseData>
 }> = async () => {
     const collections = await fetchCollections({
-        offset: 0,
-        limit: 15,
+        // offset: 0,
+        // limit: 15,
     })
     const assets = await fetchAssets({ pageParam: 0 })
     return {
@@ -345,13 +215,16 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         fetchNextPage,
         hasNextPage,
     } = useGetAssetsInfiniteQuery(assets)
+    const hotBids = infinityData.pages.flat()?.filter(item => item.ultcube_hot_bids);
+
     const { data: collectionsData } = useGetCollectionsQuery(
         {
-            offset: 0,
-            limit: 15,
+            // offset: 0,
+            // limit: 15,
         },
         collections
     )
+    const featuredCollection = collectionsData.filter(item => item.ultcube_featured);
 
     React.useEffect(() => {
         console.log(infinityData)
@@ -371,7 +244,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
             >
                 <Box sx={{ position: 'relative' }}>
                     <Flex ref={ref} sx={{ overflowX: 'auto' }} mb={30}>
-                        {new Array(10).fill(0).map(() => (
+                        {featuredCollection.map((item) => (
                             <Flex
                                 key={uuidv4()}
                                 mr={16}
@@ -390,9 +263,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 }}
                             >
                                 <HomeCard
-                                    label="Pink Cat"
-                                    subLabel="FLOSSTRADAMUS"
-                                    image="https://dl.airtable.com/.attachments/58cc8ae0a4cf13909f4b85322ab688ad/cfa6de0d/Screenshot2021-04-20at22_32_23.png"
+                                    label={item.name}
+                                    subLabel={item.slug}
+                                    image={item.image_url}
                                     darkText={false}
                                     onClick={() => router.push('/collection')}
                                 />
@@ -516,11 +389,14 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         Hot bids 🔥
                     </Text>
                     <Carousel slidesToShow={4} length={carouselItems.length}>
-                        {bidItems.map((item) => (
+                        {hotBids.map((item) => (
                             <Box key={item.id} px={10}>
                                 <BidCard
+                                    name={item.name}
+                                    currency="ETH"
+                                    image={item.image_url}                                    
+                                    price={item.top_bid ?? 0}
                                     onCLick={() => router.push('/product')}
-                                    {...item}
                                 />
                             </Box>
                         ))}
@@ -536,9 +412,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     </Text>
                     <Carousel
                         slidesToShow={4}
-                        length={(collectionsData?.collections ?? []).length}
+                        length={(collectionsData ?? []).length}
                     >
-                        {(collectionsData?.collections ?? []).map((item) => (
+                        {(collectionsData ?? []).map((item) => (
                             <Box key={item.slug} px={10}>
                                 <HotCollection
                                     onClick={() => router.push('/collection')}
@@ -748,8 +624,8 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     }
                 >
                     <Grid gap={20} columns={[1, 2, 3, 4, 5]}>
-                        {(infinityData?.pages ?? []).map((page) =>
-                            (page?.assets ?? []).map((item) => (
+                        {(infinityData?.pages ?? []).map((page) => {
+                            return (page ?? []).map((item) => (
                                 <BidCard
                                     key={item.id}
                                     onCLick={() =>
@@ -778,7 +654,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     })}
                                 />
                             ))
-                        )}
+                        })}
                     </Grid>
                 </InfiniteScroll>
                 {showLoadMore && (
