@@ -27,6 +27,7 @@ import {
     useGetAssetsInfiniteQuery,
 } from '../queries'
 import {
+    Collection,
     CollectionsResponseData,
     fetchCollections,
     useGetCollectionsQuery,
@@ -180,8 +181,8 @@ const filterItems = [
 ]
 
 export const getServerSideProps: GetServerSideProps<{
-    collections: CollectionsResponseData
-    assets: InfiniteData<AssetsResponseData>
+    collections: Collection[],
+    assets: any, // TODO: Change to correct type
 }> = async () => {
     const collections = await fetchCollections({
         // offset: 0,

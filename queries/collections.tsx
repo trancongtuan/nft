@@ -63,14 +63,15 @@ export interface Collection {
     twitter_username: string
     instagram_username?: any
     wiki_url?: any
+    ultcube_featured?: boolean
 }
 
 /*
 * Backend already removed first layer
 */
-// export interface CollectionsResponseData {
-//     collections: Collection[]
-// }
+export interface CollectionsResponseData {
+    collections: Collection[]
+}
 
 export const fetchCollections: (
     variables: CollectionsVariables

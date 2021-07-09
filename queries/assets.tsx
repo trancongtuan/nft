@@ -221,6 +221,7 @@ export interface Asset {
     is_presale: boolean
     transfer_fee_payment_token?: any
     transfer_fee?: any
+    ultcube_hot_bids?: boolean
 }
 
 /*
