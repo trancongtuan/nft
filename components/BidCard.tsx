@@ -231,6 +231,7 @@ const BidCard: FC<BidCardProps> = ({
                             justifyContent: 'center',
                             alignItems: 'center',
                             cursor: 'pointer',
+                            backgroundColor: 'gray',
                         }}
                     >
                         <Image
@@ -243,6 +244,7 @@ const BidCard: FC<BidCardProps> = ({
                                 mx: 'auto',
                                 my: 'auto',
                                 borderRadius: 0,
+                                objectFit: 'contain',
                             }}
                             src={image}
                         />

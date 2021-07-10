@@ -22,6 +22,7 @@ import useHorizontalScroll from '../hooks/horizontalScroll'
 import TooltipItem from '../components/TooltipItem'
 import ToggleButton from '../components/ToggleButton'
 import {
+    Asset,
     AssetsResponseData,
     fetchAssets,
     useGetAssetsInfiniteQuery,
@@ -182,17 +183,17 @@ const filterItems = [
 
 export const getServerSideProps: GetServerSideProps<{
     collections: Collection[],
-    assets: any, // TODO: Change to correct type
+    assets: InfiniteData<Asset[]>, // TODO: Change to correct type
+    hotBids: Asset[]
 }> = async () => {
-    const collections = await fetchCollections({
-        // offset: 0,
-        // limit: 15,
-    })
-    const assets = await fetchAssets({ pageParam: 0 })
+    const collections = await fetchCollections({})
+    const assets = await fetchAssets({ _start: 0, _limit: 10 })
+    const hotBids = await fetchAssets({ _start: 0, _limit: 10, ultcube_hot_bids: true })
     return {
         props: {
             collections,
-            assets: { pages: [assets], pageParams: [0] },
+            assets: { pages: [assets], pageParams: [{ _start: 0, _limit: 10 }] },
+            hotBids: hotBids || [],
         },
     }
 }
@@ -200,6 +201,7 @@ export const getServerSideProps: GetServerSideProps<{
 const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     collections,
     assets,
+    hotBids,
 }) => {
     const router = useRouter()
     const [showSellers, setShowSellers] = useState(false)
@@ -212,11 +214,10 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const ref = useHorizontalScroll()
     const [showLoadMore, setShowLoadMore] = useState(true)
     const {
-        data: infinityData,
+        data: infinityAssetsData,
         fetchNextPage,
         hasNextPage,
     } = useGetAssetsInfiniteQuery(assets)
-    const hotBids = infinityData.pages.flat()?.filter(item => item.ultcube_hot_bids);
 
     const { data: collectionsData } = useGetCollectionsQuery(
         {
@@ -228,8 +229,8 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const featuredCollection = collectionsData.filter(item => item.ultcube_featured);
 
     React.useEffect(() => {
-        console.log(infinityData)
-    }, [infinityData])
+        console.log(infinityAssetsData)
+    }, [infinityAssetsData])
 
     const fetchMore = useCallback(() => fetchNextPage(), [fetchNextPage])
     return (
@@ -390,7 +391,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         Hot bids 🔥
                     </Text>
                     <Carousel slidesToShow={4} length={carouselItems.length}>
-                        {hotBids.map((item) => (
+                        {hotBids?.map((item) => (
                             <Box key={item.id} px={10}>
                                 <BidCard
                                     name={item.name}
@@ -615,7 +616,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     </Popover>
                 </Flex>
                 <InfiniteScroll
-                    dataLength={(infinityData?.pages ?? []).length}
+                    dataLength={(infinityAssetsData?.pages ?? []).length}
                     next={fetchMore}
                     hasMore={!showLoadMore && hasNextPage}
                     loader={
@@ -625,7 +626,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     }
                 >
                     <Grid gap={20} columns={[1, 2, 3, 4, 5]}>
-                        {(infinityData?.pages ?? []).map((page) => {
+                        {(infinityAssetsData?.pages ?? []).map((page) => {
                             return (page ?? []).map((item) => (
                                 <BidCard
                                     key={item.id}

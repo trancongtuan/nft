@@ -232,26 +232,25 @@ export interface AssetsResponseData {
 }
 
 export const fetchAssets: ({
-    pageParam,
+    _start,
+    _limit,
+    ultcube_hot_bids,
 }: {
-    pageParam?: number
-}) => Promise<Asset[]> = ({ pageParam = 0 }) =>
+    _start?: number
+    _limit?: number
+    ultcube_hot_bids?: boolean
+}) => Promise<Asset[]> = ({ _start, _limit }) =>
     client
-        .get('/assets', {
-            params: {
-                // offset: pageParam,
-                // limit: 15,
-            },
-        })
+        .get('/assets', { params: { _start, _limit } })
         .then((response) => response.data)
 
 export function useGetAssetsInfiniteQuery(
     initialData?: InfiniteData<Asset[]>
 ): UseInfiniteQueryResult<Asset[], unknown> {
-    return useInfiniteQuery('assets', fetchAssets, {
+    return useInfiniteQuery('assets', ({ pageParam }) => fetchAssets(pageParam), {
         getNextPageParam: (lastPage, pages) => {
-            // return lastPage.assets.length === 15 ? pages.length * 15 : undefined
-            return undefined;
+            if (lastPage.length === 0) return undefined;
+            return { _start: pages.length * 10, _limit: 10 }
         },
         initialData,
     })
