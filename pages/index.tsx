@@ -228,10 +228,6 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     )
     const featuredCollection = collectionsData.filter(item => item.ultcube_featured);
 
-    React.useEffect(() => {
-        console.log(infinityAssetsData)
-    }, [infinityAssetsData])
-
     const fetchMore = useCallback(() => fetchNextPage(), [fetchNextPage])
     return (
         <Layout>

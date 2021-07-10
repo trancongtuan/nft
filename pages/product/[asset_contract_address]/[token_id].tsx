@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import Popover from 'react-popover'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
 import { useRouter } from 'next/router'
@@ -19,6 +19,14 @@ import {
     fetchAsset,
     useGetSingleAssetQuery,
 } from '../../../queries/asset'
+
+import * as Web3 from 'web3'
+import { OpenSeaPort, Network } from 'opensea-js'
+
+const provider = new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/014909ef8db84165ade6e01f5efb6e74')
+const seaport = new OpenSeaPort(provider, {
+    networkName: Network.Main
+})
 
 const tooltipItems = [
     {
@@ -117,6 +125,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
+    const [loading, setLoading] = useState(false);
     const { data } = useGetSingleAssetQuery(
         {
             asset_contract_address,
@@ -124,6 +133,63 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         },
         asset
     )
+
+    const makeOffer = async () => {
+        setLoading(true)
+
+        // Get Address
+        let accountAddress
+        try {
+            accountAddress = await window.ethereum.enable()
+            if (!accountAddress[0]) throw new Error('No account selected.')
+            accountAddress = accountAddress[0]
+        } catch(e) {
+            alert(e.message)
+            setLoading(false)
+            return
+        }
+
+        let asset
+        try {
+            const { token_id, asset_contract: { address, schema_name } } = data
+            asset = await seaport.api.getAsset({
+                tokenAddress: address, // string
+                tokenId: token_id, // string | number | null
+            })
+            console.log('Get asset success', asset)
+        } catch(e) {
+            alert(e.message)
+            setLoading(false)
+            return
+        }
+        
+        const { tokenId, tokenAddress, assetContract: { schemaName } } = asset
+
+        // const balance = await seaport.getAssetBalance({
+        //     accountAddress, // string
+        //     asset,
+        // })        
+        // console.log('balance', balance)
+
+        try {
+            const offer = await seaport.createBuyOrder({
+                asset: {
+                    tokenId,
+                    tokenAddress,
+                    schemaName // WyvernSchemaName. If omitted, defaults to 'ERC721'. Other options include 'ERC20' and 'ERC1155'
+                },
+                accountAddress,
+                // Value of the offer, in units of the payment token (or wrapped ETH if none is specified):
+                startAmount: 1.2,
+            })
+
+            console.log('Make offer success', offer)
+        } catch(e) {
+            alert(e.message)
+            setLoading(false)
+            return
+        }
+    }
 
     return (
         <Box>
@@ -150,7 +216,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 >
                     <Image
                         src={
-                            data?.asset_contract?.image_url ??
+                            data?.image_url ??
                             'https://picsum.photos/200/300'
                         }
                         sx={{
@@ -683,7 +749,11 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 }}
                                 label="Place a bid"
                             >
-                                <PopupPlaceABid />
+                                <PopupPlaceABid
+                                    onConfirm={makeOffer}
+                                    onClose={() => setOpenPopupPlaceABid(false)}
+                                    loading={loading}
+                                />
                             </Popup>
                             <Popup
                                 isOpen={openPopupShare}

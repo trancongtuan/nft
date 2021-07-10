@@ -9,6 +9,14 @@ import LockIcon from '../public/assets/images/icons/lock.svg'
 const Setting: FC = () => {
     const inputFile = useRef(null)
     const [reLink, setReLink] = useState(false)
+    const [profile, setProfile] = useState({
+        display_name: '',
+        custom_url: '',
+        twitter: '',
+        email: '',
+        bio: '',
+        website: '',
+    })
 
     const handleOnClick = (): void => {
         inputFile.current.click()
@@ -73,12 +81,13 @@ const Setting: FC = () => {
                     >
                         <CustomInput
                             label="Display name"
-                            value=""
+                            value={profile.display_name}
                             placeholder="Enter your display name"
+                            onChange={v => setProfile(ori => ({ ...ori, display_name: v }))}
                         />
                         <CustomInput
                             label="Custom URL"
-                            value=""
+                            value={profile.custom_url}
                             staticLeft={
                                 <Text
                                     mr={2}
@@ -93,16 +102,18 @@ const Setting: FC = () => {
                                 </Text>
                             }
                             placeholder="Enter your custom url"
+                            onChange={v => setProfile(ori => ({ ...ori, custom_url: v }))}
                         />
                         <CustomInput
                             label="Bio"
-                            value=""
+                            value={profile.bio}
                             placeholder="Tell about yourself in a few words"
+                            onChange={v => setProfile(ori => ({ ...ori, bio: v }))}
                         />
                         <CustomInput
                             label="Twitter username"
                             subLabel="Link your Twitter account to gain more trust on the marketplace"
-                            value=""
+                            value={profile.twitter}
                             placeholder="@"
                             staticRight={
                                 <Box
@@ -124,17 +135,18 @@ const Setting: FC = () => {
                                     )}
                                 </Box>
                             }
+                            onChange={v => setProfile(ori => ({ ...ori, twitter: v }))}
                         />
                         <CustomInput
                             label="Personal site or portfolio"
-                            value=""
+                            value={profile.website}
                             placeholder="https://"
+                            onChange={v => setProfile(ori => ({ ...ori, website: v }))}
                         />
                         <CustomInput
                             label="Email"
-                            type="password"
                             subLabel="Your email for marketplace notifications"
-                            value=""
+                            value={profile.email}
                             Icon={<LockIcon />}
                             placeholder="Enter your email"
                             staticBottom={
@@ -158,8 +170,9 @@ const Setting: FC = () => {
                                     </Text>
                                 </Box>
                             }
+                            onChange={v => setProfile(ori => ({ ...ori, email: v }))}
                         />
-                        <Flex>
+                        {/* <Flex>
                             <Box>
                                 <Text variant="heading">Verification</Text>
                                 <Text
@@ -185,7 +198,7 @@ const Setting: FC = () => {
                                     Get verified
                                 </Button>
                             </Box>
-                        </Flex>
+                        </Flex> */}
                         <Button
                             variant="primary"
                             mt={40}
