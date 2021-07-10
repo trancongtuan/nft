@@ -26,6 +26,7 @@ import {
     AssetsResponseData,
     fetchAssets,
     useGetAssetsInfiniteQuery,
+    fetchUsers,
 } from '../queries'
 import {
     Collection,
@@ -33,99 +34,6 @@ import {
     fetchCollections,
     useGetCollectionsQuery,
 } from '../queries/collections'
-
-const carouselItems = [
-    {
-        id: 1,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 2,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 3,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 4,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 5,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 6,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 7,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 8,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 9,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-]
 
 const sellerList = [
     {
@@ -185,15 +93,18 @@ export const getServerSideProps: GetServerSideProps<{
     collections: Collection[],
     assets: InfiniteData<Asset[]>, // TODO: Change to correct type
     hotBids: Asset[]
+    users: any[]
 }> = async () => {
     const collections = await fetchCollections({})
     const assets = await fetchAssets({ _start: 0, _limit: 10 })
     const hotBids = await fetchAssets({ _start: 0, _limit: 10, ultcube_hot_bids: true })
+    const users = await fetchUsers({ _start: 0, _limit: 10 })
     return {
         props: {
             collections,
             assets: { pages: [assets], pageParams: [{ _start: 0, _limit: 10 }] },
             hotBids: hotBids || [],
+            users,
         },
     }
 }
@@ -202,6 +113,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     collections,
     assets,
     hotBids,
+    users,
 }) => {
     const router = useRouter()
     const [showSellers, setShowSellers] = useState(false)
@@ -347,7 +259,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 </Flex>
                 <Box sx={{ position: 'relative' }}>
                     <Flex ml={-20} sx={{ overflowX: 'auto' }}>
-                        {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
+                        {_.chunk(users, 3).map((chunkedUsers, idx) => (
                             <Box
                                 key={uuidv4()}
                                 pl={20}
@@ -356,15 +268,15 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     flexShrink: 0,
                                 }}
                             >
-                                {item.map((x, index) => (
+                                {chunkedUsers.map((user, index) => (
                                     <Box key={uuidv4()} mb={20}>
+                                        {console.log(user?.profile_pic?.url)}
                                         <TopSellerCard
                                             id={idx * 3 + index + 1}
-                                            name="Ahihi asd asd zx asd zxc"
-                                            wallet={24}
+                                            name={user.display_name}
+                                            wallet={user.sales_amount}
                                             user={{
-                                                src:
-                                                    'https://picsum.photos/200/300',
+                                                src: 'https://api.ultcube.scc.sh' + user?.profile_pic?.url,
                                                 verified: true,
                                             }}
                                             onClick={() =>
@@ -386,7 +298,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     >
                         Hot bids 🔥
                     </Text>
-                    <Carousel slidesToShow={4} length={carouselItems.length}>
+                    <Carousel slidesToShow={4} length={hotBids.length}>
                         {hotBids?.map((item) => (
                             <Box key={item.id} px={10}>
                                 <BidCard
