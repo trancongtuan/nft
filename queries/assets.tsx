@@ -263,7 +263,7 @@ export function useGetAssetsInfiniteQuery(
 ): UseInfiniteQueryResult<Asset[], unknown> {
     return useInfiniteQuery(['assets', assetType], ({ pageParam }) => fetchAssets({ ...pageParam, asset_type: assetType }), {
         getNextPageParam: (lastPage, pages) => {
-            if (lastPage.length === 0) return undefined;
+            if (lastPage?.length === 0) return undefined;
             return { _start: pages.length * 10, _limit: 10 }
         },
         initialData,
