@@ -814,6 +814,10 @@ const NavigationBar: FC = () => {
                         variant="secondary"
                         mr={8}
                         sx={{
+                            background: '#00eeb9',
+                            color: '#000',
+                            fontWeight: 'normal',
+                            borderRadius: '5px',
                             '@media screen and (max-width: 890px)': {
                                 display: 'none',
                             },
@@ -927,6 +931,10 @@ const NavigationBar: FC = () => {
                                 sx={{
                                     width: 40,
                                     p: 0,
+                                    border: '1px #2d2d2d solid',
+                                    color: '#afafaf',
+                                    fontWeight: 'normal',
+                                    borderRadius: '5px',
                                 }}
                                 onClick={() => setVisibleNoti(!visibleNoti)}
                             >
@@ -1183,6 +1191,10 @@ const NavigationBar: FC = () => {
                                 pl={20}
                                 pr={55}
                                 sx={{
+                                    border: '1px #2d2d2d solid',
+                                    color: '#00eeb9',
+                                    fontWeight: 'normal',
+                                    borderRadius: '5px',
                                     position: 'relative',
                                     '@media screen and (max-width: 400px)': {
                                         p: 0,
@@ -1211,6 +1223,7 @@ const NavigationBar: FC = () => {
                                         right: 0,
                                         objectFit: 'cover',
                                         cursor: 'pointer',
+                                        borderRadius: '5px',
                                     }}
                                 />
                             </Button>
