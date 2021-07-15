@@ -122,20 +122,38 @@ const Avatar: FC<AvatarProps> = ({
                 variant={`avatar.${size}`}
                 sx={{
                     objectFit: 'cover',
-                    borderRadius: type !== 'follow' ? 6 : 9999,
+                    borderRadius: type !== 'follow' ? 6 : '5px',
                     mb: size === 'xxs' ? '-2px' : undefined,
                 }}
             />
-            {verified && <VerifiedIcon />}
+            {verified && (
+                <Flex
+                    sx={{
+                        position: 'absolute',
+                        bottom: '-3px',
+                        right: '-5px',
+                        width: '20px',
+                        height: '20px',
+                        backgroundColor: '#00eeb9',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: '5px',
+                    }}
+                >
+                    <VerifiedIcon />
+                </Flex>
+            )}
             {showType && (
                 <Flex
                     sx={{
-                        top: type === 'follow' ? -8 : 0,
-                        left: type === 'follow' ? -8 : 0,
+                        // top: type === 'follow' ? -8 : 0,
+                        // left: type === 'follow' ? -8 : 0,
+                        bottom: '-3px',
+                        right: '-5px',
                         position: 'absolute',
                         borderRadius: 9999,
-                        width: 26,
-                        height: 26,
+                        width: 20,
+                        height: 20,
                         backgroundColor: color,
                         alignItems: 'center',
                         justifyContent: 'center',
