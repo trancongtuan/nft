@@ -206,7 +206,7 @@ const SearchInput: FC = () => {
                 position: 'relative',
                 flex: '1 0 auto',
                 alignItems: 'center',
-                borderRadius: 28,
+                borderRadius: 8,
                 height: 40,
                 transition: 'all 0.12s ease-in-out 0s',
                 border: '1px solid transparent',
@@ -216,6 +216,7 @@ const SearchInput: FC = () => {
                     height: 14,
                 },
                 boxShadow,
+                maxWidth: 600
             }}
         >
             <Box
