@@ -3,20 +3,22 @@ import { Box, Text, Flex, Image, Button } from 'theme-ui'
 
 import * as ethUtil from 'ethereumjs-util'
 import * as sigUtil from 'eth-sig-util'
-import { fetchUsers, updateUser, createUser } from '../queries';
+import { fetchUsers, updateUser, createUser, uploadFile, EthUser } from '../queries';
 
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import CustomInput from '../components/CustomInput'
 import LockIcon from '../public/assets/images/icons/lock.svg'
 import { useEffect } from 'react';
+import { useAuth } from '../hooks/auth'
 
 const chainId = 'RINKEBY' === 'RINKEBY' ? 4 : 1;
 
 const Setting: FC = () => {
     const inputFile = useRef(null)
+    const { connected, setConnected } = useAuth()
     const [reLink, setReLink] = useState(false)
-    const [profile, setProfile] = useState({
+    const [profile, setProfile] = useState<EthUser>({
         id: null,
         display_name: '',
         custom_url: '',
@@ -24,21 +26,38 @@ const Setting: FC = () => {
         email: '',
         bio: '',
         website: '',
+        address: '',
+        profile_pic: { url: null }
     })
 
     const handleOnClick = (): void => {
         inputFile.current.click()
     }
 
+    const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+        try {
+            const files = Array.from(e.target.files)
+            if (files.length < 1) return;
+
+            const result = await uploadFile(files)
+            setProfile(ori => ({ ...ori, profile_pic: result[0] }))
+        } catch(e) {
+            alert(e.toString())
+        }
+    }
+    
     const updateOrCreateUser = async (data) => {
         try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
             var from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
             
             if (data.id) {
                 await updateUser(data.id, data)
+                alert('Profile updated.')
             } else {
                 await createUser({ ...data, address: from })
+                alert('Profile updated.')
             }
         } catch(e) {
             alert(e.toString())
@@ -51,59 +70,22 @@ const Setting: FC = () => {
                 domain: {
                     chainId,
                     name: 'ULTCube Profile',
-                    verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+                    verifyingContract: '0x0000000000000000000000000000000000000000',
                     version: '1',
                 },
-                message: {
-                    ...data,
-                    contents: 'Profile update',
-                    from: {
-                        name: 'Cow',
-                        wallets: [
-                            '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
-                        ],
-                    },
-                    to: [
-                        {
-                            name: 'Bob',
-                            wallets: [
-                                '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
-                                
-                            ],
-                        },
-                    ],
-                },
+                message: data,
                 primaryType: 'Mail',
-                types: {
-                    EIP712Domain: [
-                        { name: 'name', type: 'string' },
-                        { name: 'version', type: 'string' },
-                        { name: 'chainId', type: 'uint256' },
-                        { name: 'verifyingContract', type: 'address' },
-                    ],
-                    Group: [
-                        { name: 'name', type: 'string' },
-                        { name: 'members', type: 'Person[]' },
-                    ],
-                    Mail: [
-                        { name: 'from', type: 'Person' },
-                        { name: 'to', type: 'Person[]' },
-                        { name: 'contents', type: 'string' },
-                    ],
-                    Person: [
-                        { name: 'name', type: 'string' },
-                        { name: 'wallets', type: 'address[]' },
-                    ],
-                },
+                types: { Mail: [] },
             })
 
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
             var from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
 
             var params = [from, msgParams];
             var method = 'eth_signTypedData_v4';
 
-            web3.currentProvider.sendAsync(
+            window.web3.currentProvider.sendAsync(
                 {
                     method,
                     params,
@@ -141,20 +123,38 @@ const Setting: FC = () => {
 
     const updateProfile = async () => {
         try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
             var from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
-            const result = await fetchUsers(from)
-            console.log(from, result)
-            if (result[0]) {
-                setProfile(result[0]);
-            }
+            const result = await fetchUsers({ address: from })
+            if (result[0]) setProfile(result[0]);
         } catch(e) {
             alert(e.toString());
         }
     }
 
+    const connectWallet = async () => {
+        // Get Address
+        let accountAddress
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            accountAddress = await window.ethereum.enable()
+            if (!accountAddress[0]) throw new Error('No account selected.')
+            accountAddress = accountAddress[0]
+            setConnected(accountAddress);
+            updateProfile();
+        } catch(e) {
+            alert(e.message)
+            return
+        }
+    }
+
     useEffect(() => {
-        updateProfile();
+        if (!connected) {
+            connectWallet();
+        } else {
+            updateProfile();
+        }
     }, [])
 
     return (
@@ -367,7 +367,11 @@ const Setting: FC = () => {
                             }}
                         >
                             <Image
-                                src="https://picsum.photos/200/300"
+                                src={
+                                    profile.profile_pic?.url ?
+                                        'https://api.ultcube.scc.sh' + profile.profile_pic?.url
+                                        : '/assets/images/empty_placeholder.png'
+                                }
                                 sx={{
                                     objectFit: 'cover',
                                     borderRadius: '50%',
@@ -397,6 +401,7 @@ const Setting: FC = () => {
                                     type="file"
                                     id="file"
                                     ref={inputFile}
+                                    onChange={handleFileSelected}
                                     style={{ display: 'none' }}
                                 />
                                 Choose file

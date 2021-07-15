@@ -19,14 +19,10 @@ import {
     fetchAsset,
     useGetSingleAssetQuery,
 } from '../../../queries/asset'
-
-import * as Web3 from 'web3'
 import { OpenSeaPort, Network } from 'opensea-js'
+import { OrderSide } from 'opensea-js/lib/types'
 
-const provider = new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/014909ef8db84165ade6e01f5efb6e74')
-const seaport = new OpenSeaPort(provider, {
-    networkName: Network.Main
-})
+const Web3 = require('web3');
 
 const tooltipItems = [
     {
@@ -117,6 +113,20 @@ export const getServerSideProps: GetServerSideProps<
 const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     asset,
 }) => {
+    const [seaport, setSeaport] = useState<any>()
+
+    useEffect(() => {
+        const provider = typeof window.web3 !== 'undefined'
+            ? window.web3.currentProvider
+            : new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74')
+
+        const seaport = new OpenSeaPort(provider, {
+            // networkName: Network.Main
+            networkName: Network.Rinkeby
+        })
+        setSeaport(seaport)
+    }, [])
+
     const router = useRouter()
     const { asset_contract_address, token_id } = router.query as ProductParams
     const [liked, setLiked] = useState(false)
@@ -134,57 +144,67 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         asset
     )
 
-    const makeOffer = async () => {
+    const makeOffer = async (amount) => {
         setLoading(true)
 
         // Get Address
-        let accountAddress
         try {
-            accountAddress = await window.ethereum.enable()
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            let accountAddress = await window.ethereum.enable()
             if (!accountAddress[0]) throw new Error('No account selected.')
             accountAddress = accountAddress[0]
-        } catch(e) {
+
+
+            const { token_id, asset_contract: { address } } = data
+            const order = await seaport.api.getOrder({
+                side: OrderSide.Sell,
+                asset_contract_address: address,
+                token_id: token_id,
+            })
+            const transactionHash = await seaport.fulfillOrder({ order, accountAddress })
+            console.log(transactionHash)
+        } catch (e) {
             alert(e.message)
             setLoading(false)
             return
         }
 
-        let asset
+        // let asset
+        // try {
+        //     const { token_id, asset_contract: { address, schema_name } } = data
+        //     asset = await seaport.api.getAsset({
+        //         tokenAddress: address, // string
+        //         tokenId: token_id, // string | number | null
+        //     })
+        //     console.log('Get asset success', asset)
+        // } catch(e) {
+        //     alert(e.message)
+        //     setLoading(false)
+        //     return
+        // }
+
+        // const { tokenId, tokenAddress, assetContract: { schemaName } } = asset
+
+        // // const balance = await seaport.getAssetBalance({
+        // //     accountAddress, // string
+        // //     asset,
+        // // })        
+        // // console.log('balance', balance)
+
         try {
-            const { token_id, asset_contract: { address, schema_name } } = data
-            asset = await seaport.api.getAsset({
-                tokenAddress: address, // string
-                tokenId: token_id, // string | number | null
-            })
-            console.log('Get asset success', asset)
-        } catch(e) {
-            alert(e.message)
-            setLoading(false)
-            return
-        }
-        
-        const { tokenId, tokenAddress, assetContract: { schemaName } } = asset
+            // const offer = await seaport.createBuyOrder({
+            //     asset: {
+            //         tokenId,
+            //         tokenAddress,
+            //         schemaName // WyvernSchemaName. If omitted, defaults to 'ERC721'. Other options include 'ERC20' and 'ERC1155'
+            //     },
+            //     accountAddress,
+            //     // Value of the offer, in units of the payment token (or wrapped ETH if none is specified):
+            //     startAmount: parseFloat(amount),
+            // })
 
-        // const balance = await seaport.getAssetBalance({
-        //     accountAddress, // string
-        //     asset,
-        // })        
-        // console.log('balance', balance)
-
-        try {
-            const offer = await seaport.createBuyOrder({
-                asset: {
-                    tokenId,
-                    tokenAddress,
-                    schemaName // WyvernSchemaName. If omitted, defaults to 'ERC721'. Other options include 'ERC20' and 'ERC1155'
-                },
-                accountAddress,
-                // Value of the offer, in units of the payment token (or wrapped ETH if none is specified):
-                startAmount: 1.2,
-            })
-
-            console.log('Make offer success', offer)
-        } catch(e) {
+            // console.log('Make offer success', result)
+        } catch (e) {
             alert(e.message)
             setLoading(false)
             return
@@ -750,6 +770,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 label="Place a bid"
                             >
                                 <PopupPlaceABid
+                                    name={data?.name || ''}
                                     onConfirm={makeOffer}
                                     onClose={() => setOpenPopupPlaceABid(false)}
                                     loading={loading}

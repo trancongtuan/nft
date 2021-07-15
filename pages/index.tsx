@@ -1,5 +1,5 @@
 /* eslint-disable no-irregular-whitespace */
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useState, useEffect } from 'react'
 import { Box, Button, Flex, Grid, Text } from 'theme-ui'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
@@ -14,23 +14,19 @@ import EdgeOverflow from '../components/EdgeOverflow'
 import HotCollection from '../components/HotCollection'
 import Layout from '../containers/Layout'
 import DropdownIcon from '../public/assets/images/icons/drop-down.svg'
-import FilterIcon from '../public/assets/images/icons/filter.svg'
 import TopSellerCard from '../components/TopSellerCard'
 import HomeCard from '../components/HomeCard'
 import Tooltip, { TooltipItemProps } from '../components/Tooltip'
 import useHorizontalScroll from '../hooks/horizontalScroll'
-import TooltipItem from '../components/TooltipItem'
-import ToggleButton from '../components/ToggleButton'
 import {
     Asset,
-    AssetsResponseData,
     fetchAssets,
     useGetAssetsInfiniteQuery,
     fetchUsers,
+    useAssetTypeQuery,
 } from '../queries'
 import {
     Collection,
-    CollectionsResponseData,
     fetchCollections,
     useGetCollectionsQuery,
 } from '../queries/collections'
@@ -43,21 +39,6 @@ const sellerList = [
     {
         id: 2,
         label: 'buyer',
-    },
-]
-
-const dayList = [
-    {
-        id: 1,
-        label: '1 day',
-    },
-    {
-        id: 2,
-        label: '7 days',
-    },
-    {
-        id: 3,
-        label: '30 days',
     },
 ]
 
@@ -98,7 +79,7 @@ export const getServerSideProps: GetServerSideProps<{
     const collections = await fetchCollections({})
     const assets = await fetchAssets({ _start: 0, _limit: 10 })
     const hotBids = await fetchAssets({ _start: 0, _limit: 10, ultcube_hot_bids: true })
-    const users = await fetchUsers({ _start: 0, _limit: 10 })
+    const users = await fetchUsers({ _start: 0, _limit: 15, _sort: 'sales_amount:DESC' })
     return {
         props: {
             collections,
@@ -113,34 +94,44 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     collections,
     assets,
     hotBids,
-    users,
+    users: defaultUsers,
 }) => {
     const router = useRouter()
     const [showSellers, setShowSellers] = useState(false)
-    const [showDays, setShowDays] = useState(false)
-    const [showFilter, setShowFilter] = useState(false)
-    const [currency, setCurrency] = useState(filterItems[0].id)
-    const [verified, setVerified] = useState(false)
-    const [seller, setSeller] = useState<TooltipItemProps>(sellerList[0])
-    const [day, setDay] = useState<TooltipItemProps>(dayList[0])
+    const [sellerType, setSellerType] = useState<TooltipItemProps>(sellerList[0])
     const ref = useHorizontalScroll()
+    const [assetType, setAssetType] = useState('all')
     const [showLoadMore, setShowLoadMore] = useState(true)
+    const [users, setUsers] = useState(defaultUsers);
     const {
         data: infinityAssetsData,
         fetchNextPage,
         hasNextPage,
-    } = useGetAssetsInfiniteQuery(assets)
+    } = useGetAssetsInfiniteQuery(
+            assetType, 
+            assetType == 'all' ? { pages: [], pageParams: [{ _start: 0, _limit: 10 }] } : assets
+        )
 
-    const { data: collectionsData } = useGetCollectionsQuery(
-        {
-            // offset: 0,
-            // limit: 15,
-        },
-        collections
-    )
+    const { data: collectionsData } = useGetCollectionsQuery({}, collections)
     const featuredCollection = collectionsData.filter(item => item.ultcube_featured);
-
     const fetchMore = useCallback(() => fetchNextPage(), [fetchNextPage])
+
+    const updateUsers = async (type) => {
+        const _sort = type.id == 1 ? 'sales_amount:DESC' : 'purchases_amount:DESC'
+        const result = await fetchUsers({ _start: 0, _limit: 15, _sort })
+        setUsers(result)
+    }
+
+    useEffect(() => {
+        updateUsers(sellerType)
+    }, [sellerType])
+
+    useEffect(() => {
+        updateUsers(sellerType)
+    }, [assetType])
+
+    const assetTypeList = useAssetTypeQuery();
+
     return (
         <Layout>
             <Box
@@ -177,7 +168,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     subLabel={item.slug}
                                     image={item.image_url}
                                     darkText={false}
-                                    onClick={() => router.push('/collection')}
+                                    onClick={() => router.push(`/collection/${item.slug}`)}
                                 />
                             </Flex>
                         ))}
@@ -197,8 +188,11 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 <Tooltip
                                     items={sellerList}
                                     minWidth={124}
-                                    selectedItem={seller}
-                                    onClick={(item) => setSeller(item)}
+                                    selectedItem={sellerType}
+                                    onClick={(item) => {
+                                        setSellerType(item)
+                                        setShowSellers(false)
+                                    }}
                                 />
                             }
                             place="below"
@@ -217,40 +211,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 }}
                             >
                                 <Text mr="4px" color="primary">
-                                    {seller.label}
-                                </Text>
-                                <DropdownIcon />
-                            </Text>
-                        </Popover>
-                        in
-                        <Popover
-                            onOuterAction={() => setShowDays(false)}
-                            isOpen={showDays}
-                            body={
-                                <Tooltip
-                                    items={dayList}
-                                    minWidth={124}
-                                    selectedItem={day}
-                                    onClick={(item) => setDay(item)}
-                                />
-                            }
-                            place="below"
-                            tipSize={0.01}
-                        >
-                            <Text
-                                onClick={() => setShowDays(!showDays)}
-                                mx={8}
-                                sx={{
-                                    svg: {
-                                        fill: 'primary',
-                                        width: 13,
-                                        height: 13,
-                                    },
-                                    cursor: 'pointer',
-                                }}
-                            >
-                                <Text mr="4px" color="primary">
-                                    {day.label}
+                                    {sellerType.label}
                                 </Text>
                                 <DropdownIcon />
                             </Text>
@@ -269,14 +230,13 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 }}
                             >
                                 {chunkedUsers.map((user, index) => (
-                                    <Box key={uuidv4()} mb={20}>
-                                        {console.log(user?.profile_pic?.url)}
+                                    <Box key={user.id} mb={20}>
                                         <TopSellerCard
                                             id={idx * 3 + index + 1}
                                             name={user.display_name}
                                             wallet={user.sales_amount}
                                             user={{
-                                                src: 'https://api.ultcube.scc.sh' + user?.profile_pic?.url,
+                                                src: user?.profile_pic?.url ? 'https://api.ultcube.scc.sh' + user?.profile_pic?.url : 'https://via.placeholder.com/100?text=ULTCube',
                                                 verified: true,
                                             }}
                                             onClick={() =>
@@ -304,9 +264,11 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 <BidCard
                                     name={item.name}
                                     currency="ETH"
-                                    image={item.image_url}                                    
+                                    image={item.image_url}
                                     price={item.top_bid ?? 0}
-                                    onCLick={() => router.push('/product')}
+                                    onCLick={() => router.push(
+                                        `/product/${item.asset_contract.address}/${item.token_id}`
+                                    )}
                                 />
                             </Box>
                         ))}
@@ -327,7 +289,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         {(collectionsData ?? []).map((item) => (
                             <Box key={item.slug} px={10}>
                                 <HotCollection
-                                    onClick={() => router.push('/collection')}
+                                    onClick={() => router.push(`/collection/${item.slug}`)}
                                     name={item.name}
                                     code={item.slug}
                                     owner={{ src: item.image_url }}
@@ -361,167 +323,35 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         <Flex ml={16} sx={{ overflowX: 'auto' }}>
                             <Button
                                 mr={12}
-                                variant="borderActive"
+                                variant={assetType === 'all' ? 'borderActive' : 'border'}
                                 sx={{
                                     flexShrink: 0,
                                 }}
+                                onClick={() => setAssetType('all')}
                             >
                                 All
                             </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                🌈 Art
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                📸 Photography
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                🕹 Games
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                👾 Metaverses
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                🎵 Music
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                🏷 Domains
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                💰 DeFi
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                🤡 Memes
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                💰 DeFi
-                            </Button>
+                            {
+                                assetTypeList.status === 'success' ?
+                                    assetTypeList.data.map(item => (
+                                        <Button
+                                            mr={12}
+                                            variant={assetType === item.id ? 'borderActive' : 'border'}
+                                            sx={{
+                                                flexShrink: 0,
+                                            }}
+                                            key={item.id}
+                                            onClick={() => setAssetType(item.id)}
+                                        >
+                                            {item.name}
+                                        </Button>
+                                    ))
+                                    :
+                                    <p>Loading...</p>
+                            }
                         </Flex>
                         <EdgeOverflow />
                     </Box>
-                    <Popover
-                        onOuterAction={() => setShowFilter(false)}
-                        isOpen={showFilter}
-                        body={
-                            <Tooltip>
-                                {filterItems.map((item) => {
-                                    return (
-                                        <TooltipItem
-                                            id={item.id}
-                                            key={item.id}
-                                            label={item.label}
-                                            onClick={() =>
-                                                !item.disable &&
-                                                setCurrency(item.id)
-                                            }
-                                            disable={item.disable}
-                                            selectedItem={currency}
-                                        />
-                                    )
-                                })}
-                                <TooltipItem
-                                    id="6"
-                                    label="Verified only"
-                                    rightStatic={() => (
-                                        <ToggleButton
-                                            toggle={verified}
-                                            setToggle={() =>
-                                                setVerified(!verified)
-                                            }
-                                        />
-                                    )}
-                                />
-                            </Tooltip>
-                        }
-                        place="below"
-                        tipSize={0.01}
-                    >
-                        <Button
-                            onClick={() => setShowFilter(!showFilter)}
-                            ml={[0, 8, 8, 8]}
-                            px={[0, 20, 20, 20]}
-                            variant="border"
-                            sx={{
-                                flexShrink: 0,
-                                width: [
-                                    '40px',
-                                    'max-content',
-                                    'max-content',
-                                    'max-content',
-                                ],
-                                height: '40px',
-                                display: ['inline', 'flex', 'flex', 'flex'],
-                            }}
-                        >
-                            <FilterIcon />
-                            <Text
-                                ml={2}
-                                sx={{
-                                    display: [
-                                        'none',
-                                        'block',
-                                        'block',
-                                        'block',
-                                    ],
-                                }}
-                            >
-                                Filter & Sort
-                            </Text>
-                        </Button>
-                    </Popover>
                 </Flex>
                 <InfiniteScroll
                     dataLength={(infinityAssetsData?.pages ?? []).length}

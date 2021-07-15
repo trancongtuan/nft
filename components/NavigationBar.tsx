@@ -17,10 +17,11 @@ import {
 } from 'theme-ui'
 import Popover from 'react-popover'
 import Link from 'next/link'
+import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import Image from 'next/image'
-import LogoIcon from '../public/assets/images/icons/logo.svg'
+import { fetchUsers } from '../queries'
 import SearchIcon from '../public/assets/images/icons/search.svg'
 import DropDownIcon from '../public/assets/images/icons/drop-down.svg'
 import NotificationIcon from '../public/assets/images/icons/notification.svg'
@@ -387,7 +388,12 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                     <Flex>
                         <Link href="/">
                             <Box mr={16} sx={{ cursor: 'pointer' }}>
-                                <LogoIcon />
+                                <Image
+                                    src="/assets/images/collect.png"
+                                    width={88}
+                                    height={88}
+                                    alt="create"
+                                />
                             </Box>
                         </Link>
                         <Popover
@@ -618,11 +624,18 @@ const NavigationBar: FC = () => {
     const [showSearch, setShowSearch] = useState(false)
     const [showCatalog, setShowCatalog] = useState(false)
     const { connected, setConnected } = useAuth()
+    let user = null;
+
+    // if (connected) {
+    //     user = useQuery(['user', connected], ({ queryKey }) => 
+    //         fetchUsers({ address: typeof (queryKey[1]) === 'string' ? queryKey[1] : '' }));
+    // }
 
     const connectWallet = async () => {
         // Get Address
         let accountAddress
         try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
             accountAddress = await window.ethereum.enable()
             if (!accountAddress[0]) throw new Error('No account selected.')
             accountAddress = accountAddress[0]
@@ -640,6 +653,7 @@ const NavigationBar: FC = () => {
         }
         return setCounter(0)
     }, [counter])
+
     return (
         <Flex
             bg="background"
@@ -668,7 +682,12 @@ const NavigationBar: FC = () => {
                         },
                     }}
                 >
-                    <LogoIcon />
+                    <Image
+                        src="/assets/images/logo.png"
+                        width={40}
+                        height={40}
+                        alt="create"
+                    />
                 </Box>
             </Link>
             <Flex
@@ -1012,7 +1031,15 @@ const NavigationBar: FC = () => {
                                                 cursor: 'pointer',
                                             }}
                                         >
-                                            Set display name
+                                            {
+                                                user?.status === 'success' ? 
+                                                    (  
+                                                        (user.data[0] && user.data[0].display_name?.length > 0) ?
+                                                            user.data[0].display_name
+                                                                : 'Set display name'
+                                                    )
+                                                    : 'Loading...'
+                                            }
                                         </Text>
                                     </Link>
                                     <Box mt={16}>
@@ -1194,6 +1221,7 @@ const NavigationBar: FC = () => {
                     >
                         {connected ? (
                             <Button
+                                onClick={() => setShowDetail(!showDetail)}
                                 variant="border"
                                 pl={20}
                                 pr={55}
@@ -1206,7 +1234,7 @@ const NavigationBar: FC = () => {
                                 }}
                             >
                                 <Text
-                                    onClick={() => router.push('/rari')}
+                                    // onClick={() => router.push('/rari')}
                                     sx={{
                                         '@media screen and (max-width: 400px)': {
                                             display: 'none',
@@ -1217,7 +1245,7 @@ const NavigationBar: FC = () => {
                                     Connected
                                 </Text>
                                 <Avatar
-                                    onClick={() => setShowDetail(!showDetail)}
+                                    // onClick={() => setShowDetail(!showDetail)}
                                     src="https://via.placeholder.com/500x100"
                                     alt="avatar"
                                     sx={{
@@ -1231,7 +1259,6 @@ const NavigationBar: FC = () => {
                             </Button>
                         ) : (
                             <Button
-                                onClick={() => router.push('/connect')}
                                 variant="border"
                                 sx={{
                                     '@media screen and (max-width: 890px)': {

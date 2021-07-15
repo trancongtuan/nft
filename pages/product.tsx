@@ -645,7 +645,7 @@ const Product: FC = () => {
                                 }}
                                 label="Place a bid"
                             >
-                                <PopupPlaceABid />
+                                <PopupPlaceABid name="" />
                             </Popup>
                             <Popup
                                 isOpen={openPopupShare}
