@@ -252,7 +252,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         ref={ref}
                         sx={{
                             overflowX: 'auto',
-                            paddingBottom: '20px',
+                            '::-webkit-scrollbar': {
+                                display: 'none',
+                            },
                         }}
                         mb={30}
                     >
@@ -362,7 +364,12 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 <Box sx={{ position: 'relative' }}>
                     <Flex
                         ml={-20}
-                        sx={{ overflowX: 'auto', paddingBottom: '20px' }}
+                        sx={{
+                            overflowX: 'auto',
+                            '::-webkit-scrollbar': {
+                                display: 'none',
+                            },
+                        }}
                     >
                         {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
                             <Box
