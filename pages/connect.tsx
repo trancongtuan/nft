@@ -6,7 +6,6 @@ import ConnectCard from '../components/ConnectCard'
 import Popup from '../components/Popup'
 import { useAuth } from '../hooks/auth'
 import ArrowIcon from '../public/assets/images/icons/arrowLeft.svg'
-import LogoIcon from '../public/assets/images/icons/logo.svg'
 
 const Connect: FC = () => {
     const router = useRouter()
@@ -69,7 +68,20 @@ const Connect: FC = () => {
                 }}
             >
                 <Link href="/">
-                    <LogoIcon />
+                    <Box
+                        sx={{
+                            cursor: 'pointer',
+                            position: 'relative',
+                            width: '180px',
+                            height: '45px',
+                        }}
+                    >
+                        <Image
+                            src="/assets/images/logo_white.png"
+                            alt="logo"
+                            // layout="fill"
+                        />
+                    </Box>
                 </Link>
             </Box>
             <Box

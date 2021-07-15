@@ -20,7 +20,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import Image from 'next/image'
-import LogoIcon from '../public/assets/images/icons/logo.svg'
 import SearchIcon from '../public/assets/images/icons/search.svg'
 import DropDownIcon from '../public/assets/images/icons/drop-down.svg'
 import NotificationIcon from '../public/assets/images/icons/notification.svg'
@@ -200,7 +199,6 @@ const SearchInput: FC = () => {
             pl={3}
             pr={2}
             bg={bg}
-            mr={24}
             color="text"
             sx={{
                 position: 'relative',
@@ -216,6 +214,7 @@ const SearchInput: FC = () => {
                     height: 14,
                 },
                 boxShadow,
+                width: '100%',
             }}
         >
             <Box
@@ -238,6 +237,7 @@ const SearchInput: FC = () => {
                     fontSize: 15,
                     fontWeight: 'bold',
                     border: 0,
+                    outline: 0,
                     ':focus-visible': {
                         outline: 'none',
                     },
@@ -358,6 +358,7 @@ interface CatalogProps {
 }
 
 const Catalog: FC<CatalogProps> = ({ onClose }) => {
+    const [colorMode] = useColorMode()
     const [showLanguage, setShowLanguage] = useState(false)
     const [language, setLanguage] = useState<TooltiProps>(languageList[0])
     const router = useRouter()
@@ -386,8 +387,28 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                 >
                     <Flex>
                         <Link href="/">
-                            <Box mr={16} sx={{ cursor: 'pointer' }}>
-                                <LogoIcon />
+                            <Box
+                                mr={16}
+                                sx={{
+                                    cursor: 'pointer',
+                                    position: 'relative',
+                                    width: '180px',
+                                    height: '45px',
+                                }}
+                            >
+                                {colorMode === 'dark' ? (
+                                    <Image
+                                        src="/assets/images/logo_black.png"
+                                        alt="logo"
+                                        layout="fill"
+                                    />
+                                ) : (
+                                    <Image
+                                        src="/assets/images/logo_white.png"
+                                        alt="logo"
+                                        layout="fill"
+                                    />
+                                )}
                             </Box>
                         </Link>
                         <Popover
@@ -651,12 +672,28 @@ const NavigationBar: FC = () => {
                         ':active': {
                             transform: 'scale(0.95)',
                         },
+                        position: 'relative',
+                        width: '180px',
+                        height: '45px',
                     }}
                 >
-                    <LogoIcon />
+                    {colorMode === 'dark' ? (
+                        <Image
+                            src="/assets/images/logo_black.png"
+                            alt="logo"
+                            layout="fill"
+                        />
+                    ) : (
+                        <Image
+                            src="/assets/images/logo_white.png"
+                            alt="logo"
+                            layout="fill"
+                        />
+                    )}
                 </Box>
             </Link>
             <Flex
+                mr={24}
                 sx={{
                     flex: 1,
                     '@media screen and (max-width: 1110px)': {
