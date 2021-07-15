@@ -253,9 +253,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     width: [
                                         200,
                                         205,
-                                        229,
+                                        220,
                                         167,
-                                        'calc(20% - 16px)',
+                                        'calc(15% + 8px)',
                                     ],
                                     flexShrink: 0,
                                     ':last-child': {
