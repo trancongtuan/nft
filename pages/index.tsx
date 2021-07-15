@@ -181,8 +181,8 @@ const filterItems = [
 ]
 
 export const getServerSideProps: GetServerSideProps<{
-    collections: Collection[],
-    assets: any, // TODO: Change to correct type
+    collections: Collection[]
+    assets: any // TODO: Change to correct type
 }> = async () => {
     const collections = await fetchCollections({
         // offset: 0,
@@ -216,7 +216,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         fetchNextPage,
         hasNextPage,
     } = useGetAssetsInfiniteQuery(assets)
-    const hotBids = infinityData.pages.flat()?.filter(item => item.ultcube_hot_bids);
+    const hotBids = infinityData.pages
+        .flat()
+        ?.filter((item) => item.ultcube_hot_bids)
 
     const { data: collectionsData } = useGetCollectionsQuery(
         {
@@ -225,7 +227,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         },
         collections
     )
-    const featuredCollection = collectionsData.filter(item => item.ultcube_featured);
+    const featuredCollection = collectionsData.filter(
+        (item) => item.ultcube_featured
+    )
 
     React.useEffect(() => {
         console.log(infinityData)
@@ -244,7 +248,14 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 }}
             >
                 <Box sx={{ position: 'relative' }}>
-                    <Flex ref={ref} sx={{ overflowX: 'auto' }} mb={30}>
+                    <Flex
+                        ref={ref}
+                        sx={{
+                            overflowX: 'auto',
+                            paddingBottom: '20px',
+                        }}
+                        mb={30}
+                    >
                         {featuredCollection.map((item) => (
                             <Flex
                                 key={uuidv4()}
@@ -349,7 +360,10 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     </Text>
                 </Flex>
                 <Box sx={{ position: 'relative' }}>
-                    <Flex ml={-20} sx={{ overflowX: 'auto' }}>
+                    <Flex
+                        ml={-20}
+                        sx={{ overflowX: 'auto', paddingBottom: '20px' }}
+                    >
                         {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
                             <Box
                                 key={uuidv4()}
@@ -395,7 +409,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 <BidCard
                                     name={item.name}
                                     currency="ETH"
-                                    image={item.image_url}                                    
+                                    image={item.image_url}
                                     price={item.top_bid ?? 0}
                                     onCLick={() => router.push('/product')}
                                 />
