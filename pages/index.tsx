@@ -249,7 +249,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         <TopSellerCard
                                             id={idx * 3 + index + 1}
                                             name={user.display_name}
-                                            wallet={user.sales_amount}
+                                            wallet={sellerType.value === 'sellers' ? user.sales_amount : user.purchases_amount}
                                             user={{
                                                 src: user?.profile_pic?.url
                                                     ? `https://api.ultcube.scc.sh${user?.profile_pic?.url}`
