@@ -124,6 +124,7 @@ const Avatar: FC<AvatarProps> = ({
                     objectFit: 'cover',
                     borderRadius: type !== 'follow' ? 6 : '5px',
                     mb: size === 'xxs' ? '-2px' : undefined,
+                    backgroundColor: 'darkgrey',
                 }}
             />
             {verified && (

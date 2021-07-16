@@ -3,8 +3,8 @@ import { client } from './client'
 
 export interface CollectionsVariables {
     asset_owner?: string
-    // offset?: number
     limit?: number
+    slug?: string
 }
 
 export interface Traits {}

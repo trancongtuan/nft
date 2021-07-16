@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from 'react-query'
-import { client } from './client'
+import { testNetClient } from './client'
 
 interface AssetVariables {
     account_address?: string
@@ -55,7 +55,7 @@ export interface PaymentToken {
     usd_price: number
 }
 
-export interface Traits {}
+export interface Traits { }
 
 export interface Stats {
     seven_day_volume: number
@@ -183,16 +183,16 @@ export interface AssetResponseData {
 export const fetchAsset: (
     variables: AssetVariables
 ) => Promise<AssetResponseData> = (variables) =>
-    client
-        .get(
-            `/asset/${variables.asset_contract_address}/${variables.token_id}`,
-            {
-                params: {
-                    account_address: variables.account_address,
-                },
-            }
-        )
-        .then((response) => response.data)
+        testNetClient
+            .get(
+                `/asset/${variables.asset_contract_address}/${variables.token_id}`,
+                {
+                    params: {
+                        account_address: variables.account_address,
+                    },
+                }
+            )
+            .then((response) => response.data)
 
 export function useGetSingleAssetQuery(
     variables: AssetVariables,
