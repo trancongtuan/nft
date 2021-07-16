@@ -3,20 +3,176 @@ import { Box, Text, Flex, Image, Button } from 'theme-ui'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import { useTranslation } from 'react-i18next'
+
+import * as ethUtil from 'ethereumjs-util'
+import * as sigUtil from 'eth-sig-util'
+import {
+    fetchUsers,
+    updateUser,
+    createUser,
+    uploadFile,
+    EthUser,
+} from '../queries'
+
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import CustomInput from '../components/CustomInput'
-
 import LockIcon from '../public/assets/images/icons/lock.svg'
+import { useEffect } from 'react'
+import { useAuth } from '../hooks/auth'
+
+const chainId = 'RINKEBY' === 'RINKEBY' ? 4 : 1
 
 const Setting: FC = () => {
     const { t } = useTranslation('common')
     const inputFile = useRef(null)
+    const { connected, setConnected } = useAuth()
     const [reLink, setReLink] = useState(false)
+    const [profile, setProfile] = useState<EthUser>({
+        id: null,
+        display_name: '',
+        custom_url: '',
+        twitter: '',
+        email: '',
+        bio: '',
+        website: '',
+        address: '',
+        profile_pic: { url: null },
+    })
 
     const handleOnClick = (): void => {
         inputFile.current.click()
     }
+
+    const handleFileSelected = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): Promise<void> => {
+        try {
+            const files = Array.from(e.target.files)
+            if (files.length < 1) return
+
+            const result = await uploadFile(files)
+            setProfile((ori) => ({ ...ori, profile_pic: result[0] }))
+        } catch (e) {
+            alert(e.toString())
+        }
+    }
+
+    const updateOrCreateUser = async (data) => {
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            var from = (await window.ethereum.enable())[0]
+            if (!from) throw new Error('No account selected.')
+
+            if (data.id) {
+                await updateUser(data.id, data)
+                alert('Profile updated.')
+            } else {
+                await createUser({ ...data, address: from })
+                alert('Profile updated.')
+            }
+        } catch (e) {
+            alert(e.toString())
+        }
+    }
+
+    const onSign = async (data) => {
+        try {
+            const msgParams = JSON.stringify({
+                domain: {
+                    chainId,
+                    name: 'ULTCube Profile',
+                    verifyingContract:
+                        '0x0000000000000000000000000000000000000000',
+                    version: '1',
+                },
+                message: data,
+                primaryType: 'Mail',
+                types: { Mail: [] },
+            })
+
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            var from = (await window.ethereum.enable())[0]
+            if (!from) throw new Error('No account selected.')
+
+            var params = [from, msgParams]
+            var method = 'eth_signTypedData_v4'
+
+            window.web3.currentProvider.sendAsync(
+                {
+                    method,
+                    params,
+                    from,
+                },
+                function (err, result) {
+                    if (err) return console.dir(err)
+                    if (result.error) {
+                        alert(result.error.message)
+                    }
+                    if (result.error) return console.error('ERROR', result)
+                    console.log('TYPED SIGNED:' + JSON.stringify(result.result))
+                    console.log('sigUtil', sigUtil)
+
+                    const recovered = sigUtil.recoverTypedSignature_v4({
+                        data: JSON.parse(msgParams),
+                        sig: result.result,
+                    })
+
+                    if (
+                        ethUtil.toChecksumAddress(recovered) ===
+                        ethUtil.toChecksumAddress(from)
+                    ) {
+                        updateOrCreateUser(data)
+                    } else {
+                        alert(
+                            'Failed to verify signer when comparing ' +
+                                result +
+                                ' to ' +
+                                from
+                        )
+                    }
+                }
+            )
+        } catch (e) {
+            alert(e.toString())
+        }
+    }
+
+    const updateProfile = async () => {
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            var from = (await window.ethereum.enable())[0]
+            if (!from) throw new Error('No account selected.')
+            const result = await fetchUsers({ address: from })
+            if (result[0]) setProfile(result[0])
+        } catch (e) {
+            alert(e.toString())
+        }
+    }
+
+    const connectWallet = async () => {
+        // Get Address
+        let accountAddress
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            accountAddress = await window.ethereum.enable()
+            if (!accountAddress[0]) throw new Error('No account selected.')
+            accountAddress = accountAddress[0]
+            setConnected(accountAddress)
+            updateProfile()
+        } catch (e) {
+            alert(e.message)
+            return
+        }
+    }
+
+    useEffect(() => {
+        if (!connected) {
+            connectWallet()
+        } else {
+            updateProfile()
+        }
+    }, [])
 
     return (
         <Box>
@@ -131,11 +287,17 @@ const Setting: FC = () => {
                                     )}
                                 </Box>
                             }
+                            onChange={(v) =>
+                                setProfile((ori) => ({ ...ori, twitter: v }))
+                            }
                         />
                         <CustomInput
                             label={t('setting.personal_site_or_portfolio')}
                             value=""
                             placeholder="https://"
+                            onChange={(v) =>
+                                setProfile((ori) => ({ ...ori, website: v }))
+                            }
                         />
                         <CustomInput
                             label={t('setting.email')}
@@ -162,8 +324,11 @@ const Setting: FC = () => {
                                     </Text>
                                 </Box>
                             }
+                            onChange={(v) =>
+                                setProfile((ori) => ({ ...ori, email: v }))
+                            }
                         />
-                        <Flex>
+                        {/* <Flex>
                             <Box>
                                 <Text variant="heading">
                                     {t('setting.verification')}
@@ -188,11 +353,12 @@ const Setting: FC = () => {
                                     {t('setting.verification_btn')}
                                 </Button>
                             </Box>
-                        </Flex>
+                        </Flex> */}
                         <Button
                             variant="primary"
                             mt={40}
                             sx={{ fontSize: '12px', width: '100%' }}
+                            onClick={() => onSign(profile)}
                         >
                             {t('setting.update_profile')}
                         </Button>
@@ -221,7 +387,12 @@ const Setting: FC = () => {
                             }}
                         >
                             <Image
-                                src="https://picsum.photos/200/300"
+                                src={
+                                    profile.profile_pic?.url
+                                        ? 'https://api.ultcube.scc.sh' +
+                                          profile.profile_pic?.url
+                                        : '/assets/images/empty_placeholder.png'
+                                }
                                 sx={{
                                     objectFit: 'cover',
                                     borderRadius: '50%',
@@ -250,6 +421,7 @@ const Setting: FC = () => {
                                     type="file"
                                     id="file"
                                     ref={inputFile}
+                                    onChange={handleFileSelected}
                                     style={{ display: 'none' }}
                                 />
                                 {t('setting.choose_file')}

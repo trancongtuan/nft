@@ -1,24 +1,59 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Box, Button, Flex, Text } from 'theme-ui'
+import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { InfiniteData } from 'react-query'
 import { v4 as uuidv4 } from 'uuid'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
-import Avatar from '../components/Avatar'
-import Selection from '../components/Selection'
-import Layout from '../containers/Layout'
-import CopyIcon from '../public/assets/images/icons/copy.svg'
-import CheckedIcon from '../public/assets/images/icons/checked.svg'
-import UploadIcon from '../public/assets/images/icons/upload.svg'
-import ThreeDos from '../public/assets/images/icons/threedos.svg'
-import BidCard from '../components/BidCard'
-import Tooltip from '../components/Tooltip'
-import Popup from '../components/Popup'
-import PopupReport from '../components/PopupReport'
-import PopupShare from '../components/PopupShare'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import Avatar from '../../components/Avatar'
+import Selection from '../../components/Selection'
+import Layout from '../../containers/Layout'
+import CopyIcon from '../../public/assets/images/icons/copy.svg'
+import CheckedIcon from '../../public/assets/images/icons/checked.svg'
+import UploadIcon from '../../public/assets/images/icons/upload.svg'
+import ThreeDos from '../../public/assets/images/icons/threedos.svg'
+import TwitterIcon from '../../public/assets/images/icons/twitter.svg'
+import FacebookIcon from '../../public/assets/images/icons/facebook.svg'
+import TelegramIcon from '../../public/assets/images/icons/telegram.svg'
+import EmailIcon from '../../public/assets/images/icons/email.svg'
+import BidCard from '../../components/BidCard'
+import Tooltip from '../../components/Tooltip'
+import Popup from '../../components/Popup'
+import PopupReport from '../../components/PopupReport'
+import { Asset, fetchAssets } from '../../queries'
+import {
+    Collection as TCollection,
+    fetchCollections,
+} from '../../queries/collections'
 
-const Collection: FC = () => {
+export const getServerSideProps: GetServerSideProps<{
+    collection: TCollection
+    assets: InfiniteData<Asset[]> // TODO: Change to correct type
+}> = async (context) => {
+    const { params } = context
+    const assets = await fetchAssets({
+        _start: 0,
+        _limit: 100,
+        collection_slug: `${params.slug}`,
+    })
+    const collections = await fetchCollections({ slug: `${params.slug}` })
+
+    return {
+        props: {
+            collection: collections[0],
+            assets: {
+                pages: [assets],
+                pageParams: [{ _start: 0, _limit: 10 }],
+            },
+        },
+    }
+}
+
+const Collection: FC<
+    InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ collection, assets }) => {
+    const router = useRouter()
     const [showReport, setShowReport] = useState(false)
     const [showShare, setShowShare] = useState(false)
     const [counter, setCounter] = useState(0)
@@ -44,17 +79,13 @@ const Collection: FC = () => {
                         '@media screen and (max-width: 1110px)': {
                             height: 160,
                         },
-                        backgroundImage: 'url(https://picsum.photos/1500/300)',
+                        backgroundImage: `url(${collection.featured_image_url})`,
                         backgroundPosition: 'center center',
                         backgroundSize: 'cover',
                     }}
                 />
                 <Box sx={{ position: 'absolute', bottom: -30 }}>
-                    <Avatar
-                        src="https://picsum.photos/500/300"
-                        size="xl"
-                        verified
-                    />
+                    <Avatar src={collection.image_url} size="xl" verified />
                 </Box>
             </Flex>
             <Box
@@ -72,7 +103,7 @@ const Collection: FC = () => {
                             fontWeight: 'heavy',
                         }}
                     >
-                        Beeple Round 2 Open Edition
+                        {collection.name}
                     </Text>
                     <Flex mb={20} sx={{ alignItems: 'center' }}>
                         <Text
@@ -83,7 +114,8 @@ const Collection: FC = () => {
                                 fontWeight: 'bold',
                             }}
                         >
-                            0xd92e44ac213b9...fa96
+                            {collection.primary_asset_contracts?.[0]?.address ||
+                                ''}
                         </Text>
                         <CopyToClipboard
                             onCopy={() => setCounter(2)}
@@ -175,7 +207,7 @@ const Collection: FC = () => {
                     ]}
                 />
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {new Array(10).fill(0).map(() => (
+                    {assets.pages[0].map((item) => (
                         <Box
                             key={uuidv4()}
                             p={10}
@@ -197,22 +229,31 @@ const Collection: FC = () => {
                             }}
                         >
                             <BidCard
-                                favorite={10}
-                                price={10}
-                                type="single"
-                                image="https://picsum.photos/200/400"
-                                collection={{
-                                    src: 'https://picsum.photos/300/300',
-                                    verified: true,
-                                }}
-                                owner={{ src: 'https://picsum.photos/200/300' }}
-                                creator={{
-                                    src: 'https://picsum.photos/200/400',
-                                    verified: true,
-                                }}
-                                name="Test"
-                                bid={50}
-                                currency="WETH"
+                                key={item.id}
+                                onCLick={() =>
+                                    router.push(
+                                        `/product/${item.asset_contract.address}/${item.token_id}`
+                                    )
+                                }
+                                name={item.name}
+                                image={item.image_url}
+                                currency="ETH"
+                                price={item.top_bid ?? 0}
+                                {...(item?.creator && {
+                                    creator: {
+                                        src: item.creator?.profile_img_url,
+                                    },
+                                })}
+                                {...(item?.owner && {
+                                    owner: {
+                                        src: item.owner?.profile_img_url,
+                                    },
+                                })}
+                                {...(item?.collection && {
+                                    collection: {
+                                        src: item.collection?.image_url,
+                                    },
+                                })}
                             />
                         </Box>
                     ))}
@@ -222,10 +263,10 @@ const Collection: FC = () => {
     )
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-    props: {
-        ...(await serverSideTranslations(locale, ['common', 'footer'])),
-    },
-})
+// export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+//     props: {
+//         ...(await serverSideTranslations(locale, ['common', 'footer'])),
+//     },
+// })
 
 export default Collection

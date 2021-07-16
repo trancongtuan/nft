@@ -120,6 +120,49 @@ const Create: FC = () => {
                             }}
                         >
                             <Flex
+                                onClick={() => router.push('/create/resell')}
+                                pt={49}
+                                px={3}
+                                pb={33}
+                                sx={{
+                                    position: 'relative',
+                                    flex: 1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderWidth: 2,
+                                    borderStyle: 'solid',
+                                    borderColor: 'borderColor',
+                                    borderRadius: 1,
+                                    flexDirection: 'column',
+                                    cursor: 'pointer',
+                                    ':hover': {
+                                        borderColor: 'borderHoverColor',
+                                    },
+                                    transition: 'all 0.12s ease-in-out 0s',
+                                }}
+                            >
+                                <Image
+                                    src="/assets/images/single.png"
+                                    width={85}
+                                    height={135}
+                                />
+                                <Text
+                                    mt={32}
+                                    color="text"
+                                    sx={{ fontWeight: 'bold', fontSize: 2 }}
+                                >
+                                    Re-Sell Existing
+                                </Text>
+                            </Flex>
+                        </Flex>
+                        <Flex
+                            p={2}
+                            sx={{
+                                maxWidth: ['100%', '50%'],
+                                flex: ['0 0 100%', '0 0 50%'],
+                            }}
+                        >
+                            <Flex
                                 onClick={() => router.push('/create/multiple')}
                                 pt={49}
                                 px={3}

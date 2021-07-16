@@ -1,6 +1,6 @@
 /* eslint-disable no-irregular-whitespace */
-import React, { FC, useCallback, useState } from 'react'
-import { Box, Button, Flex, Text } from 'theme-ui'
+import React, { FC, useCallback, useState, useEffect } from 'react'
+import { Box, Button, Flex, Grid, Text } from 'theme-ui'
 import _ from 'lodash'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
@@ -9,261 +9,30 @@ import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { v4 as uuidv4 } from 'uuid'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import BidCard, { BidCardProps } from '../components/BidCard'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { InfiniteData } from 'react-query'
+import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
 import EdgeOverflow from '../components/EdgeOverflow'
 import HotCollection from '../components/HotCollection'
 import Layout from '../containers/Layout'
 import DropdownIcon from '../public/assets/images/icons/drop-down.svg'
-import FilterIcon from '../public/assets/images/icons/filter.svg'
 import TopSellerCard from '../components/TopSellerCard'
 import HomeCard from '../components/HomeCard'
 import Tooltip, { TooltipItemProps } from '../components/Tooltip'
 import useHorizontalScroll from '../hooks/horizontalScroll'
-import TooltipItem from '../components/TooltipItem'
-import ToggleButton from '../components/ToggleButton'
-
-const exploreItem: BidCardProps = {
-    favorite: 10,
-    price: 10,
-    type: 'multiple',
-    image: 'https://picsum.photos/200/400',
-    collection: {
-        src: 'https://picsum.photos/300/300',
-        verified: true,
-    },
-    owner: { src: 'https://picsum.photos/200/300' },
-    creator: {
-        src: 'https://picsum.photos/200/400',
-        verified: true,
-    },
-    name: 'Test',
-    bid: 50,
-    currency: 'WETH',
-}
-
-const carouselItems = [
-    {
-        id: 1,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 2,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 3,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 4,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 5,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 6,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 7,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 8,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-    {
-        id: 9,
-        owner: {
-            src: 'https://picsum.photos/200/300',
-            verified: true,
-        },
-        name: 'Inventory',
-        code: 'ERC-721',
-        background: 'https://picsum.photos/1500/300',
-    },
-]
-
-const bidItems = [
-    {
-        id: 1,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/400/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Long Test Test Test Test Test Test',
-        currency: 'WETH',
-        liked: true,
-        gradientColor: true,
-        countDown: 10000,
-    },
-    {
-        id: 2,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/300/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Test',
-        bid: 50,
-        currency: 'WETH',
-        liked: true,
-    },
-    {
-        id: 3,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/500/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Test',
-        bid: 50,
-        currency: 'WETH',
-        liked: true,
-    },
-    {
-        id: 4,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/600/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Test',
-        bid: 50,
-        currency: 'WETH',
-        liked: true,
-    },
-    {
-        id: 5,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/200/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Test',
-        bid: 50,
-        currency: 'WETH',
-        liked: true,
-    },
-    {
-        id: 6,
-        favorite: 10,
-        price: 10,
-        image: 'https://picsum.photos/200/400',
-        collection: {
-            src: 'https://picsum.photos/300/300',
-            verified: true,
-        },
-        owner: {
-            src: 'https://picsum.photos/200/300',
-        },
-        creator: {
-            src: 'https://picsum.photos/200/400',
-            verified: true,
-        },
-        name: 'Test',
-        bid: 50,
-        currency: 'WETH',
-        liked: true,
-    },
-]
+import {
+    Asset,
+    fetchAssets,
+    useGetAssetsInfiniteQuery,
+    fetchUsers,
+    useAssetTypeQuery,
+} from '../queries'
+import {
+    Collection,
+    fetchCollections,
+    useGetCollectionsQuery,
+} from '../queries/collections'
 
 const sellerList = [
     {
@@ -319,25 +88,87 @@ const filterItems = [
     },
 ]
 
-const Home: FC = () => {
+export const getServerSideProps: GetServerSideProps<{
+    collections: Collection[]
+    assets: InfiniteData<Asset[]> // TODO: Change to correct type
+    hotBids: Asset[]
+    users: any[]
+}> = async () => {
+    const collections = await fetchCollections({})
+    const assets = await fetchAssets({ _start: 0, _limit: 10 })
+    const hotBids = await fetchAssets({
+        _start: 0,
+        _limit: 10,
+        ultcube_hot_bids: true,
+    })
+    const users = await fetchUsers({
+        _start: 0,
+        _limit: 15,
+        _sort: 'sales_amount:DESC',
+    })
+    return {
+        props: {
+            collections,
+            assets: {
+                pages: [assets],
+                pageParams: [{ _start: 0, _limit: 10 }],
+            },
+            hotBids: hotBids || [],
+            users,
+        },
+    }
+}
+
+const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
+    collections,
+    assets,
+    hotBids,
+    users: defaultUsers,
+}) => {
     const router = useRouter()
     const { t } = useTranslation('common')
     const [showSellers, setShowSellers] = useState(false)
-    const [showDays, setShowDays] = useState(false)
-    const [showFilter, setShowFilter] = useState(false)
-    const [currency, setCurrency] = useState(filterItems[0].id)
-    const [verified, setVerified] = useState(false)
-    const [seller, setSeller] = useState<TooltipItemProps>(sellerList[0])
-    const [day, setDay] = useState<TooltipItemProps>(dayList[0])
-    const ref = useHorizontalScroll()
-    const [showLoadMore, setShowLoadMore] = useState(true)
-    const [exploreItems, setExploreItems] = useState(
-        Array(15).fill(exploreItem)
+    const [sellerType, setSellerType] = useState<TooltipItemProps>(
+        sellerList[0]
     )
-    const fetchData = useCallback(() => {
-        const newItems = Array(15).fill(exploreItem)
-        setExploreItems((rev) => rev.concat(newItems))
-    }, [])
+    const ref = useHorizontalScroll()
+    const [assetType, setAssetType] = useState('all')
+    const [showLoadMore, setShowLoadMore] = useState(true)
+    const [users, setUsers] = useState(defaultUsers)
+    const {
+        data: infinityAssetsData,
+        fetchNextPage,
+        hasNextPage,
+    } = useGetAssetsInfiniteQuery(
+        assetType,
+        assetType == 'all'
+            ? { pages: [], pageParams: [{ _start: 0, _limit: 10 }] }
+            : assets
+    )
+
+    const { data: collectionsData } = useGetCollectionsQuery({}, collections)
+    const featuredCollection = collectionsData.filter(
+        (item) => item.ultcube_featured
+    )
+    const fetchMore = useCallback(() => fetchNextPage(), [fetchNextPage])
+
+    const updateUsers = async (type) => {
+        const _sort =
+            type.id == 1 ? 'sales_amount:DESC' : 'purchases_amount:DESC'
+        const result = await fetchUsers({ _start: 0, _limit: 15, _sort })
+        setUsers(result)
+    }
+
+    useEffect(() => {
+        updateUsers(sellerType)
+    }, [sellerType])
+
+    useEffect(() => {
+        updateUsers(sellerType)
+    }, [assetType])
+
+    const assetTypeList = useAssetTypeQuery()
+
     return (
         <Layout>
             <Box
@@ -351,7 +182,7 @@ const Home: FC = () => {
             >
                 <Box sx={{ position: 'relative' }}>
                     <Flex ref={ref} sx={{ overflowX: 'auto' }} mb={30}>
-                        {new Array(10).fill(0).map(() => (
+                        {featuredCollection.map((item) => (
                             <Flex
                                 key={uuidv4()}
                                 mr={16}
@@ -370,11 +201,13 @@ const Home: FC = () => {
                                 }}
                             >
                                 <HomeCard
-                                    label="Pink Cat"
-                                    subLabel="FLOSSTRADAMUS"
-                                    image="https://dl.airtable.com/.attachments/58cc8ae0a4cf13909f4b85322ab688ad/cfa6de0d/Screenshot2021-04-20at22_32_23.png"
+                                    label={item.name}
+                                    subLabel={item.slug}
+                                    image={item.image_url}
                                     darkText={false}
-                                    onClick={() => router.push('/collection')}
+                                    onClick={() =>
+                                        router.push(`/collection/${item.slug}`)
+                                    }
                                 />
                             </Flex>
                         ))}
@@ -394,8 +227,11 @@ const Home: FC = () => {
                                 <Tooltip
                                     items={sellerList}
                                     minWidth={124}
-                                    selectedItem={seller}
-                                    onClick={(item) => setSeller(item)}
+                                    selectedItem={sellerType}
+                                    onClick={(item) => {
+                                        setSellerType(item)
+                                        setShowSellers(false)
+                                    }}
                                 />
                             }
                             place="below"
@@ -414,43 +250,7 @@ const Home: FC = () => {
                                 }}
                             >
                                 <Text mr="4px" color="primary">
-                                    {seller.label}
-                                </Text>
-                                <DropdownIcon />
-                            </Text>
-                        </Popover>
-                        {t('home.in')}
-                        <Popover
-                            onOuterAction={() => setShowDays(false)}
-                            isOpen={showDays}
-                            body={
-                                <Tooltip
-                                    items={dayList}
-                                    minWidth={124}
-                                    selectedItem={day}
-                                    onClick={(item) => setDay(item)}
-                                />
-                            }
-                            place="below"
-                            tipSize={0.01}
-                        >
-                            <Text
-                                onClick={() => setShowDays(!showDays)}
-                                mx={8}
-                                sx={{
-                                    svg: {
-                                        fill: 'primary',
-                                        width: 13,
-                                        height: 13,
-                                    },
-                                    cursor: 'pointer',
-                                }}
-                            >
-                                <Text mr="4px" color="primary">
-                                    {day.label}{' '}
-                                    {Number(day.label) > 1
-                                        ? t('home.days')
-                                        : t('home.day')}
+                                    {sellerType.label}
                                 </Text>
                                 <DropdownIcon />
                             </Text>
@@ -459,7 +259,7 @@ const Home: FC = () => {
                 </Flex>
                 <Box sx={{ position: 'relative' }}>
                     <Flex ml={-20} sx={{ overflowX: 'auto' }}>
-                        {_.chunk(new Array(18).fill(0), 3).map((item, idx) => (
+                        {_.chunk(users, 3).map((chunkedUsers, idx) => (
                             <Box
                                 key={uuidv4()}
                                 pl={20}
@@ -468,15 +268,16 @@ const Home: FC = () => {
                                     flexShrink: 0,
                                 }}
                             >
-                                {item.map((x, index) => (
-                                    <Box key={uuidv4()} mb={20}>
+                                {chunkedUsers.map((user, index) => (
+                                    <Box key={user.id} mb={20}>
                                         <TopSellerCard
                                             id={idx * 3 + index + 1}
-                                            name="Ahihi asd asd zx asd zxc"
-                                            wallet={24}
+                                            name={user.display_name}
+                                            wallet={user.sales_amount}
                                             user={{
-                                                src:
-                                                    'https://picsum.photos/200/300',
+                                                src: user?.profile_pic?.url
+                                                    ? `https://api.ultcube.scc.sh${user?.profile_pic?.url}`
+                                                    : 'https://via.placeholder.com/100?text=ULTCube',
                                                 verified: true,
                                             }}
                                             onClick={() =>
@@ -498,12 +299,19 @@ const Home: FC = () => {
                     >
                         {t('home.hot_bids')} 🔥
                     </Text>
-                    <Carousel slidesToShow={4} length={carouselItems.length}>
-                        {bidItems.map((item) => (
+                    <Carousel slidesToShow={4} length={hotBids.length}>
+                        {hotBids?.map((item) => (
                             <Box key={item.id} px={10}>
                                 <BidCard
-                                    onCLick={() => router.push('/product')}
-                                    {...item}
+                                    name={item.name}
+                                    currency="ETH"
+                                    image={item.image_url}
+                                    price={item.top_bid ?? 0}
+                                    onCLick={() =>
+                                        router.push(
+                                            `/product/${item.asset_contract.address}/${item.token_id}`
+                                        )
+                                    }
                                 />
                             </Box>
                         ))}
@@ -517,12 +325,20 @@ const Home: FC = () => {
                     >
                         {t('home.hot_collections')} 💥
                     </Text>
-                    <Carousel slidesToShow={4} length={carouselItems.length}>
-                        {carouselItems.map((item) => (
-                            <Box key={item.id} px={10}>
+                    <Carousel
+                        slidesToShow={4}
+                        length={(collectionsData ?? []).length}
+                    >
+                        {(collectionsData ?? []).map((item) => (
+                            <Box key={item.slug} px={10}>
                                 <HotCollection
-                                    onClick={() => router.push('/collection')}
-                                    {...item}
+                                    onClick={() =>
+                                        router.push(`/collection/${item.slug}`)
+                                    }
+                                    name={item.name}
+                                    code={item.slug}
+                                    owner={{ src: item.image_url }}
+                                    background={item.image_url}
                                 />
                             </Box>
                         ))}
@@ -552,252 +368,98 @@ const Home: FC = () => {
                         <Flex ml={16} sx={{ overflowX: 'auto' }}>
                             <Button
                                 mr={12}
-                                variant="borderActive"
+                                variant={
+                                    assetType === 'all'
+                                        ? 'borderActive'
+                                        : 'border'
+                                }
                                 sx={{
                                     flexShrink: 0,
                                 }}
+                                onClick={() => setAssetType('all')}
                             >
                                 All
                             </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                🌈 Art
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                📸 Photography
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                🕹 Games
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                👾 Metaverses
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                🎵 Music
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                🏷 Domains
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                💰 DeFi
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                🤡 Memes
-                            </Button>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                💰 DeFi
-                            </Button>
+                            {assetTypeList.status === 'success' ? (
+                                assetTypeList.data.map((item) => (
+                                    <Button
+                                        mr={12}
+                                        variant={
+                                            assetType === item.id
+                                                ? 'borderActive'
+                                                : 'border'
+                                        }
+                                        sx={{
+                                            flexShrink: 0,
+                                        }}
+                                        key={item.id}
+                                        onClick={() => setAssetType(item.id)}
+                                    >
+                                        {item.name}
+                                    </Button>
+                                ))
+                            ) : (
+                                <p>Loading...</p>
+                            )}
                         </Flex>
                         <EdgeOverflow />
                     </Box>
-                    <Popover
-                        onOuterAction={() => setShowFilter(false)}
-                        isOpen={showFilter}
-                        body={
-                            <Tooltip>
-                                {filterItems.map((item) => {
-                                    return (
-                                        <TooltipItem
-                                            id={item.id}
-                                            key={item.id}
-                                            label={item.label}
-                                            onClick={() =>
-                                                !item.disable &&
-                                                setCurrency(item.id)
-                                            }
-                                            disable={item.disable}
-                                            selectedItem={currency}
-                                        />
-                                    )
-                                })}
-                                <TooltipItem
-                                    id="6"
-                                    label="Verified only"
-                                    rightStatic={() => (
-                                        <ToggleButton
-                                            toggle={verified}
-                                            setToggle={() =>
-                                                setVerified(!verified)
-                                            }
-                                        />
-                                    )}
-                                />
-                            </Tooltip>
-                        }
-                        place="below"
-                        tipSize={0.01}
-                    >
-                        <Button
-                            onClick={() => setShowFilter(!showFilter)}
-                            ml={[0, 8, 8, 8]}
-                            px={[0, 20, 20, 20]}
-                            variant="border"
-                            sx={{
-                                flexShrink: 0,
-                                width: [
-                                    '40px',
-                                    'max-content',
-                                    'max-content',
-                                    'max-content',
-                                ],
-                                height: '40px',
-                                display: ['inline', 'flex', 'flex', 'flex'],
-                            }}
-                        >
-                            <FilterIcon />
-                            <Text
-                                ml={2}
-                                sx={{
-                                    display: [
-                                        'none',
-                                        'block',
-                                        'block',
-                                        'block',
-                                    ],
-                                }}
-                            >
-                                {t('general.filter_sort')}
-                            </Text>
-                        </Button>
-                    </Popover>
                 </Flex>
-                {showLoadMore ? (
-                    <>
-                        <Flex mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                            {exploreItems.map((item) => (
-                                <Box
-                                    key={uuidv4()}
-                                    p={10}
-                                    sx={{
-                                        maxWidth: [
-                                            '100%',
-                                            '50%',
-                                            '33.3333%',
-                                            '25%',
-                                            '20%',
-                                        ],
-                                        flex: [
-                                            '0 0 100%',
-                                            '0 0 50%',
-                                            '0 0 33.3333%',
-                                            '0 0 25%',
-                                            '0 0 20%',
-                                        ],
-                                    }}
-                                >
-                                    <BidCard
-                                        onCLick={() => router.push('/product')}
-                                        {...item}
-                                    />
-                                </Box>
-                            ))}
+                <InfiniteScroll
+                    dataLength={(infinityAssetsData?.pages ?? []).length}
+                    next={fetchMore}
+                    hasMore={!showLoadMore && hasNextPage}
+                    loader={
+                        <Flex mt={20} sx={{ justifyContent: 'center' }}>
+                            <Text>Loading...</Text>
                         </Flex>
-                        <Button
-                            onClick={() => {
-                                setShowLoadMore(false)
-                                fetchData()
-                            }}
-                            variant="border"
-                            sx={{ height: 48, width: '100%' }}
-                        >
-                            {t('home.load_more')}
-                        </Button>
-                    </>
-                ) : (
-                    <InfiniteScroll
-                        dataLength={exploreItems.length}
-                        next={fetchData}
-                        hasMore
-                        loader={null}
-                        style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            marginLeft: '-10px',
-                            marginRight: '-10px',
-                            marginBottom: '28px',
-                        }}
-                    >
-                        {exploreItems.map((item) => (
-                            <Box
-                                key={uuidv4()}
-                                p={10}
-                                sx={{
-                                    maxWidth: [
-                                        '100%',
-                                        '50%',
-                                        '33.3333%',
-                                        '25%',
-                                        '20%',
-                                    ],
-                                    flex: [
-                                        '0 0 100%',
-                                        '0 0 50%',
-                                        '0 0 33.3333%',
-                                        '0 0 25%',
-                                        '0 0 20%',
-                                    ],
-                                }}
-                            >
+                    }
+                >
+                    <Grid gap={20} columns={[1, 2, 3, 4, 5]}>
+                        {(infinityAssetsData?.pages ?? []).map((page) => {
+                            return (page ?? []).map((item) => (
                                 <BidCard
-                                    onCLick={() => router.push('/product')}
-                                    {...item}
+                                    key={item.id}
+                                    onCLick={() =>
+                                        router.push(
+                                            `/product/${item.asset_contract.address}/${item.token_id}`
+                                        )
+                                    }
+                                    name={item.name}
+                                    image={item.image_url}
+                                    currency="ETH"
+                                    price={item.top_bid ?? 0}
+                                    {...(item?.creator && {
+                                        creator: {
+                                            src: item.creator?.profile_img_url,
+                                        },
+                                    })}
+                                    {...(item?.owner && {
+                                        owner: {
+                                            src: item.owner?.profile_img_url,
+                                        },
+                                    })}
+                                    {...(item?.collection && {
+                                        collection: {
+                                            src: item.collection?.image_url,
+                                        },
+                                    })}
                                 />
-                            </Box>
-                        ))}
-                    </InfiniteScroll>
+                            ))
+                        })}
+                    </Grid>
+                </InfiniteScroll>
+                {showLoadMore && (
+                    <Button
+                        mt={28}
+                        onClick={() => {
+                            setShowLoadMore(false)
+                        }}
+                        variant="border"
+                        sx={{ height: 48, width: '100%' }}
+                    >
+                        Load more
+                    </Button>
                 )}
             </Box>
         </Layout>

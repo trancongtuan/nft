@@ -1,20 +1,28 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import Popover from 'react-popover'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
-import { useTranslation } from 'react-i18next'
-import NavigationBar from '../components/NavigationBar'
-import Tooltip from '../components/Tooltip'
-import Avatar from '../components/Avatar'
-import ThreeDos from '../public/assets/images/icons/threedos.svg'
-import FavoriteIcon from '../public/assets/images/icons/favorite.svg'
-import Selection from '../components/Selection'
-import TopSellerCard from '../components/TopSellerCard'
-import Popup from '../components/Popup'
-import PopupPlaceABid from '../components/PopupPurchase'
-import PopupShare from '../components/PopupShare'
-import PreviewProduct from '../components/PreviewProduct'
+import { useRouter } from 'next/router'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import NavigationBar from '../../../components/NavigationBar'
+import Tooltip from '../../../components/Tooltip'
+import Avatar from '../../../components/Avatar'
+import ThreeDos from '../../../public/assets/images/icons/threedos.svg'
+import FavoriteIcon from '../../../public/assets/images/icons/favorite.svg'
+import Selection from '../../../components/Selection'
+import TopSellerCard from '../../../components/TopSellerCard'
+import Popup from '../../../components/Popup'
+import PopupPlaceABid from '../../../components/PopupPurchase'
+import PopupShare from '../../../components/PopupShare'
+import PreviewProduct from '../../../components/PreviewProduct'
+import {
+    AssetResponseData,
+    fetchAsset,
+    useGetSingleAssetQuery,
+} from '../../../queries/asset'
+import { OpenSeaPort, Network } from 'opensea-js'
+import { OrderSide } from 'opensea-js/lib/types'
+
+const Web3 = require('web3');
 
 const tooltipItems = [
     {
@@ -34,17 +42,17 @@ const tooltipItems = [
 const selectionItems = [
     {
         id: '1',
-        label: 'general.bids',
+        label: 'Bids',
         value: 'Bids',
     },
     {
         id: '2',
-        label: 'product.details',
+        label: 'Details',
         value: 'Details',
     },
     {
         id: '3',
-        label: 'product.history',
+        label: 'History',
         value: 'History',
     },
 ]
@@ -81,14 +89,127 @@ const detailItems = [
         value: 'Lava',
     },
 ]
-const Product: FC = () => {
-    const { t } = useTranslation('common')
+
+type ProductParams = {
+    asset_contract_address: string
+    token_id: string
+}
+
+export const getServerSideProps: GetServerSideProps<
+    {
+        asset: AssetResponseData
+    },
+    ProductParams
+> = async (context) => {
+    const { params } = context
+    const asset = await fetchAsset(params)
+    return {
+        props: {
+            asset,
+        },
+    }
+}
+
+const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
+    asset,
+}) => {
+    const [seaport, setSeaport] = useState<any>()
+
+    useEffect(() => {
+        const provider = typeof window.web3 !== 'undefined'
+            ? window.web3.currentProvider
+            : new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74')
+
+        const seaport = new OpenSeaPort(provider, {
+            // networkName: Network.Main
+            networkName: Network.Rinkeby
+        })
+        setSeaport(seaport)
+    }, [])
+
+    const router = useRouter()
+    const { asset_contract_address, token_id } = router.query as ProductParams
     const [liked, setLiked] = useState(false)
     const [showProduct, setShowProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(selectionItems[0].id)
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const { data } = useGetSingleAssetQuery(
+        {
+            asset_contract_address,
+            token_id,
+        },
+        asset
+    )
+
+    const makeOffer = async (amount) => {
+        setLoading(true)
+
+        // Get Address
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            let accountAddress = await window.ethereum.enable()
+            if (!accountAddress[0]) throw new Error('No account selected.')
+            accountAddress = accountAddress[0]
+
+
+            const { token_id, asset_contract: { address } } = data
+            const order = await seaport.api.getOrder({
+                side: OrderSide.Sell,
+                asset_contract_address: address,
+                token_id: token_id,
+            })
+            const transactionHash = await seaport.fulfillOrder({ order, accountAddress })
+            console.log(transactionHash)
+        } catch (e) {
+            alert(e.message)
+            setLoading(false)
+            return
+        }
+
+        // let asset
+        // try {
+        //     const { token_id, asset_contract: { address, schema_name } } = data
+        //     asset = await seaport.api.getAsset({
+        //         tokenAddress: address, // string
+        //         tokenId: token_id, // string | number | null
+        //     })
+        //     console.log('Get asset success', asset)
+        // } catch(e) {
+        //     alert(e.message)
+        //     setLoading(false)
+        //     return
+        // }
+
+        // const { tokenId, tokenAddress, assetContract: { schemaName } } = asset
+
+        // // const balance = await seaport.getAssetBalance({
+        // //     accountAddress, // string
+        // //     asset,
+        // // })        
+        // // console.log('balance', balance)
+
+        try {
+            // const offer = await seaport.createBuyOrder({
+            //     asset: {
+            //         tokenId,
+            //         tokenAddress,
+            //         schemaName // WyvernSchemaName. If omitted, defaults to 'ERC721'. Other options include 'ERC20' and 'ERC1155'
+            //     },
+            //     accountAddress,
+            //     // Value of the offer, in units of the payment token (or wrapped ETH if none is specified):
+            //     startAmount: parseFloat(amount),
+            // })
+
+            // console.log('Make offer success', result)
+        } catch (e) {
+            alert(e.message)
+            setLoading(false)
+            return
+        }
+    }
 
     return (
         <Box>
@@ -114,7 +235,10 @@ const Product: FC = () => {
                     }}
                 >
                     <Image
-                        src="https://picsum.photos/200/300"
+                        src={
+                            data?.image_url ??
+                            'https://picsum.photos/200/300'
+                        }
                         sx={{
                             objectFit: 'cover',
                             width: ['100%', '250px', '30vw', '30vw'],
@@ -166,7 +290,7 @@ const Product: FC = () => {
                             }}
                         >
                             <Text sx={{ fontSize: 5, fontWeight: 'bold' }}>
-                                LAVA GUMBO 05
+                                {data?.name}
                             </Text>
                             <Flex>
                                 <Button
@@ -226,10 +350,10 @@ const Product: FC = () => {
                             }}
                         >
                             <Text mr={2} sx={{ color: 'textSecondary' }}>
-                                {t('product.highest_bid')}
+                                Highest bid
                             </Text>
                             <Text mr={2} sx={{ color: 'primary' }}>
-                                0.633 WETH
+                                {data?.top_bid ?? '0.634'} WETH
                             </Text>
                             <Text sx={{ color: 'textSecondary' }}>
                                 / 1 of 1
@@ -256,47 +380,43 @@ const Product: FC = () => {
                                 },
                             }}
                         >
-                            <Text>SPECIAL SERIES.</Text>
-                            <Text>LAVA GUMBO 05 </Text>
-                            <Text>
-                                A gormless character that means no harm.{' '}
-                            </Text>
-                            <Text>
-                                GUMBO comes in different colours, materials and
-                                has different features.
-                            </Text>
-                            <Text>Look after GUMBO! </Text>
+                            <Text>{data?.asset_contract?.description}</Text>
                         </Box>
                         <Flex>
-                            <Box sx={{ width: '50%' }} mt={3}>
-                                <Text
-                                    sx={{
-                                        fontWeight: 'bold',
-                                        fontSize: 0,
-                                        color: 'textSecondary',
-                                    }}
-                                >
-                                    {t('product.creator')}
-                                </Text>
-                                <Flex
-                                    mt={2}
-                                    sx={{
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <Avatar
-                                        src="https://picsum.photos/300/300"
-                                        verified
-                                        size="sm"
-                                    />
+                            {data?.creator && (
+                                <Box sx={{ width: '50%' }} mt={3}>
                                     <Text
-                                        ml={3}
-                                        sx={{ fontWeight: 'bold', fontSize: 1 }}
+                                        sx={{
+                                            fontWeight: 'bold',
+                                            fontSize: 0,
+                                            color: 'textSecondary',
+                                        }}
                                     >
-                                        NUMAN KHAN
+                                        Creator
                                     </Text>
-                                </Flex>
-                            </Box>
+                                    <Flex
+                                        mt={2}
+                                        sx={{
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <Avatar
+                                            src={data?.creator?.profile_img_url}
+                                            verified
+                                            size="sm"
+                                        />
+                                        <Text
+                                            ml={3}
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                fontSize: 1,
+                                            }}
+                                        >
+                                            {data?.creator?.user.username}
+                                        </Text>
+                                    </Flex>
+                                </Box>
+                            )}
                             <Box sx={{ width: '50%' }} mt={3}>
                                 <Text
                                     sx={{
@@ -305,7 +425,7 @@ const Product: FC = () => {
                                         color: 'textSecondary',
                                     }}
                                 >
-                                    {t('product.collection')}
+                                    Collection
                                 </Text>
                                 <Flex
                                     mt={2}
@@ -314,7 +434,7 @@ const Product: FC = () => {
                                     }}
                                 >
                                     <Avatar
-                                        src="https://picsum.photos/300/300"
+                                        src={data?.collection?.image_url}
                                         verified
                                         size="sm"
                                     />
@@ -322,7 +442,7 @@ const Product: FC = () => {
                                         ml={3}
                                         sx={{ fontWeight: 'bold', fontSize: 1 }}
                                     >
-                                        Rarible
+                                        {data?.collection?.name}
                                     </Text>
                                 </Flex>
                             </Box>
@@ -346,7 +466,7 @@ const Product: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                10% {t('product.of_sales_will_go_to_creator')}
+                                10% of sales will go to creator
                             </Text>
                         </Box>
                         <Box mt={3}>
@@ -505,7 +625,7 @@ const Product: FC = () => {
                                             fontSize: 1,
                                         }}
                                     >
-                                        {t('product.auction_ends_in')}
+                                        Auction ends in
                                     </Text>
                                     <TopSellerCard
                                         name="Highest bid by Aito"
@@ -535,7 +655,7 @@ const Product: FC = () => {
                                             fontSize: 1,
                                         }}
                                     >
-                                        {t('product.auction_ends_in')}
+                                        Auction ends in
                                     </Text>
                                     <Flex
                                         sx={{ justifyContent: 'space-between' }}
@@ -631,7 +751,7 @@ const Product: FC = () => {
                                     sx={{ width: '50%', height: '40px' }}
                                     onClick={() => setOpenPopupPlaceABid(true)}
                                 >
-                                    {t('product.place_a_bid')}
+                                    Place a bid
                                 </Button>
                                 <Button
                                     variant="secondary"
@@ -639,7 +759,7 @@ const Product: FC = () => {
                                     sx={{ width: '50%', height: '40px' }}
                                     onClick={() => setOpenPopupShare(true)}
                                 >
-                                    {t('product.share')}
+                                    Share
                                 </Button>
                             </Flex>
                             <Popup
@@ -649,7 +769,12 @@ const Product: FC = () => {
                                 }}
                                 label="Place a bid"
                             >
-                                <PopupPlaceABid name="" />
+                                <PopupPlaceABid
+                                    name={data?.name || ''}
+                                    onConfirm={makeOffer}
+                                    onClose={() => setOpenPopupPlaceABid(false)}
+                                    loading={loading}
+                                />
                             </Popup>
                             <Popup
                                 isOpen={openPopupShare}
@@ -667,11 +792,5 @@ const Product: FC = () => {
         </Box>
     )
 }
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-    props: {
-        ...(await serverSideTranslations(locale, ['common', 'footer'])),
-    },
-})
 
 export default Product

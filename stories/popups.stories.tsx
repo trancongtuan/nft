@@ -73,7 +73,7 @@ export const PopupPurchaseStory: FC = () => {
                 }}
                 label="Checkout"
             >
-                <PopupPurchase />
+                <PopupPurchase name="" />
             </Popup>
         </Box>
     )

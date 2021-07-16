@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Box, Text, Flex, Button } from 'theme-ui'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { useRouter } from 'next/router'
 import { v4 as uuidv4 } from 'uuid'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
@@ -25,6 +26,8 @@ import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import ActivityCard from '../components/ActivityCard'
 import PopupReport from '../components/PopupReport'
+import { fetchUsers, fetchAssets, EthUser } from '../queries'
+import { useAuth } from '../hooks/auth'
 
 const selectionItems = [
     {
@@ -58,10 +61,11 @@ const selectionItems = [
         count: 5,
     },
 ]
-
 const Items: FC = () => {
     const { t } = useTranslation('common')
-    const [showCards, setShowCards] = useState(false)
+    const router = useRouter()
+    const { connected, setConnected } = useAuth()
+    const [showCards, setShowCards] = useState(true)
     const [showReport, setShowReport] = useState(false)
     const [showShare, setShowShare] = useState(false)
     const [showFollowing, setShowFollowing] = useState(false)
@@ -72,6 +76,18 @@ const Items: FC = () => {
     const [resetFilter, setResetFilter] = useState(false)
     const [showReset, setShowReset] = useState(false)
     const [showReportPopup, setShowReportPopup] = useState(false)
+    const [assets, setAssets] = useState([])
+    const [profile, setProfile] = useState<EthUser>({
+        id: null,
+        display_name: '',
+        custom_url: '',
+        twitter: '',
+        email: '',
+        bio: '',
+        website: '',
+        address: '',
+        profile_pic: { url: null },
+    })
 
     const toogleResetFilter = (): void => {
         setResetFilter(true)
@@ -83,13 +99,53 @@ const Items: FC = () => {
         setResetFilter(false)
     }
 
-    useEffect(() => {
-        if (counter > 0) {
-            const timer = setInterval(() => setCounter(counter - 1), 1000)
-            return () => clearInterval(timer)
+    const updateProfile = async () => {
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            var from = (await window.ethereum.enable())[0]
+            if (!from) throw new Error('No account selected.')
+            const result = await fetchUsers({ address: from })
+            if (result[0]) setProfile(result[0])
+        } catch (e) {
+            alert(e.toString())
         }
-        return setCounter(0)
-    }, [counter])
+    }
+
+    const connectWallet = async () => {
+        // Get Address
+        let accountAddress
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            accountAddress = await window.ethereum.enable()
+            if (!accountAddress[0]) throw new Error('No account selected.')
+            accountAddress = accountAddress[0]
+            setConnected(accountAddress)
+            updateProfile()
+        } catch (e) {
+            alert(e.message)
+            return
+        }
+    }
+
+    const updateAssets = async () => {
+        if (!window.ethereum) throw new Error('Please install MetaMask.')
+        let accountAddress = await window.ethereum.enable()
+        if (!accountAddress[0]) throw new Error('No account selected.')
+        accountAddress = accountAddress[0]
+        const result = await fetchAssets({
+            owner_address_contains: accountAddress,
+        })
+        setAssets(result)
+    }
+
+    useEffect(() => {
+        if (!connected) {
+            connectWallet()
+        } else {
+            updateProfile()
+            updateAssets()
+        }
+    }, [])
 
     const renderActivity = (): ReactNode => {
         return (
@@ -320,7 +376,7 @@ const Items: FC = () => {
         if (showCards && !showActivity) {
             return (
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {new Array(10).fill(0).map(() => (
+                    {assets.map((item) => (
                         <Box
                             key={uuidv4()}
                             p={10}
@@ -342,22 +398,31 @@ const Items: FC = () => {
                             }}
                         >
                             <BidCard
-                                favorite={10}
-                                price={10}
-                                type="single"
-                                image="https://picsum.photos/200/400"
-                                collection={{
-                                    src: 'https://picsum.photos/300/300',
-                                    verified: true,
-                                }}
-                                owner={{ src: 'https://picsum.photos/200/300' }}
-                                creator={{
-                                    src: 'https://picsum.photos/200/400',
-                                    verified: true,
-                                }}
-                                name="Test"
-                                bid={50}
-                                currency="WETH"
+                                key={item.id}
+                                onCLick={() =>
+                                    router.push(
+                                        `/product/${item.asset_contract.address}/${item.token_id}`
+                                    )
+                                }
+                                name={item.name}
+                                image={item.image_url}
+                                currency="ETH"
+                                price={item.top_bid ?? 0}
+                                {...(item?.creator && {
+                                    creator: {
+                                        src: item.creator?.profile_img_url,
+                                    },
+                                })}
+                                {...(item?.owner && {
+                                    owner: {
+                                        src: item.owner?.profile_img_url,
+                                    },
+                                })}
+                                {...(item?.collection && {
+                                    collection: {
+                                        src: item.collection?.image_url,
+                                    },
+                                })}
                             />
                         </Box>
                     ))}
@@ -418,7 +483,12 @@ const Items: FC = () => {
                 />
                 <Box sx={{ position: 'absolute', bottom: -30 }}>
                     <Avatar
-                        src="https://picsum.photos/500/300"
+                        src={
+                            profile.profile_pic?.url
+                                ? 'https://api.ultcube.scc.sh' +
+                                  profile.profile_pic?.url
+                                : '/assets/images/empty_placeholder.png'
+                        }
                         size="xl"
                         verified
                     />
@@ -436,7 +506,7 @@ const Items: FC = () => {
                         color="text"
                         sx={{ fontWeight: 'heavy', fontSize: 28 }}
                     >
-                        Christopher Nolan
+                        {profile.display_name}
                     </Text>
                     <Flex mb={20} sx={{ alignItems: 'center' }}>
                         <Text
@@ -447,7 +517,7 @@ const Items: FC = () => {
                                 fontWeight: 'bold',
                             }}
                         >
-                            0xd92e44ac213b9...fa96
+                            {profile.address}
                         </Text>
                         <CopyToClipboard
                             onCopy={() => setCounter(2)}

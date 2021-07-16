@@ -220,6 +220,7 @@ const BidCard: FC<BidCardProps> = ({
                     }}
                 >
                     <Flex
+                        onClick={onCLick}
                         sx={{
                             position: 'absolute',
                             top: 0,
@@ -229,23 +230,41 @@ const BidCard: FC<BidCardProps> = ({
                             margin: 'auto',
                             justifyContent: 'center',
                             alignItems: 'center',
+                            cursor: 'pointer',
+                            backgroundColor: image ? 'transparent' : 'lightgray',
                         }}
                     >
-                        <Image
-                            onClick={onCLick}
-                            sx={{
-                                position: 'absolute',
-                                maxHeight: '100%',
-                                height: '100%',
-                                left: 0,
-                                right: 0,
-                                mx: 'auto',
-                                my: 'auto',
-                                borderRadius: 0,
-                                cursor: 'pointer',
-                            }}
-                            src={image}
-                        />
+                        {
+                            image.includes('.mp4') ?
+                            <video
+                                style={{
+                                    position: 'absolute',
+                                    maxHeight: '100%',
+                                    height: '100%',
+                                    borderRadius: 0,
+                                    objectFit: 'contain',
+                                    margin: '0 auto',
+                                    maxWidth: '100%',
+                                }}
+                                src={image}
+                                autoPlay
+                            />
+                            :
+                            <Image
+                                sx={{
+                                    position: 'absolute',
+                                    maxHeight: '100%',
+                                    height: '100%',
+                                    left: 0,
+                                    right: 0,
+                                    mx: 'auto',
+                                    my: 'auto',
+                                    borderRadius: 0,
+                                    objectFit: 'contain',
+                                }}
+                                src={image}
+                            />
+                        }
                         {countDown && (
                             <Box
                                 sx={{
