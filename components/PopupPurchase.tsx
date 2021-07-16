@@ -1,8 +1,20 @@
 import { Box, Button, Flex, Text } from 'theme-ui'
-import React, { FC } from 'react'
+import React, { useState, FC } from 'react'
 import CustomInput from './CustomInput'
+import { ReactNode } from 'react';
 
-export const PopupPlaceABid: FC = () => {
+interface Props {
+    name: String
+    onConfirm?: (amount: any) => Promise<void>
+    loading?: boolean
+    onClose?: any
+    children?: ReactNode
+}
+
+export const PopupPlaceABid = ({ name, onConfirm, onClose, loading }: Props) => {
+    const [quantity, setQuantity] = useState('1');
+    const [cost, setCost] = useState('');
+
     return (
         <Flex
             sx={{
@@ -12,22 +24,25 @@ export const PopupPlaceABid: FC = () => {
             }}
         >
             <Text sx={{ color: 'text' }}>
-                You are about to purchase <b>Still Life #013 Vitalik</b> from
+                You are about to purchase <b>{name}</b> from
                 <b> KAMA</b>
             </Text>
             <Box sx={{ width: '100%' }} mt={2}>
                 <CustomInput
                     label=""
-                    value="1"
+                    value={`${quantity}`}
+                    onChange={(v) => setQuantity(v)}
                     placeholder="Enter quantity"
-                    staticBottom="Enter quantity. 20 available"
+                    staticBottom="Enter quantity. 1 available"
                 />
             </Box>
             <Box sx={{ width: '100%' }}>
                 <CustomInput
+                    type="number"
                     label=""
-                    value="0.025"
-                    placeholder="Enter quantity"
+                    onChange={(v) => setCost(v)}
+                    value={`${cost}`}
+                    placeholder="Enter Amount"
                     staticRight="ETH"
                 />
             </Box>
@@ -57,7 +72,7 @@ export const PopupPlaceABid: FC = () => {
                             fontSize: 1,
                         }}
                     >
-                        0.026 ETH ETH
+                        0 ETH
                     </Text>
                 </Flex>
                 <Flex sx={{ justifyContent: 'space-between' }} my={1}>
@@ -71,7 +86,7 @@ export const PopupPlaceABid: FC = () => {
                             fontSize: 1,
                         }}
                     >
-                        0.026 ETH
+                        {cost} ETH
                     </Text>
                 </Flex>
             </Box>
@@ -80,14 +95,17 @@ export const PopupPlaceABid: FC = () => {
                 mr={10}
                 mt={3}
                 sx={{ width: '100%', height: '40px' }}
+                onClick={() => onConfirm(0)}
+                disabled={loading}
             >
-                Proceed to payment
+                { loading ? 'Loading...' : 'Proceed to payment' }
             </Button>
             <Button
                 variant="secondary"
                 mr={10}
                 mt={2}
                 sx={{ width: '100%', height: '40px' }}
+                onClick={onClose}
             >
                 Cancel
             </Button>

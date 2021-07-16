@@ -2,6 +2,7 @@ import {
     useInfiniteQuery,
     UseInfiniteQueryResult,
     InfiniteData,
+    useQuery,
 } from 'react-query'
 import { client } from './client'
 
@@ -226,33 +227,57 @@ export interface Asset {
 
 /*
 * Backend removed first layer
-*/ 
+*/
 export interface AssetsResponseData {
     assets: Asset[]
 }
 
 export const fetchAssets: ({
-    pageParam,
+    _start,
+    _limit,
+    ultcube_hot_bids,
+    asset_type,
+    collection_slug,
+    owner_address_contains,
 }: {
-    pageParam?: number
-}) => Promise<Asset[]> = ({ pageParam = 0 }) =>
-    client
-        .get('/assets', {
-            params: {
-                // offset: pageParam,
-                // limit: 15,
-            },
-        })
+    _start?: number
+    _limit?: number
+    ultcube_hot_bids?: boolean
+    asset_type?: String
+    collection_slug?: String
+    owner_address_contains?: String
+}) => Promise<Asset[]> = ({ _start, _limit, asset_type, collection_slug, owner_address_contains }) => {
+    const params = { _start, _limit, asset_type, collection_slug, owner_address_contains };
+    if (!asset_type || asset_type == 'all') delete params.asset_type
+    if (!collection_slug) delete params.collection_slug
+    if (!owner_address_contains) delete params.owner_address_contains
+
+    return client
+        .get('/assets', { params })
         .then((response) => response.data)
+}
 
 export function useGetAssetsInfiniteQuery(
+    assetType: String,
     initialData?: InfiniteData<Asset[]>
 ): UseInfiniteQueryResult<Asset[], unknown> {
-    return useInfiniteQuery('assets', fetchAssets, {
+    return useInfiniteQuery(['assets', assetType], ({ pageParam }) => fetchAssets({ ...pageParam, asset_type: assetType }), {
         getNextPageParam: (lastPage, pages) => {
-            // return lastPage.assets.length === 15 ? pages.length * 15 : undefined
-            return undefined;
+            if (lastPage?.length === 0) return undefined;
+            return { _start: pages.length * 10, _limit: 10 }
         },
         initialData,
     })
+}
+
+export const fetchAssetTypes: () => Promise<any> = () =>
+    client
+        .get(`/asset-types`)
+        .then((response) => response.data)
+
+export function useAssetTypeQuery() {
+    return useQuery(
+        ['assetType'],
+        () => fetchAssetTypes()
+    )
 }
