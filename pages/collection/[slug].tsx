@@ -21,6 +21,7 @@ import BidCard from '../../components/BidCard'
 import Tooltip from '../../components/Tooltip'
 import Popup from '../../components/Popup'
 import PopupReport from '../../components/PopupReport'
+import PopupShare from '../../components/PopupShare'
 import { Asset, fetchAssets } from '../../queries'
 import {
     Collection as TCollection,

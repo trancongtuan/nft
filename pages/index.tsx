@@ -466,10 +466,10 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     )
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-    props: {
-        ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
-    },
-})
+// export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+//     props: {
+//         ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
+//     },
+// })
 
 export default Home
