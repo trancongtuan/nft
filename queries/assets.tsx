@@ -241,6 +241,8 @@ export const fetchAssets: ({
     asset_type,
     collection_slug,
     owner_address_contains,
+    asset_contract_address,
+    token_id,
 }: {
     _start?: number
     _limit?: number
@@ -248,12 +250,16 @@ export const fetchAssets: ({
     asset_type?: string
     collection_slug?: string
     owner_address_contains?: string
+    asset_contract_address?: string
+    token_id?: string
 }) => Promise<Asset[]> = ({
     _start,
     _limit,
     asset_type,
     collection_slug,
     owner_address_contains,
+    asset_contract_address,
+    token_id,
 }) => {
     const params = {
         _start,
@@ -261,10 +267,14 @@ export const fetchAssets: ({
         asset_type,
         collection_slug,
         owner_address_contains,
+        asset_contract_address,
+        token_id,
     }
     if (!asset_type || asset_type === 'all') delete params.asset_type
     if (!collection_slug) delete params.collection_slug
     if (!owner_address_contains) delete params.owner_address_contains
+    if (!asset_contract_address) delete params.asset_contract_address
+    if (!token_id) delete params.token_id
 
     return client.get('/assets', { params }).then((response) => response.data)
 }

@@ -26,6 +26,8 @@ import {
     useGetSingleAssetQuery,
 } from '../../../queries/asset'
 
+import { Asset, fetchAssets } from '../../../queries'
+
 const Web3 = require('web3')
 
 const tooltipItems = [
@@ -101,16 +103,16 @@ type ProductParams = {
 
 export const getServerSideProps: GetServerSideProps<
     {
-        asset: AssetResponseData
+        asset: Asset
     },
     ProductParams
 > = async (context) => {
     const { params, locale } = context
-    const asset = await fetchAsset(params)
+    const asset = await fetchAssets(params)
     return {
         props: {
             ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
-            asset,
+            asset: asset[0],
         },
     }
 }
@@ -144,13 +146,14 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
     const [loading, setLoading] = useState(false)
-    const { data } = useGetSingleAssetQuery(
-        {
-            asset_contract_address,
-            token_id,
-        },
-        asset
-    )
+    // const { data } = useGetSingleAssetQuery(
+    //     {
+    //         asset_contract_address,
+    //         token_id,
+    //     },
+    //     asset
+    // )
+    const data = asset;
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const makeOffer = async () => {
@@ -421,7 +424,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                                 fontSize: 1,
                                             }}
                                         >
-                                            {data?.creator?.user.username}
+                                            {data?.creator?.user?.username || '-'}
                                         </Text>
                                     </Flex>
                                 </Box>
