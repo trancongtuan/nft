@@ -30,7 +30,7 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                 </Text>
             )}
             <Flex sx={{ alignItems: 'center', flexGrow: 1 }}>
-                <Box onClick={onClick}>
+                <Box onClick={onClick} mr={2}>
                     <Avatar {...user} size={size || 'sm'} />
                 </Box>
                 <Flex
@@ -58,7 +58,10 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                     >
                         {name}
                     </Text>
-                    <Text color="textSecondary" sx={{ fontSize: 1 }}>
+                    <Text
+                        color="textSecondary"
+                        sx={{ fontSize: 1, color: '#00eeb9' }}
+                    >
                         {wallet} ETH
                     </Text>
                 </Flex>

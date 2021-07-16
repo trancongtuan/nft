@@ -129,9 +129,9 @@ const Footer: FC = () => {
                                     }}
                                 />
                                 <Button
-                                    variant="primary"
                                     sx={{
                                         position: 'absolute',
+                                        backgroundColor: '#00eeb9',
                                         top: 0,
                                         right: 0,
                                         fontSize: 1,
@@ -158,7 +158,7 @@ const Footer: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Rarible
+                                ULTCube
                             </Text>
                             <Flex mt={16} sx={{ flexDirection: 'column' }}>
                                 <Link href="/">
@@ -404,12 +404,17 @@ const Footer: FC = () => {
                                 'column',
                                 'row',
                             ],
-                            alignItems: 'center',
+                            alignItems: [
+                                'center',
+                                'center',
+                                'center',
+                                'flex-end',
+                            ],
                             justifyContent: [
                                 'center',
                                 'center',
                                 'center',
-                                'space-between',
+                                'flex-end',
                             ],
                         }}
                     >
@@ -420,7 +425,6 @@ const Footer: FC = () => {
                         </Box>
 
                         <Flex
-                            mr={[0, 0, 0, 32]}
                             mt={[16, 16, 16, 0]}
                             sx={{
                                 flexGrow: 1,
@@ -432,6 +436,7 @@ const Footer: FC = () => {
                                         color: 'text',
                                     },
                                 },
+                                justifyContent: 'flex-end',
                             }}
                         >
                             <a href="/files/terms.pdf" target="_blank">
@@ -444,15 +449,6 @@ const Footer: FC = () => {
                                     {t('privacy')}
                                 </Text>
                             </a>
-                        </Flex>
-                        <Flex
-                            mt={[16, 16, 16, 0]}
-                            sx={{
-                                width: '230px',
-                                order: [-1, -1, -1, 3],
-                            }}
-                        >
-                            <Social />
                         </Flex>
                     </Flex>
                 </Box>

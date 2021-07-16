@@ -140,7 +140,16 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 }}
             >
                 <Box sx={{ position: 'relative' }}>
-                    <Flex ref={ref} sx={{ overflowX: 'auto' }} mb={30}>
+                    <Flex
+                        ref={ref}
+                        sx={{
+                            overflowX: 'auto',
+                            '::-webkit-scrollbar': {
+                                display: 'none',
+                            },
+                        }}
+                        mb={30}
+                    >
                         {featuredCollection.map((item) => (
                             <Flex
                                 key={uuidv4()}
@@ -149,9 +158,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     width: [
                                         200,
                                         205,
-                                        229,
+                                        220,
                                         167,
-                                        'calc(20% - 16px)',
+                                        'calc(15% + 8px)',
                                     ],
                                     flexShrink: 0,
                                     ':last-child': {
@@ -201,7 +210,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 mx={8}
                                 sx={{
                                     svg: {
-                                        fill: 'primary',
+                                        fill: '#00eeb9',
                                         width: 13,
                                         height: 13,
                                     },
@@ -217,7 +226,15 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     </Text>
                 </Flex>
                 <Box sx={{ position: 'relative' }}>
-                    <Flex ml={-20} sx={{ overflowX: 'auto' }}>
+                    <Flex
+                        ml={-20}
+                        sx={{
+                            overflowX: 'auto',
+                            '::-webkit-scrollbar': {
+                                display: 'none',
+                            },
+                        }}
+                    >
                         {_.chunk(users, 3).map((chunkedUsers, idx) => (
                             <Box
                                 key={uuidv4()}
