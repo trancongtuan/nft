@@ -1,14 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable no-irregular-whitespace */
 import React, { FC, useCallback, useState, useEffect } from 'react'
 import { Box, Button, Flex, Grid, Text } from 'theme-ui'
 import _ from 'lodash'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import {
-    GetStaticProps,
-    GetServerSideProps,
-    InferGetServerSidePropsType,
-} from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import Popover from 'react-popover'
@@ -47,49 +43,6 @@ const sellerList = [
     {
         id: 2,
         label: 'buyer',
-    },
-]
-
-const dayList = [
-    {
-        id: 1,
-        label: '1',
-    },
-    {
-        id: 2,
-        label: '7',
-    },
-    {
-        id: 3,
-        label: '30',
-    },
-]
-
-const filterItems = [
-    {
-        id: '1',
-        label: 'Recently added',
-        disable: true,
-    },
-    {
-        id: '2',
-        label: 'Cheapest',
-        disable: false,
-    },
-    {
-        id: '3',
-        label: 'Highest price',
-        disable: false,
-    },
-    {
-        id: '4',
-        label: 'Most liked',
-        disable: false,
-    },
-    {
-        id: '5',
-        label: 'Options',
-        disable: true,
     },
 ]
 

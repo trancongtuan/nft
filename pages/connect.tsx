@@ -7,7 +7,6 @@ import { GetStaticProps } from 'next'
 import { useTranslation } from 'react-i18next'
 import ConnectCard from '../components/ConnectCard'
 import Popup from '../components/Popup'
-import { useAuth } from '../hooks/auth'
 import ArrowIcon from '../public/assets/images/icons/arrowLeft.svg'
 import LogoIcon from '../public/assets/images/icons/logo.svg'
 
@@ -16,7 +15,6 @@ const Connect: FC = () => {
     const router = useRouter()
     const [openWalletPopup, setOpenWalletPopup] = useState(false)
     const [showMore, setShowMore] = useState(false)
-    const { setConnected } = useAuth()
     const [connectItems, setConnectItems] = useState([
         {
             id: '1',

@@ -1,4 +1,3 @@
-import { useQuery, UseQueryResult } from 'react-query'
 import { client } from './client'
 
 export interface EthUser {

@@ -45,7 +45,7 @@ const renderNone = (t): ReactNode => {
     )
 }
 
-const renderCards = (t): ReactNode => {
+const renderCards = (): ReactNode => {
     return (
         <Box
             sx={{

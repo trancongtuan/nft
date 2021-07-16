@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { FC, useEffect, useState } from 'react'
@@ -150,7 +151,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     )
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    const makeOffer = async (amount) => {
+    const makeOffer = async () => {
         setLoading(true)
 
         // Get Address

@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-alert */
+/* eslint-disable no-constant-condition */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */

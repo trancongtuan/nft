@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-alert */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React, { FC, useState, ReactNode, useEffect } from 'react'

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable react/require-default-props */
 import { Box, Button, Flex, Text } from 'theme-ui'
-import React, { useState, ReactNode } from 'react'
+import React, { useState } from 'react'
 import CustomInput from './CustomInput'
 
 interface Props {
