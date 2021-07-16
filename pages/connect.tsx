@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 import ConnectCard from '../components/ConnectCard'
 import Popup from '../components/Popup'
 import ArrowIcon from '../public/assets/images/icons/arrowLeft.svg'
-import LogoIcon from '../public/assets/images/icons/logo.svg'
 
 const Connect: FC = () => {
     const { t } = useTranslation('common')
@@ -71,7 +70,20 @@ const Connect: FC = () => {
                 }}
             >
                 <Link href="/">
-                    <LogoIcon />
+                    <Box
+                        sx={{
+                            cursor: 'pointer',
+                            position: 'relative',
+                            width: '180px',
+                            height: '45px',
+                        }}
+                    >
+                        <Image
+                            src="/assets/images/logo_white.png"
+                            alt="logo"
+                            // layout="fill"
+                        />
+                    </Box>
                 </Link>
             </Box>
             <Box

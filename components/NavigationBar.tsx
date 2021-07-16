@@ -203,7 +203,6 @@ const SearchInput: FC = () => {
             pl={3}
             pr={2}
             bg={bg}
-            mr={24}
             color="text"
             sx={{
                 position: 'relative',
@@ -219,7 +218,7 @@ const SearchInput: FC = () => {
                     height: 14,
                 },
                 boxShadow,
-                maxWidth: 600
+                width: '100%',
             }}
         >
             <Box
@@ -242,6 +241,7 @@ const SearchInput: FC = () => {
                     fontSize: 15,
                     fontWeight: 'bold',
                     border: 0,
+                    outline: 0,
                     ':focus-visible': {
                         outline: 'none',
                     },
@@ -362,6 +362,7 @@ interface CatalogProps {
 }
 
 const Catalog: FC<CatalogProps> = ({ onClose }) => {
+    const [colorMode] = useColorMode()
     const { t } = useTranslation('common')
     const [showLanguage, setShowLanguage] = useState(false)
     const [language, setLanguage] = useState<TooltiProps>(languageList[0])
@@ -391,13 +392,28 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                 >
                     <Flex>
                         <Link href="/">
-                            <Box mr={16} sx={{ cursor: 'pointer' }}>
-                                <Image
-                                    src="/assets/images/collect.png"
-                                    width={88}
-                                    height={88}
-                                    alt="create"
-                                />
+                            <Box
+                                mr={16}
+                                sx={{
+                                    cursor: 'pointer',
+                                    position: 'relative',
+                                    width: '180px',
+                                    height: '45px',
+                                }}
+                            >
+                                {colorMode === 'dark' ? (
+                                    <Image
+                                        src="/assets/images/logo_black.png"
+                                        alt="logo"
+                                        layout="fill"
+                                    />
+                                ) : (
+                                    <Image
+                                        src="/assets/images/logo_white.png"
+                                        alt="logo"
+                                        layout="fill"
+                                    />
+                                )}
                             </Box>
                         </Link>
                         <Popover
@@ -686,17 +702,28 @@ const NavigationBar: FC = () => {
                         ':active': {
                             transform: 'scale(0.95)',
                         },
+                        position: 'relative',
+                        width: '180px',
+                        height: '45px',
                     }}
                 >
-                    <Image
-                        src="/assets/images/logo.png"
-                        width={40}
-                        height={40}
-                        alt="create"
-                    />
+                    {colorMode === 'dark' ? (
+                        <Image
+                            src="/assets/images/logo_black.png"
+                            alt="logo"
+                            layout="fill"
+                        />
+                    ) : (
+                        <Image
+                            src="/assets/images/logo_white.png"
+                            alt="logo"
+                            layout="fill"
+                        />
+                    )}
                 </Box>
             </Link>
             <Flex
+                mr={24}
                 sx={{
                     flex: 1,
                     '@media screen and (max-width: 1110px)': {
