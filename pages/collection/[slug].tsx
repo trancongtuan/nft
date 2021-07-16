@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Box, Button, Flex, Text } from 'theme-ui'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -28,7 +29,7 @@ export const getServerSideProps: GetServerSideProps<{
     collection: TCollection
     assets: InfiniteData<Asset[]> // TODO: Change to correct type
 }> = async (context) => {
-    const { params } = context
+    const { params, locale } = context
     const assets = await fetchAssets({
         _start: 0,
         _limit: 100,
@@ -38,6 +39,7 @@ export const getServerSideProps: GetServerSideProps<{
 
     return {
         props: {
+            ...(await serverSideTranslations(locale, ['common', 'footer'])),
             collection: collections[0],
             assets: {
                 pages: [assets],

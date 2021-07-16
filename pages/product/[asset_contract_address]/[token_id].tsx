@@ -2,6 +2,7 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { FC, useEffect, useState } from 'react'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Popover from 'react-popover'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
 import { useRouter } from 'next/router'
@@ -104,10 +105,11 @@ export const getServerSideProps: GetServerSideProps<
     },
     ProductParams
 > = async (context) => {
-    const { params } = context
+    const { params, locale } = context
     const asset = await fetchAsset(params)
     return {
         props: {
+            ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
             asset,
         },
     }

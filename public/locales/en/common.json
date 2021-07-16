@@ -35,7 +35,11 @@
         "transfers": "Transfers",
         "burns": "Burns",
         "bids": "Bids",
-        "likes": "Likes"
+        "likes": "Likes",
+        "explore": "Explore",
+        "my_items": "My Items",
+        "community": "Community",
+        "search_items": "Search Items"
     },
     "navigation": {
         "placeholder": "Placeholder",

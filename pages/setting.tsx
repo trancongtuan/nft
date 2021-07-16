@@ -154,7 +154,7 @@ const Setting: FC = () => {
             alert(e.toString())
         }
     }
-
+console.log(profile);
     const connectWallet = async () => {
         // Get Address
         let accountAddress
@@ -236,12 +236,12 @@ const Setting: FC = () => {
                     >
                         <CustomInput
                             label={t('setting.display_name')}
-                            value=""
+                            value={profile.display_name}
                             placeholder={t('setting.display_name_placeholder')}
                         />
                         <CustomInput
                             label={t('setting.custom_URL')}
-                            value=""
+                            value={profile.custom_url}
                             staticLeft={
                                 <Text
                                     mr={2}
@@ -259,13 +259,13 @@ const Setting: FC = () => {
                         />
                         <CustomInput
                             label={t('setting.bio')}
-                            value=""
+                            value={profile.bio}
                             placeholder={t('setting.bio_placeholder')}
                         />
                         <CustomInput
                             label={t('setting.twitter_username')}
                             subLabel={t('setting.twitter_username_sub')}
-                            value=""
+                            value={profile.twitter}
                             placeholder="@"
                             staticRight={
                                 <Box
@@ -297,7 +297,7 @@ const Setting: FC = () => {
                         />
                         <CustomInput
                             label={t('setting.personal_site_or_portfolio')}
-                            value=""
+                            value={profile.website}
                             placeholder="https://"
                             onChange={(v) =>
                                 setProfile((ori) => ({ ...ori, website: v }))
@@ -307,7 +307,7 @@ const Setting: FC = () => {
                             label={t('setting.email')}
                             type="password"
                             subLabel={t('setting.email_sub')}
-                            value=""
+                            value={profile.email}
                             Icon={<LockIcon />}
                             placeholder={t('setting.email_placeholder')}
                             staticBottom={

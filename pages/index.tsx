@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable no-irregular-whitespace */
 import React, { FC, useCallback, useState, useEffect } from 'react'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Box, Button, Flex, Grid, Text } from 'theme-ui'
 import _ from 'lodash'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -51,7 +52,7 @@ export const getServerSideProps: GetServerSideProps<{
     assets: InfiniteData<Asset[]> // TODO: Change to correct type
     hotBids: Asset[]
     users: any[]
-}> = async () => {
+}> = async ({ locale }) => {
     const collections = await fetchCollections({})
     const assets = await fetchAssets({ _start: 0, _limit: 10 })
     const hotBids = await fetchAssets({
@@ -66,6 +67,7 @@ export const getServerSideProps: GetServerSideProps<{
     })
     return {
         props: {
+            ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
             collections,
             assets: {
                 pages: [assets],
@@ -441,11 +443,5 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         </Layout>
     )
 }
-
-// export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-//     props: {
-//         ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
-//     },
-// })
 
 export default Home

@@ -35,7 +35,11 @@
         "transfers": "转让",
         "burns": "烧毁",
         "bids": "竞投",
-        "likes": "赞"
+        "likes": "赞",
+        "explore": "探索",
+        "my_items": "我的NFT",
+        "community": "社群",
+        "search_items": "搜尋物件"
     },
     "navigation": {
         "placeholder": "占位符",

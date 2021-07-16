@@ -235,7 +235,7 @@ const SearchInput: FC = () => {
                 onKeyPress={handleKeyPress}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
-                placeholder={t('general.search_rarible')}
+                placeholder={t('general.search_items')}
                 variant=""
                 sx={{
                     fontSize: 15,

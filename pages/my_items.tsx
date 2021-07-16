@@ -40,30 +40,30 @@ const selectionItems = [
         value: 'On sale',
         count: 0,
     },
-    {
-        id: '2',
-        label: 'general.collectibles',
-        value: 'Collectibles',
-        count: 0,
-    },
-    {
-        id: '3',
-        label: 'general.created',
-        value: 'Created',
-        count: 0,
-    },
-    {
-        id: '4',
-        label: 'general.liked',
-        value: 'Liked',
-        count: 2,
-    },
-    {
-        id: '5',
-        label: 'general.activity',
-        value: 'Activity',
-        count: 5,
-    },
+    // {
+    //     id: '2',
+    //     label: 'general.collectibles',
+    //     value: 'Collectibles',
+    //     count: 0,
+    // },
+    // {
+    //     id: '3',
+    //     label: 'general.created',
+    //     value: 'Created',
+    //     count: 0,
+    // },
+    // {
+    //     id: '4',
+    //     label: 'general.liked',
+    //     value: 'Liked',
+    //     count: 2,
+    // },
+    // {
+    //     id: '5',
+    //     label: 'general.activity',
+    //     value: 'Activity',
+    //     count: 5,
+    // },
 ]
 const Items: FC = () => {
     const { t } = useTranslation('common')
