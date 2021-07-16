@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useState, ReactNode } from 'react'
 import { Box, Text, Heading, Flex, Button } from 'theme-ui'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -45,7 +46,7 @@ const renderNone = (t): ReactNode => {
     )
 }
 
-const renderCards = (): ReactNode => {
+const renderCards = (t): ReactNode => {
     return (
         <Box
             sx={{
