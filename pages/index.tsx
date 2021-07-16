@@ -212,7 +212,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 mx={8}
                                 sx={{
                                     svg: {
-                                        fill: 'primary',
+                                        fill: '#00eeb9',
                                         width: 13,
                                         height: 13,
                                     },
