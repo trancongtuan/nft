@@ -4,6 +4,9 @@ import { Box, Text, Flex, Button, useColorMode } from 'theme-ui'
 import Popover from 'react-popover'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { v4 as uuidv4 } from 'uuid'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 import Avatar from '../components/Avatar'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
@@ -12,52 +15,50 @@ import BidCard from '../components/BidCard'
 import CopyIcon from '../public/assets/images/icons/copy.svg'
 import CheckedIcon from '../public/assets/images/icons/checked.svg'
 import Tooltip from '../components/Tooltip'
-import TwitterIcon from '../public/assets/images/icons/twitter.svg'
-import FacebookIcon from '../public/assets/images/icons/facebook.svg'
-import TelegramIcon from '../public/assets/images/icons/telegram.svg'
-import EmailIcon from '../public/assets/images/icons/email.svg'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
 import UploadIcon from '../public/assets/images/icons/upload.svg'
 import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import ActivityCard from '../components/ActivityCard'
 import PopupReport from '../components/PopupReport'
+import PopupShare from '../components/PopupShare'
 import SettingIcon from '../public/assets/images/icons/setting.svg'
 
 const selectionItems = [
     {
         id: '1',
-        label: 'On sale',
+        label: 'general.on_sale',
         value: 'On sale',
         count: 0,
     },
     {
         id: '2',
-        label: 'Collectibles',
+        label: 'general.collectibles',
         value: 'Collectibles',
         count: 0,
     },
     {
         id: '3',
-        label: 'Created',
+        label: 'general.created',
         value: 'Created',
         count: 0,
     },
     {
         id: '4',
-        label: 'Liked',
+        label: 'general.liked',
         value: 'Liked',
         count: 2,
     },
     {
         id: '5',
-        label: 'Activity',
+        label: 'general.activity',
         value: 'Activity',
         count: 5,
     },
 ]
 
 const Items: FC = () => {
+    const { t } = useTranslation('common')
     const [colorMode] = useColorMode()
     const [showCards, setShowCards] = useState(false)
     const [showReport, setShowReport] = useState(false)
@@ -141,7 +142,9 @@ const Items: FC = () => {
                             }}
                         >
                             <Flex>
-                                <Text sx={{ fontWeight: '900' }}>Filters</Text>
+                                <Text sx={{ fontWeight: '900' }}>
+                                    {t('general.filters')}
+                                </Text>
                                 {showReset && (
                                     <Text
                                         ml={20}
@@ -152,7 +155,7 @@ const Items: FC = () => {
                                             color: 'primary',
                                         }}
                                     >
-                                        Reset Filters
+                                        {t('general.reset_filters')}
                                     </Text>
                                 )}
                             </Flex>
@@ -160,49 +163,49 @@ const Items: FC = () => {
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Listings"
+                                    content={t('general.listings')}
                                     type="listings"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Purchases"
+                                    content={t('general.purchases')}
                                     type="purchases"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
-                                    content="Sales"
+                                    content={t('general.sales')}
                                     type="sales"
                                     reset={resetFilter}
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
-                                    content="Transfers"
+                                    content={t('general.transfers')}
                                     type="transfers"
                                     reset={resetFilter}
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Burns"
+                                    content={t('general.burns')}
                                     type="burns"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Bids"
+                                    content={t('general.bids')}
                                     type="bids"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Likes"
+                                    content={t('general.likes')}
                                     type="likes"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Followings"
+                                    content={t('general.followings')}
                                     type="followings"
                                 />
                             </Flex>
@@ -239,7 +242,7 @@ const Items: FC = () => {
                     onClose={() => {
                         setOpenPopup(false)
                     }}
-                    label="Filters"
+                    label={t('general.filters')}
                 >
                     <Flex
                         sx={{
@@ -251,49 +254,49 @@ const Items: FC = () => {
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Listings"
+                            content={t('general.listings')}
                             type="listings"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Purchases"
+                            content={t('general.purchases')}
                             type="purchases"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Sales"
+                            content={t('general.sales')}
                             type="sales"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Transfers"
+                            content={t('general.transfers')}
                             type="transfers"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Burns"
+                            content={t('general.burns')}
                             type="burns"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Bids"
+                            content={t('general.bids')}
                             type="bids"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Likes"
+                            content={t('general.likes')}
                             type="likes"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Followings"
+                            content={t('general.followings')}
                             type="followings"
                         />
                         <Button
@@ -305,7 +308,7 @@ const Items: FC = () => {
                                 width: '100%',
                             }}
                         >
-                            Show
+                            {t('general.show')}
                         </Button>
                     </Flex>
                 </Popup>
@@ -373,11 +376,10 @@ const Items: FC = () => {
                         color="text"
                         sx={{ fontWeight: 'heavy', fontSize: 28 }}
                     >
-                        No items found
+                        {t('general.no_items_found')}
                     </Text>
                     <Text mt={20}>
-                        Come back soon! Or try to browse something for you on
-                        our marketplace
+                        {t('general.no_items_found_description')}
                     </Text>
 
                     <Button
@@ -388,7 +390,7 @@ const Items: FC = () => {
                             height: 40,
                         }}
                     >
-                        <Link href="/">Browse Marketplace</Link>
+                        <Link href="/">{t('general.browse_marketplace')}</Link>
                     </Button>
                 </Flex>
             </Box>
@@ -557,183 +559,28 @@ const Items: FC = () => {
                                 height: 40,
                             }}
                         >
-                            <Link href="/setting">Edit Profile</Link>
+                            <Link href="/setting">
+                                {t('items.edit_profile')}
+                            </Link>
                         </Button>
-                        <Popover
-                            onOuterAction={() => setShowShare(false)}
-                            isOpen={showShare}
-                            body={
-                                <Tooltip>
-                                    <Flex
-                                        p={3}
-                                        sx={{
-                                            alignItems: 'center',
-                                            flexDirection: 'column',
-                                            minWidth: 322,
-                                        }}
-                                    >
-                                        <Text
-                                            mb={16}
-                                            color="text"
-                                            sx={{
-                                                fontSize: 18,
-                                                fontWeight: 'heavy',
-                                                lineHeight: '25px',
-                                            }}
-                                        >
-                                            Share link to this page
-                                        </Text>
-                                        <Flex
-                                            sx={{
-                                                width: '100%',
-                                                justifyContent: 'space-around',
-                                            }}
-                                        >
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <TwitterIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Twitter
-                                                </Text>
-                                            </Flex>
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <FacebookIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Facebook
-                                                </Text>
-                                            </Flex>
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <TelegramIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Telegram
-                                                </Text>
-                                            </Flex>
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <EmailIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    E-mail
-                                                </Text>
-                                            </Flex>
-                                        </Flex>
-                                    </Flex>
-                                </Tooltip>
-                            }
-                            place="below"
-                            tipSize={0.01}
+                        <Button
+                            onClick={() => setShowShare(!showShare)}
+                            ml={8}
+                            variant="border"
+                            p={0}
+                            sx={{ width: 40 }}
                         >
-                            <Button
-                                onClick={() => setShowShare(!showShare)}
-                                ml={8}
-                                variant="border"
-                                p={0}
-                                sx={{ width: 40 }}
-                            >
-                                <UploadIcon />
-                            </Button>
-                        </Popover>
+                            <UploadIcon />
+                        </Button>
+                        <Popup
+                            isOpen={showShare}
+                            onClose={() => {
+                                setShowShare(false)
+                            }}
+                            label="Share this NFT"
+                        >
+                            <PopupShare />
+                        </Popup>
                         <Popover
                             onOuterAction={() => setShowReport(false)}
                             isOpen={showReport}
@@ -811,7 +658,7 @@ const Items: FC = () => {
                                     },
                                 }}
                             >
-                                Following
+                                {t('general.following')}
                             </Text>
 
                             <Text
@@ -853,7 +700,7 @@ const Items: FC = () => {
                                     },
                                 }}
                             >
-                                Followers
+                                {t('general.followers')}
                             </Text>
 
                             <Text
@@ -890,7 +737,7 @@ const Items: FC = () => {
                 onClose={() => {
                     setShowFollowers(false)
                 }}
-                label="Followers"
+                label={t('general.followers')}
             >
                 <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <Flex
@@ -911,7 +758,7 @@ const Items: FC = () => {
                                     color="textSecondary"
                                     sx={{ fontSize: 1, fontWeight: 'bold' }}
                                 >
-                                    999 Followers
+                                    999 {t('general.followers')}
                                 </Text>
                                 <Text
                                     color="text"
@@ -921,7 +768,7 @@ const Items: FC = () => {
                                 </Text>
                             </Flex>
                         </Flex>
-                        <Button variant="primary">Follow</Button>
+                        <Button variant="primary">{t('general.follow')}</Button>
                     </Flex>
                 </Flex>
             </Popup>
@@ -951,7 +798,7 @@ const Items: FC = () => {
                 onClose={() => {
                     setShowFollowing(false)
                 }}
-                label="Following"
+                label={t('general.following')}
             >
                 <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <Flex
@@ -972,7 +819,7 @@ const Items: FC = () => {
                                     color="textSecondary"
                                     sx={{ fontSize: 1, fontWeight: 'bold' }}
                                 >
-                                    999 Followers
+                                    999 {t('general.followers')}
                                 </Text>
                                 <Text
                                     color="text"
@@ -982,12 +829,18 @@ const Items: FC = () => {
                                 </Text>
                             </Flex>
                         </Flex>
-                        <Button variant="primary">Follow</Button>
+                        <Button variant="primary">{t('general.follow')}</Button>
                     </Flex>
                 </Flex>
             </Popup>
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Items

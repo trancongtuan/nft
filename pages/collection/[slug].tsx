@@ -13,43 +13,43 @@ import CopyIcon from '../../public/assets/images/icons/copy.svg'
 import CheckedIcon from '../../public/assets/images/icons/checked.svg'
 import UploadIcon from '../../public/assets/images/icons/upload.svg'
 import ThreeDos from '../../public/assets/images/icons/threedos.svg'
-import TwitterIcon from '../../public/assets/images/icons/twitter.svg'
-import FacebookIcon from '../../public/assets/images/icons/facebook.svg'
-import TelegramIcon from '../../public/assets/images/icons/telegram.svg'
-import EmailIcon from '../../public/assets/images/icons/email.svg'
 import BidCard from '../../components/BidCard'
 import Tooltip from '../../components/Tooltip'
 import Popup from '../../components/Popup'
 import PopupReport from '../../components/PopupReport'
-import {
-    Asset,
-    fetchAssets,
-} from '../../queries'
+import PopupShare from '../../components/PopupShare'
+import { Asset, fetchAssets } from '../../queries'
 import {
     Collection as TCollection,
     fetchCollections,
 } from '../../queries/collections'
 
 export const getServerSideProps: GetServerSideProps<{
-    collection: TCollection,
-    assets: InfiniteData<Asset[]>, // TODO: Change to correct type
+    collection: TCollection
+    assets: InfiniteData<Asset[]> // TODO: Change to correct type
 }> = async (context) => {
     const { params } = context
-    const assets = await fetchAssets({ _start: 0, _limit: 100, collection_slug: `${params.slug}` })
+    const assets = await fetchAssets({
+        _start: 0,
+        _limit: 100,
+        collection_slug: `${params.slug}`,
+    })
     const collections = await fetchCollections({ slug: `${params.slug}` })
 
     return {
         props: {
             collection: collections[0],
-            assets: { pages: [assets], pageParams: [{ _start: 0, _limit: 10 }] },
+            assets: {
+                pages: [assets],
+                pageParams: [{ _start: 0, _limit: 10 }],
+            },
         },
     }
 }
 
-const Collection: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
-    collection,
-    assets
-}) => {
+const Collection: FC<
+    InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ collection, assets }) => {
     const router = useRouter()
     const [showReport, setShowReport] = useState(false)
     const [showShare, setShowShare] = useState(false)
@@ -82,11 +82,7 @@ const Collection: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = (
                     }}
                 />
                 <Box sx={{ position: 'absolute', bottom: -30 }}>
-                    <Avatar
-                        src={collection.image_url}
-                        size="xl"
-                        verified
-                    />
+                    <Avatar src={collection.image_url} size="xl" verified />
                 </Box>
             </Flex>
             <Box
@@ -115,7 +111,8 @@ const Collection: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = (
                                 fontWeight: 'bold',
                             }}
                         >
-                            {collection.primary_asset_contracts?.[0]?.address || ''}
+                            {collection.primary_asset_contracts?.[0]?.address ||
+                                ''}
                         </Text>
                         <CopyToClipboard
                             onCopy={() => setCounter(2)}
@@ -137,181 +134,24 @@ const Collection: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = (
                         </CopyToClipboard>
                     </Flex>
                     <Flex color="text">
-                        <Popover
-                            onOuterAction={() => setShowShare(false)}
-                            isOpen={showShare}
-                            body={
-                                <Tooltip>
-                                    <Flex
-                                        p={3}
-                                        sx={{
-                                            alignItems: 'center',
-                                            flexDirection: 'column',
-                                            minWidth: 322,
-                                        }}
-                                    >
-                                        <Text
-                                            mb={16}
-                                            color="text"
-                                            sx={{
-                                                fontSize: 18,
-                                                fontWeight: 'heavy',
-                                                lineHeight: '25px',
-                                            }}
-                                        >
-                                            Share link to this page
-                                        </Text>
-                                        <Flex
-                                            sx={{
-                                                width: '100%',
-                                                justifyContent: 'space-around',
-                                            }}
-                                        >
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <TwitterIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Twitter
-                                                </Text>
-                                            </Flex>
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <FacebookIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Facebook
-                                                </Text>
-                                            </Flex>
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <TelegramIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    Telegram
-                                                </Text>
-                                            </Flex>
-                                            <Flex
-                                                sx={{
-                                                    width: 64,
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
-                                                    <EmailIcon />
-                                                </Button>
-                                                <Text
-                                                    color="textSecondary"
-                                                    mt={8}
-                                                    sx={{
-                                                        fontSize: 0,
-                                                        lineHeight: '17px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    E-mail
-                                                </Text>
-                                            </Flex>
-                                        </Flex>
-                                    </Flex>
-                                </Tooltip>
-                            }
-                            place="below"
-                            tipSize={0.01}
+                        <Button
+                            onClick={() => setShowShare(!showShare)}
+                            mr={8}
+                            variant="border"
+                            p={0}
+                            sx={{ width: 40 }}
                         >
-                            <Button
-                                onClick={() => setShowShare(!showShare)}
-                                mr={8}
-                                variant="border"
-                                p={0}
-                                sx={{ width: 40 }}
-                            >
-                                <UploadIcon />
-                            </Button>
-                        </Popover>
+                            <UploadIcon />
+                        </Button>
+                        <Popup
+                            isOpen={showShare}
+                            onClose={() => {
+                                setShowShare(false)
+                            }}
+                            label="Share this NFT"
+                        >
+                            <PopupShare />
+                        </Popup>
                         <Popover
                             onOuterAction={() => setShowReport(false)}
                             isOpen={showReport}
@@ -355,12 +195,12 @@ const Collection: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = (
                 <Selection
                     borderBottom
                     items={[
-                        { id: '1', label: 'On sale', value: 'On sale' },
-                        // {
-                        //     id: '2',
-                        //     label: 'Collectibles',
-                        //     value: 'Collectibles',
-                        // },
+                        { id: '1', label: 'general.on_sale', value: 'On sale' },
+                        {
+                            id: '2',
+                            label: 'general.collectibles',
+                            value: 'Collectibles',
+                        },
                     ]}
                 />
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
@@ -386,32 +226,32 @@ const Collection: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = (
                             }}
                         >
                             <BidCard
-                                    key={item.id}
-                                    onCLick={() =>
-                                        router.push(
-                                            `/product/${item.asset_contract.address}/${item.token_id}`
-                                        )
-                                    }
-                                    name={item.name}
-                                    image={item.image_url}
-                                    currency="ETH"
-                                    price={item.top_bid ?? 0}
-                                    {...(item?.creator && {
-                                        creator: {
-                                            src: item.creator?.profile_img_url,
-                                        },
-                                    })}
-                                    {...(item?.owner && {
-                                        owner: {
-                                            src: item.owner?.profile_img_url,
-                                        },
-                                    })}
-                                    {...(item?.collection && {
-                                        collection: {
-                                            src: item.collection?.image_url,
-                                        },
-                                    })}
-                                />
+                                key={item.id}
+                                onCLick={() =>
+                                    router.push(
+                                        `/product/${item.asset_contract.address}/${item.token_id}`
+                                    )
+                                }
+                                name={item.name}
+                                image={item.image_url}
+                                currency="ETH"
+                                price={item.top_bid ?? 0}
+                                {...(item?.creator && {
+                                    creator: {
+                                        src: item.creator?.profile_img_url,
+                                    },
+                                })}
+                                {...(item?.owner && {
+                                    owner: {
+                                        src: item.owner?.profile_img_url,
+                                    },
+                                })}
+                                {...(item?.collection && {
+                                    collection: {
+                                        src: item.collection?.image_url,
+                                    },
+                                })}
+                            />
                         </Box>
                     ))}
                 </Flex>
@@ -419,5 +259,11 @@ const Collection: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = (
         </Layout>
     )
 }
+
+// export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+//     props: {
+//         ...(await serverSideTranslations(locale, ['common', 'footer'])),
+//     },
+// })
 
 export default Collection

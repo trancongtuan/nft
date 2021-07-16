@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-nested-ternary */
 import React, {
     FC,
     KeyboardEventHandler,
@@ -17,11 +19,10 @@ import {
 } from 'theme-ui'
 import Popover from 'react-popover'
 import Link from 'next/link'
-import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import Image from 'next/image'
-import { fetchUsers } from '../queries'
 import SearchIcon from '../public/assets/images/icons/search.svg'
 import DropDownIcon from '../public/assets/images/icons/drop-down.svg'
 import NotificationIcon from '../public/assets/images/icons/notification.svg'
@@ -44,22 +45,22 @@ import { useAuth } from '../hooks/auth'
 const selectionItems = [
     {
         id: '1',
-        label: 'Explore',
+        label: 'general.explore',
         value: '/',
     },
     {
         id: '2',
-        label: 'My items',
+        label: 'general.my_items',
         value: '/my_items',
     },
     {
         id: '3',
-        label: 'Following',
+        label: 'general.following',
         value: '/following',
     },
     {
         id: '4',
-        label: 'Activity',
+        label: 'general.activity',
         value: '/activity',
         isNew: true,
     },
@@ -68,27 +69,27 @@ const selectionItems = [
 const tooltipItems = [
     {
         id: 1,
-        label: 'How it works',
+        label: 'general.how_it_work',
     },
     {
         id: 2,
-        label: 'RARI Token',
+        label: 'general.RARI_token',
     },
     {
         id: 3,
-        label: 'Discussion',
+        label: 'general.discussion',
     },
     {
         id: 4,
-        label: 'Voting',
+        label: 'general.voting',
     },
     {
         id: 5,
-        label: 'Suggest feature',
+        label: 'general.suggest_feature',
     },
     {
         id: 6,
-        label: 'Subscribe',
+        label: 'general.subscribe',
     },
 ]
 
@@ -186,6 +187,7 @@ const useColorInput = (
 }
 
 const SearchInput: FC = () => {
+    const { t } = useTranslation('common')
     const [focus, setFocus] = useState(false)
     const router = useRouter()
     const [colorMode] = useColorMode()
@@ -234,7 +236,7 @@ const SearchInput: FC = () => {
                 onKeyPress={handleKeyPress}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
-                placeholder="Search Rarible"
+                placeholder={t('general.search_rarible')}
                 variant=""
                 sx={{
                     fontSize: 15,
@@ -360,6 +362,7 @@ interface CatalogProps {
 }
 
 const Catalog: FC<CatalogProps> = ({ onClose }) => {
+    const { t } = useTranslation('common')
     const [showLanguage, setShowLanguage] = useState(false)
     const [language, setLanguage] = useState<TooltiProps>(languageList[0])
     const router = useRouter()
@@ -447,7 +450,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            Explore
+                            {t('general.explore')}
                         </Text>
                     </Link>
                     <Link href="/my_items">
@@ -460,7 +463,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            My items
+                            {t('general.my_items')}
                         </Text>
                     </Link>
                     <Link href="/following">
@@ -473,7 +476,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            Following
+                            {t('general.following')}
                         </Text>
                     </Link>
                     <Flex sx={{ alignItems: 'center', cursor: 'pointer' }}>
@@ -486,7 +489,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                     fontWeight: 'heavy',
                                 }}
                             >
-                                Activity
+                                {t('general.activity')}
                             </Text>
                         </Link>
                         <Box ml={8}>
@@ -508,7 +511,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        How it works
+                        {t('general.how_it_work')}
                     </UILink>
                 </Flex>
                 <Box mt={16}>
@@ -523,7 +526,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
                         }}
                     >
-                        Community
+                        {t('general.community')}
                     </Text>
                 </Box>
                 <Flex mt={8} sx={{ flexDirection: 'column' }}>
@@ -537,7 +540,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            RARI Token
+                            {t('general.RARI_token')}
                         </Text>
                     </Link>
                     <UILink
@@ -551,7 +554,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Discussion
+                        {t('general.discussion')}
                     </UILink>
                     <UILink
                         href="https://snapshot.org/#/rarible/"
@@ -564,7 +567,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Voting
+                        {t('general.voting')}
                     </UILink>
                     <UILink
                         href="https://snapshot.org/#/rarible/"
@@ -577,7 +580,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Suggest feature
+                        {t('general.suggest_feature')}
                     </UILink>
                     <UILink
                         href="https://rarible.nolt.io/"
@@ -590,7 +593,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Subscribe
+                        {t('general.subscribe')}
                     </UILink>
                 </Flex>
             </Box>
@@ -625,13 +628,15 @@ const NavigationBar: FC = () => {
     const [showSearch, setShowSearch] = useState(false)
     const [showCatalog, setShowCatalog] = useState(false)
     const { connected, setConnected } = useAuth()
-    let user = null;
+    const { t } = useTranslation('common')
+    const user = null
 
     // if (connected) {
-    //     user = useQuery(['user', connected], ({ queryKey }) => 
+    //     user = useQuery(['user', connected], ({ queryKey }) =>
     //         fetchUsers({ address: typeof (queryKey[1]) === 'string' ? queryKey[1] : '' }));
     // }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const connectWallet = async () => {
         // Get Address
         let accountAddress
@@ -639,11 +644,11 @@ const NavigationBar: FC = () => {
             if (!window.ethereum) throw new Error('Please install MetaMask.')
             accountAddress = await window.ethereum.enable()
             if (!accountAddress[0]) throw new Error('No account selected.')
+            // eslint-disable-next-line prefer-destructuring
             accountAddress = accountAddress[0]
-            setConnected(accountAddress);
-        } catch(e) {
+            setConnected(accountAddress)
+        } catch (e) {
             alert(e.message)
-            return
         }
     }
 
@@ -760,7 +765,7 @@ const NavigationBar: FC = () => {
                                     },
                                 }}
                             >
-                                How it works
+                                {t('general.how_it_work')}
                             </Text>
                         </Flex>
                         <Popover
@@ -814,7 +819,7 @@ const NavigationBar: FC = () => {
                                                 'all 0.12s ease-in-out 0s',
                                         }}
                                     >
-                                        Community
+                                        {t('general.community')}
                                     </Text>
                                     <DropDownIcon />
                                 </Flex>
@@ -858,7 +863,7 @@ const NavigationBar: FC = () => {
                             },
                         }}
                     >
-                        Create
+                        {t('general.create')}
                     </Button>
                     <Button
                         onClick={() => setShowSearch(true)}
@@ -1040,15 +1045,13 @@ const NavigationBar: FC = () => {
                                                 cursor: 'pointer',
                                             }}
                                         >
-                                            {
-                                                user?.status === 'success' ? 
-                                                    (  
-                                                        (user.data[0] && user.data[0].display_name?.length > 0) ?
-                                                            user.data[0].display_name
-                                                                : 'Set display name'
-                                                    )
-                                                    : 'Loading...'
-                                            }
+                                            {user?.status === 'success'
+                                                ? user.data[0] &&
+                                                  user.data[0].display_name
+                                                      ?.length > 0
+                                                    ? user.data[0].display_name
+                                                    : 'Set display name'
+                                                : 'Loading...'}
                                         </Text>
                                     </Link>
                                     <Box mt={16}>
@@ -1281,7 +1284,7 @@ const NavigationBar: FC = () => {
                                 }}
                                 onClick={connectWallet}
                             >
-                                <Text>Connect wallet</Text>
+                                <Text>{t('general.connect_wallet')}</Text>
                             </Button>
                         )}
                     </Popover>

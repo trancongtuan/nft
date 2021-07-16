@@ -1,8 +1,13 @@
+/* eslint-disable no-alert */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { FC, useEffect, useState } from 'react'
 import Popover from 'react-popover'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
 import { useRouter } from 'next/router'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { OpenSeaPort, Network } from 'opensea-js'
+import { OrderSide } from 'opensea-js/lib/types'
 import NavigationBar from '../../../components/NavigationBar'
 import Tooltip from '../../../components/Tooltip'
 import Avatar from '../../../components/Avatar'
@@ -19,10 +24,8 @@ import {
     fetchAsset,
     useGetSingleAssetQuery,
 } from '../../../queries/asset'
-import { OpenSeaPort, Network } from 'opensea-js'
-import { OrderSide } from 'opensea-js/lib/types'
 
-const Web3 = require('web3');
+const Web3 = require('web3')
 
 const tooltipItems = [
     {
@@ -116,15 +119,18 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [seaport, setSeaport] = useState<any>()
 
     useEffect(() => {
-        const provider = typeof window.web3 !== 'undefined'
-            ? window.web3.currentProvider
-            : new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74')
+        const provider =
+            typeof window.web3 !== 'undefined'
+                ? window.web3.currentProvider
+                : new Web3.providers.HttpProvider(
+                      'https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74'
+                  )
 
-        const seaport = new OpenSeaPort(provider, {
+        const seaPort = new OpenSeaPort(provider, {
             // networkName: Network.Main
-            networkName: Network.Rinkeby
+            networkName: Network.Rinkeby,
         })
-        setSeaport(seaport)
+        setSeaport(seaPort)
     }, [])
 
     const router = useRouter()
@@ -135,7 +141,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false)
     const { data } = useGetSingleAssetQuery(
         {
             asset_contract_address,
@@ -144,7 +150,8 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         asset
     )
 
-    const makeOffer = async (amount) => {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    const makeOffer = async () => {
         setLoading(true)
 
         // Get Address
@@ -154,14 +161,19 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
             if (!accountAddress[0]) throw new Error('No account selected.')
             accountAddress = accountAddress[0]
 
-
-            const { token_id, asset_contract: { address } } = data
+            const {
+                token_id,
+                asset_contract: { address },
+            } = data
             const order = await seaport.api.getOrder({
                 side: OrderSide.Sell,
                 asset_contract_address: address,
-                token_id: token_id,
+                token_id,
             })
-            const transactionHash = await seaport.fulfillOrder({ order, accountAddress })
+            const transactionHash = await seaport.fulfillOrder({
+                order,
+                accountAddress,
+            })
             console.log(transactionHash)
         } catch (e) {
             alert(e.message)
@@ -188,7 +200,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         // // const balance = await seaport.getAssetBalance({
         // //     accountAddress, // string
         // //     asset,
-        // // })        
+        // // })
         // // console.log('balance', balance)
 
         try {
@@ -202,12 +214,10 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
             //     // Value of the offer, in units of the payment token (or wrapped ETH if none is specified):
             //     startAmount: parseFloat(amount),
             // })
-
             // console.log('Make offer success', result)
         } catch (e) {
             alert(e.message)
             setLoading(false)
-            return
         }
     }
 
@@ -235,10 +245,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     }}
                 >
                     <Image
-                        src={
-                            data?.image_url ??
-                            'https://picsum.photos/200/300'
-                        }
+                        src={data?.image_url ?? 'https://picsum.photos/200/300'}
                         sx={{
                             objectFit: 'cover',
                             width: ['100%', '250px', '30vw', '30vw'],

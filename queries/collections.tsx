@@ -67,8 +67,8 @@ export interface Collection {
 }
 
 /*
-* Backend already removed first layer
-*/
+ * Backend already removed first layer
+ */
 export interface CollectionsResponseData {
     collections: Collection[]
 }

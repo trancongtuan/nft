@@ -1,20 +1,37 @@
-import React, { FC, useRef, useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-alert */
+/* eslint-disable no-constant-condition */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable func-names */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-shadow */
+import React, { FC, useRef, useState, useEffect } from 'react'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 
 import * as ethUtil from 'ethereumjs-util'
 import * as sigUtil from 'eth-sig-util'
-import { fetchUsers, updateUser, createUser, uploadFile, EthUser } from '../queries';
+import {
+    fetchUsers,
+    updateUser,
+    createUser,
+    uploadFile,
+    EthUser,
+} from '../queries'
 
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import CustomInput from '../components/CustomInput'
 import LockIcon from '../public/assets/images/icons/lock.svg'
-import { useEffect } from 'react';
+
 import { useAuth } from '../hooks/auth'
 
-const chainId = 'RINKEBY' === 'RINKEBY' ? 4 : 1;
+const chainId = 'RINKEBY' ? 4 : 1
 
 const Setting: FC = () => {
+    const { t } = useTranslation('common')
     const inputFile = useRef(null)
     const { connected, setConnected } = useAuth()
     const [reLink, setReLink] = useState(false)
@@ -27,31 +44,33 @@ const Setting: FC = () => {
         bio: '',
         website: '',
         address: '',
-        profile_pic: { url: null }
+        profile_pic: { url: null },
     })
 
     const handleOnClick = (): void => {
         inputFile.current.click()
     }
 
-    const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+    const handleFileSelected = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): Promise<void> => {
         try {
             const files = Array.from(e.target.files)
-            if (files.length < 1) return;
+            if (files.length < 1) return
 
             const result = await uploadFile(files)
-            setProfile(ori => ({ ...ori, profile_pic: result[0] }))
-        } catch(e) {
+            setProfile((ori) => ({ ...ori, profile_pic: result[0] }))
+        } catch (e) {
             alert(e.toString())
         }
     }
-    
+
     const updateOrCreateUser = async (data) => {
         try {
             if (!window.ethereum) throw new Error('Please install MetaMask.')
-            var from = (await window.ethereum.enable())[0]
+            const from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
-            
+
             if (data.id) {
                 await updateUser(data.id, data)
                 alert('Profile updated.')
@@ -59,7 +78,7 @@ const Setting: FC = () => {
                 await createUser({ ...data, address: from })
                 alert('Profile updated.')
             }
-        } catch(e) {
+        } catch (e) {
             alert(e.toString())
         }
     }
@@ -70,7 +89,8 @@ const Setting: FC = () => {
                 domain: {
                     chainId,
                     name: 'ULTCube Profile',
-                    verifyingContract: '0x0000000000000000000000000000000000000000',
+                    verifyingContract:
+                        '0x0000000000000000000000000000000000000000',
                     version: '1',
                 },
                 message: data,
@@ -79,11 +99,11 @@ const Setting: FC = () => {
             })
 
             if (!window.ethereum) throw new Error('Please install MetaMask.')
-            var from = (await window.ethereum.enable())[0]
+            const from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
 
-            var params = [from, msgParams];
-            var method = 'eth_signTypedData_v4';
+            const params = [from, msgParams]
+            const method = 'eth_signTypedData_v4'
 
             window.web3.currentProvider.sendAsync(
                 {
@@ -92,44 +112,46 @@ const Setting: FC = () => {
                     from,
                 },
                 function (err, result) {
-                    if (err) return console.dir(err);
+                    if (err) return console.dir(err)
                     if (result.error) {
-                        alert(result.error.message);
+                        alert(result.error.message)
                     }
-                    if (result.error) return console.error('ERROR', result);
-                    console.log('TYPED SIGNED:' + JSON.stringify(result.result));
-                    console.log('sigUtil', sigUtil);
+                    if (result.error) return console.error('ERROR', result)
+                    console.log(`TYPED SIGNED:${JSON.stringify(result.result)}`)
+                    console.log('sigUtil', sigUtil)
 
                     const recovered = sigUtil.recoverTypedSignature_v4({
                         data: JSON.parse(msgParams),
                         sig: result.result,
-                    });
+                    })
 
                     if (
-                        ethUtil.toChecksumAddress(recovered) === ethUtil.toChecksumAddress(from)
+                        ethUtil.toChecksumAddress(recovered) ===
+                        ethUtil.toChecksumAddress(from)
                     ) {
-                        updateOrCreateUser(data);
+                        updateOrCreateUser(data)
                     } else {
                         alert(
-                            'Failed to verify signer when comparing ' + result + ' to ' + from
-                        );
+                            `Failed to verify signer when comparing ${result} to ${from}`
+                        )
                     }
+                    return true
                 }
-            );
+            )
         } catch (e) {
-            alert(e.toString());
+            alert(e.toString())
         }
     }
 
     const updateProfile = async () => {
         try {
             if (!window.ethereum) throw new Error('Please install MetaMask.')
-            var from = (await window.ethereum.enable())[0]
+            const from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
             const result = await fetchUsers({ address: from })
-            if (result[0]) setProfile(result[0]);
-        } catch(e) {
-            alert(e.toString());
+            if (result[0]) setProfile(result[0])
+        } catch (e) {
+            alert(e.toString())
         }
     }
 
@@ -141,19 +163,18 @@ const Setting: FC = () => {
             accountAddress = await window.ethereum.enable()
             if (!accountAddress[0]) throw new Error('No account selected.')
             accountAddress = accountAddress[0]
-            setConnected(accountAddress);
-            updateProfile();
-        } catch(e) {
+            setConnected(accountAddress)
+            updateProfile()
+        } catch (e) {
             alert(e.message)
-            return
         }
     }
 
     useEffect(() => {
         if (!connected) {
-            connectWallet();
+            connectWallet()
         } else {
-            updateProfile();
+            updateProfile()
         }
     }, [])
 
@@ -174,7 +195,7 @@ const Setting: FC = () => {
                             color: 'text',
                         }}
                     >
-                        Edit profile
+                        {t('setting.edit_profile')}
                     </Text>
                     <Text
                         mt={24}
@@ -186,8 +207,7 @@ const Setting: FC = () => {
                             fontWeight: 'body',
                         }}
                     >
-                        You can set preferred display name, create your branded
-                        profile URL and manage other personal settings
+                        {t('setting.edit_profile_description')}
                     </Text>
                 </Box>
                 <Flex
@@ -215,14 +235,13 @@ const Setting: FC = () => {
                         mr={[0, 0, 0, 40]}
                     >
                         <CustomInput
-                            label="Display name"
-                            value={profile.display_name}
-                            placeholder="Enter your display name"
-                            onChange={v => setProfile(ori => ({ ...ori, display_name: v }))}
+                            label={t('setting.display_name')}
+                            value=""
+                            placeholder={t('setting.display_name_placeholder')}
                         />
                         <CustomInput
-                            label="Custom URL"
-                            value={profile.custom_url}
+                            label={t('setting.custom_URL')}
+                            value=""
                             staticLeft={
                                 <Text
                                     mr={2}
@@ -236,19 +255,17 @@ const Setting: FC = () => {
                                     rarible.com/
                                 </Text>
                             }
-                            placeholder="Enter your custom url"
-                            onChange={v => setProfile(ori => ({ ...ori, custom_url: v }))}
+                            placeholder={t('setting.custom_URL_placeholder')}
                         />
                         <CustomInput
-                            label="Bio"
-                            value={profile.bio}
-                            placeholder="Tell about yourself in a few words"
-                            onChange={v => setProfile(ori => ({ ...ori, bio: v }))}
+                            label={t('setting.bio')}
+                            value=""
+                            placeholder={t('setting.bio_placeholder')}
                         />
                         <CustomInput
-                            label="Twitter username"
-                            subLabel="Link your Twitter account to gain more trust on the marketplace"
-                            value={profile.twitter}
+                            label={t('setting.twitter_username')}
+                            subLabel={t('setting.twitter_username_sub')}
+                            value=""
                             placeholder="@"
                             staticRight={
                                 <Box
@@ -262,28 +279,37 @@ const Setting: FC = () => {
                                 >
                                     {reLink ? (
                                         <Flex sx={{ width: 'max-content' }}>
-                                            <Text mr={8}>Check</Text>
-                                            <Text ml={8}>Tweet again</Text>
+                                            <Text mr={8}>
+                                                {t('setting.check')}
+                                            </Text>
+                                            <Text ml={8}>
+                                                {t('setting.tweet_again')}
+                                            </Text>
                                         </Flex>
                                     ) : (
-                                        <Text>Link</Text>
+                                        <Text>{t('setting.link')}</Text>
                                     )}
                                 </Box>
                             }
-                            onChange={v => setProfile(ori => ({ ...ori, twitter: v }))}
+                            onChange={(v) =>
+                                setProfile((ori) => ({ ...ori, twitter: v }))
+                            }
                         />
                         <CustomInput
-                            label="Personal site or portfolio"
-                            value={profile.website}
+                            label={t('setting.personal_site_or_portfolio')}
+                            value=""
                             placeholder="https://"
-                            onChange={v => setProfile(ori => ({ ...ori, website: v }))}
+                            onChange={(v) =>
+                                setProfile((ori) => ({ ...ori, website: v }))
+                            }
                         />
                         <CustomInput
-                            label="Email"
-                            subLabel="Your email for marketplace notifications"
-                            value={profile.email}
+                            label={t('setting.email')}
+                            type="password"
+                            subLabel={t('setting.email_sub')}
+                            value=""
                             Icon={<LockIcon />}
-                            placeholder="Enter your email"
+                            placeholder={t('setting.email_placeholder')}
                             staticBottom={
                                 <Box
                                     sx={{
@@ -291,25 +317,26 @@ const Setting: FC = () => {
                                         color: 'textSecondary',
                                     }}
                                 >
-                                    <Text>
-                                        You must sign message to view or manage
-                                        your email.
-                                    </Text>{' '}
+                                    <Text>{t('setting.email_bottom')}</Text>{' '}
                                     <Text
                                         sx={{
                                             color: 'primary',
                                             cursor: 'pointer',
                                         }}
                                     >
-                                        Sign message
+                                        {t('setting.sign_message')}
                                     </Text>
                                 </Box>
                             }
-                            onChange={v => setProfile(ori => ({ ...ori, email: v }))}
+                            onChange={(v) =>
+                                setProfile((ori) => ({ ...ori, email: v }))
+                            }
                         />
                         {/* <Flex>
                             <Box>
-                                <Text variant="heading">Verification</Text>
+                                <Text variant="heading">
+                                    {t('setting.verification')}
+                                </Text>
                                 <Text
                                     mt="4px"
                                     sx={{
@@ -319,10 +346,7 @@ const Setting: FC = () => {
                                         fontWeight: 'semiBold',
                                     }}
                                 >
-                                    Procceed with verification proccess to get
-                                    more visibility and gain trust on Rarible
-                                    Marketplace. Please allow up to several
-                                    weeks for the process.
+                                    {t('setting.verification_description')}
                                 </Text>
                             </Box>
                             <Box sx={{ minWidth: '120px' }} mt="4px" ml="10px">
@@ -330,7 +354,7 @@ const Setting: FC = () => {
                                     variant="secondary"
                                     sx={{ fontSize: '12px' }}
                                 >
-                                    Get verified
+                                    {t('setting.verification_btn')}
                                 </Button>
                             </Box>
                         </Flex> */}
@@ -340,7 +364,7 @@ const Setting: FC = () => {
                             sx={{ fontSize: '12px', width: '100%' }}
                             onClick={() => onSign(profile)}
                         >
-                            Update profile
+                            {t('setting.update_profile')}
                         </Button>
                     </Box>
                     <Box
@@ -368,8 +392,8 @@ const Setting: FC = () => {
                         >
                             <Image
                                 src={
-                                    profile.profile_pic?.url ?
-                                        'https://api.ultcube.scc.sh' + profile.profile_pic?.url
+                                    profile.profile_pic?.url
+                                        ? `https://api.ultcube.scc.sh${profile.profile_pic?.url}`
                                         : '/assets/images/empty_placeholder.png'
                                 }
                                 sx={{
@@ -389,8 +413,7 @@ const Setting: FC = () => {
                                     maxWidth: '200px',
                                 }}
                             >
-                                We recommend an image of at least 400x400. Gift
-                                work too.
+                                {t('setting.choose_file_recommend')}
                             </Text>
                             <Button
                                 variant="secondary"
@@ -404,7 +427,7 @@ const Setting: FC = () => {
                                     onChange={handleFileSelected}
                                     style={{ display: 'none' }}
                                 />
-                                Choose file
+                                {t('setting.choose_file')}
                             </Button>
                         </Box>
                     </Box>
@@ -414,5 +437,11 @@ const Setting: FC = () => {
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Setting

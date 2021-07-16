@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useState, ReactNode } from 'react'
 import { Box, Text, Heading, Flex, Button } from 'theme-ui'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import NavigationBar from '../components/NavigationBar'
 import ActivityCard from '../components/ActivityCard'
@@ -7,7 +11,7 @@ import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import Selection from '../components/Selection'
 
-const renderNone = (): ReactNode => {
+const renderNone = (t): ReactNode => {
     return (
         <Box sx={{ margin: '0 auto' }}>
             <Flex
@@ -17,14 +21,14 @@ const renderNone = (): ReactNode => {
                 sx={{ flexDirection: 'column', alignItems: 'center' }}
             >
                 <Text color="text" sx={{ fontWeight: 'heavy', fontSize: 28 }}>
-                    Nothing yet
+                    {t('activity.not_thing_yet')}
                 </Text>
                 <Text
                     color="textSecondary"
                     sx={{ fontWeight: 'heavy' }}
                     mt={20}
                 >
-                    Activity will be shown here
+                    {t('activity.activity_will_be_shown_here')}
                 </Text>
 
                 <Button
@@ -35,14 +39,14 @@ const renderNone = (): ReactNode => {
                         height: 40,
                     }}
                 >
-                    Explore Radible
+                    {t('activity.explore_radible')}
                 </Button>
             </Flex>
         </Box>
     )
 }
 
-const renderCards = (): ReactNode => {
+const renderCards = (t): ReactNode => {
     return (
         <Box
             sx={{
@@ -79,6 +83,7 @@ const renderCards = (): ReactNode => {
 }
 
 const Activity: FC = () => {
+    const { t } = useTranslation('common')
     const [openPopup, setOpenPopup] = useState(false)
     const [resetFilter, setResetFilter] = useState(false)
     const [showReset, setShowReset] = useState(false)
@@ -104,17 +109,21 @@ const Activity: FC = () => {
                 sx={{ maxWidth: 934, margin: '0 auto' }}
             >
                 <Heading sx={{ fontSize: '36px', fontWeight: '900' }}>
-                    Activity
+                    {t('activity.activity')}
                 </Heading>
                 <Box sx={{ mt: 3 }}>
                     <Selection
                         borderBottom
                         items={[
-                            { id: '1', label: 'All', value: 'all' },
-                            { id: '2', label: 'Following', value: 'following' },
+                            { id: '1', label: 'activity.all', value: 'all' },
+                            {
+                                id: '2',
+                                label: 'general.following',
+                                value: 'following',
+                            },
                             {
                                 id: '3',
-                                label: 'My Activity',
+                                label: 'activity.my_activity',
                                 value: 'My Activity',
                             },
                         ]}
@@ -128,7 +137,7 @@ const Activity: FC = () => {
                     />
                 </Box>
                 <Flex sx={{ marginTop: '17px' }}>
-                    {showCards ? renderCards() : renderNone()}
+                    {showCards ? renderCards(t) : renderNone(t)}
                     <Box
                         sx={{
                             ml: 4,
@@ -139,7 +148,9 @@ const Activity: FC = () => {
                         }}
                     >
                         <Flex>
-                            <Text sx={{ fontWeight: '900' }}>Filters</Text>
+                            <Text sx={{ fontWeight: '900' }}>
+                                {t('general.filters')}
+                            </Text>
                             {showReset && (
                                 <Text
                                     ml={20}
@@ -150,7 +161,7 @@ const Activity: FC = () => {
                                         color: 'primary',
                                     }}
                                 >
-                                    Reset Filters
+                                    {t('general.reset_filters')}
                                 </Text>
                             )}
                         </Flex>
@@ -158,49 +169,49 @@ const Activity: FC = () => {
                             <FilterButton
                                 toggleShowReset={() => toggleShowReset()}
                                 reset={resetFilter}
-                                content="Listings"
+                                content={t('general.listings')}
                                 type="listings"
                             />
                             <FilterButton
                                 toggleShowReset={() => toggleShowReset()}
                                 reset={resetFilter}
-                                content="Purchases"
+                                content={t('general.purchases')}
                                 type="purchases"
                             />
                             <FilterButton
                                 toggleShowReset={() => toggleShowReset()}
-                                content="Sales"
+                                content={t('general.sales')}
                                 type="sales"
                                 reset={resetFilter}
                             />
                             <FilterButton
                                 toggleShowReset={() => toggleShowReset()}
-                                content="Transfers"
+                                content={t('general.transfers')}
                                 type="transfers"
                                 reset={resetFilter}
                             />
                             <FilterButton
                                 toggleShowReset={() => toggleShowReset()}
                                 reset={resetFilter}
-                                content="Burns"
+                                content={t('general.burns')}
                                 type="burns"
                             />
                             <FilterButton
                                 toggleShowReset={() => toggleShowReset()}
                                 reset={resetFilter}
-                                content="Bids"
+                                content={t('general.bids')}
                                 type="bids"
                             />
                             <FilterButton
                                 toggleShowReset={() => toggleShowReset()}
                                 reset={resetFilter}
-                                content="Likes"
+                                content={t('general.likes')}
                                 type="likes"
                             />
                             <FilterButton
                                 toggleShowReset={() => toggleShowReset()}
                                 reset={resetFilter}
-                                content="Followings"
+                                content={t('general.followings')}
                                 type="followings"
                             />
                         </Flex>
@@ -243,49 +254,49 @@ const Activity: FC = () => {
                     <FilterButton
                         toggleShowReset={() => toggleShowReset()}
                         reset={false}
-                        content="Listings"
+                        content={t('general.listings')}
                         type="listings"
                     />
                     <FilterButton
                         toggleShowReset={() => toggleShowReset()}
                         reset={false}
-                        content="Purchases"
+                        content={t('general.purchases')}
                         type="purchases"
                     />
                     <FilterButton
                         toggleShowReset={() => toggleShowReset()}
                         reset={false}
-                        content="Sales"
+                        content={t('general.sales')}
                         type="sales"
                     />
                     <FilterButton
                         toggleShowReset={() => toggleShowReset()}
                         reset={false}
-                        content="Transfers"
+                        content={t('general.transfers')}
                         type="transfers"
                     />
                     <FilterButton
                         toggleShowReset={() => toggleShowReset()}
                         reset={false}
-                        content="Burns"
+                        content={t('general.burns')}
                         type="burns"
                     />
                     <FilterButton
                         toggleShowReset={() => toggleShowReset()}
                         reset={false}
-                        content="Bids"
+                        content={t('general.bids')}
                         type="bids"
                     />
                     <FilterButton
                         toggleShowReset={() => toggleShowReset()}
                         reset={false}
-                        content="Likes"
+                        content={t('general.likes')}
                         type="likes"
                     />
                     <FilterButton
                         toggleShowReset={() => toggleShowReset()}
                         reset={false}
-                        content="Followings"
+                        content={t('general.followings')}
                         type="followings"
                     />
                     <Button
@@ -297,12 +308,18 @@ const Activity: FC = () => {
                             width: '100%',
                         }}
                     >
-                        Show
+                        {t('general.show')}
                     </Button>
                 </Flex>
             </Popup>
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Activity

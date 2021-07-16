@@ -2,17 +2,19 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { FC, useState } from 'react'
 import { Box, Text, Flex, Image } from 'theme-ui'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 import ConnectCard from '../components/ConnectCard'
 import Popup from '../components/Popup'
-import { useAuth } from '../hooks/auth'
 import ArrowIcon from '../public/assets/images/icons/arrowLeft.svg'
 import LogoIcon from '../public/assets/images/icons/logo.svg'
 
 const Connect: FC = () => {
+    const { t } = useTranslation('common')
     const router = useRouter()
     const [openWalletPopup, setOpenWalletPopup] = useState(false)
     const [showMore, setShowMore] = useState(false)
-    const { setConnected } = useAuth()
     const [connectItems, setConnectItems] = useState([
         {
             id: '1',
@@ -157,7 +159,7 @@ const Connect: FC = () => {
                             }}
                             ml={2}
                         >
-                            Go back
+                            {t('general.back')}
                         </Text>
                     </Flex>
                     <Box mt={16} mx={8}>
@@ -168,7 +170,7 @@ const Connect: FC = () => {
                                 color: 'text',
                             }}
                         >
-                            Connect your wallet
+                            {t('connect.connect_your_wallet')}
                         </Text>
                         <Text
                             mt={16}
@@ -180,8 +182,7 @@ const Connect: FC = () => {
                             }}
                         >
                             <Text sx={{ color: 'textSecondary' }}>
-                                Connect with one of available wallet providers
-                                or create a new wallet.
+                                {t('connect.connect_your_wallet_description')}
                             </Text>
                             <Text
                                 sx={{
@@ -194,7 +195,7 @@ const Connect: FC = () => {
                                 onClick={() => setOpenWalletPopup(true)}
                             >
                                 {' '}
-                                What is a wallet?
+                                {t('connect.what_is_a_wallet')}
                             </Text>
                         </Text>
                         <Popup
@@ -202,7 +203,7 @@ const Connect: FC = () => {
                             onClose={() => {
                                 setOpenWalletPopup(false)
                             }}
-                            label="What is a wallet?"
+                            label={t('connect.what_is_a_wallet')}
                         >
                             <Flex
                                 sx={{
@@ -212,12 +213,7 @@ const Connect: FC = () => {
                                     maxWidth: '320px',
                                 }}
                             >
-                                Wallets are used to send, receive, and store
-                                digital assets like Ether. Wallets come in many
-                                forms. They are either built into your browser,
-                                an extension added to your browser, a piece of
-                                hardware plugged into your computer, or even an
-                                app on your phone.
+                                {t('connect.what_is_a_wallet_description')}
                             </Flex>
                         </Popup>
                     </Box>
@@ -285,7 +281,11 @@ const Connect: FC = () => {
                             }}
                         >
                             <ConnectCard
-                                title={!showMore ? 'Show more' : 'Show less'}
+                                title={
+                                    !showMore
+                                        ? t('connect.show_more')
+                                        : t('connect.show_less')
+                                }
                             />
                         </Box>
                     </Flex>
@@ -300,13 +300,18 @@ const Connect: FC = () => {
                             fontWeight: 'body',
                         }}
                     >
-                        We do not own your private keys and cannot access your
-                        funds without your confirmation.
+                        {t('connect.note')}
                     </Text>
                 </Box>
             </Box>
         </Flex>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Connect

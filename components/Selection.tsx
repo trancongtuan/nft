@@ -1,5 +1,6 @@
-import { Box, Flex, Text } from 'theme-ui'
 import React, { FC, useState } from 'react'
+import { Box, Flex, Text } from 'theme-ui'
+import { useTranslation } from 'react-i18next'
 import NewIcon from '../public/assets/images/icons/new.svg'
 
 export interface SelectionItemsProps {
@@ -25,6 +26,7 @@ const Selection: FC<SelectionProps> = ({
     borderBottom = true,
     selectedItem,
 }) => {
+    const { t } = useTranslation('common')
     const [selectedTab, setSelectedTab] = useState<
         SelectionItemsProps | undefined
     >(selectedItem ?? items[0])
@@ -65,7 +67,7 @@ const Selection: FC<SelectionProps> = ({
                                 },
                             }}
                         >
-                            {item.label}
+                            {t(item.label)}
                         </Text>
                         {item.isNew && (
                             <Box ml={8} sx={{ cursor: 'default' }}>

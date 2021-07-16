@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React, { FC, useContext } from 'react'
 import useLocalStorage from './localStorage'
 import { fetchUsers, createUser } from '../queries'
@@ -17,25 +18,27 @@ export const AuthProvider: FC<
 > = ({ children }) => {
     const [connected, setConnected] = useLocalStorage('connected', false)
 
+    // eslint-disable-next-line no-underscore-dangle
     const _setConnected = async (address) => {
         console.log(address)
         setConnected(address)
 
         // disconnected
-        if (!address) return;
+        if (!address) return
 
         /*
-        * Create user if not exists
-        */
+         * Create user if not exists
+         */
         const result = await fetchUsers({ address })
         if (result.length < 1) {
             await createUser({ address })
         }
-        return true;
     }
 
     return (
-        <AuthContext.Provider value={{ connected, setConnected: _setConnected }}>
+        <AuthContext.Provider
+            value={{ connected, setConnected: _setConnected }}
+        >
             {children}
         </AuthContext.Provider>
     )
