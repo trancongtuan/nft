@@ -41,6 +41,7 @@ const HomeCard: FC<HomeCardProps> = ({
                 ':hover img': {
                     transform: 'scale(1.1)',
                 },
+                backgroundColor: 'grey',
             }}
         >
             <Box>
