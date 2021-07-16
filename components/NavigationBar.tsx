@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, {
     FC,
     KeyboardEventHandler,
@@ -17,12 +18,10 @@ import {
 } from 'theme-ui'
 import Popover from 'react-popover'
 import Link from 'next/link'
-import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import Image from 'next/image'
-import { fetchUsers } from '../queries'
 import SearchIcon from '../public/assets/images/icons/search.svg'
 import DropDownIcon from '../public/assets/images/icons/drop-down.svg'
 import NotificationIcon from '../public/assets/images/icons/notification.svg'
@@ -635,6 +634,7 @@ const NavigationBar: FC = () => {
     //         fetchUsers({ address: typeof (queryKey[1]) === 'string' ? queryKey[1] : '' }));
     // }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const connectWallet = async () => {
         // Get Address
         let accountAddress
@@ -642,6 +642,7 @@ const NavigationBar: FC = () => {
             if (!window.ethereum) throw new Error('Please install MetaMask.')
             accountAddress = await window.ethereum.enable()
             if (!accountAddress[0]) throw new Error('No account selected.')
+            // eslint-disable-next-line prefer-destructuring
             accountAddress = accountAddress[0]
             setConnected(accountAddress)
         } catch (e) {

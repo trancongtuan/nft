@@ -32,17 +32,16 @@ const HotCollection: FC<HotCollectionProps> = ({
                 cursor: 'pointer',
             }}
         >
-            {
-                (background && background != '') ?
-                    <Image
-                        width="100%"
-                        src={background}
-                        variant="background"
-                        sx={{ objectFit: 'cover' }}
-                    />
-                    :
-                    <div style={{ height: '45%', background: 'grey' }} />
-            }
+            {background && background !== '' ? (
+                <Image
+                    width="100%"
+                    src={background}
+                    variant="background"
+                    sx={{ objectFit: 'cover' }}
+                />
+            ) : (
+                <div style={{ height: '45%', background: 'grey' }} />
+            )}
             <Flex sx={{ flexDirection: 'column', alignItems: 'center' }}>
                 <Box mt={-42}>
                     <Avatar {...owner} size="md" />

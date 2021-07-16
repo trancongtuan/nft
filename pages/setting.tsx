@@ -1,4 +1,8 @@
-import React, { FC, useRef, useState } from 'react'
+/* eslint-disable prefer-destructuring */
+/* eslint-disable func-names */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-shadow */
+import React, { FC, useRef, useState, useEffect } from 'react'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
@@ -18,10 +22,10 @@ import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import CustomInput from '../components/CustomInput'
 import LockIcon from '../public/assets/images/icons/lock.svg'
-import { useEffect } from 'react'
+
 import { useAuth } from '../hooks/auth'
 
-const chainId = 'RINKEBY' === 'RINKEBY' ? 4 : 1
+const chainId = 'RINKEBY' ? 4 : 1
 
 const Setting: FC = () => {
     const { t } = useTranslation('common')
@@ -61,7 +65,7 @@ const Setting: FC = () => {
     const updateOrCreateUser = async (data) => {
         try {
             if (!window.ethereum) throw new Error('Please install MetaMask.')
-            var from = (await window.ethereum.enable())[0]
+            const from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
 
             if (data.id) {
@@ -92,11 +96,11 @@ const Setting: FC = () => {
             })
 
             if (!window.ethereum) throw new Error('Please install MetaMask.')
-            var from = (await window.ethereum.enable())[0]
+            const from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
 
-            var params = [from, msgParams]
-            var method = 'eth_signTypedData_v4'
+            const params = [from, msgParams]
+            const method = 'eth_signTypedData_v4'
 
             window.web3.currentProvider.sendAsync(
                 {
@@ -110,7 +114,7 @@ const Setting: FC = () => {
                         alert(result.error.message)
                     }
                     if (result.error) return console.error('ERROR', result)
-                    console.log('TYPED SIGNED:' + JSON.stringify(result.result))
+                    console.log(`TYPED SIGNED:${JSON.stringify(result.result)}`)
                     console.log('sigUtil', sigUtil)
 
                     const recovered = sigUtil.recoverTypedSignature_v4({
@@ -125,12 +129,10 @@ const Setting: FC = () => {
                         updateOrCreateUser(data)
                     } else {
                         alert(
-                            'Failed to verify signer when comparing ' +
-                                result +
-                                ' to ' +
-                                from
+                            `Failed to verify signer when comparing ${result} to ${from}`
                         )
                     }
+                    return true
                 }
             )
         } catch (e) {
@@ -141,7 +143,7 @@ const Setting: FC = () => {
     const updateProfile = async () => {
         try {
             if (!window.ethereum) throw new Error('Please install MetaMask.')
-            var from = (await window.ethereum.enable())[0]
+            const from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
             const result = await fetchUsers({ address: from })
             if (result[0]) setProfile(result[0])
@@ -162,7 +164,6 @@ const Setting: FC = () => {
             updateProfile()
         } catch (e) {
             alert(e.message)
-            return
         }
     }
 
@@ -389,8 +390,7 @@ const Setting: FC = () => {
                             <Image
                                 src={
                                     profile.profile_pic?.url
-                                        ? 'https://api.ultcube.scc.sh' +
-                                          profile.profile_pic?.url
+                                        ? `https://api.ultcube.scc.sh${profile.profile_pic?.url}`
                                         : '/assets/images/empty_placeholder.png'
                                 }
                                 sx={{

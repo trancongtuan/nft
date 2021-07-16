@@ -1,15 +1,20 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable no-irregular-whitespace */
 import React, { FC, useCallback, useState, useEffect } from 'react'
 import { Box, Button, Flex, Grid, Text } from 'theme-ui'
 import _ from 'lodash'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
+import {
+    GetStaticProps,
+    GetServerSideProps,
+    InferGetServerSidePropsType,
+} from 'next'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { v4 as uuidv4 } from 'uuid'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+
 import { InfiniteData } from 'react-query'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
@@ -141,7 +146,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         hasNextPage,
     } = useGetAssetsInfiniteQuery(
         assetType,
-        assetType == 'all'
+        assetType === 'all'
             ? { pages: [], pageParams: [{ _start: 0, _limit: 10 }] }
             : assets
     )
@@ -153,8 +158,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const fetchMore = useCallback(() => fetchNextPage(), [fetchNextPage])
 
     const updateUsers = async (type) => {
+        // eslint-disable-next-line no-underscore-dangle
         const _sort =
-            type.id == 1 ? 'sales_amount:DESC' : 'purchases_amount:DESC'
+            type.id === 1 ? 'sales_amount:DESC' : 'purchases_amount:DESC'
         const result = await fetchUsers({ _start: 0, _limit: 15, _sort })
         setUsers(result)
     }

@@ -231,11 +231,13 @@ const BidCard: FC<BidCardProps> = ({
                             justifyContent: 'center',
                             alignItems: 'center',
                             cursor: 'pointer',
-                            backgroundColor: image ? 'transparent' : 'lightgray',
+                            backgroundColor: image
+                                ? 'transparent'
+                                : 'lightgray',
                         }}
                     >
-                        {
-                            image.includes('.mp4') ?
+                        {image.includes('.mp4') ? (
+                            // eslint-disable-next-line jsx-a11y/media-has-caption
                             <video
                                 style={{
                                     position: 'absolute',
@@ -249,7 +251,7 @@ const BidCard: FC<BidCardProps> = ({
                                 src={image}
                                 autoPlay
                             />
-                            :
+                        ) : (
                             <Image
                                 sx={{
                                     position: 'absolute',
@@ -264,7 +266,7 @@ const BidCard: FC<BidCardProps> = ({
                                 }}
                                 src={image}
                             />
-                        }
+                        )}
                         {countDown && (
                             <Box
                                 sx={{

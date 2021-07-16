@@ -1,3 +1,5 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React, { FC, useState, ReactNode, useEffect } from 'react'
 import Link from 'next/link'
 import { Box, Text, Flex, Button } from 'theme-ui'
@@ -102,7 +104,7 @@ const Items: FC = () => {
     const updateProfile = async () => {
         try {
             if (!window.ethereum) throw new Error('Please install MetaMask.')
-            var from = (await window.ethereum.enable())[0]
+            const from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
             const result = await fetchUsers({ address: from })
             if (result[0]) setProfile(result[0])
@@ -123,7 +125,6 @@ const Items: FC = () => {
             updateProfile()
         } catch (e) {
             alert(e.message)
-            return
         }
     }
 
@@ -485,8 +486,7 @@ const Items: FC = () => {
                     <Avatar
                         src={
                             profile.profile_pic?.url
-                                ? 'https://api.ultcube.scc.sh' +
-                                  profile.profile_pic?.url
+                                ? `https://api.ultcube.scc.sh${profile.profile_pic?.url}`
                                 : '/assets/images/empty_placeholder.png'
                         }
                         size="xl"
