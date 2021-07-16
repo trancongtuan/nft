@@ -144,7 +144,16 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 }}
             >
                 <Box sx={{ position: 'relative' }}>
-                    <Flex ref={ref} sx={{ overflowX: 'auto' }} mb={30}>
+                    <Flex
+                        ref={ref}
+                        sx={{
+                            overflowX: 'auto',
+                            '::-webkit-scrollbar': {
+                                display: 'none',
+                            },
+                        }}
+                        mb={30}
+                    >
                         {featuredCollection.map((item) => (
                             <Flex
                                 key={uuidv4()}
@@ -219,7 +228,15 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     </Text>
                 </Flex>
                 <Box sx={{ position: 'relative' }}>
-                    <Flex ml={-20} sx={{ overflowX: 'auto' }}>
+                    <Flex
+                        ml={-20}
+                        sx={{
+                            overflowX: 'auto',
+                            '::-webkit-scrollbar': {
+                                display: 'none',
+                            },
+                        }}
+                    >
                         {_.chunk(users, 3).map((chunkedUsers, idx) => (
                             <Box
                                 key={uuidv4()}
