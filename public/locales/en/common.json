@@ -39,7 +39,8 @@
         "explore": "Explore",
         "my_items": "My Items",
         "community": "Community",
-        "search_items": "Search Items"
+        "search_items": "Search Items",
+        "connect_wallet": "Connect Wallet"
     },
     "navigation": {
         "placeholder": "Placeholder",

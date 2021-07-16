@@ -39,7 +39,8 @@
         "explore": "探索",
         "my_items": "我的NFT",
         "community": "社群",
-        "search_items": "搜尋物件"
+        "search_items": "搜尋物件",
+        "connect_wallet": "連接錢包"
     },
     "navigation": {
         "placeholder": "占位符",
