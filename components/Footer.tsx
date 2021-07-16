@@ -129,9 +129,9 @@ const Footer: FC = () => {
                                     }}
                                 />
                                 <Button
-                                    variant="primary"
                                     sx={{
                                         position: 'absolute',
+                                        backgroundColor: '#00eeb9',
                                         top: 0,
                                         right: 0,
                                         fontSize: 1,
@@ -158,7 +158,7 @@ const Footer: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Rarible
+                                ULTCube
                             </Text>
                             <Flex mt={16} sx={{ flexDirection: 'column' }}>
                                 <Link href="/">
@@ -249,24 +249,6 @@ const Footer: FC = () => {
                                 Community
                             </Text>
                             <Flex mt={16} sx={{ flexDirection: 'column' }}>
-                                <Link href="/rari">
-                                    <Text
-                                        mb={12}
-                                        sx={{
-                                            cursor: 'pointer',
-                                            color: 'textSecondary',
-                                            fontSize: '16px',
-                                            fontWeight: 'bold',
-                                            transition:
-                                                'all 0.12s ease-in-out 0s',
-                                            ':hover': {
-                                                color: 'text',
-                                            },
-                                        }}
-                                    >
-                                        RARI Token
-                                    </Text>
-                                </Link>
                                 <UILink
                                     href="https://gov.rarible.com/"
                                     target="_blank"
@@ -404,23 +386,27 @@ const Footer: FC = () => {
                                 'column',
                                 'row',
                             ],
-                            alignItems: 'center',
+                            alignItems: [
+                                'center',
+                                'center',
+                                'center',
+                                'flex-end',
+                            ],
                             justifyContent: [
                                 'center',
                                 'center',
                                 'center',
-                                'space-between',
+                                'flex-end',
                             ],
                         }}
                     >
                         <Box mr={[0, 0, 0, 32]} mt={[16, 16, 16, 0]}>
-                            <Text sx={{ fontSize: 1, order: [2, 2, 2, 1] }}>
-                                © Rarible, Inc. All rights reserved.
+                            <Text sx={{ fontSize: 1 }}>
+                                © Ultimate Node Ltd. All rights reserved.
                             </Text>
                         </Box>
 
                         <Flex
-                            mr={[0, 0, 0, 32]}
                             mt={[16, 16, 16, 0]}
                             sx={{
                                 flexGrow: 1,
@@ -432,6 +418,7 @@ const Footer: FC = () => {
                                         color: 'text',
                                     },
                                 },
+                                justifyContent: 'flex-end',
                             }}
                         >
                             <a href="/files/terms.pdf" target="_blank">
@@ -444,15 +431,6 @@ const Footer: FC = () => {
                                     Privacy
                                 </Text>
                             </a>
-                        </Flex>
-                        <Flex
-                            mt={[16, 16, 16, 0]}
-                            sx={{
-                                width: '230px',
-                                order: [-1, -1, -1, 3],
-                            }}
-                        >
-                            <Social />
                         </Flex>
                     </Flex>
                 </Box>
