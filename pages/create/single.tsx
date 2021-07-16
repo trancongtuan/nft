@@ -19,6 +19,8 @@ import React, {
 import Popover from 'react-popover'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
 
 import { format } from 'date-fns'
 import Layout from '../../containers/Layout'
@@ -1472,5 +1474,11 @@ const Single: FC = () => {
         </Layout>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Single

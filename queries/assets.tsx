@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {
     useInfiniteQuery,
     UseInfiniteQueryResult,
@@ -226,8 +228,8 @@ export interface Asset {
 }
 
 /*
-* Backend removed first layer
-*/
+ * Backend removed first layer
+ */
 export interface AssetsResponseData {
     assets: Asset[]
 }
@@ -243,41 +245,50 @@ export const fetchAssets: ({
     _start?: number
     _limit?: number
     ultcube_hot_bids?: boolean
-    asset_type?: String
-    collection_slug?: String
-    owner_address_contains?: String
-}) => Promise<Asset[]> = ({ _start, _limit, asset_type, collection_slug, owner_address_contains }) => {
-    const params = { _start, _limit, asset_type, collection_slug, owner_address_contains };
-    if (!asset_type || asset_type == 'all') delete params.asset_type
+    asset_type?: string
+    collection_slug?: string
+    owner_address_contains?: string
+}) => Promise<Asset[]> = ({
+    _start,
+    _limit,
+    asset_type,
+    collection_slug,
+    owner_address_contains,
+}) => {
+    const params = {
+        _start,
+        _limit,
+        asset_type,
+        collection_slug,
+        owner_address_contains,
+    }
+    if (!asset_type || asset_type === 'all') delete params.asset_type
     if (!collection_slug) delete params.collection_slug
     if (!owner_address_contains) delete params.owner_address_contains
 
-    return client
-        .get('/assets', { params })
-        .then((response) => response.data)
+    return client.get('/assets', { params }).then((response) => response.data)
 }
 
 export function useGetAssetsInfiniteQuery(
-    assetType: String,
+    assetType: string,
     initialData?: InfiniteData<Asset[]>
 ): UseInfiniteQueryResult<Asset[], unknown> {
-    return useInfiniteQuery(['assets', assetType], ({ pageParam }) => fetchAssets({ ...pageParam, asset_type: assetType }), {
-        getNextPageParam: (lastPage, pages) => {
-            if (lastPage?.length === 0) return undefined;
-            return { _start: pages.length * 10, _limit: 10 }
-        },
-        initialData,
-    })
+    return useInfiniteQuery(
+        ['assets', assetType],
+        ({ pageParam }) => fetchAssets({ ...pageParam, asset_type: assetType }),
+        {
+            getNextPageParam: (lastPage, pages) => {
+                if (lastPage?.length === 0) return undefined
+                return { _start: pages.length * 10, _limit: 10 }
+            },
+            initialData,
+        }
+    )
 }
 
 export const fetchAssetTypes: () => Promise<any> = () =>
-    client
-        .get(`/asset-types`)
-        .then((response) => response.data)
+    client.get(`/asset-types`).then((response) => response.data)
 
 export function useAssetTypeQuery() {
-    return useQuery(
-        ['assetType'],
-        () => fetchAssetTypes()
-    )
+    return useQuery(['assetType'], () => fetchAssetTypes())
 }

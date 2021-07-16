@@ -1,19 +1,25 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable react/require-default-props */
 import { Box, Button, Flex, Text } from 'theme-ui'
-import React, { useState, FC } from 'react'
+import React, { useState } from 'react'
 import CustomInput from './CustomInput'
-import { ReactNode } from 'react';
 
 interface Props {
-    name: String
+    name: string
     onConfirm?: (amount: any) => Promise<void>
     loading?: boolean
     onClose?: any
-    children?: ReactNode
 }
 
-export const PopupPlaceABid = ({ name, onConfirm, onClose, loading }: Props) => {
-    const [quantity, setQuantity] = useState('1');
-    const [cost, setCost] = useState('');
+export const PopupPlaceABid = ({
+    name,
+    onConfirm,
+    onClose,
+    loading,
+}: Props) => {
+    const [quantity, setQuantity] = useState('1')
+    const [cost, setCost] = useState('')
 
     return (
         <Flex
@@ -98,7 +104,7 @@ export const PopupPlaceABid = ({ name, onConfirm, onClose, loading }: Props) => 
                 onClick={() => onConfirm(0)}
                 disabled={loading}
             >
-                { loading ? 'Loading...' : 'Proceed to payment' }
+                {loading ? 'Loading...' : 'Proceed to payment'}
             </Button>
             <Button
                 variant="secondary"

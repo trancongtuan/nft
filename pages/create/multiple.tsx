@@ -16,9 +16,12 @@ import React, {
     useRef,
     useState,
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import Popover from 'react-popover'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
 
 import Layout from '../../containers/Layout'
 import ToggleButton from '../../components/ToggleButton'
@@ -95,12 +98,12 @@ const marketplaceList = [
     {
         id: 1,
         icon: () => <PriceIcon />,
-        label: 'Fixed price',
+        label: 'fixed_price',
     },
     {
         id: 2,
         icon: () => <UnlimitedIcon />,
-        label: 'Unlimited auction',
+        label: 'unlimited_auction',
     },
 ]
 
@@ -148,42 +151,45 @@ const MarketplaceItem: FC<MarketplaceItemProps> = ({
     label,
     onClick,
     selected,
-}) => (
-    <Flex
-        onClick={onClick}
-        key={id}
-        px={20}
-        sx={{
-            flex: 1,
-            height: 140,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderWidth: 2,
-            borderStyle: 'solid',
-            borderColor: selected ? 'primary' : 'borderColor',
-            borderRadius: 1,
-            ':hover': {
-                borderColor: selected ? 'primary' : 'borderHoverColor',
-            },
-            flexDirection: 'column',
-            cursor: 'pointer',
-        }}
-        color="text"
-    >
-        {icon()}
-        <Text
-            mt={8}
+}) => {
+    const { t } = useTranslation('common')
+    return (
+        <Flex
+            onClick={onClick}
+            key={id}
+            px={20}
             sx={{
-                maxWidth: 60,
-                textAlign: 'center',
-                fontSize: [12, 14],
-                fontWeight: 'heavy',
+                flex: 1,
+                height: 140,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderWidth: 2,
+                borderStyle: 'solid',
+                borderColor: selected ? 'primary' : 'borderColor',
+                borderRadius: 1,
+                ':hover': {
+                    borderColor: selected ? 'primary' : 'borderHoverColor',
+                },
+                flexDirection: 'column',
+                cursor: 'pointer',
             }}
+            color="text"
         >
-            {label}
-        </Text>
-    </Flex>
-)
+            {icon()}
+            <Text
+                mt={8}
+                sx={{
+                    maxWidth: 60,
+                    textAlign: 'center',
+                    fontSize: [12, 14],
+                    fontWeight: 'heavy',
+                }}
+            >
+                {t(`create.${label}`)}
+            </Text>
+        </Flex>
+    )
+}
 
 interface CollectionItemProps {
     id: string | number
@@ -242,6 +248,7 @@ const CollectionItem: FC<CollectionItemProps> = ({
 )
 
 const Create: FC = () => {
+    const { t } = useTranslation('common')
     const ref = useRef<HTMLInputElement>(null)
     const [file, setFile] = useState<string>('/assets/images/avt-default.svg')
     const onChangeFile: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -290,39 +297,39 @@ const Create: FC = () => {
                         variant="secondary"
                         sx={{ width: 120 }}
                     >
-                        Choose file
+                        {t('create.choose_file')}
                     </Button>
                 </Flex>
             </Flex>
             <Box mt={16}>
                 <CustomInput
-                    label="Display name"
+                    label={t('create.display_name')}
                     optionLabel="required"
-                    placeholder="Enter token name"
+                    placeholder={t('create.display_name_placeholder')}
                     value=""
-                    staticBottom="Token name cannot be changed in future"
+                    staticBottom={`${t('create.display_name_bottom')}`}
                 />
             </Box>
             <Box mt={16}>
                 <CustomInput
-                    label="Symbol"
+                    label={t('create.symbol')}
                     optionLabel="required"
-                    placeholder="Enter token symbol"
+                    placeholder={t('create.symbol_placeholder')}
                     value=""
                 />
             </Box>
             <Box mt={16}>
                 <CustomInput
-                    label="Description"
+                    label={t('create.description')}
                     optionLabel="optional"
-                    placeholder="Spread some words about your token collection"
+                    placeholder={t('create.description_placeholder')}
                     value=""
                 />
             </Box>
             <Box mt={16}>
                 <CustomInput
-                    label="Short url"
-                    placeholder="Enter short url"
+                    label={t('create.short_url')}
+                    placeholder={t('create.short_url_placeholder')}
                     value=""
                     staticLeft={
                         <Flex mr={8} sx={{ flexShrink: 0 }}>
@@ -334,15 +341,16 @@ const Create: FC = () => {
                             </Text>
                         </Flex>
                     }
-                    staticBottom="Will be used as public URL"
+                    staticBottom={`${t('create.short_url_bottom')}`}
                 />
             </Box>
-            <Button mt={16}>Create collection</Button>
+            <Button mt={16}>{t('create.create_collection')}</Button>
         </Flex>
     )
 }
 
 const Multiple: FC = () => {
+    const { t } = useTranslation('common')
     const ref = useRef<HTMLInputElement>(null)
     const [file, setFile] = useState<string | null>(null)
     const onChangeFile: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -373,7 +381,7 @@ const Multiple: FC = () => {
             <Popup
                 isOpen={showCreatePopup}
                 onClose={() => setShowCreatePopup(false)}
-                label="Collection"
+                label={t('create.collection')}
                 closeType="outside"
             >
                 <Create />
@@ -395,7 +403,7 @@ const Multiple: FC = () => {
                     >
                         <BackIcon />
                         <Text ml={8} sx={{ fontWeight: 'bold', fontSize: 2 }}>
-                            Manage collectible type
+                            {t('create.manage')}
                         </Text>
                     </Flex>
                     <Text
@@ -404,7 +412,7 @@ const Multiple: FC = () => {
                         mb={32}
                         sx={{ fontSize: [24, 32, 36], fontWeight: 'heavy' }}
                     >
-                        Create multiple collectible
+                        {t('create.multiple.heading')}
                     </Text>
                     <Flex
                         sx={{ flexDirection: 'row', alignItems: 'flex-start' }}
@@ -417,7 +425,7 @@ const Multiple: FC = () => {
                                 color="text"
                                 sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
-                                Upload file
+                                {t('create.upload_file')}
                             </Text>
                             <Flex
                                 py={4}
@@ -481,7 +489,7 @@ const Multiple: FC = () => {
                                             sx={{ minWidth: 160 }}
                                             onClick={() => ref.current.click()}
                                         >
-                                            Choose File
+                                            {t('general.choose_file')}
                                         </Button>
                                     </>
                                 )}
@@ -509,7 +517,7 @@ const Multiple: FC = () => {
                                             fontWeight: 'heavy',
                                         }}
                                     >
-                                        Put on marketplace
+                                        {t('create.put_on_market')}
                                     </Text>
                                     <Text
                                         color="textSecondary"
@@ -543,9 +551,11 @@ const Multiple: FC = () => {
                                     {marketplace === marketplaceList[0] && (
                                         <Box mt={40}>
                                             <CustomInput
-                                                label="Price"
+                                                label={t('create.price')}
                                                 value=""
-                                                placeholder="Enter price for one piece"
+                                                placeholder={t(
+                                                    'create.price_placeholder'
+                                                )}
                                                 staticRight={
                                                     <Popover
                                                         onOuterAction={() =>
@@ -619,7 +629,7 @@ const Multiple: FC = () => {
                                                         lineHeight: '20.7px',
                                                     }}
                                                 >
-                                                    Service fee{' '}
+                                                    {t('create.service_fee')}{' '}
                                                     <Text color="text">
                                                         2.5%
                                                     </Text>
@@ -632,7 +642,9 @@ const Multiple: FC = () => {
                                                         lineHeight: '20.7px',
                                                     }}
                                                 >
-                                                    You will receive{' '}
+                                                    {t(
+                                                        'create.you_will_receive'
+                                                    )}{' '}
                                                     <Text color="text">
                                                         0 ETH{' '}
                                                     </Text>
@@ -664,15 +676,16 @@ const Multiple: FC = () => {
                                                     'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
                                             }}
                                         >
-                                            Unlock once purchased
+                                            {t('create.unlock_once_purchased')}
                                         </Text>
                                     </Text>
                                     <Text
                                         color="textSecondary"
                                         sx={{ fontSize: 1, fontWeight: 'body' }}
                                     >
-                                        Content will be unlocked after
-                                        successful transaction
+                                        {t(
+                                            'create.unlock_once_purchased_description'
+                                        )}
                                     </Text>
                                 </Flex>
                                 <Flex mt={8} ml={16} sx={{ flexShrink: 0 }}>
@@ -687,7 +700,9 @@ const Multiple: FC = () => {
                                 <>
                                     <CustomInput
                                         label=""
-                                        placeholder="Digital key, code to redeem or link to file..."
+                                        placeholder={t(
+                                            'create.price_placeholder2'
+                                        )}
                                         value={unlockValue}
                                         onChange={(text) =>
                                             setUnlockValue(text)
@@ -698,7 +713,7 @@ const Multiple: FC = () => {
                                         color="textSecondary"
                                         sx={{ fontSize: 1, fontWeight: 'body' }}
                                     >
-                                        Tip: Markdown syntax is supported
+                                        {t('create.price_bottom')}
                                     </Text>
                                 </>
                             )}
@@ -708,7 +723,7 @@ const Multiple: FC = () => {
                                 color="text"
                                 sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
-                                Choose collection
+                                {t('create.choose_collection')}
                             </Text>
                             <Grid gap={16} width={1 / 3} mt={16} mb={40}>
                                 {collectionList.map((item) => (
@@ -732,22 +747,24 @@ const Multiple: FC = () => {
                                 />
                             </Grid>
                             <CustomInput
-                                label="Title"
-                                placeholder={`e. g. "Redeemable T-Shirt with logo"`}
+                                label={t('create.title')}
+                                placeholder={t('create.title_placeholder')}
                                 value=""
                             />
                             <Box mt={40}>
                                 <CustomInput
-                                    label="Description"
+                                    label={t('create.description')}
                                     optionLabel="Optional"
-                                    placeholder={`e. g. "After purchasing you’ll be able to get the real T-Shirt"`}
+                                    placeholder={t(
+                                        'create.description_placeholder'
+                                    )}
                                     value=""
                                 />
                             </Box>
                             <Box mt={40}>
                                 <Grid gap={16} width="40%">
                                     <CustomInput
-                                        label="Royalties"
+                                        label={t('create.royalties')}
                                         placeholder={`E. g. 10%"`}
                                         value="10"
                                         staticRight={
@@ -761,13 +778,17 @@ const Multiple: FC = () => {
                                                 %
                                             </Text>
                                         }
-                                        staticBottom="Suggested: 10%, 20%, 30%"
+                                        staticBottom={`${t(
+                                            'create.royalties'
+                                        )}: 10%, 20%, 30%`}
                                     />
                                     <CustomInput
-                                        label="Number of copies"
+                                        label={t('create.number_of_copies')}
                                         placeholder={`E. g. 10"`}
                                         value=""
-                                        staticBottom="Amount of tokens"
+                                        staticBottom={`${t(
+                                            'create.number_of_copies_bottom'
+                                        )}`}
                                     />
                                 </Grid>
                             </Box>
@@ -776,7 +797,7 @@ const Multiple: FC = () => {
                                 color="text"
                                 sx={{ fontWeight: 'bold', fontSize: 2 }}
                             >
-                                Properties
+                                {t('create.properties')}
                                 <Text
                                     ml={8}
                                     color="textSecondary"
@@ -799,7 +820,7 @@ const Multiple: FC = () => {
                             </Grid>
                             <Flex mt={32} sx={{ alignItems: 'center' }}>
                                 <Button sx={{ minWidth: 192 }}>
-                                    Create item
+                                    {t('create.create_item')}
                                 </Button>
                                 <Text
                                     ml="auto"
@@ -827,9 +848,7 @@ const Multiple: FC = () => {
                                                         textAlign: 'center',
                                                     }}
                                                 >
-                                                    Auto-saving is enabled. All
-                                                    data will be stored in your
-                                                    browser only
+                                                    {t('create.auto_saving')}
                                                 </Text>
                                             </Flex>
                                         </Tooltip>
@@ -872,7 +891,7 @@ const Multiple: FC = () => {
                                 color="text"
                                 sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
-                                Preview
+                                {t('create.preview')}
                             </Text>
                             {file ? (
                                 <BidCard
@@ -923,8 +942,7 @@ const Multiple: FC = () => {
                                                 fontWeight: 'body',
                                             }}
                                         >
-                                            Upload file to preview your brand
-                                            new NFT
+                                            {t('create.preview_upload')}
                                         </Text>
                                     </Flex>
                                 </Flex>
@@ -963,7 +981,7 @@ const Multiple: FC = () => {
                                                 textAlign: 'center',
                                             }}
                                         >
-                                            Unlockable content
+                                            {t('create.unlockable_content')}
                                         </Text>
                                     )}
                                 </Flex>
@@ -975,5 +993,11 @@ const Multiple: FC = () => {
         </Layout>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Multiple

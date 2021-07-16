@@ -1,12 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable no-irregular-whitespace */
 import React, { FC, useCallback, useState, useEffect } from 'react'
 import { Box, Button, Flex, Grid, Text } from 'theme-ui'
 import _ from 'lodash'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { v4 as uuidv4 } from 'uuid'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+
 import { InfiniteData } from 'react-query'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
@@ -42,48 +46,31 @@ const sellerList = [
     },
 ]
 
-const filterItems = [
-    {
-        id: '1',
-        label: 'Recently added',
-        disable: true,
-    },
-    {
-        id: '2',
-        label: 'Cheapest',
-        disable: false,
-    },
-    {
-        id: '3',
-        label: 'Highest price',
-        disable: false,
-    },
-    {
-        id: '4',
-        label: 'Most liked',
-        disable: false,
-    },
-    {
-        id: '5',
-        label: 'Options',
-        disable: true,
-    },
-]
-
 export const getServerSideProps: GetServerSideProps<{
-    collections: Collection[],
-    assets: InfiniteData<Asset[]>, // TODO: Change to correct type
+    collections: Collection[]
+    assets: InfiniteData<Asset[]> // TODO: Change to correct type
     hotBids: Asset[]
     users: any[]
 }> = async () => {
     const collections = await fetchCollections({})
     const assets = await fetchAssets({ _start: 0, _limit: 10 })
-    const hotBids = await fetchAssets({ _start: 0, _limit: 10, ultcube_hot_bids: true })
-    const users = await fetchUsers({ _start: 0, _limit: 15, _sort: 'sales_amount:DESC' })
+    const hotBids = await fetchAssets({
+        _start: 0,
+        _limit: 10,
+        ultcube_hot_bids: true,
+    })
+    const users = await fetchUsers({
+        _start: 0,
+        _limit: 15,
+        _sort: 'sales_amount:DESC',
+    })
     return {
         props: {
             collections,
-            assets: { pages: [assets], pageParams: [{ _start: 0, _limit: 10 }] },
+            assets: {
+                pages: [assets],
+                pageParams: [{ _start: 0, _limit: 10 }],
+            },
             hotBids: hotBids || [],
             users,
         },
@@ -97,27 +84,36 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     users: defaultUsers,
 }) => {
     const router = useRouter()
+    const { t } = useTranslation('common')
     const [showSellers, setShowSellers] = useState(false)
-    const [sellerType, setSellerType] = useState<TooltipItemProps>(sellerList[0])
+    const [sellerType, setSellerType] = useState<TooltipItemProps>(
+        sellerList[0]
+    )
     const ref = useHorizontalScroll()
     const [assetType, setAssetType] = useState('all')
     const [showLoadMore, setShowLoadMore] = useState(true)
-    const [users, setUsers] = useState(defaultUsers);
+    const [users, setUsers] = useState(defaultUsers)
     const {
         data: infinityAssetsData,
         fetchNextPage,
         hasNextPage,
     } = useGetAssetsInfiniteQuery(
-            assetType, 
-            assetType == 'all' ? { pages: [], pageParams: [{ _start: 0, _limit: 10 }] } : assets
-        )
+        assetType,
+        assetType === 'all'
+            ? { pages: [], pageParams: [{ _start: 0, _limit: 10 }] }
+            : assets
+    )
 
     const { data: collectionsData } = useGetCollectionsQuery({}, collections)
-    const featuredCollection = collectionsData.filter(item => item.ultcube_featured);
+    const featuredCollection = collectionsData.filter(
+        (item) => item.ultcube_featured
+    )
     const fetchMore = useCallback(() => fetchNextPage(), [fetchNextPage])
 
     const updateUsers = async (type) => {
-        const _sort = type.id == 1 ? 'sales_amount:DESC' : 'purchases_amount:DESC'
+        // eslint-disable-next-line no-underscore-dangle
+        const _sort =
+            type.id === 1 ? 'sales_amount:DESC' : 'purchases_amount:DESC'
         const result = await fetchUsers({ _start: 0, _limit: 15, _sort })
         setUsers(result)
     }
@@ -130,7 +126,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         updateUsers(sellerType)
     }, [assetType])
 
-    const assetTypeList = useAssetTypeQuery();
+    const assetTypeList = useAssetTypeQuery()
 
     return (
         <Layout>
@@ -177,7 +173,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     subLabel={item.slug}
                                     image={item.image_url}
                                     darkText={false}
-                                    onClick={() => router.push(`/collection/${item.slug}`)}
+                                    onClick={() =>
+                                        router.push(`/collection/${item.slug}`)
+                                    }
                                 />
                             </Flex>
                         ))}
@@ -189,7 +187,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         color="text"
                         sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
-                        Top
+                        {t('home.top')}
                         <Popover
                             onOuterAction={() => setShowSellers(false)}
                             isOpen={showSellers}
@@ -253,7 +251,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                             name={user.display_name}
                                             wallet={user.sales_amount}
                                             user={{
-                                                src: user?.profile_pic?.url ? 'https://api.ultcube.scc.sh' + user?.profile_pic?.url : 'https://via.placeholder.com/100?text=ULTCube',
+                                                src: user?.profile_pic?.url
+                                                    ? `https://api.ultcube.scc.sh${user?.profile_pic?.url}`
+                                                    : 'https://via.placeholder.com/100?text=ULTCube',
                                                 verified: true,
                                             }}
                                             onClick={() =>
@@ -273,7 +273,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         color="text"
                         sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
-                        Hot bids 🔥
+                        {t('home.hot_bids')} 🔥
                     </Text>
                     <Carousel slidesToShow={4} length={hotBids.length}>
                         {hotBids?.map((item) => (
@@ -283,9 +283,11 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     currency="ETH"
                                     image={item.image_url}
                                     price={item.top_bid ?? 0}
-                                    onCLick={() => router.push(
-                                        `/product/${item.asset_contract.address}/${item.token_id}`
-                                    )}
+                                    onCLick={() =>
+                                        router.push(
+                                            `/product/${item.asset_contract.address}/${item.token_id}`
+                                        )
+                                    }
                                 />
                             </Box>
                         ))}
@@ -297,7 +299,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         color="text"
                         sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
                     >
-                        Hot collections 💥
+                        {t('home.hot_collections')} 💥
                     </Text>
                     <Carousel
                         slidesToShow={4}
@@ -306,7 +308,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         {(collectionsData ?? []).map((item) => (
                             <Box key={item.slug} px={10}>
                                 <HotCollection
-                                    onClick={() => router.push(`/collection/${item.slug}`)}
+                                    onClick={() =>
+                                        router.push(`/collection/${item.slug}`)
+                                    }
                                     name={item.name}
                                     code={item.slug}
                                     owner={{ src: item.image_url }}
@@ -334,13 +338,17 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             flexShrink: 0,
                         }}
                     >
-                        Explore ⚡
+                        {t('general.explore')} ⚡
                     </Text>
                     <Box sx={{ position: 'relative' }}>
                         <Flex ml={16} sx={{ overflowX: 'auto' }}>
                             <Button
                                 mr={12}
-                                variant={assetType === 'all' ? 'borderActive' : 'border'}
+                                variant={
+                                    assetType === 'all'
+                                        ? 'borderActive'
+                                        : 'border'
+                                }
                                 sx={{
                                     flexShrink: 0,
                                 }}
@@ -348,24 +356,27 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             >
                                 All
                             </Button>
-                            {
-                                assetTypeList.status === 'success' ?
-                                    assetTypeList.data.map(item => (
-                                        <Button
-                                            mr={12}
-                                            variant={assetType === item.id ? 'borderActive' : 'border'}
-                                            sx={{
-                                                flexShrink: 0,
-                                            }}
-                                            key={item.id}
-                                            onClick={() => setAssetType(item.id)}
-                                        >
-                                            {item.name}
-                                        </Button>
-                                    ))
-                                    :
-                                    <p>Loading...</p>
-                            }
+                            {assetTypeList.status === 'success' ? (
+                                assetTypeList.data.map((item) => (
+                                    <Button
+                                        mr={12}
+                                        variant={
+                                            assetType === item.id
+                                                ? 'borderActive'
+                                                : 'border'
+                                        }
+                                        sx={{
+                                            flexShrink: 0,
+                                        }}
+                                        key={item.id}
+                                        onClick={() => setAssetType(item.id)}
+                                    >
+                                        {item.name}
+                                    </Button>
+                                ))
+                            ) : (
+                                <p>Loading...</p>
+                            )}
                         </Flex>
                         <EdgeOverflow />
                     </Box>
@@ -430,4 +441,11 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         </Layout>
     )
 }
+
+// export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+//     props: {
+//         ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
+//     },
+// })
+
 export default Home

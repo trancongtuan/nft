@@ -1,5 +1,8 @@
 import React, { FC, useState } from 'react'
 import { Box, Text, Flex, Button } from 'theme-ui'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 import Popover from 'react-popover'
 import Link from 'next/link'
 import NavigationBar from '../components/NavigationBar'
@@ -39,6 +42,7 @@ const tooltipItems = [
 ]
 
 const Following: FC = () => {
+    const { t } = useTranslation('common')
     const [showHelp, setShowHelp] = useState(false)
     const [showFilter, setShowFilter] = useState(false)
     const [currency, setCurrency] = useState(tooltipItems[0].id)
@@ -64,7 +68,7 @@ const Following: FC = () => {
                             color: 'text',
                         }}
                     >
-                        Following
+                        {t('general.following')}
                     </Text>
                     <Popover
                         isOpen={showHelp}
@@ -169,7 +173,7 @@ const Following: FC = () => {
                                 display: ['none', 'block', 'block', 'block'],
                             }}
                         >
-                            Filter & Sort
+                            {t('general.filter_sort')}
                         </Text>
                     </Button>
                 </Popover>
@@ -185,11 +189,10 @@ const Following: FC = () => {
                         color="text"
                         sx={{ fontWeight: 'heavy', fontSize: 28 }}
                     >
-                        No items found
+                        {t('general.no_items_found')}
                     </Text>
                     <Text mt={20} sx={{ textAlign: 'center' }}>
-                        Come back soon! Or try to browse something for you on
-                        our marketplace
+                        {t('general.no_items_found_description')}
                     </Text>
 
                     <Button
@@ -200,7 +203,7 @@ const Following: FC = () => {
                             height: 40,
                         }}
                     >
-                        <Link href="/">Browse Marketplace</Link>
+                        <Link href="/">{t('general.browse_marketplace')}</Link>
                     </Button>
                 </Flex>
             </Box>
@@ -208,5 +211,11 @@ const Following: FC = () => {
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Following

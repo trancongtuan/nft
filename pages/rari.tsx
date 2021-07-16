@@ -1,10 +1,14 @@
 import Image from 'next/image'
 import React, { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
 import { Box, Flex, Text, Button, Grid } from 'theme-ui'
 import Layout from '../containers/Layout'
 import HelpIcon from '../public/assets/images/icons/help.svg'
 
 const Rari: FC = () => {
+    const { t } = useTranslation('common')
     return (
         <Layout>
             <Flex
@@ -75,7 +79,7 @@ const Rari: FC = () => {
                             textAlign: 'center',
                         }}
                     >
-                        Meet RARI – Rarible Governance Token
+                        {t('rari.meet_rari')}
                     </Text>
                     <Text
                         mt={32}
@@ -87,9 +91,7 @@ const Rari: FC = () => {
                             lineHeight: '22px',
                         }}
                     >
-                        {`We think that the best way to align platform development
-                        with customers' interests is to empower the ones who
-                        actively interact with protocol: creators and collectors`}
+                        {t('rari.description')}
                     </Text>
                     <Button
                         mt={32}
@@ -97,7 +99,7 @@ const Rari: FC = () => {
                         variant="border"
                         sx={{ height: 56, fontSize: 17 }}
                     >
-                        Learn more about RARI token
+                        {t('rari.learn_more')}
                     </Button>
                 </Flex>
                 <Flex mt={48} sx={{ width: '100%', justifyContent: 'center' }}>
@@ -162,7 +164,7 @@ const Rari: FC = () => {
                                         lineHeight: '18px',
                                     }}
                                 >
-                                    Available for claim
+                                    {t('rari.available')}
                                 </Text>
                                 <Text
                                     mt="4px"
@@ -186,7 +188,7 @@ const Rari: FC = () => {
                             }}
                         >
                             <Button disabled px={26} sx={{ minWidth: 192 }}>
-                                Nothing to claim
+                                {t('rari.not_available')}
                             </Button>
                             <Button
                                 p={0}
@@ -232,9 +234,7 @@ const Rari: FC = () => {
                                 fontWeight: 'heavy',
                             }}
                         >
-                            Who is eligible to participate
-                            <br />
-                            in the airdrop?
+                            {t('rari.who_is_eligible.heading')}
                         </Text>
                         <Flex mt={32} sx={{ width: '100%' }}>
                             <Flex
@@ -286,7 +286,7 @@ const Rari: FC = () => {
                                             fontWeight: 'heavy',
                                         }}
                                     >
-                                        Existing Rarible users
+                                        {t('rari.who_is_eligible.first_title')}
                                     </Text>
                                     <Text
                                         color="textSecondary"
@@ -299,12 +299,7 @@ const Rari: FC = () => {
                                         color="textSecondary"
                                         sx={{ fontSize: 2, fontWeight: 'body' }}
                                     >
-                                        Active users will receive 2% of the
-                                        total RARI supply according to the
-                                        Liquidity Mining principle: based on the
-                                        previous volume on Rarible marketplace.
-                                        Both buyers and sellers will receive
-                                        50%.
+                                        {t('rari.who_is_eligible.first_desc')}
                                     </Text>
                                 </Flex>
                             </Flex>
@@ -359,7 +354,7 @@ const Rari: FC = () => {
                                             fontWeight: 'heavy',
                                         }}
                                     >
-                                        Documented NFT holders/buyers
+                                        {t('rari.who_is_eligible.second_title')}
                                     </Text>
                                     <Text
                                         color="textSecondary"
@@ -372,9 +367,7 @@ const Rari: FC = () => {
                                         color="textSecondary"
                                         sx={{ fontSize: 2, fontWeight: 'body' }}
                                     >
-                                        In this stage, 4% will be distributed
-                                        amoung Ethereum addresses of all NFTs
-                                        with documented sales on Dune Analytics.
+                                        {t('rari.who_is_eligible.second_desc')}
                                     </Text>
                                 </Flex>
                             </Flex>
@@ -419,7 +412,7 @@ const Rari: FC = () => {
                                             fontWeight: 'heavy',
                                         }}
                                     >
-                                        Remaining NFT owners
+                                        {t('rari.who_is_eligible.third_title')}
                                     </Text>
                                     <Text
                                         color="textSecondary"
@@ -432,14 +425,7 @@ const Rari: FC = () => {
                                         color="textSecondary"
                                         sx={{ fontSize: 2, fontWeight: 'body' }}
                                     >
-                                        As we believe that Dune Analytics might
-                                        not hold all the data, we introduced the
-                                        third stage for corrections. If you
-                                        haven’t found yourself on the list, but
-                                        you know you have significant NFT
-                                        holdings — please reach out to us! The
-                                        second airdrop wave will be announced
-                                        later.
+                                        {t('rari.who_is_eligible.third_desc')}
                                     </Text>
                                 </Flex>
                             </Flex>
@@ -459,7 +445,7 @@ const Rari: FC = () => {
                                     textAlign: 'center',
                                 }}
                             >
-                                How you can get RARI
+                                {t('rari.how_get_RARI')}
                             </Text>
                             <Flex mt={16} sx={{ maxWidth: 490, width: '100%' }}>
                                 <Text
@@ -470,11 +456,7 @@ const Rari: FC = () => {
                                         fontWeight: 'body',
                                     }}
                                 >
-                                    RARI is not an investment and should be
-                                    earned by active participation on the
-                                    platform. 75,000 tokens are issued every
-                                    week, with 50% reserved for buyers, and 50%
-                                    for sellers
+                                    {t('rari.how_get_RARI_desc')}
                                 </Text>
                             </Flex>
                         </Flex>
@@ -505,7 +487,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Create and sell
+                                    {t('rari.create_and_sell')}
                                 </Text>
                             </Flex>
                             <Flex
@@ -530,7 +512,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Collect NFTs
+                                    {t('rari.collect_nfts')}
                                 </Text>
                             </Flex>
                             <Flex
@@ -555,7 +537,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Get airdrop as Rarible user
+                                    {t('rari.get_airdrop_as_rarible_user')}
                                 </Text>
                             </Flex>
                             <Flex
@@ -580,7 +562,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Get airdrop as NFT holder
+                                    {t('rari.get_airdrop_as_NFT_holder')}
                                 </Text>
                             </Flex>
                         </Grid>
@@ -593,7 +575,7 @@ const Rari: FC = () => {
                                 textAlign: 'center',
                             }}
                         >
-                            How to use RARI
+                            {t('rari.how_to_use')}
                         </Text>
                         <Grid
                             mt={48}
@@ -623,7 +605,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Hustle in Rarible DAO
+                                    {t('rari.hustle_in_rarible_DAO')}
                                 </Text>
                             </Flex>
                             <Flex
@@ -648,7 +630,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Vote for platform upgrades
+                                    {t('rari.vote_for_platform_upgrades')}
                                 </Text>
                             </Flex>
                             <Flex
@@ -673,7 +655,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Choose featured artworks
+                                    {t('rari.choose_featured_artworks')}
                                 </Text>
                             </Flex>
                             <Flex
@@ -698,7 +680,7 @@ const Rari: FC = () => {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Participate in moderation
+                                    {t('rari.participate_in_moderation')}
                                 </Text>
                             </Flex>
                         </Grid>
@@ -708,7 +690,7 @@ const Rari: FC = () => {
                             variant="border"
                             sx={{ height: 56, fontSize: 17, borderRadius: 56 }}
                         >
-                            Learn more about RARI token
+                            {t('rari.learn_more')}
                         </Button>
                     </Flex>
                 </Flex>
@@ -716,5 +698,11 @@ const Rari: FC = () => {
         </Layout>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Rari
