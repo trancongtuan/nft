@@ -30,8 +30,9 @@ import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import ActivityCard from '../components/ActivityCard'
 import PopupReport from '../components/PopupReport'
-import { fetchUsers, fetchAssets, EthUser } from '../queries'
+import { fetchUsers, fetchAssets, updateUserAssets, EthUser, Asset } from '../queries'
 import { useAuth } from '../hooks/auth'
+import Web3 from 'web3';
 
 const selectionItems = [
     {
@@ -80,7 +81,7 @@ const Items: FC = () => {
     const [resetFilter, setResetFilter] = useState(false)
     const [showReset, setShowReset] = useState(false)
     const [showReportPopup, setShowReportPopup] = useState(false)
-    const [assets, setAssets] = useState([])
+    const [assets, setAssets] = useState<null | Asset[]>(null)
     const [profile, setProfile] = useState<EthUser>({
         id: null,
         display_name: '',
@@ -116,28 +117,27 @@ const Items: FC = () => {
     }
 
     const connectWallet = async () => {
+        const web3 = new Web3(window.ethereum)
+
         // Get Address
-        let accountAddress
         try {
-            if (!window.ethereum) throw new Error('Please install MetaMask.')
-            accountAddress = await window.ethereum.enable()
-            if (!accountAddress[0]) throw new Error('No account selected.')
-            accountAddress = accountAddress[0]
+            let address = await web3.eth.getAccounts()
+            const accountAddress: string = address[0]
             setConnected(accountAddress)
             updateProfile()
+            updateAssets()
         } catch (e) {
             alert(e.message)
         }
     }
 
     const updateAssets = async () => {
-        if (!window.ethereum) throw new Error('Please install MetaMask.')
-        let accountAddress = await window.ethereum.enable()
-        if (!accountAddress[0]) throw new Error('No account selected.')
-        accountAddress = accountAddress[0]
-        const result = await fetchAssets({
-            owner_address_contains: accountAddress,
-        })
+        const web3 = new Web3(window.ethereum)
+        
+        let address = await web3.eth.getAccounts()
+        const accountAddress: string = address[0]
+
+        const result = await updateUserAssets(accountAddress)
         setAssets(result)
     }
 
@@ -379,7 +379,8 @@ const Items: FC = () => {
         if (showCards && !showActivity) {
             return (
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {assets.map((item) => (
+                    {assets === null && 'Loading...'}
+                    {assets?.map((item) => (
                         <Box
                             key={uuidv4()}
                             p={10}

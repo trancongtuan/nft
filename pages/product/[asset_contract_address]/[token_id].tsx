@@ -26,7 +26,7 @@ import {
     useGetSingleAssetQuery,
 } from '../../../queries/asset'
 
-import { Asset, fetchAssets } from '../../../queries'
+import { Asset, updateSingleAsset, fetchAssets } from '../../../queries'
 
 const Web3 = require('web3')
 
@@ -146,13 +146,6 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
     const [loading, setLoading] = useState(false)
-    // const { data } = useGetSingleAssetQuery(
-    //     {
-    //         asset_contract_address,
-    //         token_id,
-    //     },
-    //     asset
-    // )
     const data = asset;
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -168,61 +161,27 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
 
             const {
                 token_id,
-                asset_contract: { address },
+                asset_contract: { address: asset_contract_address },
             } = data
+
             const order = await seaport.api.getOrder({
                 side: OrderSide.Sell,
-                asset_contract_address: address,
+                asset_contract_address,
                 token_id,
             })
             const transactionHash = await seaport.fulfillOrder({
                 order,
                 accountAddress,
             })
-            console.log(transactionHash)
+            
+            if (transactionHash) {
+                await updateSingleAsset(asset_contract_address, token_id);
+                alert('Purchased');
+            }
         } catch (e) {
             alert(e.message)
             setLoading(false)
             return
-        }
-
-        // let asset
-        // try {
-        //     const { token_id, asset_contract: { address, schema_name } } = data
-        //     asset = await seaport.api.getAsset({
-        //         tokenAddress: address, // string
-        //         tokenId: token_id, // string | number | null
-        //     })
-        //     console.log('Get asset success', asset)
-        // } catch(e) {
-        //     alert(e.message)
-        //     setLoading(false)
-        //     return
-        // }
-
-        // const { tokenId, tokenAddress, assetContract: { schemaName } } = asset
-
-        // // const balance = await seaport.getAssetBalance({
-        // //     accountAddress, // string
-        // //     asset,
-        // // })
-        // // console.log('balance', balance)
-
-        try {
-            // const offer = await seaport.createBuyOrder({
-            //     asset: {
-            //         tokenId,
-            //         tokenAddress,
-            //         schemaName // WyvernSchemaName. If omitted, defaults to 'ERC721'. Other options include 'ERC20' and 'ERC1155'
-            //     },
-            //     accountAddress,
-            //     // Value of the offer, in units of the payment token (or wrapped ETH if none is specified):
-            //     startAmount: parseFloat(amount),
-            // })
-            // console.log('Make offer success', result)
-        } catch (e) {
-            alert(e.message)
-            setLoading(false)
         }
     }
 

@@ -102,7 +102,7 @@ const Avatar: FC<AvatarProps> = ({
                 height: avatarSize,
                 position: 'relative',
                 display: 'inline-block',
-                borderRadius: type !== 'follow' ? 6 : 9999,
+                borderRadius: 6,
                 borderColor: 'background',
                 borderWidth: borderSize,
                 borderStyle: 'solid',
