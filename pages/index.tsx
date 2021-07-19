@@ -35,6 +35,7 @@ import {
     fetchCollections,
     useGetCollectionsQuery,
 } from '../queries/collections'
+import AuctionCard from '../components/AuctionCard'
 
 const sellerList = [
     {
@@ -67,7 +68,11 @@ export const getServerSideProps: GetServerSideProps<{
     })
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
+            ...(await serverSideTranslations(locale, [
+                'common',
+                'footer',
+                'home',
+            ])),
             collections,
             assets: {
                 pages: [assets],
@@ -251,7 +256,11 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         <TopSellerCard
                                             id={idx * 3 + index + 1}
                                             name={user.display_name}
-                                            wallet={sellerType.value === 'sellers' ? user.sales_amount : user.purchases_amount}
+                                            wallet={
+                                                sellerType.value === 'sellers'
+                                                    ? user.sales_amount
+                                                    : user.purchases_amount
+                                            }
                                             user={{
                                                 src: user?.profile_pic?.url
                                                     ? `https://api.ultcube.scc.sh${user?.profile_pic?.url}`
@@ -269,6 +278,49 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     </Flex>
                     <EdgeOverflow />
                 </Box>
+                <Flex mb={32} sx={{ flexDirection: 'column' }}>
+                    <Text
+                        mb={24}
+                        color="text"
+                        sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
+                    >
+                        Live auctions 🔥
+                    </Text>
+                    <Carousel slidesToShow={4} length={hotBids.length}>
+                        {hotBids?.map((item) => (
+                            <Box key={item.id} px={20}>
+                                <AuctionCard
+                                    name={item.name}
+                                    currency="ETH"
+                                    image={item.image_url}
+                                    price={item.top_bid ?? 0}
+                                    onCLick={() =>
+                                        router.push(
+                                            `/product/${item.asset_contract.address}/${item.token_id}`
+                                        )
+                                    }
+                                    bid={100}
+                                    countDown={20000}
+                                    {...{
+                                        creator: {
+                                            src: item.creator?.profile_img_url,
+                                        },
+                                    }}
+                                    {...{
+                                        owner: {
+                                            src: item.owner?.profile_img_url,
+                                        },
+                                    }}
+                                    {...{
+                                        collection: {
+                                            src: item.collection?.image_url,
+                                        },
+                                    }}
+                                />
+                            </Box>
+                        ))}
+                    </Carousel>
+                </Flex>
                 <Flex mb={32} sx={{ flexDirection: 'column' }}>
                     <Text
                         mb={24}
