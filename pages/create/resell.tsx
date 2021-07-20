@@ -16,16 +16,15 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import { useTranslation } from 'react-i18next'
 import Popover from 'react-popover'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
 
+import { format } from 'date-fns'
 import Layout from '../../containers/Layout'
 import ToggleButton from '../../components/ToggleButton'
 import PriceIcon from '../../public/assets/images/icons/price.svg'
+import TimedIcon from '../../public/assets/images/icons/timed.svg'
 import UnlimitedIcon from '../../public/assets/images/icons/unlimited.svg'
 import CloseIcon from '../../public/assets/images/icons/close.svg'
 import DropdownIcon from '../../public/assets/images/icons/drop-down.svg'
@@ -35,6 +34,7 @@ import CreateIcon from '../../public/assets/images/icons/create.svg'
 import BidCard from '../../components/BidCard'
 import CustomInput from '../../components/CustomInput'
 import Tooltip, { TooltipItemProps } from '../../components/Tooltip'
+import DateTimePicker from '../../components/DateTimePicker'
 import Popup from '../../components/Popup'
 
 interface CurrencyIconProps {
@@ -94,16 +94,89 @@ const currencyList = [
     },
 ]
 
+const currencyTimedList = [
+    {
+        id: 1,
+        label: 'WETH',
+        icon: () => <CurrencyIcon name="WETH" />,
+        checked: true,
+    },
+    {
+        id: 2,
+        label: 'DAI',
+        icon: () => <CurrencyIcon name="DAI" />,
+    },
+    {
+        id: 3,
+        label: 'RARI',
+        icon: () => <CurrencyIcon name="RARI" />,
+    },
+    {
+        id: 4,
+        label: 'ATRI',
+        icon: () => <CurrencyIcon name="ATRI" />,
+    },
+    {
+        id: 5,
+        label: 'ABST',
+        icon: () => <CurrencyIcon name="ABST" />,
+    },
+    {
+        id: 6,
+        label: 'ADORs',
+        icon: () => <CurrencyIcon name="ADORs" />,
+    },
+]
+
 const marketplaceList = [
     {
         id: 1,
         icon: () => <PriceIcon />,
-        label: 'fixed_price',
+        label: 'Fixed price',
     },
     {
         id: 2,
+        icon: () => <TimedIcon />,
+        label: 'Timed auction',
+    },
+    {
+        id: 3,
         icon: () => <UnlimitedIcon />,
-        label: 'unlimited_auction',
+        label: 'Unlimited auction',
+    },
+]
+
+const startingDateList = [
+    {
+        id: 1,
+        label: 'Right after listing',
+    },
+    {
+        id: 2,
+        label: 'Pick specific date',
+    },
+]
+
+const expirationDateList = [
+    {
+        id: 1,
+        label: '1 day',
+    },
+    {
+        id: 2,
+        label: '3 day',
+    },
+    {
+        id: 3,
+        label: '5 day',
+    },
+    {
+        id: 4,
+        label: '7 day',
+    },
+    {
+        id: 5,
+        label: 'Pick specific date',
     },
 ]
 
@@ -151,45 +224,42 @@ const MarketplaceItem: FC<MarketplaceItemProps> = ({
     label,
     onClick,
     selected,
-}) => {
-    const { t } = useTranslation('common')
-    return (
-        <Flex
-            onClick={onClick}
-            key={id}
-            px={20}
+}) => (
+    <Flex
+        onClick={onClick}
+        key={id}
+        px={20}
+        sx={{
+            flex: 1,
+            height: 140,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderWidth: 2,
+            borderStyle: 'solid',
+            borderColor: selected ? 'primary' : 'borderColor',
+            borderRadius: 1,
+            ':hover': {
+                borderColor: selected ? 'primary' : 'borderHoverColor',
+            },
+            flexDirection: 'column',
+            cursor: 'pointer',
+        }}
+        color="text"
+    >
+        {icon()}
+        <Text
+            mt={8}
             sx={{
-                flex: 1,
-                height: 140,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderWidth: 2,
-                borderStyle: 'solid',
-                borderColor: selected ? 'primary' : 'borderColor',
-                borderRadius: 1,
-                ':hover': {
-                    borderColor: selected ? 'primary' : 'borderHoverColor',
-                },
-                flexDirection: 'column',
-                cursor: 'pointer',
+                maxWidth: 60,
+                textAlign: 'center',
+                fontSize: [12, 14],
+                fontWeight: 'heavy',
             }}
-            color="text"
         >
-            {icon()}
-            <Text
-                mt={8}
-                sx={{
-                    maxWidth: 60,
-                    textAlign: 'center',
-                    fontSize: [12, 14],
-                    fontWeight: 'heavy',
-                }}
-            >
-                {t(`create.${label}`)}
-            </Text>
-        </Flex>
-    )
-}
+            {label}
+        </Text>
+    </Flex>
+)
 
 interface CollectionItemProps {
     id: string | number
@@ -248,7 +318,6 @@ const CollectionItem: FC<CollectionItemProps> = ({
 )
 
 const Create: FC = () => {
-    const { t } = useTranslation('common')
     const ref = useRef<HTMLInputElement>(null)
     const [file, setFile] = useState<string>('/assets/images/avt-default.svg')
     const onChangeFile: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -297,39 +366,39 @@ const Create: FC = () => {
                         variant="secondary"
                         sx={{ width: 120 }}
                     >
-                        {t('create.choose_file')}
+                        Choose file
                     </Button>
                 </Flex>
             </Flex>
             <Box mt={16}>
                 <CustomInput
-                    label={t('create.display_name')}
+                    label="Display name"
                     optionLabel="required"
-                    placeholder={t('create.display_name_placeholder')}
+                    placeholder="Enter token name"
                     value=""
-                    staticBottom={`${t('create.display_name_bottom')}`}
+                    staticBottom="Token name cannot be changed in future"
                 />
             </Box>
             <Box mt={16}>
                 <CustomInput
-                    label={t('create.symbol')}
+                    label="Symbol"
                     optionLabel="required"
-                    placeholder={t('create.symbol_placeholder')}
+                    placeholder="Enter token symbol"
                     value=""
                 />
             </Box>
             <Box mt={16}>
                 <CustomInput
-                    label={t('create.description')}
+                    label="Description"
                     optionLabel="optional"
-                    placeholder={t('create.description_placeholder')}
+                    placeholder="Spread some words about your token collection"
                     value=""
                 />
             </Box>
             <Box mt={16}>
                 <CustomInput
-                    label={t('create.short_url')}
-                    placeholder={t('create.short_url_placeholder')}
+                    label="Short url"
+                    placeholder="Enter short url"
                     value=""
                     staticLeft={
                         <Flex mr={8} sx={{ flexShrink: 0 }}>
@@ -341,16 +410,15 @@ const Create: FC = () => {
                             </Text>
                         </Flex>
                     }
-                    staticBottom={`${t('create.short_url_bottom')}`}
+                    staticBottom="Will be used as public URL"
                 />
             </Box>
-            <Button mt={16}>{t('create.create_collection')}</Button>
+            <Button mt={16}>Create collection</Button>
         </Flex>
     )
 }
 
-const Multiple: FC = () => {
-    const { t } = useTranslation('common')
+const Single: FC = () => {
     const ref = useRef<HTMLInputElement>(null)
     const [file, setFile] = useState<string | null>(null)
     const onChangeFile: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -366,22 +434,77 @@ const Multiple: FC = () => {
     const [marketplace, setMarketplace] = useState(marketplaceList[0])
     const [collection, setCollection] = useState(collectionList[1])
     const [currency, setCurrency] = useState<TooltipItemProps>(currencyList[0])
+    const [expirationDate, setExpirationDate] = useState<string>(
+        expirationDateList[0].label
+    )
+    const [showExpirationDate, setShowExpirationDate] = useState(false)
+    const [showStartingDate, setShowStartingDate] = useState(false)
+    const [startingDate, setStartingDate] = useState<string>(
+        startingDateList[0].label
+    )
+    const [currencyTimed, setCurrencyTimed] = useState<TooltipItemProps>(
+        currencyTimedList[0]
+    )
     const router = useRouter()
     const content = useMemo<string>(() => {
         if (showMarketplace) {
             if (marketplace === marketplaceList[0])
                 return 'Enter price to allow users instantly purchase your NFT'
+            if (marketplace === marketplaceList[1])
+                return 'Set a period of time for which buyers can place bids'
             return 'Allow other users to make bids on your NFT'
         }
         return `Put your new NFT on Rarible's marketplace`
     }, [marketplace, showMarketplace])
+    const [showStartingDatePopup, setShowStartingDatePopup] = useState(false)
+    const [showExpirationDatePopup, setShowExpirationDatePopup] = useState(
+        false
+    )
     const [showCreatePopup, setShowCreatePopup] = useState(false)
     return (
         <Layout>
             <Popup
+                isOpen={showStartingDatePopup}
+                onClose={() => setShowStartingDatePopup(false)}
+                label="Choose starting date"
+                closeType="inside"
+            >
+                <DateTimePicker
+                    onChange={(value) =>
+                        setStartingDate(format(value, 'MM.dd.yyyy hh:mm a'))
+                    }
+                />
+                <Button
+                    onClick={() => setShowStartingDatePopup(false)}
+                    mt={16}
+                    sx={{ height: 40, width: '100%' }}
+                >
+                    Apply
+                </Button>
+            </Popup>
+            <Popup
+                isOpen={showExpirationDatePopup}
+                onClose={() => setShowExpirationDatePopup(false)}
+                label="Choose expiration date"
+                closeType="inside"
+            >
+                <DateTimePicker
+                    onChange={(value) =>
+                        setExpirationDate(format(value, 'MM.dd.yyyy hh:mm a'))
+                    }
+                />
+                <Button
+                    onClick={() => setShowExpirationDatePopup(false)}
+                    mt={16}
+                    sx={{ height: 40, width: '100%' }}
+                >
+                    Apply
+                </Button>
+            </Popup>
+            <Popup
                 isOpen={showCreatePopup}
                 onClose={() => setShowCreatePopup(false)}
-                label={t('create.collection')}
+                label="Collection"
                 closeType="outside"
             >
                 <Create />
@@ -403,7 +526,7 @@ const Multiple: FC = () => {
                     >
                         <BackIcon />
                         <Text ml={8} sx={{ fontWeight: 'bold', fontSize: 2 }}>
-                            {t('create.manage')}
+                            Manage collectible type
                         </Text>
                     </Flex>
                     <Text
@@ -412,7 +535,7 @@ const Multiple: FC = () => {
                         mb={32}
                         sx={{ fontSize: [24, 32, 36], fontWeight: 'heavy' }}
                     >
-                        {t('create.multiple.heading')}
+                        Create single collectible
                     </Text>
                     <Flex
                         sx={{ flexDirection: 'row', alignItems: 'flex-start' }}
@@ -425,7 +548,7 @@ const Multiple: FC = () => {
                                 color="text"
                                 sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
-                                {t('create.upload_file')}
+                                Upload file
                             </Text>
                             <Flex
                                 py={4}
@@ -489,7 +612,7 @@ const Multiple: FC = () => {
                                             sx={{ minWidth: 160 }}
                                             onClick={() => ref.current.click()}
                                         >
-                                            {t('general.choose_file')}
+                                            Choose File
                                         </Button>
                                     </>
                                 )}
@@ -517,7 +640,7 @@ const Multiple: FC = () => {
                                             fontWeight: 'heavy',
                                         }}
                                     >
-                                        {t('create.put_on_market')}
+                                        Put on marketplace
                                     </Text>
                                     <Text
                                         color="textSecondary"
@@ -536,7 +659,7 @@ const Multiple: FC = () => {
                             </Flex>
                             {showMarketplace && (
                                 <>
-                                    <Grid gap={16} width={0.5} mt={16}>
+                                    <Grid gap={16} width={1 / 3} mt={16}>
                                         {marketplaceList.map((item) => (
                                             <MarketplaceItem
                                                 onClick={() =>
@@ -551,11 +674,9 @@ const Multiple: FC = () => {
                                     {marketplace === marketplaceList[0] && (
                                         <Box mt={40}>
                                             <CustomInput
-                                                label={t('create.price')}
+                                                label="Price"
                                                 value=""
-                                                placeholder={t(
-                                                    'create.price_placeholder'
-                                                )}
+                                                placeholder="Enter price for one piece"
                                                 staticRight={
                                                     <Popover
                                                         onOuterAction={() =>
@@ -629,7 +750,7 @@ const Multiple: FC = () => {
                                                         lineHeight: '20.7px',
                                                     }}
                                                 >
-                                                    {t('create.service_fee')}{' '}
+                                                    Service fee{' '}
                                                     <Text color="text">
                                                         2.5%
                                                     </Text>
@@ -642,13 +763,385 @@ const Multiple: FC = () => {
                                                         lineHeight: '20.7px',
                                                     }}
                                                 >
-                                                    {t(
-                                                        'create.you_will_receive'
-                                                    )}{' '}
+                                                    You will receive{' '}
                                                     <Text color="text">
                                                         0 ETH{' '}
                                                     </Text>
                                                     $0.00
+                                                </Text>
+                                            </Flex>
+                                        </Box>
+                                    )}
+                                    {marketplace === marketplaceList[1] && (
+                                        <Box mt={40}>
+                                            <CustomInput
+                                                label="Minimum bid"
+                                                value=""
+                                                placeholder="Enter minimum bid"
+                                                staticRight={
+                                                    <Popover
+                                                        onOuterAction={() =>
+                                                            setShowTypePrice(
+                                                                false
+                                                            )
+                                                        }
+                                                        isOpen={showTypePrice}
+                                                        body={
+                                                            <Tooltip
+                                                                minWidth={172}
+                                                                items={
+                                                                    currencyTimedList
+                                                                }
+                                                                onClick={(
+                                                                    item
+                                                                ) =>
+                                                                    setCurrencyTimed(
+                                                                        item
+                                                                    )
+                                                                }
+                                                                selectedItem={
+                                                                    currencyTimed
+                                                                }
+                                                            />
+                                                        }
+                                                        place="below"
+                                                        tipSize={0.01}
+                                                    >
+                                                        <Flex
+                                                            color="textSecondary"
+                                                            sx={{
+                                                                svg: {
+                                                                    fill:
+                                                                        'textSecondary',
+                                                                },
+                                                                alignItems:
+                                                                    'center',
+                                                                cursor:
+                                                                    'pointer',
+                                                            }}
+                                                            onClick={() =>
+                                                                setShowTypePrice(
+                                                                    !showTypePrice
+                                                                )
+                                                            }
+                                                        >
+                                                            <Flex>
+                                                                {currencyTimed ===
+                                                                    currencyTimedList[0] && (
+                                                                    <Popover
+                                                                        isOpen={
+                                                                            showHelp
+                                                                        }
+                                                                        body={
+                                                                            <Tooltip>
+                                                                                <Flex
+                                                                                    px={
+                                                                                        15
+                                                                                    }
+                                                                                    sx={{
+                                                                                        width:
+                                                                                            '100%',
+                                                                                        maxWidth: 200,
+                                                                                    }}
+                                                                                >
+                                                                                    <Text
+                                                                                        color="text"
+                                                                                        sx={{
+                                                                                            fontWeight:
+                                                                                                'body',
+                                                                                            fontSize: 0,
+                                                                                        }}
+                                                                                    >
+                                                                                        {`WETH,
+                                                                                        which
+                                                                                        stands
+                                                                                        for
+                                                                                        "wrapped
+                                                                                        Ether",
+                                                                                        is
+                                                                                        a
+                                                                                        cryptocurrency
+                                                                                        used
+                                                                                        to
+                                                                                        make
+                                                                                        bids
+                                                                                        for
+                                                                                        digital
+                                                                                        goods
+                                                                                        on
+                                                                                        Rarible.
+                                                                                        There
+                                                                                        is
+                                                                                        a
+                                                                                        1:1
+                                                                                        exchange
+                                                                                        between
+                                                                                        WETH
+                                                                                        and
+                                                                                        ETH,
+                                                                                        so
+                                                                                        you
+                                                                                        can
+                                                                                        always
+                                                                                        convert
+                                                                                        it
+                                                                                        back
+                                                                                        and
+                                                                                        forth
+                                                                                        anytime`}
+                                                                                    </Text>
+                                                                                </Flex>
+                                                                            </Tooltip>
+                                                                        }
+                                                                        place="above"
+                                                                        tipSize={
+                                                                            0.01
+                                                                        }
+                                                                    >
+                                                                        <Button
+                                                                            onMouseEnter={() =>
+                                                                                setShowHelp(
+                                                                                    true
+                                                                                )
+                                                                            }
+                                                                            onMouseLeave={() =>
+                                                                                setShowHelp(
+                                                                                    false
+                                                                                )
+                                                                            }
+                                                                            variant="border"
+                                                                            p={
+                                                                                0
+                                                                            }
+                                                                            sx={{
+                                                                                width: 20,
+                                                                                height: 20,
+                                                                                flexShrink: 0,
+                                                                            }}
+                                                                            color="textSecondary"
+                                                                            mr={
+                                                                                8
+                                                                            }
+                                                                        >
+                                                                            <HelpIcon />
+                                                                        </Button>
+                                                                    </Popover>
+                                                                )}
+                                                                <Text
+                                                                    mr={8}
+                                                                    sx={{
+                                                                        fontSize: 1,
+                                                                        fontWeight:
+                                                                            'bold',
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        currencyTimed.label
+                                                                    }
+                                                                </Text>
+                                                            </Flex>
+                                                            <Flex
+                                                                sx={{
+                                                                    flexShrink: 0,
+                                                                }}
+                                                            >
+                                                                <DropdownIcon />
+                                                            </Flex>
+                                                        </Flex>
+                                                    </Popover>
+                                                }
+                                            />
+                                            <Text
+                                                mt={8}
+                                                color="textSecondary"
+                                                sx={{
+                                                    fontSize: 1,
+                                                    fontWeight: 'body',
+                                                    lineHeight: '20.7px',
+                                                }}
+                                            >
+                                                Bids below this amount won’t be
+                                                accepted.
+                                            </Text>
+                                            <Grid gap={16} width="40%" mt={40}>
+                                                <CustomInput
+                                                    label="Starting Date"
+                                                    placeholder="e.g Size"
+                                                    value={startingDate}
+                                                    staticRight={
+                                                        <Popover
+                                                            onOuterAction={() =>
+                                                                setShowStartingDate(
+                                                                    false
+                                                                )
+                                                            }
+                                                            isOpen={
+                                                                showStartingDate
+                                                            }
+                                                            body={
+                                                                <Tooltip
+                                                                    minWidth={
+                                                                        194
+                                                                    }
+                                                                    items={
+                                                                        startingDateList
+                                                                    }
+                                                                    onClick={(
+                                                                        item
+                                                                    ) => {
+                                                                        if (
+                                                                            item ===
+                                                                            startingDateList[1]
+                                                                        ) {
+                                                                            setShowStartingDatePopup(
+                                                                                true
+                                                                            )
+                                                                            setShowStartingDate(
+                                                                                false
+                                                                            )
+                                                                        } else {
+                                                                            setStartingDate(
+                                                                                item.label
+                                                                            )
+                                                                        }
+                                                                    }}
+                                                                    selectedItem={
+                                                                        startingDateList.find(
+                                                                            (
+                                                                                item
+                                                                            ) =>
+                                                                                item.label ===
+                                                                                startingDate
+                                                                        ) ??
+                                                                        startingDateList[1]
+                                                                    }
+                                                                />
+                                                            }
+                                                            place="below"
+                                                            tipSize={0.01}
+                                                        >
+                                                            <Flex
+                                                                sx={{
+                                                                    flexShrink: 0,
+                                                                    svg: {
+                                                                        fill:
+                                                                            'textSecondary',
+                                                                    },
+                                                                    alignItems:
+                                                                        'center',
+                                                                    cursor:
+                                                                        'pointer',
+                                                                }}
+                                                                onClick={() =>
+                                                                    setShowStartingDate(
+                                                                        !showStartingDate
+                                                                    )
+                                                                }
+                                                            >
+                                                                <DropdownIcon />
+                                                            </Flex>
+                                                        </Popover>
+                                                    }
+                                                />
+                                                <CustomInput
+                                                    label="Expiration Date"
+                                                    placeholder="e.g Size"
+                                                    value={expirationDate}
+                                                    staticRight={
+                                                        <Popover
+                                                            onOuterAction={() =>
+                                                                setShowExpirationDate(
+                                                                    false
+                                                                )
+                                                            }
+                                                            isOpen={
+                                                                showExpirationDate
+                                                            }
+                                                            body={
+                                                                <Tooltip
+                                                                    minWidth={
+                                                                        194
+                                                                    }
+                                                                    items={
+                                                                        expirationDateList
+                                                                    }
+                                                                    onClick={(
+                                                                        item
+                                                                    ) => {
+                                                                        if (
+                                                                            item ===
+                                                                            expirationDateList[4]
+                                                                        ) {
+                                                                            setShowExpirationDatePopup(
+                                                                                true
+                                                                            )
+                                                                            setShowExpirationDate(
+                                                                                false
+                                                                            )
+                                                                        } else {
+                                                                            setExpirationDate(
+                                                                                item.label
+                                                                            )
+                                                                        }
+                                                                    }}
+                                                                    selectedItem={
+                                                                        expirationDateList.find(
+                                                                            (
+                                                                                item
+                                                                            ) =>
+                                                                                item.label ===
+                                                                                expirationDate
+                                                                        ) ??
+                                                                        expirationDateList[4]
+                                                                    }
+                                                                />
+                                                            }
+                                                            place="below"
+                                                            tipSize={0.01}
+                                                        >
+                                                            <Flex
+                                                                sx={{
+                                                                    flexShrink: 0,
+                                                                    svg: {
+                                                                        fill:
+                                                                            'textSecondary',
+                                                                    },
+                                                                    alignItems:
+                                                                        'center',
+                                                                    cursor:
+                                                                        'pointer',
+                                                                }}
+                                                                onClick={() =>
+                                                                    setShowExpirationDate(
+                                                                        !showExpirationDate
+                                                                    )
+                                                                }
+                                                            >
+                                                                <DropdownIcon />
+                                                            </Flex>
+                                                        </Popover>
+                                                    }
+                                                />
+                                            </Grid>
+                                            <Flex
+                                                mt={16}
+                                                sx={{
+                                                    flexDirection: 'column',
+                                                    fontWeight: 'body',
+                                                    fontSize: 1,
+                                                }}
+                                            >
+                                                <Text color="textSecondary">
+                                                    Any bid placed in the last
+                                                    10 minutes extends the
+                                                    auction by 10 minutes.
+                                                </Text>
+                                                <Text
+                                                    color="primary"
+                                                    sx={{ cursor: 'pointer' }}
+                                                >
+                                                    Learn more how timed
+                                                    auctions work
                                                 </Text>
                                             </Flex>
                                         </Box>
@@ -676,16 +1169,15 @@ const Multiple: FC = () => {
                                                     'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
                                             }}
                                         >
-                                            {t('create.unlock_once_purchased')}
+                                            Unlock once purchased
                                         </Text>
                                     </Text>
                                     <Text
                                         color="textSecondary"
                                         sx={{ fontSize: 1, fontWeight: 'body' }}
                                     >
-                                        {t(
-                                            'create.unlock_once_purchased_description'
-                                        )}
+                                        Content will be unlocked after
+                                        successful transaction
                                     </Text>
                                 </Flex>
                                 <Flex mt={8} ml={16} sx={{ flexShrink: 0 }}>
@@ -700,9 +1192,7 @@ const Multiple: FC = () => {
                                 <>
                                     <CustomInput
                                         label=""
-                                        placeholder={t(
-                                            'create.price_placeholder2'
-                                        )}
+                                        placeholder="Digital key, code to redeem or link to file..."
                                         value={unlockValue}
                                         onChange={(text) =>
                                             setUnlockValue(text)
@@ -713,7 +1203,7 @@ const Multiple: FC = () => {
                                         color="textSecondary"
                                         sx={{ fontSize: 1, fontWeight: 'body' }}
                                     >
-                                        {t('create.price_bottom')}
+                                        Tip: Markdown syntax is supported
                                     </Text>
                                 </>
                             )}
@@ -723,7 +1213,7 @@ const Multiple: FC = () => {
                                 color="text"
                                 sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
-                                {t('create.choose_collection')}
+                                Choose collection
                             </Text>
                             <Grid gap={16} width={1 / 3} mt={16} mb={40}>
                                 {collectionList.map((item) => (
@@ -747,57 +1237,43 @@ const Multiple: FC = () => {
                                 />
                             </Grid>
                             <CustomInput
-                                label={t('create.title')}
-                                placeholder={t('create.title_placeholder')}
+                                label="Title"
+                                placeholder={`e. g. "Redeemable T-Shirt with logo"`}
                                 value=""
                             />
                             <Box mt={40}>
                                 <CustomInput
-                                    label={t('create.description')}
+                                    label="Description"
                                     optionLabel="Optional"
-                                    placeholder={t(
-                                        'create.description_placeholder'
-                                    )}
+                                    placeholder={`e. g. "After purchasing you’ll be able to get the real T-Shirt"`}
                                     value=""
                                 />
                             </Box>
                             <Box mt={40}>
-                                <Grid gap={16} width="40%">
-                                    <CustomInput
-                                        label={t('create.royalties')}
-                                        placeholder={`E. g. 10%"`}
-                                        value="10"
-                                        staticRight={
-                                            <Text
-                                                color="textSecondary"
-                                                sx={{
-                                                    fontSize: 2,
-                                                    fontWeight: 'body',
-                                                }}
-                                            >
-                                                %
-                                            </Text>
-                                        }
-                                        staticBottom={`${t(
-                                            'create.royalties'
-                                        )}: 10%, 20%, 30%`}
-                                    />
-                                    <CustomInput
-                                        label={t('create.number_of_copies')}
-                                        placeholder={`E. g. 10"`}
-                                        value=""
-                                        staticBottom={`${t(
-                                            'create.number_of_copies_bottom'
-                                        )}`}
-                                    />
-                                </Grid>
+                                <CustomInput
+                                    label="Royalties"
+                                    placeholder={`E. g. 10%"`}
+                                    value="10"
+                                    staticRight={
+                                        <Text
+                                            color="textSecondary"
+                                            sx={{
+                                                fontSize: 2,
+                                                fontWeight: 'body',
+                                            }}
+                                        >
+                                            %
+                                        </Text>
+                                    }
+                                    staticBottom="Suggested: 10%, 20%, 30%"
+                                />
                             </Box>
                             <Text
                                 mt={40}
                                 color="text"
                                 sx={{ fontWeight: 'bold', fontSize: 2 }}
                             >
-                                {t('create.properties')}
+                                Properties
                                 <Text
                                     ml={8}
                                     color="textSecondary"
@@ -820,7 +1296,7 @@ const Multiple: FC = () => {
                             </Grid>
                             <Flex mt={32} sx={{ alignItems: 'center' }}>
                                 <Button sx={{ minWidth: 192 }}>
-                                    {t('create.create_item')}
+                                    Create item
                                 </Button>
                                 <Text
                                     ml="auto"
@@ -848,7 +1324,9 @@ const Multiple: FC = () => {
                                                         textAlign: 'center',
                                                     }}
                                                 >
-                                                    {t('create.auto_saving')}
+                                                    Auto-saving is enabled. All
+                                                    data will be stored in your
+                                                    browser only
                                                 </Text>
                                             </Flex>
                                         </Tooltip>
@@ -891,7 +1369,7 @@ const Multiple: FC = () => {
                                 color="text"
                                 sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
-                                {t('create.preview')}
+                                Preview
                             </Text>
                             {file ? (
                                 <BidCard
@@ -942,7 +1420,8 @@ const Multiple: FC = () => {
                                                 fontWeight: 'body',
                                             }}
                                         >
-                                            {t('create.preview_upload')}
+                                            Upload file to preview your brand
+                                            new NFT
                                         </Text>
                                     </Flex>
                                 </Flex>
@@ -981,7 +1460,7 @@ const Multiple: FC = () => {
                                                 textAlign: 'center',
                                             }}
                                         >
-                                            {t('create.unlockable_content')}
+                                            Unlockable content
                                         </Text>
                                     )}
                                 </Flex>
@@ -994,10 +1473,4 @@ const Multiple: FC = () => {
     )
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-    props: {
-        ...(await serverSideTranslations(locale, ['common', 'footer'])),
-    },
-})
-
-export default Multiple
+export default Single

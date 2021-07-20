@@ -3,8 +3,8 @@ import { client } from './client'
 
 export interface CollectionsVariables {
     asset_owner?: string
-    // offset?: number
     limit?: number
+    slug?: string
 }
 
 export interface Traits {}
@@ -67,8 +67,8 @@ export interface Collection {
 }
 
 /*
-* Backend already removed first layer
-*/
+ * Backend already removed first layer
+ */
 export interface CollectionsResponseData {
     collections: Collection[]
 }

@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from 'react-query'
-import { client } from './client'
+import { testNetClient } from './client'
 
 interface AssetVariables {
     account_address?: string
@@ -183,7 +183,7 @@ export interface AssetResponseData {
 export const fetchAsset: (
     variables: AssetVariables
 ) => Promise<AssetResponseData> = (variables) =>
-    client
+    testNetClient
         .get(
             `/asset/${variables.asset_contract_address}/${variables.token_id}`,
             {

@@ -4,11 +4,13 @@ import { useRouter } from 'next/router'
 import { Box, Button, Flex, Text } from 'theme-ui'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
+import { useTranslation } from 'react-i18next'
 import Layout from '../../containers/Layout'
 import BackIcon from '../../public/assets/images/icons/back.svg'
 
 const Create: FC = () => {
     const router = useRouter()
+    const { t } = useTranslation('common')
     return (
         <Layout>
             <Box mx="auto" sx={{ maxWidth: 500 }}>
@@ -28,7 +30,7 @@ const Create: FC = () => {
                     >
                         <BackIcon />
                         <Text ml={8} sx={{ fontWeight: 'bold', fontSize: 2 }}>
-                            Go back
+                            {t('general.back')}
                         </Text>
                     </Flex>
                     <Text
@@ -39,7 +41,7 @@ const Create: FC = () => {
                             fontWeight: 'heavy',
                         }}
                     >
-                        Create collectible
+                        {t('general.create_collectible')}
                     </Text>
                     <Text
                         mt={16}
@@ -50,9 +52,7 @@ const Create: FC = () => {
                             fontSize: 2,
                         }}
                     >
-                        Choose “Single” if you want your collectible to be one
-                        of a kind or “Multiple” if you want to sell one
-                        collectible multiple times
+                        {t('create.guide')}
                     </Text>
                     <Flex m={-8} sx={{ flexWrap: 'wrap' }}>
                         <Flex
@@ -108,7 +108,50 @@ const Create: FC = () => {
                                     color="text"
                                     sx={{ fontWeight: 'bold', fontSize: 2 }}
                                 >
-                                    Single
+                                    {t('create.single.name')}
+                                </Text>
+                            </Flex>
+                        </Flex>
+                        <Flex
+                            p={2}
+                            sx={{
+                                maxWidth: ['100%', '50%'],
+                                flex: ['0 0 100%', '0 0 50%'],
+                            }}
+                        >
+                            <Flex
+                                onClick={() => router.push('/create/resell')}
+                                pt={49}
+                                px={3}
+                                pb={33}
+                                sx={{
+                                    position: 'relative',
+                                    flex: 1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderWidth: 2,
+                                    borderStyle: 'solid',
+                                    borderColor: 'borderColor',
+                                    borderRadius: 1,
+                                    flexDirection: 'column',
+                                    cursor: 'pointer',
+                                    ':hover': {
+                                        borderColor: 'borderHoverColor',
+                                    },
+                                    transition: 'all 0.12s ease-in-out 0s',
+                                }}
+                            >
+                                <Image
+                                    src="/assets/images/single.png"
+                                    width={85}
+                                    height={135}
+                                />
+                                <Text
+                                    mt={32}
+                                    color="text"
+                                    sx={{ fontWeight: 'bold', fontSize: 2 }}
+                                >
+                                    Re-Sell Existing
                                 </Text>
                             </Flex>
                         </Flex>
@@ -150,7 +193,7 @@ const Create: FC = () => {
                                     color="text"
                                     sx={{ fontWeight: 'bold', fontSize: 2 }}
                                 >
-                                    Multiple
+                                    {t('create.multiple.name')}
                                 </Text>
                             </Flex>
                         </Flex>
@@ -163,8 +206,7 @@ const Create: FC = () => {
                             fontSize: 2,
                         }}
                     >
-                        We do not own your private keys and cannot access your
-                        funds without your confirmation
+                        {t('create.note')}
                     </Text>
                 </Flex>
             </Box>

@@ -27,6 +27,7 @@ export interface AvatarProps {
     size?: Size
     showType?: boolean
     type?: Type
+    auction?: boolean
 }
 
 const useSize = (size: Size): [number, number, number] => {
@@ -91,6 +92,7 @@ const Avatar: FC<AvatarProps> = ({
     size = 'md',
     showType,
     type = 'follow',
+    auction,
 }) => {
     const [avatarSize, verifiedSize, borderSize] = useSize(size)
     const [color, icon] = useIcon(type)
@@ -102,7 +104,7 @@ const Avatar: FC<AvatarProps> = ({
                 height: avatarSize,
                 position: 'relative',
                 display: 'inline-block',
-                borderRadius: type !== 'follow' ? 6 : 9999,
+                borderRadius: 6,
                 borderColor: 'background',
                 borderWidth: borderSize,
                 borderStyle: 'solid',
@@ -122,20 +124,44 @@ const Avatar: FC<AvatarProps> = ({
                 variant={`avatar.${size}`}
                 sx={{
                     objectFit: 'cover',
-                    borderRadius: type !== 'follow' ? 6 : 9999,
+                    // eslint-disable-next-line no-nested-ternary
+                    borderRadius: auction
+                        ? '50%'
+                        : type !== 'follow'
+                        ? 6
+                        : '5px',
                     mb: size === 'xxs' ? '-2px' : undefined,
+                    backgroundColor: 'darkgrey',
                 }}
             />
-            {verified && <VerifiedIcon />}
+            {verified && (
+                <Flex
+                    sx={{
+                        position: 'absolute',
+                        bottom: '-3px',
+                        right: '-5px',
+                        width: '20px',
+                        height: '20px',
+                        backgroundColor: '#00eeb9',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: '5px',
+                    }}
+                >
+                    <VerifiedIcon />
+                </Flex>
+            )}
             {showType && (
                 <Flex
                     sx={{
-                        top: type === 'follow' ? -8 : 0,
-                        left: type === 'follow' ? -8 : 0,
+                        // top: type === 'follow' ? -8 : 0,
+                        // left: type === 'follow' ? -8 : 0,
+                        bottom: '-3px',
+                        right: '-5px',
                         position: 'absolute',
                         borderRadius: 9999,
-                        width: 26,
-                        height: 26,
+                        width: 20,
+                        height: 20,
                         backgroundColor: color,
                         alignItems: 'center',
                         justifyContent: 'center',

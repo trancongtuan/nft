@@ -90,7 +90,7 @@ const Footer: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Get the latest Rarible updates
+                                {t('get_the_latest_Rarible_updates')}
                             </Text>
                             <Flex
                                 mt={16}
@@ -114,7 +114,7 @@ const Footer: FC = () => {
                                 }}
                             >
                                 <Input
-                                    placeholder="Your e-mail"
+                                    placeholder={t('your_email')}
                                     defaultValue=""
                                     variant="footerInput"
                                     sx={{
@@ -129,9 +129,9 @@ const Footer: FC = () => {
                                     }}
                                 />
                                 <Button
-                                    variant="primary"
                                     sx={{
                                         position: 'absolute',
+                                        backgroundColor: '#00eeb9',
                                         top: 0,
                                         right: 0,
                                         fontSize: 1,
@@ -141,7 +141,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    I am in
+                                    {t('i_am_in')}
                                 </Button>
                             </Flex>
                         </Box>
@@ -158,7 +158,7 @@ const Footer: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Rarible
+                                ULTCube
                             </Text>
                             <Flex mt={16} sx={{ flexDirection: 'column' }}>
                                 <Link href="/">
@@ -176,7 +176,7 @@ const Footer: FC = () => {
                                             },
                                         }}
                                     >
-                                        Explore
+                                        {t('explore')}
                                     </Text>
                                 </Link>
                                 <UILink
@@ -194,7 +194,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    How it work
+                                    {t('how_it_work')}
                                 </UILink>
                                 <Link href="/create">
                                     <Text
@@ -211,7 +211,7 @@ const Footer: FC = () => {
                                             },
                                         }}
                                     >
-                                        Create
+                                        {t('create')}
                                     </Text>
                                 </Link>
                                 <UILink
@@ -229,7 +229,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    Support
+                                    {t('support')}
                                 </UILink>
                             </Flex>
                         </Box>
@@ -246,7 +246,7 @@ const Footer: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Community
+                                {t('community')}
                             </Text>
                             <Flex mt={16} sx={{ flexDirection: 'column' }}>
                                 <Link href="/rari">
@@ -264,7 +264,7 @@ const Footer: FC = () => {
                                             },
                                         }}
                                     >
-                                        RARI Token
+                                        {t('RARI_token')}
                                     </Text>
                                 </Link>
                                 <UILink
@@ -282,7 +282,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    Discussion
+                                    {t('discussion')}
                                 </UILink>
                                 <UILink
                                     href="https://snapshot.org/#/rarible/"
@@ -299,7 +299,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    Voting
+                                    {t('voting')}
                                 </UILink>
                                 <UILink
                                     href="https://rarible.nolt.io/"
@@ -316,7 +316,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    Suggest feature
+                                    {t('suggest_feature')}
                                 </UILink>
                             </Flex>
                         </Box>
@@ -404,23 +404,27 @@ const Footer: FC = () => {
                                 'column',
                                 'row',
                             ],
-                            alignItems: 'center',
+                            alignItems: [
+                                'center',
+                                'center',
+                                'center',
+                                'flex-end',
+                            ],
                             justifyContent: [
                                 'center',
                                 'center',
                                 'center',
-                                'space-between',
+                                'flex-end',
                             ],
                         }}
                     >
                         <Box mr={[0, 0, 0, 32]} mt={[16, 16, 16, 0]}>
                             <Text sx={{ fontSize: 1, order: [2, 2, 2, 1] }}>
-                                © Rarible, Inc. All rights reserved.
+                                © Rarible, Inc. {t('all_right_reserved')}
                             </Text>
                         </Box>
 
                         <Flex
-                            mr={[0, 0, 0, 32]}
                             mt={[16, 16, 16, 0]}
                             sx={{
                                 flexGrow: 1,
@@ -432,27 +436,19 @@ const Footer: FC = () => {
                                         color: 'text',
                                     },
                                 },
+                                justifyContent: 'flex-end',
                             }}
                         >
                             <a href="/files/terms.pdf" target="_blank">
                                 <Text mx={16} sx={{ fontSize: 1 }}>
-                                    Terms
+                                    {t('terms')}
                                 </Text>
                             </a>
                             <a href="/files/privacy.pdf" target="_blank">
                                 <Text mx={16} sx={{ fontSize: 1 }}>
-                                    Privacy
+                                    {t('privacy')}
                                 </Text>
                             </a>
-                        </Flex>
-                        <Flex
-                            mt={[16, 16, 16, 0]}
-                            sx={{
-                                width: '230px',
-                                order: [-1, -1, -1, 3],
-                            }}
-                        >
-                            <Social />
                         </Flex>
                     </Flex>
                 </Box>

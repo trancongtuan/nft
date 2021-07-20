@@ -1,63 +1,76 @@
-import React, { FC, useState, ReactNode, useEffect } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-alert */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { GetStaticProps } from 'next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Link from 'next/link'
-import { Box, Text, Flex, Button } from 'theme-ui'
-import Popover from 'react-popover'
+import { useRouter } from 'next/router'
+import React, { FC, ReactNode, useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { useTranslation } from 'react-i18next'
+import Popover from 'react-popover'
+import { Box, Button, Flex, Text } from 'theme-ui'
 import { v4 as uuidv4 } from 'uuid'
+import Web3 from 'web3'
+import ActivityCard from '../components/ActivityCard'
 import Avatar from '../components/Avatar'
-import NavigationBar from '../components/NavigationBar'
-import Footer from '../components/Footer'
-import Selection from '../components/Selection'
 import BidCard from '../components/BidCard'
-import CopyIcon from '../public/assets/images/icons/copy.svg'
-import CheckedIcon from '../public/assets/images/icons/checked.svg'
+import FilterButton from '../components/FilterButton'
+import Footer from '../components/Footer'
+import NavigationBar from '../components/NavigationBar'
+import Popup from '../components/Popup'
+import PopupReport from '../components/PopupReport'
+import Selection from '../components/Selection'
 import Tooltip from '../components/Tooltip'
-import TwitterIcon from '../public/assets/images/icons/twitter.svg'
+import { useAuth } from '../hooks/auth'
+import CheckedIcon from '../public/assets/images/icons/checked.svg'
+import CopyIcon from '../public/assets/images/icons/copy.svg'
+import EmailIcon from '../public/assets/images/icons/email.svg'
 import FacebookIcon from '../public/assets/images/icons/facebook.svg'
 import TelegramIcon from '../public/assets/images/icons/telegram.svg'
-import EmailIcon from '../public/assets/images/icons/email.svg'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
+import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 import UploadIcon from '../public/assets/images/icons/upload.svg'
-import FilterButton from '../components/FilterButton'
-import Popup from '../components/Popup'
-import ActivityCard from '../components/ActivityCard'
-import PopupReport from '../components/PopupReport'
+import { Asset, EthUser, fetchUsers, updateUserAssets } from '../queries'
 
 const selectionItems = [
     {
         id: '1',
-        label: 'On sale',
+        label: 'general.on_sale',
         value: 'On sale',
         count: 0,
     },
-    {
-        id: '2',
-        label: 'Collectibles',
-        value: 'Collectibles',
-        count: 0,
-    },
-    {
-        id: '3',
-        label: 'Created',
-        value: 'Created',
-        count: 0,
-    },
-    {
-        id: '4',
-        label: 'Liked',
-        value: 'Liked',
-        count: 2,
-    },
-    {
-        id: '5',
-        label: 'Activity',
-        value: 'Activity',
-        count: 5,
-    },
+    // {
+    //     id: '2',
+    //     label: 'general.collectibles',
+    //     value: 'Collectibles',
+    //     count: 0,
+    // },
+    // {
+    //     id: '3',
+    //     label: 'general.created',
+    //     value: 'Created',
+    //     count: 0,
+    // },
+    // {
+    //     id: '4',
+    //     label: 'general.liked',
+    //     value: 'Liked',
+    //     count: 2,
+    // },
+    // {
+    //     id: '5',
+    //     label: 'general.activity',
+    //     value: 'Activity',
+    //     count: 5,
+    // },
 ]
-
 const Items: FC = () => {
-    const [showCards, setShowCards] = useState(false)
+    const { t } = useTranslation('common')
+    const router = useRouter()
+    const { connected, setConnected } = useAuth()
+    const [showCards, setShowCards] = useState(true)
     const [showReport, setShowReport] = useState(false)
     const [showShare, setShowShare] = useState(false)
     const [showFollowing, setShowFollowing] = useState(false)
@@ -68,6 +81,18 @@ const Items: FC = () => {
     const [resetFilter, setResetFilter] = useState(false)
     const [showReset, setShowReset] = useState(false)
     const [showReportPopup, setShowReportPopup] = useState(false)
+    const [assets, setAssets] = useState<null | Asset[]>(null)
+    const [profile, setProfile] = useState<EthUser>({
+        id: null,
+        display_name: '',
+        custom_url: '',
+        twitter: '',
+        email: '',
+        bio: '',
+        website: '',
+        address: '',
+        profile_pic: { url: null },
+    })
 
     const toogleResetFilter = (): void => {
         setResetFilter(true)
@@ -79,13 +104,51 @@ const Items: FC = () => {
         setResetFilter(false)
     }
 
-    useEffect(() => {
-        if (counter > 0) {
-            const timer = setInterval(() => setCounter(counter - 1), 1000)
-            return () => clearInterval(timer)
+    const updateProfile = async () => {
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            const from = (await window.ethereum.enable())[0]
+            if (!from) throw new Error('No account selected.')
+            const result = await fetchUsers({ address: from })
+            if (result[0]) setProfile(result[0])
+        } catch (e) {
+            alert(e.toString())
         }
-        return setCounter(0)
-    }, [counter])
+    }
+
+    const updateAssets = async () => {
+        const web3 = new Web3(window.ethereum)
+
+        const address = await web3.eth.getAccounts()
+        const accountAddress: string = address[0]
+
+        const result = await updateUserAssets(accountAddress)
+        setAssets(result)
+    }
+
+    const connectWallet = async () => {
+        const web3 = new Web3(window.ethereum)
+
+        // Get Address
+        try {
+            const address = await web3.eth.getAccounts()
+            const accountAddress: string = address[0]
+            setConnected(!!accountAddress)
+            updateProfile()
+            updateAssets()
+        } catch (e) {
+            alert(e.message)
+        }
+    }
+
+    useEffect(() => {
+        if (!connected) {
+            connectWallet()
+        } else {
+            updateProfile()
+            updateAssets()
+        }
+    }, [])
 
     const renderActivity = (): ReactNode => {
         return (
@@ -138,7 +201,9 @@ const Items: FC = () => {
                             }}
                         >
                             <Flex>
-                                <Text sx={{ fontWeight: '900' }}>Filters</Text>
+                                <Text sx={{ fontWeight: '900' }}>
+                                    {t('general.filters')}
+                                </Text>
                                 {showReset && (
                                     <Text
                                         ml={20}
@@ -149,7 +214,7 @@ const Items: FC = () => {
                                             color: 'primary',
                                         }}
                                     >
-                                        Reset Filters
+                                        {t('general.reset_filters')}
                                     </Text>
                                 )}
                             </Flex>
@@ -157,49 +222,49 @@ const Items: FC = () => {
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Listings"
+                                    content={t('general.listings')}
                                     type="listings"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Purchases"
+                                    content={t('general.purchases')}
                                     type="purchases"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
-                                    content="Sales"
+                                    content={t('general.sales')}
                                     type="sales"
                                     reset={resetFilter}
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
-                                    content="Transfers"
+                                    content={t('general.transfers')}
                                     type="transfers"
                                     reset={resetFilter}
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Burns"
+                                    content={t('general.burns')}
                                     type="burns"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Bids"
+                                    content={t('general.bids')}
                                     type="bids"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Likes"
+                                    content={t('general.likes')}
                                     type="likes"
                                 />
                                 <FilterButton
                                     toggleShowReset={() => toggleShowReset()}
                                     reset={resetFilter}
-                                    content="Followings"
+                                    content={t('general.followings')}
                                     type="followings"
                                 />
                             </Flex>
@@ -236,7 +301,7 @@ const Items: FC = () => {
                     onClose={() => {
                         setOpenPopup(false)
                     }}
-                    label="Filters"
+                    label={t('general.filters')}
                 >
                     <Flex
                         sx={{
@@ -248,49 +313,49 @@ const Items: FC = () => {
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Listings"
+                            content={t('general.listings')}
                             type="listings"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Purchases"
+                            content={t('general.purchases')}
                             type="purchases"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Sales"
+                            content={t('general.sales')}
                             type="sales"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Transfers"
+                            content={t('general.transfers')}
                             type="transfers"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Burns"
+                            content={t('general.burns')}
                             type="burns"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Bids"
+                            content={t('general.bids')}
                             type="bids"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Likes"
+                            content={t('general.likes')}
                             type="likes"
                         />
                         <FilterButton
                             toggleShowReset={() => toggleShowReset()}
                             reset={false}
-                            content="Followings"
+                            content={t('general.followings')}
                             type="followings"
                         />
                         <Button
@@ -302,7 +367,7 @@ const Items: FC = () => {
                                 width: '100%',
                             }}
                         >
-                            Show
+                            {t('general.show')}
                         </Button>
                     </Flex>
                 </Popup>
@@ -314,7 +379,8 @@ const Items: FC = () => {
         if (showCards && !showActivity) {
             return (
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {new Array(10).fill(0).map(() => (
+                    {assets === null && 'Loading...'}
+                    {assets?.map((item) => (
                         <Box
                             key={uuidv4()}
                             p={10}
@@ -336,22 +402,31 @@ const Items: FC = () => {
                             }}
                         >
                             <BidCard
-                                favorite={10}
-                                price={10}
-                                type="single"
-                                image="https://picsum.photos/200/400"
-                                collection={{
-                                    src: 'https://picsum.photos/300/300',
-                                    verified: true,
-                                }}
-                                owner={{ src: 'https://picsum.photos/200/300' }}
-                                creator={{
-                                    src: 'https://picsum.photos/200/400',
-                                    verified: true,
-                                }}
-                                name="Test"
-                                bid={50}
-                                currency="WETH"
+                                key={item.id}
+                                onCLick={() =>
+                                    router.push(
+                                        `/product/${item.asset_contract.address}/${item.token_id}`
+                                    )
+                                }
+                                name={item.name}
+                                image={item.image_url}
+                                currency="ETH"
+                                price={item.top_bid ?? 0}
+                                {...(item?.creator && {
+                                    creator: {
+                                        src: item.creator?.profile_img_url,
+                                    },
+                                })}
+                                {...(item?.owner && {
+                                    owner: {
+                                        src: item.owner?.profile_img_url,
+                                    },
+                                })}
+                                {...(item?.collection && {
+                                    collection: {
+                                        src: item.collection?.image_url,
+                                    },
+                                })}
                             />
                         </Box>
                     ))}
@@ -370,11 +445,10 @@ const Items: FC = () => {
                         color="text"
                         sx={{ fontWeight: 'heavy', fontSize: 28 }}
                     >
-                        No items found
+                        {t('general.no_items_found')}
                     </Text>
                     <Text mt={20}>
-                        Come back soon! Or try to browse something for you on
-                        our marketplace
+                        {t('general.no_items_found_description')}
                     </Text>
 
                     <Button
@@ -385,7 +459,7 @@ const Items: FC = () => {
                             height: 40,
                         }}
                     >
-                        <Link href="/">Browse Marketplace</Link>
+                        <Link href="/">{t('general.browse_marketplace')}</Link>
                     </Button>
                 </Flex>
             </Box>
@@ -413,7 +487,11 @@ const Items: FC = () => {
                 />
                 <Box sx={{ position: 'absolute', bottom: -30 }}>
                     <Avatar
-                        src="https://picsum.photos/500/300"
+                        src={
+                            profile.profile_pic?.url
+                                ? `https://api.ultcube.scc.sh${profile.profile_pic?.url}`
+                                : '/assets/images/empty_placeholder.png'
+                        }
                         size="xl"
                         verified
                     />
@@ -431,7 +509,7 @@ const Items: FC = () => {
                         color="text"
                         sx={{ fontWeight: 'heavy', fontSize: 28 }}
                     >
-                        Christopher Nolan
+                        {profile.display_name}
                     </Text>
                     <Flex mb={20} sx={{ alignItems: 'center' }}>
                         <Text
@@ -442,7 +520,7 @@ const Items: FC = () => {
                                 fontWeight: 'bold',
                             }}
                         >
-                            0xd92e44ac213b9...fa96
+                            {profile.address}
                         </Text>
                         <CopyToClipboard
                             onCopy={() => setCounter(2)}
@@ -471,7 +549,7 @@ const Items: FC = () => {
                                 height: 40,
                             }}
                         >
-                            Follow
+                            {t('general.follow')}
                         </Button>
                         <Popover
                             onOuterAction={() => setShowShare(false)}
@@ -725,7 +803,7 @@ const Items: FC = () => {
                                     },
                                 }}
                             >
-                                Following
+                                {t('general.following')}
                             </Text>
 
                             <Text
@@ -767,7 +845,7 @@ const Items: FC = () => {
                                     },
                                 }}
                             >
-                                Followers
+                                {t('general.followers')}
                             </Text>
 
                             <Text
@@ -804,7 +882,7 @@ const Items: FC = () => {
                 onClose={() => {
                     setShowFollowers(false)
                 }}
-                label="Followers"
+                label={t('general.followers')}
             >
                 <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <Flex
@@ -825,7 +903,7 @@ const Items: FC = () => {
                                     color="textSecondary"
                                     sx={{ fontSize: 1, fontWeight: 'bold' }}
                                 >
-                                    999 Followers
+                                    999 {t('general.followers')}
                                 </Text>
                                 <Text
                                     color="text"
@@ -835,7 +913,7 @@ const Items: FC = () => {
                                 </Text>
                             </Flex>
                         </Flex>
-                        <Button variant="primary">Follow</Button>
+                        <Button variant="primary">{t('general.follow')}</Button>
                     </Flex>
                 </Flex>
             </Popup>
@@ -844,7 +922,7 @@ const Items: FC = () => {
                 onClose={() => {
                     setShowFollowing(false)
                 }}
-                label="Following"
+                label={t('general.followings')}
             >
                 <Flex sx={{ width: 400, mt: 3, flexWrap: 'wrap' }}>
                     <Flex
@@ -865,7 +943,7 @@ const Items: FC = () => {
                                     color="textSecondary"
                                     sx={{ fontSize: 1, fontWeight: 'bold' }}
                                 >
-                                    999 Followers
+                                    999 {t('general.followers')}
                                 </Text>
                                 <Text
                                     color="text"
@@ -875,12 +953,18 @@ const Items: FC = () => {
                                 </Text>
                             </Flex>
                         </Flex>
-                        <Button variant="primary">Follow</Button>
+                        <Button variant="primary">{t('general.follow')}</Button>
                     </Flex>
                 </Flex>
             </Popup>
         </Box>
     )
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common', 'footer'])),
+    },
+})
 
 export default Items

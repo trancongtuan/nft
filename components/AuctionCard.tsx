@@ -3,6 +3,8 @@ import { Text, Box, Flex, Image, Button, useColorMode } from 'theme-ui'
 import Popover from 'react-popover'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
 import FavoriteIcon from '../public/assets/images/icons/favorite.svg'
+import TimerIcon from '../public/assets/images/icons/timer.svg'
+import StarIcon from '../public/assets/images/icons/star.svg'
 import Avatar, { AvatarProps } from './Avatar'
 import Tooltip from './Tooltip'
 import TextWithTooltip from './TextWithTooltip'
@@ -28,7 +30,7 @@ const items = [
 
 type UserProps = Pick<AvatarProps, 'src' | 'verified'>
 
-export interface BidCardProps {
+export interface AuctionCardProps {
     type?: 'single' | 'multiple'
     name: string
     bid?: number
@@ -55,7 +57,7 @@ const getStringTime: (s: number) => string = (s) => {
     return `${hour}h ${minute}m ${second}s`
 }
 
-const BidCard: FC<BidCardProps> = ({
+const AuctionCard: FC<AuctionCardProps> = ({
     bid,
     name,
     collection,
@@ -157,17 +159,40 @@ const BidCard: FC<BidCardProps> = ({
                     <Flex>
                         {collection && (
                             <Flex>
-                                <Avatar {...collection} size="xs" />
+                                <Avatar {...collection} size="xs" auction />
                             </Flex>
                         )}
                         {owner && (
                             <Flex ml="-10px">
-                                <Avatar {...owner} size="xs" />
+                                <Avatar {...owner} size="xs" auction />
                             </Flex>
                         )}
                         {creator && (
-                            <Flex ml="-10px">
-                                <Avatar {...creator} size="xs" />
+                            <Flex
+                                ml="-10px"
+                                sx={{
+                                    position: 'relative',
+                                }}
+                            >
+                                <Avatar {...creator} size="xs" auction />
+                                <Flex
+                                    bg="#39393a"
+                                    sx={{
+                                        width: '16px',
+                                        height: '16px',
+                                        borderRadius: '3px',
+                                        position: 'absolute',
+                                        right: '-5px',
+                                        bottom: 0,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        svg: {
+                                            fill: '#00eeb9',
+                                        },
+                                    }}
+                                >
+                                    <StarIcon />
+                                </Flex>
                             </Flex>
                         )}
                     </Flex>
@@ -285,7 +310,7 @@ const BidCard: FC<BidCardProps> = ({
                                         position: 'relative',
                                         border: '2px solid transparent',
                                         height: 32,
-                                        borderRadius: 3,
+                                        borderRadius: '5px',
                                         textAlign: 'center',
                                         justifyContent: 'center',
                                         alignItems: 'center',
@@ -295,17 +320,23 @@ const BidCard: FC<BidCardProps> = ({
                                             inset: 0,
                                             zIndex: -1,
                                             m: '-4px',
-                                            borderRadius: 3,
+                                            borderRadius: '5px',
                                             background:
-                                                'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
+                                                'linear-gradient(to right, #fb9809 0%, #d4a210 15.73%, #6ccc4a 35.73%, #71c846 75%, #22ffb9 100%)',
                                         },
-                                        fontSize: 13,
+                                        fontSize: 12,
                                         color: 'text',
-                                        fontWeight: 'heavy',
+                                        fontWeight: 'bold',
                                         cursor: 'pointer',
+                                        svg: {
+                                            fill: '#FFF',
+                                        },
                                     }}
                                 >
-                                    {getStringTime(counter)} 🔥
+                                    <Text mr={10}>
+                                        {getStringTime(counter)} left
+                                    </Text>
+                                    <TimerIcon />
                                 </Flex>
                             </Box>
                         )}
@@ -322,7 +353,7 @@ const BidCard: FC<BidCardProps> = ({
                         sx={{
                             fontSize: '15px',
                             lineHeight: '20.7px',
-                            fontWeight: 'heavy',
+                            fontWeight: 'bold',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -343,35 +374,11 @@ const BidCard: FC<BidCardProps> = ({
                         sx={{
                             fontSize: '14px',
                             lineHeight: '19.32px',
-                            fontWeight: 'heavy',
                         }}
                     >
-                        <TextWithTooltip
-                            tooltipContent={
-                                gradientColor
-                                    ? 'Additional content will be unlocked after purchase'
-                                    : undefined
-                            }
-                            mr={8}
-                            sx={{
-                                color: gradientColor
-                                    ? 'rgb(12, 80, 255)'
-                                    : 'text',
-                                WebkitTextFillColor: gradientColor
-                                    ? 'transparent'
-                                    : undefined,
-                                WebkitBackgroundClip: gradientColor
-                                    ? 'text'
-                                    : undefined,
-                                backgroundImage: gradientColor
-                                    ? 'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)'
-                                    : undefined,
-                                cursor: 'text',
-                            }}
-                        >
-                            {price} ETH
-                        </TextWithTooltip>
-                        <Text color="textSecondary">1 of {quantity}</Text>
+                        <Text sx={{ fontSize: 0, cursor: 'pointer' }}>
+                            Highest bid 1 of {quantity}
+                        </Text>
                         <br />
                         <TextWithTooltip
                             tooltipContent={
@@ -381,24 +388,18 @@ const BidCard: FC<BidCardProps> = ({
                             }
                             sx={{
                                 color: 'rgb(12, 80, 255)',
-                                WebkitTextFillColor: 'transparent',
-                                WebkitBackgroundClip: 'text',
-                                backgroundImage:
-                                    'linear-gradient(126.49deg, rgb(0, 163, 255) 0%, rgb(0, 102, 255) 100%)',
+                                fontWeight: 'bold',
                             }}
                         >
                             {bid ? (
                                 <Text
-                                    color="textSecondary"
+                                    color="#00eeb9"
                                     sx={{
                                         fontSize: 0,
                                         cursor: 'text',
                                     }}
                                 >
-                                    {bid}{' '}
-                                    <Text color="primary" sx={{ fontSize: 0 }}>
-                                        WETH
-                                    </Text>
+                                    {bid} <Text sx={{ fontSize: 0 }}>wETH</Text>
                                 </Text>
                             ) : (
                                 <Text
@@ -432,8 +433,8 @@ const BidCard: FC<BidCardProps> = ({
                             cursor: 'pointer',
                             opacity: like ? 1 : 0.5,
                             svg: {
-                                stroke: like ? 'red' : 'text',
-                                fill: like ? 'red' : undefined,
+                                stroke: like ? '#00eeb9' : 'text',
+                                fill: like ? '#00eeb9' : undefined,
                             },
                             ':hover': {
                                 backgroundColor:
@@ -463,4 +464,4 @@ const BidCard: FC<BidCardProps> = ({
     )
 }
 
-export default BidCard
+export default AuctionCard

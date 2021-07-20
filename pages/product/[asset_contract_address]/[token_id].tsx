@@ -1,8 +1,14 @@
-import React, { FC, useState } from 'react'
+/* eslint-disable no-alert */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable @typescript-eslint/no-shadow */
+import React, { FC, useEffect, useState } from 'react'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Popover from 'react-popover'
 import { Box, Text, Flex, Image, Button } from 'theme-ui'
 import { useRouter } from 'next/router'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { OpenSeaPort, Network } from 'opensea-js'
+import { OrderSide } from 'opensea-js/lib/types'
 import NavigationBar from '../../../components/NavigationBar'
 import Tooltip from '../../../components/Tooltip'
 import Avatar from '../../../components/Avatar'
@@ -19,6 +25,10 @@ import {
     fetchAsset,
     useGetSingleAssetQuery,
 } from '../../../queries/asset'
+
+import { Asset, updateSingleAsset, fetchAssets } from '../../../queries'
+
+const Web3 = require('web3')
 
 const tooltipItems = [
     {
@@ -93,15 +103,16 @@ type ProductParams = {
 
 export const getServerSideProps: GetServerSideProps<
     {
-        asset: AssetResponseData
+        asset: Asset
     },
     ProductParams
 > = async (context) => {
-    const { params } = context
-    const asset = await fetchAsset(params)
+    const { params, locale } = context
+    const asset = await fetchAssets(params)
     return {
         props: {
-            asset,
+            ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
+            asset: asset[0],
         },
     }
 }
@@ -109,6 +120,23 @@ export const getServerSideProps: GetServerSideProps<
 const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     asset,
 }) => {
+    const [seaport, setSeaport] = useState<any>()
+
+    useEffect(() => {
+        const provider =
+            typeof window.web3 !== 'undefined'
+                ? window.web3.currentProvider
+                : new Web3.providers.HttpProvider(
+                      'https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74'
+                  )
+
+        const seaPort = new OpenSeaPort(provider, {
+            // networkName: Network.Main
+            networkName: Network.Rinkeby,
+        })
+        setSeaport(seaPort)
+    }, [])
+
     const router = useRouter()
     const { asset_contract_address, token_id } = router.query as ProductParams
     const [liked, setLiked] = useState(false)
@@ -117,13 +145,45 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
-    const { data } = useGetSingleAssetQuery(
-        {
-            asset_contract_address,
-            token_id,
-        },
-        asset
-    )
+    const [loading, setLoading] = useState(false)
+    const data = asset;
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    const makeOffer = async () => {
+        setLoading(true)
+
+        // Get Address
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            let accountAddress = await window.ethereum.enable()
+            if (!accountAddress[0]) throw new Error('No account selected.')
+            accountAddress = accountAddress[0]
+
+            const {
+                token_id,
+                asset_contract: { address: asset_contract_address },
+            } = data
+
+            const order = await seaport.api.getOrder({
+                side: OrderSide.Sell,
+                asset_contract_address,
+                token_id,
+            })
+            const transactionHash = await seaport.fulfillOrder({
+                order,
+                accountAddress,
+            })
+            
+            if (transactionHash) {
+                await updateSingleAsset(asset_contract_address, token_id);
+                alert('Purchased');
+            }
+        } catch (e) {
+            alert(e.message)
+            setLoading(false)
+            return
+        }
+    }
 
     return (
         <Box>
@@ -149,10 +209,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     }}
                 >
                     <Image
-                        src={
-                            data?.asset_contract?.image_url ??
-                            'https://picsum.photos/200/300'
-                        }
+                        src={data?.image_url ?? 'https://picsum.photos/200/300'}
                         sx={{
                             objectFit: 'cover',
                             width: ['100%', '250px', '30vw', '30vw'],
@@ -326,7 +383,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                                 fontSize: 1,
                                             }}
                                         >
-                                            {data?.creator?.user.username}
+                                            {data?.creator?.user?.username || '-'}
                                         </Text>
                                     </Flex>
                                 </Box>
@@ -683,7 +740,12 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 }}
                                 label="Place a bid"
                             >
-                                <PopupPlaceABid />
+                                <PopupPlaceABid
+                                    name={data?.name || ''}
+                                    onConfirm={makeOffer}
+                                    onClose={() => setOpenPopupPlaceABid(false)}
+                                    loading={loading}
+                                />
                             </Popup>
                             <Popup
                                 isOpen={openPopupShare}

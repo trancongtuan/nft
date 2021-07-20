@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-nested-ternary */
 import React, {
     FC,
     KeyboardEventHandler,
@@ -18,9 +20,9 @@ import {
 import Popover from 'react-popover'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import Image from 'next/image'
-import LogoIcon from '../public/assets/images/icons/logo.svg'
 import SearchIcon from '../public/assets/images/icons/search.svg'
 import DropDownIcon from '../public/assets/images/icons/drop-down.svg'
 import NotificationIcon from '../public/assets/images/icons/notification.svg'
@@ -43,22 +45,22 @@ import { useAuth } from '../hooks/auth'
 const selectionItems = [
     {
         id: '1',
-        label: 'Explore',
+        label: 'general.explore',
         value: '/',
     },
     {
         id: '2',
-        label: 'My items',
+        label: 'general.my_items',
         value: '/my_items',
     },
     {
         id: '3',
-        label: 'Following',
+        label: 'general.following',
         value: '/following',
     },
     {
         id: '4',
-        label: 'Activity',
+        label: 'general.activity',
         value: '/activity',
         isNew: true,
     },
@@ -67,27 +69,27 @@ const selectionItems = [
 const tooltipItems = [
     {
         id: 1,
-        label: 'How it works',
+        label: 'general.how_it_work',
     },
     {
         id: 2,
-        label: 'RARI Token',
+        label: 'general.RARI_token',
     },
     {
         id: 3,
-        label: 'Discussion',
+        label: 'general.discussion',
     },
     {
         id: 4,
-        label: 'Voting',
+        label: 'general.voting',
     },
     {
         id: 5,
-        label: 'Suggest feature',
+        label: 'general.suggest_feature',
     },
     {
         id: 6,
-        label: 'Subscribe',
+        label: 'general.subscribe',
     },
 ]
 
@@ -185,6 +187,7 @@ const useColorInput = (
 }
 
 const SearchInput: FC = () => {
+    const { t } = useTranslation('common')
     const [focus, setFocus] = useState(false)
     const router = useRouter()
     const [colorMode] = useColorMode()
@@ -200,7 +203,6 @@ const SearchInput: FC = () => {
             pl={3}
             pr={2}
             bg={bg}
-            mr={24}
             color="text"
             sx={{
                 position: 'relative',
@@ -216,7 +218,7 @@ const SearchInput: FC = () => {
                     height: 14,
                 },
                 boxShadow,
-                maxWidth: 600
+                width: '100%',
             }}
         >
             <Box
@@ -233,12 +235,13 @@ const SearchInput: FC = () => {
                 onKeyPress={handleKeyPress}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
-                placeholder="Search Rarible"
+                placeholder={t('general.search_items')}
                 variant=""
                 sx={{
                     fontSize: 15,
                     fontWeight: 'bold',
                     border: 0,
+                    outline: 0,
                     ':focus-visible': {
                         outline: 'none',
                     },
@@ -359,6 +362,8 @@ interface CatalogProps {
 }
 
 const Catalog: FC<CatalogProps> = ({ onClose }) => {
+    const [colorMode] = useColorMode()
+    const { t } = useTranslation('common')
     const [showLanguage, setShowLanguage] = useState(false)
     const [language, setLanguage] = useState<TooltiProps>(languageList[0])
     const router = useRouter()
@@ -387,8 +392,28 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                 >
                     <Flex>
                         <Link href="/">
-                            <Box mr={16} sx={{ cursor: 'pointer' }}>
-                                <LogoIcon />
+                            <Box
+                                mr={16}
+                                sx={{
+                                    cursor: 'pointer',
+                                    position: 'relative',
+                                    width: '180px',
+                                    height: '45px',
+                                }}
+                            >
+                                {colorMode === 'dark' ? (
+                                    <Image
+                                        src="/assets/images/logo_black.png"
+                                        alt="logo"
+                                        layout="fill"
+                                    />
+                                ) : (
+                                    <Image
+                                        src="/assets/images/logo_white.png"
+                                        alt="logo"
+                                        layout="fill"
+                                    />
+                                )}
                             </Box>
                         </Link>
                         <Popover
@@ -441,7 +466,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            Explore
+                            {t('general.explore')}
                         </Text>
                     </Link>
                     <Link href="/my_items">
@@ -454,7 +479,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            My items
+                            {t('general.my_items')}
                         </Text>
                     </Link>
                     <Link href="/following">
@@ -467,7 +492,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            Following
+                            {t('general.following')}
                         </Text>
                     </Link>
                     <Flex sx={{ alignItems: 'center', cursor: 'pointer' }}>
@@ -480,7 +505,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                     fontWeight: 'heavy',
                                 }}
                             >
-                                Activity
+                                {t('general.activity')}
                             </Text>
                         </Link>
                         <Box ml={8}>
@@ -502,7 +527,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        How it works
+                        {t('general.how_it_work')}
                     </UILink>
                 </Flex>
                 <Box mt={16}>
@@ -517,7 +542,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
                         }}
                     >
-                        Community
+                        {t('general.community')}
                     </Text>
                 </Box>
                 <Flex mt={8} sx={{ flexDirection: 'column' }}>
@@ -531,7 +556,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                                 cursor: 'pointer',
                             }}
                         >
-                            RARI Token
+                            {t('general.RARI_token')}
                         </Text>
                     </Link>
                     <UILink
@@ -545,7 +570,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Discussion
+                        {t('general.discussion')}
                     </UILink>
                     <UILink
                         href="https://snapshot.org/#/rarible/"
@@ -558,7 +583,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Voting
+                        {t('general.voting')}
                     </UILink>
                     <UILink
                         href="https://snapshot.org/#/rarible/"
@@ -571,7 +596,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Suggest feature
+                        {t('general.suggest_feature')}
                     </UILink>
                     <UILink
                         href="https://rarible.nolt.io/"
@@ -584,7 +609,7 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                             cursor: 'pointer',
                         }}
                     >
-                        Subscribe
+                        {t('general.subscribe')}
                     </UILink>
                 </Flex>
             </Box>
@@ -619,6 +644,30 @@ const NavigationBar: FC = () => {
     const [showSearch, setShowSearch] = useState(false)
     const [showCatalog, setShowCatalog] = useState(false)
     const { connected, setConnected } = useAuth()
+    const { t } = useTranslation('common')
+    const user = null
+
+    // if (connected) {
+    //     user = useQuery(['user', connected], ({ queryKey }) =>
+    //         fetchUsers({ address: typeof (queryKey[1]) === 'string' ? queryKey[1] : '' }));
+    // }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    const connectWallet = async () => {
+        // Get Address
+        let accountAddress
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            accountAddress = await window.ethereum.enable()
+            if (!accountAddress[0]) throw new Error('No account selected.')
+            // eslint-disable-next-line prefer-destructuring
+            accountAddress = accountAddress[0]
+            setConnected(accountAddress)
+        } catch (e) {
+            alert(e.message)
+        }
+    }
+
     useEffect(() => {
         if (counter > 0) {
             const timer = setInterval(() => setCounter(counter - 1), 1000)
@@ -626,6 +675,7 @@ const NavigationBar: FC = () => {
         }
         return setCounter(0)
     }, [counter])
+
     return (
         <Flex
             bg="background"
@@ -652,12 +702,28 @@ const NavigationBar: FC = () => {
                         ':active': {
                             transform: 'scale(0.95)',
                         },
+                        position: 'relative',
+                        width: '180px',
+                        height: '45px',
                     }}
                 >
-                    <LogoIcon />
+                    {colorMode === 'dark' ? (
+                        <Image
+                            src="/assets/images/logo_black.png"
+                            alt="logo"
+                            layout="fill"
+                        />
+                    ) : (
+                        <Image
+                            src="/assets/images/logo_white.png"
+                            alt="logo"
+                            layout="fill"
+                        />
+                    )}
                 </Box>
             </Link>
             <Flex
+                mr={24}
                 sx={{
                     flex: 1,
                     '@media screen and (max-width: 1110px)': {
@@ -726,7 +792,7 @@ const NavigationBar: FC = () => {
                                     },
                                 }}
                             >
-                                How it works
+                                {t('general.how_it_work')}
                             </Text>
                         </Flex>
                         <Popover
@@ -780,7 +846,7 @@ const NavigationBar: FC = () => {
                                                 'all 0.12s ease-in-out 0s',
                                         }}
                                     >
-                                        Community
+                                        {t('general.community')}
                                     </Text>
                                     <DropDownIcon />
                                 </Flex>
@@ -815,12 +881,16 @@ const NavigationBar: FC = () => {
                         variant="secondary"
                         mr={8}
                         sx={{
+                            background: '#00eeb9',
+                            color: '#000',
+                            fontWeight: 'normal',
+                            borderRadius: '5px',
                             '@media screen and (max-width: 890px)': {
                                 display: 'none',
                             },
                         }}
                     >
-                        Create
+                        {t('general.create')}
                     </Button>
                     <Button
                         onClick={() => setShowSearch(true)}
@@ -928,6 +998,10 @@ const NavigationBar: FC = () => {
                                 sx={{
                                     width: 40,
                                     p: 0,
+                                    border: '1px #2d2d2d solid',
+                                    color: '#afafaf',
+                                    fontWeight: 'normal',
+                                    borderRadius: '5px',
                                 }}
                                 onClick={() => setVisibleNoti(!visibleNoti)}
                             >
@@ -964,7 +1038,7 @@ const NavigationBar: FC = () => {
                                                 fontWeight: 'bold',
                                             }}
                                         >
-                                            0xd92e44ac213b9...fa96
+                                            {connected}
                                         </Text>
                                         <CopyToClipboard
                                             onCopy={() => setCounter(2)}
@@ -998,7 +1072,13 @@ const NavigationBar: FC = () => {
                                                 cursor: 'pointer',
                                             }}
                                         >
-                                            Set display name
+                                            {user?.status === 'success'
+                                                ? user.data[0] &&
+                                                  user.data[0].display_name
+                                                      ?.length > 0
+                                                    ? user.data[0].display_name
+                                                    : 'Set display name'
+                                                : 'Loading...'}
                                         </Text>
                                     </Link>
                                     <Box mt={16}>
@@ -1180,10 +1260,15 @@ const NavigationBar: FC = () => {
                     >
                         {connected ? (
                             <Button
+                                onClick={() => setShowDetail(!showDetail)}
                                 variant="border"
                                 pl={20}
                                 pr={55}
                                 sx={{
+                                    border: '1px #2d2d2d solid',
+                                    color: '#00eeb9',
+                                    fontWeight: 'normal',
+                                    borderRadius: '5px',
                                     position: 'relative',
                                     '@media screen and (max-width: 400px)': {
                                         p: 0,
@@ -1192,7 +1277,7 @@ const NavigationBar: FC = () => {
                                 }}
                             >
                                 <Text
-                                    onClick={() => router.push('/rari')}
+                                    // onClick={() => router.push('/rari')}
                                     sx={{
                                         '@media screen and (max-width: 400px)': {
                                             display: 'none',
@@ -1200,10 +1285,10 @@ const NavigationBar: FC = () => {
                                         cursor: 'pointer',
                                     }}
                                 >
-                                    O RARI
+                                    Connected
                                 </Text>
                                 <Avatar
-                                    onClick={() => setShowDetail(!showDetail)}
+                                    // onClick={() => setShowDetail(!showDetail)}
                                     src="https://via.placeholder.com/500x100"
                                     alt="avatar"
                                     sx={{
@@ -1212,20 +1297,21 @@ const NavigationBar: FC = () => {
                                         right: 0,
                                         objectFit: 'cover',
                                         cursor: 'pointer',
+                                        borderRadius: '5px',
                                     }}
                                 />
                             </Button>
                         ) : (
                             <Button
-                                onClick={() => router.push('/connect')}
                                 variant="border"
                                 sx={{
                                     '@media screen and (max-width: 890px)': {
                                         display: 'none',
                                     },
                                 }}
+                                onClick={connectWallet}
                             >
-                                <Text>Connect wallet</Text>
+                                <Text>{t('general.connect_wallet')}</Text>
                             </Button>
                         )}
                     </Popover>
