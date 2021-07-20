@@ -111,7 +111,11 @@ export const getServerSideProps: GetServerSideProps<
     const asset = await fetchAssets(params)
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
+            ...(await serverSideTranslations(locale, [
+                'common',
+                'footer',
+                'home',
+            ])),
             asset: asset[0],
         },
     }
@@ -146,7 +150,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
     const [loading, setLoading] = useState(false)
-    const data = asset;
+    const data = asset
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const makeOffer = async () => {
@@ -173,15 +177,14 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 order,
                 accountAddress,
             })
-            
+
             if (transactionHash) {
-                await updateSingleAsset(asset_contract_address, token_id);
-                alert('Purchased');
+                await updateSingleAsset(asset_contract_address, token_id)
+                alert('Purchased')
             }
         } catch (e) {
             alert(e.message)
             setLoading(false)
-            return
         }
     }
 
@@ -383,7 +386,8 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                                 fontSize: 1,
                                             }}
                                         >
-                                            {data?.creator?.user?.username || '-'}
+                                            {data?.creator?.user?.username ||
+                                                '-'}
                                         </Text>
                                     </Flex>
                                 </Box>

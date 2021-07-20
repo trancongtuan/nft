@@ -110,7 +110,7 @@ const AuctionCard: FC<AuctionCardProps> = ({
                             borderRadius: 3,
                             border:
                                 colorMode === 'dark'
-                                    ? '1px solid rgba(255, 255, 255, 0.1)'
+                                    ? '1px solid #272727'
                                     : '1px solid rgba(18, 18, 18, 0.1)',
                         },
                         ':after': {
@@ -126,7 +126,7 @@ const AuctionCard: FC<AuctionCardProps> = ({
                             borderRadius: 3,
                             border:
                                 colorMode === 'dark'
-                                    ? '1px solid rgba(255, 255, 255, 0.1)'
+                                    ? '1px solid #272727'
                                     : '1px solid rgba(18, 18, 18, 0.1)',
                         },
                     }}
@@ -143,7 +143,7 @@ const AuctionCard: FC<AuctionCardProps> = ({
                     borderRadius: 1,
                     border:
                         colorMode === 'dark'
-                            ? '1px solid rgba(255, 255, 255, 0.1)'
+                            ? '1px solid #272727'
                             : '1px solid rgba(18, 18, 18, 0.1)',
                     px: [18, 18, 22],
                     py: [22, 22, 24],
@@ -329,7 +329,10 @@ const AuctionCard: FC<AuctionCardProps> = ({
                                         fontWeight: 'bold',
                                         cursor: 'pointer',
                                         svg: {
-                                            fill: '#FFF',
+                                            fill:
+                                                colorMode === 'dark'
+                                                    ? 'white'
+                                                    : 'black',
                                         },
                                     }}
                                 >

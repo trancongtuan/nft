@@ -1,7 +1,7 @@
 import { alpha } from '@theme-ui/color'
 import React, { FC, MouseEventHandler, PropsWithChildren } from 'react'
 import Slider, { Settings } from 'react-slick'
-import { Box } from 'theme-ui'
+import { Box, useColorMode } from 'theme-ui'
 import ArrowIcon from '../public/assets/images/icons/arrowDown.svg'
 
 interface ArrowProps {
@@ -10,6 +10,7 @@ interface ArrowProps {
 }
 
 const ArrowPrev: FC = (props) => {
+    const [colorMode] = useColorMode()
     const { className, onClick } = props as ArrowProps
     return (
         <Box
@@ -30,7 +31,10 @@ const ArrowPrev: FC = (props) => {
                 bg: 'background',
                 svg: {
                     position: 'absolute',
-                    fill: 'text',
+                    fill: colorMode === 'dark' ? 'white' : 'black',
+                },
+                path: {
+                    fill: colorMode === 'dark' ? 'white' : 'black',
                 },
                 ':hover': {
                     bg: 'background',
@@ -50,6 +54,7 @@ const ArrowPrev: FC = (props) => {
 }
 
 const ArrowNext: FC = (props) => {
+    const [colorMode] = useColorMode()
     const { className, onClick } = props as ArrowProps
     return (
         <Box
@@ -71,7 +76,10 @@ const ArrowNext: FC = (props) => {
                 svg: {
                     position: 'absolute',
                     transform: 'rotate(-90deg)',
-                    fill: 'text',
+                    fill: colorMode === 'dark' ? 'white' : 'black',
+                },
+                path: {
+                    fill: colorMode === 'dark' ? 'white' : 'black',
                 },
                 ':hover': {
                     bg: 'background',

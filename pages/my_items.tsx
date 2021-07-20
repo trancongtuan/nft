@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import { useTranslation } from 'react-i18next'
+import Web3 from 'web3'
 import Avatar from '../components/Avatar'
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
@@ -30,9 +31,14 @@ import FilterButton from '../components/FilterButton'
 import Popup from '../components/Popup'
 import ActivityCard from '../components/ActivityCard'
 import PopupReport from '../components/PopupReport'
-import { fetchUsers, fetchAssets, updateUserAssets, EthUser, Asset } from '../queries'
+import {
+    fetchUsers,
+    fetchAssets,
+    updateUserAssets,
+    EthUser,
+    Asset,
+} from '../queries'
 import { useAuth } from '../hooks/auth'
-import Web3 from 'web3';
 
 const selectionItems = [
     {
@@ -121,7 +127,7 @@ const Items: FC = () => {
 
         // Get Address
         try {
-            let address = await web3.eth.getAccounts()
+            const address = await web3.eth.getAccounts()
             const accountAddress: string = address[0]
             setConnected(accountAddress)
             updateProfile()
@@ -133,8 +139,8 @@ const Items: FC = () => {
 
     const updateAssets = async () => {
         const web3 = new Web3(window.ethereum)
-        
-        let address = await web3.eth.getAccounts()
+
+        const address = await web3.eth.getAccounts()
         const accountAddress: string = address[0]
 
         const result = await updateUserAssets(accountAddress)
