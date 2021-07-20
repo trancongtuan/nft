@@ -14,7 +14,6 @@ import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import ArrowDown from '../public/assets/images/icons/arrowDown.svg'
 import Tooltip, { TooltipItemProps } from './Tooltip'
-import Social from './Social'
 
 const tooltipItems = [
     {
@@ -90,7 +89,7 @@ const Footer: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                {t('get_the_latest_Rarible_updates')}
+                                Get the latest Rarible updates
                             </Text>
                             <Flex
                                 mt={16}
@@ -114,7 +113,7 @@ const Footer: FC = () => {
                                 }}
                             >
                                 <Input
-                                    placeholder={t('your_email')}
+                                    placeholder="Your e-mail"
                                     defaultValue=""
                                     variant="footerInput"
                                     sx={{
@@ -141,7 +140,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    {t('i_am_in')}
+                                    I am in
                                 </Button>
                             </Flex>
                         </Box>
@@ -176,7 +175,7 @@ const Footer: FC = () => {
                                             },
                                         }}
                                     >
-                                        {t('explore')}
+                                        Explore
                                     </Text>
                                 </Link>
                                 <UILink
@@ -194,7 +193,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    {t('how_it_work')}
+                                    How it work
                                 </UILink>
                                 <Link href="/create">
                                     <Text
@@ -211,7 +210,7 @@ const Footer: FC = () => {
                                             },
                                         }}
                                     >
-                                        {t('create')}
+                                        Create
                                     </Text>
                                 </Link>
                                 <UILink
@@ -229,7 +228,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    {t('support')}
+                                    Support
                                 </UILink>
                             </Flex>
                         </Box>
@@ -246,27 +245,9 @@ const Footer: FC = () => {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                {t('community')}
+                                Community
                             </Text>
                             <Flex mt={16} sx={{ flexDirection: 'column' }}>
-                                <Link href="/rari">
-                                    <Text
-                                        mb={12}
-                                        sx={{
-                                            cursor: 'pointer',
-                                            color: 'textSecondary',
-                                            fontSize: '16px',
-                                            fontWeight: 'bold',
-                                            transition:
-                                                'all 0.12s ease-in-out 0s',
-                                            ':hover': {
-                                                color: 'text',
-                                            },
-                                        }}
-                                    >
-                                        {t('RARI_token')}
-                                    </Text>
-                                </Link>
                                 <UILink
                                     href="https://gov.rarible.com/"
                                     target="_blank"
@@ -282,7 +263,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    {t('discussion')}
+                                    Discussion
                                 </UILink>
                                 <UILink
                                     href="https://snapshot.org/#/rarible/"
@@ -299,7 +280,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    {t('voting')}
+                                    Voting
                                 </UILink>
                                 <UILink
                                     href="https://rarible.nolt.io/"
@@ -316,7 +297,7 @@ const Footer: FC = () => {
                                         },
                                     }}
                                 >
-                                    {t('suggest_feature')}
+                                    Suggest feature
                                 </UILink>
                             </Flex>
                         </Box>
@@ -419,8 +400,8 @@ const Footer: FC = () => {
                         }}
                     >
                         <Box mr={[0, 0, 0, 32]} mt={[16, 16, 16, 0]}>
-                            <Text sx={{ fontSize: 1, order: [2, 2, 2, 1] }}>
-                                © Rarible, Inc. {t('all_right_reserved')}
+                            <Text sx={{ fontSize: 1 }}>
+                                © Ultimate Node Ltd. All rights reserved.
                             </Text>
                         </Box>
 
@@ -441,12 +422,12 @@ const Footer: FC = () => {
                         >
                             <a href="/files/terms.pdf" target="_blank">
                                 <Text mx={16} sx={{ fontSize: 1 }}>
-                                    {t('terms')}
+                                    Terms
                                 </Text>
                             </a>
                             <a href="/files/privacy.pdf" target="_blank">
                                 <Text mx={16} sx={{ fontSize: 1 }}>
-                                    {t('privacy')}
+                                    Privacy
                                 </Text>
                             </a>
                         </Flex>
