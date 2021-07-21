@@ -401,7 +401,7 @@ const Footer: FC = () => {
                     >
                         <Box mr={[0, 0, 0, 32]} mt={[16, 16, 16, 0]}>
                             <Text sx={{ fontSize: 1 }}>
-                                © Ultimate Node Ltd. All rights reserved.
+                                © Ultimate Node Ltd. {t('all_right_reserved')}
                             </Text>
                         </Box>
 
