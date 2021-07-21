@@ -3,7 +3,7 @@
 /* eslint-disable no-irregular-whitespace */
 import React, { FC, useCallback, useState, useEffect } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { Box, Button, Flex, Grid, Text } from 'theme-ui'
+import { Box, Button, Flex, Grid, Text, useColorMode } from 'theme-ui'
 import _ from 'lodash'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +18,7 @@ import Carousel from '../components/Carousel'
 import EdgeOverflow from '../components/EdgeOverflow'
 import HotCollection from '../components/HotCollection'
 import Layout from '../containers/Layout'
+import TimerIcon from '../public/assets/images/icons/timer.svg'
 import DropdownIcon from '../public/assets/images/icons/drop-down.svg'
 import TopSellerCard from '../components/TopSellerCard'
 import HomeCard from '../components/HomeCard'
@@ -96,6 +97,8 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [sellerType, setSellerType] = useState<TooltipItemProps>(
         sellerList[0]
     )
+    const [colorMode] = useColorMode()
+
     const ref = useHorizontalScroll()
     const [assetType, setAssetType] = useState('all')
     const [showLoadMore, setShowLoadMore] = useState(true)
@@ -279,13 +282,27 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     <EdgeOverflow />
                 </Box>
                 <Flex mb={32} sx={{ flexDirection: 'column' }}>
-                    <Text
+                    <Flex
                         mb={24}
-                        color="text"
-                        sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
+                        sx={{
+                            svg: {
+                                fill: colorMode === 'dark' ? 'white' : 'black',
+                                width: 30,
+                                height: 30,
+                            },
+                            alignItems: 'center',
+                        }}
                     >
-                        Live auctions 🔥
-                    </Text>
+                        <Text
+                            mr={16}
+                            color="text"
+                            sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
+                        >
+                            Live auctions
+                        </Text>
+                        <TimerIcon />
+                    </Flex>
+
                     <Carousel slidesToShow={4} length={hotBids.length}>
                         {hotBids?.map((item) => (
                             <Box key={item.id} px={20}>
