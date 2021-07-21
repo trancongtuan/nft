@@ -2,43 +2,37 @@
 /* eslint-disable no-alert */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import React, { FC, useState, ReactNode, useEffect } from 'react'
-import Link from 'next/link'
-import { Box, Text, Flex, Button } from 'theme-ui'
-import Popover from 'react-popover'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { useRouter } from 'next/router'
-import { v4 as uuidv4 } from 'uuid'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import React, { FC, ReactNode, useEffect, useState } from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useTranslation } from 'react-i18next'
+import Popover from 'react-popover'
+import { Box, Button, Flex, Text } from 'theme-ui'
+import { v4 as uuidv4 } from 'uuid'
 import Web3 from 'web3'
+import ActivityCard from '../components/ActivityCard'
 import Avatar from '../components/Avatar'
-import NavigationBar from '../components/NavigationBar'
-import Footer from '../components/Footer'
-import Selection from '../components/Selection'
 import BidCard from '../components/BidCard'
-import CopyIcon from '../public/assets/images/icons/copy.svg'
-import CheckedIcon from '../public/assets/images/icons/checked.svg'
+import FilterButton from '../components/FilterButton'
+import Footer from '../components/Footer'
+import NavigationBar from '../components/NavigationBar'
+import Popup from '../components/Popup'
+import PopupReport from '../components/PopupReport'
+import Selection from '../components/Selection'
 import Tooltip from '../components/Tooltip'
-import TwitterIcon from '../public/assets/images/icons/twitter.svg'
+import { useAuth } from '../hooks/auth'
+import CheckedIcon from '../public/assets/images/icons/checked.svg'
+import CopyIcon from '../public/assets/images/icons/copy.svg'
+import EmailIcon from '../public/assets/images/icons/email.svg'
 import FacebookIcon from '../public/assets/images/icons/facebook.svg'
 import TelegramIcon from '../public/assets/images/icons/telegram.svg'
-import EmailIcon from '../public/assets/images/icons/email.svg'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
+import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 import UploadIcon from '../public/assets/images/icons/upload.svg'
-import FilterButton from '../components/FilterButton'
-import Popup from '../components/Popup'
-import ActivityCard from '../components/ActivityCard'
-import PopupReport from '../components/PopupReport'
-import {
-    fetchUsers,
-    fetchAssets,
-    updateUserAssets,
-    EthUser,
-    Asset,
-} from '../queries'
-import { useAuth } from '../hooks/auth'
+import { Asset, EthUser, fetchUsers, updateUserAssets } from '../queries'
 
 const selectionItems = [
     {
@@ -122,21 +116,6 @@ const Items: FC = () => {
         }
     }
 
-    const connectWallet = async () => {
-        const web3 = new Web3(window.ethereum)
-
-        // Get Address
-        try {
-            const address = await web3.eth.getAccounts()
-            const accountAddress: string = address[0]
-            setConnected(accountAddress)
-            updateProfile()
-            updateAssets()
-        } catch (e) {
-            alert(e.message)
-        }
-    }
-
     const updateAssets = async () => {
         const web3 = new Web3(window.ethereum)
 
@@ -145,6 +124,21 @@ const Items: FC = () => {
 
         const result = await updateUserAssets(accountAddress)
         setAssets(result)
+    }
+
+    const connectWallet = async () => {
+        const web3 = new Web3(window.ethereum)
+
+        // Get Address
+        try {
+            const address = await web3.eth.getAccounts()
+            const accountAddress: string = address[0]
+            setConnected(!!accountAddress)
+            updateProfile()
+            updateAssets()
+        } catch (e) {
+            alert(e.message)
+        }
     }
 
     useEffect(() => {
