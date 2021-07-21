@@ -1,5 +1,5 @@
 import { client } from './client'
-import { Asset } from './assets';
+import { Asset } from './assets'
 
 export interface EthUser {
     id: string
@@ -48,6 +48,5 @@ export const updateUser: (id: string, data: EthUser) => Promise<EthUser> = (
 export const createUser: (data: EthUserCreater) => Promise<EthUser> = (data) =>
     client.post(`/eth-users`, data).then((response) => response.data)
 
-export const updateUserAssets: (id: string) => Promise<Asset[]> = (id) => 
+export const updateUserAssets: (id: string) => Promise<Asset[]> = (id) =>
     client.put(`/eth-users/${id}/assets`).then((response) => response.data)
-    

@@ -14,7 +14,6 @@ import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import ArrowDown from '../public/assets/images/icons/arrowDown.svg'
 import Tooltip, { TooltipItemProps } from './Tooltip'
-import Social from './Social'
 
 const tooltipItems = [
     {
@@ -249,24 +248,6 @@ const Footer: FC = () => {
                                 {t('community')}
                             </Text>
                             <Flex mt={16} sx={{ flexDirection: 'column' }}>
-                                <Link href="/rari">
-                                    <Text
-                                        mb={12}
-                                        sx={{
-                                            cursor: 'pointer',
-                                            color: 'textSecondary',
-                                            fontSize: '16px',
-                                            fontWeight: 'bold',
-                                            transition:
-                                                'all 0.12s ease-in-out 0s',
-                                            ':hover': {
-                                                color: 'text',
-                                            },
-                                        }}
-                                    >
-                                        {t('RARI_token')}
-                                    </Text>
-                                </Link>
                                 <UILink
                                     href="https://gov.rarible.com/"
                                     target="_blank"
@@ -419,8 +400,8 @@ const Footer: FC = () => {
                         }}
                     >
                         <Box mr={[0, 0, 0, 32]} mt={[16, 16, 16, 0]}>
-                            <Text sx={{ fontSize: 1, order: [2, 2, 2, 1] }}>
-                                © Rarible, Inc. {t('all_right_reserved')}
+                            <Text sx={{ fontSize: 1 }}>
+                                © Ultimate Node Ltd. {t('all_right_reserved')}
                             </Text>
                         </Box>
 

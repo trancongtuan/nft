@@ -304,5 +304,7 @@ export function useAssetTypeQuery() {
 }
 
 export const updateSingleAsset = (asset_contract_address, token_id) => {
-    return client.put(`/assets/${asset_contract_address}/${token_id}`).then((response) => response.data)
+    return client
+        .put(`/assets/${asset_contract_address}/${token_id}`)
+        .then((response) => response.data)
 }
