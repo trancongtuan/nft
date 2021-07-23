@@ -303,6 +303,6 @@ export function useAssetTypeQuery() {
     return useQuery(['assetType'], () => fetchAssetTypes())
 }
 
-export const updateSingleAsset = (asset_contract_address, token_id) => {
-    return client.put(`/assets/${asset_contract_address}/${token_id}`).then((response) => response.data)
+export const updateSingleAsset = (asset_contract_address, token_id, owner) => {
+    return client.put(`/assets/${asset_contract_address}/${token_id}?owner=${owner}`).then((response) => response.data)
 }

@@ -154,7 +154,7 @@ const Setting: FC = () => {
             alert(e.toString())
         }
     }
-console.log(profile);
+
     const connectWallet = async () => {
         // Get Address
         let accountAddress

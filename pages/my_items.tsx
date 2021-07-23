@@ -122,7 +122,7 @@ const Items: FC = () => {
         // Get Address
         try {
             let address = await web3.eth.getAccounts()
-            const accountAddress: string = address[0]
+            const accountAddress = address[0]
             setConnected(accountAddress)
             updateProfile()
             updateAssets()

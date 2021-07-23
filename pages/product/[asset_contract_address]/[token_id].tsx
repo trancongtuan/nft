@@ -175,7 +175,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
             })
             
             if (transactionHash) {
-                await updateSingleAsset(asset_contract_address, token_id);
+                await updateSingleAsset(asset_contract_address, token_id, accountAddress);
                 alert('Purchased');
             }
         } catch (e) {

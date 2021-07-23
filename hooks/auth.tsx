@@ -5,7 +5,7 @@ import { fetchUsers, createUser } from '../queries'
 
 interface AuthContextProps {
     connected: string | boolean
-    setConnected: React.Dispatch<React.SetStateAction<boolean>>
+    setConnected: React.Dispatch<React.SetStateAction<boolean | string>>
 }
 
 const AuthContext = React.createContext<AuthContextProps>({
@@ -20,7 +20,6 @@ export const AuthProvider: FC<
 
     // eslint-disable-next-line no-underscore-dangle
     const _setConnected = async (address) => {
-        console.log(address)
         setConnected(address)
 
         // disconnected
