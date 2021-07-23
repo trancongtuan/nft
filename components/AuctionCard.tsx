@@ -98,7 +98,7 @@ const AuctionCard: FC<AuctionCardProps> = ({
                         zIndex: -1,
                         inset: 0,
                         ':before': {
-                            bg: 'background',
+                            bg: 'backgroundAuction',
                             left: '3px',
                             right: '3px',
                             bottom: '-3px',
@@ -114,7 +114,7 @@ const AuctionCard: FC<AuctionCardProps> = ({
                                     : '1px solid rgba(18, 18, 18, 0.1)',
                         },
                         ':after': {
-                            bg: 'background',
+                            bg: 'backgroundAuction',
                             left: '6px',
                             right: '6px',
                             bottom: '-6px',
@@ -134,7 +134,7 @@ const AuctionCard: FC<AuctionCardProps> = ({
             )}
             <Box
                 p={18}
-                bg="background"
+                bg="backgroundAuction"
                 sx={{
                     inset: 0,
                     height: '100%',
@@ -436,8 +436,8 @@ const AuctionCard: FC<AuctionCardProps> = ({
                             cursor: 'pointer',
                             opacity: like ? 1 : 0.5,
                             svg: {
-                                stroke: like ? '#00eeb9' : 'text',
-                                fill: like ? '#00eeb9' : undefined,
+                                stroke: like ? '#00eeb9' : 'white',
+                                fill: like ? '#00eeb9' : 'undefined',
                             },
                             ':hover': {
                                 backgroundColor:
