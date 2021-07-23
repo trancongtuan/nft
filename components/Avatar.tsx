@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react'
 import { Box, Flex, Image } from 'theme-ui'
-import VerifiedIcon from '../public/assets/images/icons/verified.svg'
+import StarIcon from '../public/assets/images/icons/star.svg'
 import CheckedIcon from '../public/assets/images/icons/checked.svg'
 import FavoriteIcon from '../public/assets/images/icons/favorite.svg'
 import OfferIcon from '../public/assets/images/icons/offer.svg'
@@ -148,7 +148,7 @@ const Avatar: FC<AvatarProps> = ({
                         borderRadius: '5px',
                     }}
                 >
-                    <VerifiedIcon />
+                    <StarIcon />
                 </Flex>
             )}
             {showType && (
