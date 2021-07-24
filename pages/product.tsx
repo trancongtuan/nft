@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import Popover from 'react-popover'
-import { Box, Text, Flex, Image, Button } from 'theme-ui'
+import { Box, Text, Flex, Image, Button, useColorMode } from 'theme-ui'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import { useTranslation } from 'react-i18next'
@@ -89,6 +89,7 @@ const Product: FC = () => {
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
+    const [colorMode] = useColorMode()
 
     return (
         <Box>
@@ -180,8 +181,8 @@ const Product: FC = () => {
                                         minWidth: '40px',
                                         marginLeft: '5px',
                                         svg: {
-                                            stroke: liked ? '#00eeb9' : 'text',
-                                            fill: liked ? '#00eeb9' : undefined,
+                                            stroke: liked ? '#00eeb9' : colorMode === 'dark' ? 'white' : 'text',
+                                            fill: liked ? '#00eeb9' : 'text',
                                         },
                                     }}
                                 >
