@@ -17,10 +17,10 @@ export const theme: Theme = {
         backgroundButtonActive: '#1f1f1f',
         backgroundYellow: 'rgba(254, 218, 3, 0.1)',
         hover: 'rgba(4, 4, 5, 0.05)',
-        primary: '#0066ff',
+        primary: '#00eeb9',
         red: '#ff5757',
         toggleButtonOff: 'rgba(45, 129, 255, 0.1)',
-        toggleButtonOn: 'rgba(45, 129, 255)',
+        toggleButtonOn: '#00eeb9',
         toggleCircle: '#FFF',
         modes: {
             dark: {
