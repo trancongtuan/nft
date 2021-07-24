@@ -55,7 +55,7 @@ const useIcon = (type: Type): [string, () => ReactNode] => {
             return [
                 '#ff9012',
                 () => (
-                    <Box sx={{ svg: { fill: 'white', stroke: 'white' } }}>
+                    <Box sx={{ svg: { fill: '#00eeb9', stroke: 'white' } }}>
                         <FavoriteIcon />
                     </Box>
                 ),
@@ -78,7 +78,7 @@ const useIcon = (type: Type): [string, () => ReactNode] => {
             return [
                 '#ff9012',
                 () => (
-                    <Box sx={{ svg: { fill: 'white', stroke: 'white' } }}>
+                    <Box sx={{ svg: { fill: '#00eeb9', stroke: 'white' } }}>
                         <FavoriteIcon />
                     </Box>
                 ),

@@ -278,8 +278,8 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         minWidth: '40px',
                                         marginLeft: '5px',
                                         svg: {
-                                            stroke: liked ? 'red' : 'text',
-                                            fill: liked ? 'red' : undefined,
+                                            stroke: liked ? '#00eeb9' : 'text',
+                                            fill: liked ? '#00eeb9' : undefined,
                                         },
                                     }}
                                 >
