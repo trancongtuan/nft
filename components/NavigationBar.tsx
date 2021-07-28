@@ -218,7 +218,7 @@ const SearchInput: FC = () => {
                     height: 14,
                 },
                 boxShadow,
-                maxWidth: 600
+                maxWidth: 600,
             }}
         >
             <Box

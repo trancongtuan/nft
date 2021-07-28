@@ -83,6 +83,12 @@ const BidCard: FC<BidCardProps> = ({
         }
         return setCounter(0)
     }, [counter])
+    const checkHeartIconColor = (): string => {
+        if (colorMode === 'dark') {
+            return 'white'
+        }
+        return 'text'
+    }
     return (
         <Box
             sx={{
@@ -432,8 +438,8 @@ const BidCard: FC<BidCardProps> = ({
                             cursor: 'pointer',
                             opacity: like ? 1 : 0.5,
                             svg: {
-                                stroke: like ? 'red' : 'text',
-                                fill: like ? 'red' : undefined,
+                                stroke: like ? '#00eeb9' : checkHeartIconColor,
+                                fill: like ? '#00eeb9' : 'text',
                             },
                             ':hover': {
                                 backgroundColor:

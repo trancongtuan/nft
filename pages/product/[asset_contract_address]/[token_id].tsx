@@ -4,7 +4,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Popover from 'react-popover'
-import { Box, Text, Flex, Image, Button } from 'theme-ui'
+import { Box, Text, Flex, Image, Button, useColorMode } from 'theme-ui'
 import { useRouter } from 'next/router'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { OpenSeaPort, Network } from 'opensea-js'
@@ -125,7 +125,13 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     asset,
 }) => {
     const [seaport, setSeaport] = useState<any>()
-
+    const [colorMode] = useColorMode()
+    const checkHeartIconColor = (): string => {
+        if (colorMode === 'dark') {
+            return 'white'
+        }
+        return 'text'
+    }
     useEffect(() => {
         const provider =
             typeof window.web3 !== 'undefined'
@@ -278,8 +284,10 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         minWidth: '40px',
                                         marginLeft: '5px',
                                         svg: {
-                                            stroke: liked ? 'red' : 'text',
-                                            fill: liked ? 'red' : undefined,
+                                            stroke: liked
+                                                ? '#00eeb9'
+                                                : checkHeartIconColor,
+                                            fill: liked ? '#00eeb9' : 'text',
                                         },
                                     }}
                                 >
