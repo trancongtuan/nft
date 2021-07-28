@@ -15,7 +15,6 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { InfiniteData } from 'react-query'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
-import EdgeOverflow from '../components/EdgeOverflow'
 import HotCollection from '../components/HotCollection'
 import Layout from '../containers/Layout'
 import TimerIcon from '../public/assets/images/icons/timer.svg'
@@ -190,7 +189,6 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             </Flex>
                         ))}
                     </Flex>
-                    <EdgeOverflow />
                 </Box>
                 <Flex mb={30}>
                     <Text
@@ -279,7 +277,6 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             </Box>
                         ))}
                     </Flex>
-                    <EdgeOverflow />
                 </Box>
                 <Flex mb={32} sx={{ flexDirection: 'column' }}>
                     <Flex
@@ -449,7 +446,6 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 <p>Loading...</p>
                             )}
                         </Flex>
-                        <EdgeOverflow />
                     </Box>
                 </Flex>
                 <InfiniteScroll
