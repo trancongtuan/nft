@@ -78,6 +78,14 @@ const AuctionCard: FC<AuctionCardProps> = ({
     const [colorMode] = useColorMode()
     const [like, setLike] = useState(liked)
     const [counter, setCounter] = useState(countDown)
+
+    const checkHeartIconColor = (): string => {
+        if (colorMode === 'dark') {
+            return 'white'
+        }
+        return 'text'
+    }
+
     useEffect(() => {
         if (counter > 0) {
             const timer = setInterval(() => setCounter(counter - 1), 1000)
@@ -436,7 +444,7 @@ const AuctionCard: FC<AuctionCardProps> = ({
                             cursor: 'pointer',
                             opacity: like ? 1 : 0.5,
                             svg: {
-                                stroke: like ? '#00eeb9' : colorMode === 'dark' ? 'white' : 'text',
+                                stroke: like ? '#00eeb9' : checkHeartIconColor,
                                 fill: like ? '#00eeb9' : 'text',
                             },
                             ':hover': {

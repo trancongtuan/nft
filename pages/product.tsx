@@ -90,7 +90,12 @@ const Product: FC = () => {
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
     const [colorMode] = useColorMode()
-
+    const checkHeartIconColor = (): string => {
+        if (colorMode === 'dark') {
+            return 'white'
+        }
+        return 'text'
+    }
     return (
         <Box>
             <NavigationBar />
@@ -181,7 +186,9 @@ const Product: FC = () => {
                                         minWidth: '40px',
                                         marginLeft: '5px',
                                         svg: {
-                                            stroke: liked ? '#00eeb9' : colorMode === 'dark' ? 'white' : 'text',
+                                            stroke: liked
+                                                ? '#00eeb9'
+                                                : checkHeartIconColor,
                                             fill: liked ? '#00eeb9' : 'text',
                                         },
                                     }}

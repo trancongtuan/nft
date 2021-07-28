@@ -126,7 +126,12 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
 }) => {
     const [seaport, setSeaport] = useState<any>()
     const [colorMode] = useColorMode()
-
+    const checkHeartIconColor = (): string => {
+        if (colorMode === 'dark') {
+            return 'white'
+        }
+        return 'text'
+    }
     useEffect(() => {
         const provider =
             typeof window.web3 !== 'undefined'
@@ -279,7 +284,9 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         minWidth: '40px',
                                         marginLeft: '5px',
                                         svg: {
-                                            stroke: liked ? '#00eeb9' : colorMode === 'dark' ? 'white' : 'text',
+                                            stroke: liked
+                                                ? '#00eeb9'
+                                                : checkHeartIconColor,
                                             fill: liked ? '#00eeb9' : 'text',
                                         },
                                     }}
