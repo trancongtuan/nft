@@ -247,34 +247,18 @@ export const fetchAssets: ({
     _start?: number
     _limit?: number
     ultcube_hot_bids?: boolean
+    ultcube_explore?: boolean
     asset_type?: string
     collection_slug?: string
     owner_address_contains?: string
     asset_contract_address?: string
     token_id?: string
-}) => Promise<Asset[]> = ({
-    _start,
-    _limit,
-    asset_type,
-    collection_slug,
-    owner_address_contains,
-    asset_contract_address,
-    token_id,
-}) => {
-    const params = {
-        _start,
-        _limit,
-        asset_type,
-        collection_slug,
-        owner_address_contains,
-        asset_contract_address,
-        token_id,
-    }
-    if (!asset_type || asset_type === 'all') delete params.asset_type
-    if (!collection_slug) delete params.collection_slug
-    if (!owner_address_contains) delete params.owner_address_contains
-    if (!asset_contract_address) delete params.asset_contract_address
-    if (!token_id) delete params.token_id
+}) => Promise<Asset[]> = (params) => {
+    if (!params.asset_type || params.asset_type === 'all') delete params.asset_type
+    if (!params.collection_slug) delete params.collection_slug
+    if (!params.owner_address_contains) delete params.owner_address_contains
+    if (!params.asset_contract_address) delete params.asset_contract_address
+    if (!params.token_id) delete params.token_id
 
     return client.get('/assets', { params }).then((response) => response.data)
 }
@@ -285,7 +269,7 @@ export function useGetAssetsInfiniteQuery(
 ): UseInfiniteQueryResult<Asset[], unknown> {
     return useInfiniteQuery(
         ['assets', assetType],
-        ({ pageParam }) => fetchAssets({ ...pageParam, asset_type: assetType }),
+        ({ pageParam }) => fetchAssets({ ...pageParam, asset_type: assetType, ultcube_explore: true }),
         {
             getNextPageParam: (lastPage, pages) => {
                 if (lastPage?.length === 0) return undefined

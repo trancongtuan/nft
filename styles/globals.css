@@ -22,3 +22,7 @@ a {
 .slick-disabled {
     visibility: hidden;
 }
+
+#nprogress .bar {
+    background: #00eeb9 !important;
+}

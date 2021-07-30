@@ -127,18 +127,22 @@ const Items: FC = () => {
             updateProfile()
             updateAssets()
         } catch (e) {
-            alert(e.message)
+            alert(e.toString())
         }
     }
 
     const updateAssets = async () => {
-        const web3 = new Web3(window.ethereum)
-        
-        let address = await web3.eth.getAccounts()
-        const accountAddress: string = address[0]
+        try {
+            const web3 = new Web3(window.ethereum)
+            
+            let address = await web3.eth.getAccounts()
+            const accountAddress: string = address[0]
 
-        const result = await updateUserAssets(accountAddress)
-        setAssets(result)
+            const result = await updateUserAssets(accountAddress)
+            setAssets(result)
+        } catch (e) {
+            alert(e.toString())
+        }
     }
 
     useEffect(() => {

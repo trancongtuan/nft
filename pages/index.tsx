@@ -53,18 +53,26 @@ export const getServerSideProps: GetServerSideProps<{
     hotBids: Asset[]
     users: any[]
 }> = async ({ locale }) => {
-    const collections = await fetchCollections({})
-    const assets = await fetchAssets({ _start: 0, _limit: 10 })
-    const hotBids = await fetchAssets({
-        _start: 0,
-        _limit: 10,
-        ultcube_hot_bids: true,
-    })
-    const users = await fetchUsers({
-        _start: 0,
-        _limit: 15,
-        _sort: 'sales_amount:DESC',
-    })
+    const [
+        collections,
+        assets,
+        hotBids,
+        users,
+    ] = await Promise.all([
+        fetchCollections({}),
+        fetchAssets({ _start: 0, _limit: 10, ultcube_explore: true }),
+        fetchAssets({
+            _start: 0,
+            _limit: 10,
+            ultcube_hot_bids: true,
+        }),
+        fetchUsers({
+            _start: 0,
+            _limit: 15,
+            _sort: 'sales_amount:DESC',
+        }),
+    ]);
+
     return {
         props: {
             ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
@@ -102,8 +110,8 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     } = useGetAssetsInfiniteQuery(
         assetType,
         assetType === 'all'
-            ? { pages: [], pageParams: [{ _start: 0, _limit: 10 }] }
-            : assets
+            ? assets
+            : { pages: [], pageParams: [{ _start: 0, _limit: 10, ultcube_explore: true }] }
     )
 
     const { data: collectionsData } = useGetCollectionsQuery({}, collections)
@@ -182,7 +190,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             </Flex>
                         ))}
                     </Flex>
-                    <EdgeOverflow />
+                    {/* <EdgeOverflow /> */}
                 </Box>
                 <Flex mb={30}>
                     <Text
@@ -267,7 +275,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             </Box>
                         ))}
                     </Flex>
-                    <EdgeOverflow />
+                    {/* <EdgeOverflow /> */}
                 </Box>
                 <Flex mb={32} sx={{ flexDirection: 'column' }}>
                     <Text
