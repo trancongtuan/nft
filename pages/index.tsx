@@ -3,7 +3,7 @@
 /* eslint-disable no-irregular-whitespace */
 import React, { FC, useCallback, useState, useEffect } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { Box, Button, Flex, Grid, Text } from 'theme-ui'
+import { Box, Button, Flex, Grid, Text, useColorMode } from 'theme-ui'
 import _ from 'lodash'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useTranslation } from 'react-i18next'
@@ -15,9 +15,9 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { InfiniteData } from 'react-query'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
-import EdgeOverflow from '../components/EdgeOverflow'
 import HotCollection from '../components/HotCollection'
 import Layout from '../containers/Layout'
+import TimerIcon from '../public/assets/images/icons/timer.svg'
 import DropdownIcon from '../public/assets/images/icons/drop-down.svg'
 import TopSellerCard from '../components/TopSellerCard'
 import HomeCard from '../components/HomeCard'
@@ -35,6 +35,7 @@ import {
     fetchCollections,
     useGetCollectionsQuery,
 } from '../queries/collections'
+import AuctionCard from '../components/AuctionCard'
 
 const sellerList = [
     {
@@ -75,7 +76,11 @@ export const getServerSideProps: GetServerSideProps<{
 
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
+            ...(await serverSideTranslations(locale, [
+                'common',
+                'footer',
+                'home',
+            ])),
             collections,
             assets: {
                 pages: [assets],
@@ -99,6 +104,8 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [sellerType, setSellerType] = useState<TooltipItemProps>(
         sellerList[0]
     )
+    const [colorMode] = useColorMode()
+
     const ref = useHorizontalScroll()
     const [assetType, setAssetType] = useState('all')
     const [showLoadMore, setShowLoadMore] = useState(true)
@@ -259,7 +266,11 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         <TopSellerCard
                                             id={idx * 3 + index + 1}
                                             name={user.display_name}
-                                            wallet={sellerType.value === 'sellers' ? user.sales_amount : user.purchases_amount}
+                                            wallet={
+                                                sellerType.value === 'sellers'
+                                                    ? user.sales_amount
+                                                    : user.purchases_amount
+                                            }
                                             user={{
                                                 src: user?.profile_pic?.url
                                                     ? `https://api.ultcube.scc.sh${user?.profile_pic?.url}`
@@ -277,6 +288,63 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     </Flex>
                     {/* <EdgeOverflow /> */}
                 </Box>
+                <Flex mb={32} sx={{ flexDirection: 'column' }}>
+                    <Flex
+                        mb={24}
+                        sx={{
+                            svg: {
+                                fill: colorMode === 'dark' ? 'white' : 'black',
+                                width: 30,
+                                height: 30,
+                            },
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Text
+                            mr={16}
+                            color="text"
+                            sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
+                        >
+                            Live auctions
+                        </Text>
+                        <TimerIcon />
+                    </Flex>
+
+                    <Carousel slidesToShow={4} length={hotBids.length}>
+                        {hotBids?.map((item) => (
+                            <Box key={item.id} px={20}>
+                                <AuctionCard
+                                    name={item.name}
+                                    currency="ETH"
+                                    image={item.image_url}
+                                    price={item.top_bid ?? 0}
+                                    onCLick={() =>
+                                        router.push(
+                                            `/product/${item.asset_contract.address}/${item.token_id}`
+                                        )
+                                    }
+                                    bid={100}
+                                    countDown={20000}
+                                    {...{
+                                        creator: {
+                                            src: item.creator?.profile_img_url,
+                                        },
+                                    }}
+                                    {...{
+                                        owner: {
+                                            src: item.owner?.profile_img_url,
+                                        },
+                                    }}
+                                    {...{
+                                        collection: {
+                                            src: item.collection?.image_url,
+                                        },
+                                    }}
+                                />
+                            </Box>
+                        ))}
+                    </Carousel>
+                </Flex>
                 <Flex mb={32} sx={{ flexDirection: 'column' }}>
                     <Text
                         mb={24}
@@ -388,7 +456,6 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 <p>Loading...</p>
                             )}
                         </Flex>
-                        <EdgeOverflow />
                     </Box>
                 </Flex>
                 <InfiniteScroll

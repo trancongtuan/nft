@@ -4,7 +4,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Popover from 'react-popover'
-import { Box, Text, Flex, Image, Button } from 'theme-ui'
+import { Box, Text, Flex, Image, Button, useColorMode } from 'theme-ui'
 import { useRouter } from 'next/router'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { OpenSeaPort, Network } from 'opensea-js'
@@ -111,7 +111,11 @@ export const getServerSideProps: GetServerSideProps<
     const asset = await fetchAssets(params)
     return {
         props: {
-            ...(await serverSideTranslations(locale, ['common', 'footer', 'home'])),
+            ...(await serverSideTranslations(locale, [
+                'common',
+                'footer',
+                'home',
+            ])),
             asset: asset[0],
         },
     }
@@ -121,7 +125,13 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     asset,
 }) => {
     const [seaport, setSeaport] = useState<any>()
-
+    const [colorMode] = useColorMode()
+    const checkHeartIconColor = (): string => {
+        if (colorMode === 'dark') {
+            return 'white'
+        }
+        return 'text'
+    }
     useEffect(() => {
         const provider =
             typeof window.web3 !== 'undefined'
@@ -146,7 +156,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
     const [loading, setLoading] = useState(false)
-    const data = asset;
+    const data = asset
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const makeOffer = async () => {
@@ -173,7 +183,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 order,
                 accountAddress,
             })
-            
+
             if (transactionHash) {
                 await updateSingleAsset(asset_contract_address, token_id, accountAddress);
                 alert('Purchased');
@@ -181,7 +191,6 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         } catch (e) {
             alert(e.message)
             setLoading(false)
-            return
         }
     }
 
@@ -275,8 +284,10 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         minWidth: '40px',
                                         marginLeft: '5px',
                                         svg: {
-                                            stroke: liked ? 'red' : 'text',
-                                            fill: liked ? 'red' : undefined,
+                                            stroke: liked
+                                                ? '#00eeb9'
+                                                : checkHeartIconColor,
+                                            fill: liked ? '#00eeb9' : 'text',
                                         },
                                     }}
                                 >
@@ -383,7 +394,8 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                                 fontSize: 1,
                                             }}
                                         >
-                                            {data?.creator?.user?.username || '-'}
+                                            {data?.creator?.user?.username ||
+                                                '-'}
                                         </Text>
                                     </Flex>
                                 </Box>

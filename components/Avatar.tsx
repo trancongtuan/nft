@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react'
 import { Box, Flex, Image } from 'theme-ui'
-import VerifiedIcon from '../public/assets/images/icons/verified.svg'
+import StarIcon from '../public/assets/images/icons/star.svg'
 import CheckedIcon from '../public/assets/images/icons/checked.svg'
 import FavoriteIcon from '../public/assets/images/icons/favorite.svg'
 import OfferIcon from '../public/assets/images/icons/offer.svg'
@@ -27,6 +27,7 @@ export interface AvatarProps {
     size?: Size
     showType?: boolean
     type?: Type
+    auction?: boolean
 }
 
 const useSize = (size: Size): [number, number, number] => {
@@ -54,7 +55,7 @@ const useIcon = (type: Type): [string, () => ReactNode] => {
             return [
                 '#ff9012',
                 () => (
-                    <Box sx={{ svg: { fill: 'white', stroke: 'white' } }}>
+                    <Box sx={{ svg: { fill: '#00eeb9', stroke: 'white' } }}>
                         <FavoriteIcon />
                     </Box>
                 ),
@@ -77,7 +78,7 @@ const useIcon = (type: Type): [string, () => ReactNode] => {
             return [
                 '#ff9012',
                 () => (
-                    <Box sx={{ svg: { fill: 'white', stroke: 'white' } }}>
+                    <Box sx={{ svg: { fill: '#00eeb9', stroke: 'white' } }}>
                         <FavoriteIcon />
                     </Box>
                 ),
@@ -91,6 +92,7 @@ const Avatar: FC<AvatarProps> = ({
     size = 'md',
     showType,
     type = 'follow',
+    auction,
 }) => {
     const [avatarSize, verifiedSize, borderSize] = useSize(size)
     const [color, icon] = useIcon(type)
@@ -122,7 +124,12 @@ const Avatar: FC<AvatarProps> = ({
                 variant={`avatar.${size}`}
                 sx={{
                     objectFit: 'cover',
-                    borderRadius: type !== 'follow' ? 6 : '5px',
+                    // eslint-disable-next-line no-nested-ternary
+                    borderRadius: auction
+                        ? '50%'
+                        : type !== 'follow'
+                        ? 6
+                        : '5px',
                     mb: size === 'xxs' ? '-2px' : undefined,
                     backgroundColor: 'darkgrey',
                 }}
@@ -141,7 +148,7 @@ const Avatar: FC<AvatarProps> = ({
                         borderRadius: '5px',
                     }}
                 >
-                    <VerifiedIcon />
+                    <StarIcon />
                 </Flex>
             )}
             {showType && (

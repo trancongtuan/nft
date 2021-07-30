@@ -12,6 +12,7 @@ export const theme: Theme = {
         borderHoverColor: 'rgba(4, 4, 5, 0.2)',
         placeHolder: 'rgba(4, 4, 5, 0.2)',
         background: '#FFF',
+        backgroundAuction: '#FFF',
         backgroundButton: '#FFF',
         backgroundButtonActive: '#1f1f1f',
         backgroundYellow: 'rgba(254, 218, 3, 0.1)',
@@ -19,7 +20,7 @@ export const theme: Theme = {
         primary: '#00eeb9',
         red: '#ff5757',
         toggleButtonOff: 'rgba(45, 129, 255, 0.1)',
-        toggleButtonOn: 'rgba(45, 129, 255)',
+        toggleButtonOn: '#00eeb9',
         toggleCircle: '#FFF',
         modes: {
             dark: {
@@ -31,6 +32,7 @@ export const theme: Theme = {
                 borderHoverColor: 'rgba(255, 255, 255, 0.2)',
                 placeHolder: 'rgba(255, 255, 255, 0.2)',
                 background: '#121212',
+                backgroundAuction: '#000000',
                 backgroundButton: '#1f1f1f',
                 backgroundButtonActive: '#FFF',
                 backgroundYellow: 'rgba(255, 255, 255, 0.1)',
