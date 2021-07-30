@@ -84,7 +84,7 @@ const Create: FC = () => {
                                     transition: 'all 0.12s ease-in-out 0s',
                                 }}
                             >
-                                <Button
+                                {/* <Button
                                     onClick={() =>
                                         router.push('/create/single')
                                     }
@@ -97,7 +97,7 @@ const Create: FC = () => {
                                     }}
                                 >
                                     Timed auctions <Text>🔥</Text>
-                                </Button>
+                                </Button> */}
                                 <Image
                                     src="/assets/images/single.png"
                                     width={85}
@@ -112,7 +112,7 @@ const Create: FC = () => {
                                 </Text>
                             </Flex>
                         </Flex>
-                        <Flex
+                        {/* <Flex
                             p={2}
                             sx={{
                                 maxWidth: ['100%', '50%'],
@@ -196,7 +196,7 @@ const Create: FC = () => {
                                     {t('create.multiple.name')}
                                 </Text>
                             </Flex>
-                        </Flex>
+                        </Flex> */}
                     </Flex>
                     <Text
                         mt={32}

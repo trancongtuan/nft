@@ -18,13 +18,10 @@ import Selection from '../../../components/Selection'
 import TopSellerCard from '../../../components/TopSellerCard'
 import Popup from '../../../components/Popup'
 import PopupPlaceABid from '../../../components/PopupPurchase'
+import PopupPlaceAnOffer from '../../../components/PopupPlaceAnOffer'
 import PopupShare from '../../../components/PopupShare'
 import PreviewProduct from '../../../components/PreviewProduct'
-import {
-    AssetResponseData,
-    fetchAsset,
-    useGetSingleAssetQuery,
-} from '../../../queries/asset'
+import { useAuth } from '../../../hooks/auth'
 
 import { Asset, updateSingleAsset, fetchAssets } from '../../../queries'
 
@@ -124,6 +121,7 @@ export const getServerSideProps: GetServerSideProps<
 const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     asset,
 }) => {
+    const { connected, setConnected } = useAuth()
     const [seaport, setSeaport] = useState<any>()
     const [colorMode] = useColorMode()
     const checkHeartIconColor = (): string => {
@@ -132,13 +130,17 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         }
         return 'text'
     }
+
+    const ownerAddress = asset?.owner_address || ''
+    const iAmOwner = connected ? connected.toLocaleLowerCase() == ownerAddress.toLocaleLowerCase() : false
+
     useEffect(() => {
         const provider =
             typeof window.web3 !== 'undefined'
                 ? window.web3.currentProvider
                 : new Web3.providers.HttpProvider(
-                      'https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74'
-                  )
+                    'https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74'
+                )
 
         const seaPort = new OpenSeaPort(provider, {
             // networkName: Network.Main
@@ -153,13 +155,14 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [showProduct, setShowProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(selectionItems[0].id)
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
+    const [openPopupPlaceAnOffer, setOpenPopupPlaceAnOffer] = useState(false)
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
     const [loading, setLoading] = useState(false)
     const data = asset
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    const makeOffer = async () => {
+    const makeBid = async () => {
         setLoading(true)
 
         // Get Address
@@ -187,9 +190,57 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
             if (transactionHash) {
                 await updateSingleAsset(asset_contract_address, token_id, accountAddress);
                 alert('Purchased');
-            }
+            }            
+            setOpenPopupPlaceABid(false);
         } catch (e) {
             alert(e.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const makeOffer = async (price) => {
+        setLoading(true)
+
+        // Get Address
+        try {
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            let accountAddress = await window.ethereum.enable()
+            if (!accountAddress[0]) throw new Error('No account selected.')
+            accountAddress = accountAddress[0]
+
+            const {
+                token_id,
+                asset_contract: { address: asset_contract_address },
+            } = data
+
+            console.log({
+                asset: {
+                    tokenId: token_id,
+                    tokenAddress: asset_contract_address,
+                },
+                startAmount: price,
+                expirationTime: 0,
+                accountAddress: accountAddress,
+            })
+
+            const fixedPriceSellOrder = await seaport.createSellOrder({
+                asset: {
+                    tokenId: token_id,
+                    tokenAddress: asset_contract_address,
+                },
+                startAmount: price,
+                expirationTime: 0,
+                accountAddress: accountAddress,
+            });
+
+            alert(
+                `Successfully created a fixed-price sell order! ${fixedPriceSellOrder.asset.openseaLink}\n`
+            );
+            setOpenPopupPlaceAnOffer(false)
+        } catch (e) {
+            alert(e.message)
+        } finally {
             setLoading(false)
         }
     }
@@ -728,14 +779,27 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             </Flex>
 
                             <Flex>
-                                <Button
-                                    variant="primary"
-                                    mr={10}
-                                    sx={{ width: '50%', height: '40px' }}
-                                    onClick={() => setOpenPopupPlaceABid(true)}
-                                >
-                                    Place a bid
-                                </Button>
+                                {
+                                    iAmOwner ?
+                                        <Button
+                                            variant="primary"
+                                            mr={10}
+                                            sx={{ width: '50%', height: '40px' }}
+                                            onClick={() => setOpenPopupPlaceAnOffer(true)}
+                                        >
+                                            Sell Item
+                                        </Button>
+                                        :
+                                        <Button
+                                            variant="primary"
+                                            mr={10}
+                                            sx={{ width: '50%', height: '40px' }}
+                                            onClick={() => setOpenPopupPlaceABid(true)}
+                                        >
+                                            Place a bid
+                                        </Button>
+
+                                }
                                 <Button
                                     variant="secondary"
                                     ml={10}
@@ -754,11 +818,26 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             >
                                 <PopupPlaceABid
                                     name={data?.name || ''}
-                                    onConfirm={makeOffer}
+                                    onConfirm={makeBid}
                                     onClose={() => setOpenPopupPlaceABid(false)}
                                     loading={loading}
                                 />
                             </Popup>
+                            <Popup
+                                isOpen={openPopupPlaceAnOffer}
+                                onClose={() => {
+                                    setOpenPopupPlaceAnOffer(false)
+                                }}
+                                label="Place an offer"
+                            >
+                                <PopupPlaceAnOffer
+                                    name={data?.name || ''}
+                                    onConfirm={makeOffer}
+                                    onClose={() => setOpenPopupPlaceAnOffer(false)}
+                                    loading={loading}
+                                />
+                            </Popup>
+
                             <Popup
                                 isOpen={openPopupShare}
                                 onClose={() => {
