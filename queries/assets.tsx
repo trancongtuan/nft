@@ -225,6 +225,7 @@ export interface Asset {
     transfer_fee_payment_token?: any
     transfer_fee?: any
     ultcube_hot_bids?: boolean
+    owner_address?: string
 }
 
 /*
@@ -253,8 +254,10 @@ export const fetchAssets: ({
     owner_address_contains?: string
     asset_contract_address?: string
     token_id?: string
-}) => Promise<Asset[]> = (params) => {
-    if (!params.asset_type || params.asset_type === 'all') delete params.asset_type
+}) => Promise<Asset[]> = (_params) => {
+    const params = { ..._params }
+    if (!params.asset_type || params.asset_type === 'all')
+        delete params.asset_type
     if (!params.collection_slug) delete params.collection_slug
     if (!params.owner_address_contains) delete params.owner_address_contains
     if (!params.asset_contract_address) delete params.asset_contract_address
@@ -269,7 +272,12 @@ export function useGetAssetsInfiniteQuery(
 ): UseInfiniteQueryResult<Asset[], unknown> {
     return useInfiniteQuery(
         ['assets', assetType],
-        ({ pageParam }) => fetchAssets({ ...pageParam, asset_type: assetType, ultcube_explore: true }),
+        ({ pageParam }) =>
+            fetchAssets({
+                ...pageParam,
+                asset_type: assetType,
+                ultcube_explore: true,
+            }),
         {
             getNextPageParam: (lastPage, pages) => {
                 if (lastPage?.length === 0) return undefined
@@ -288,5 +296,7 @@ export function useAssetTypeQuery() {
 }
 
 export const updateSingleAsset = (asset_contract_address, token_id, owner) => {
-    return client.put(`/assets/${asset_contract_address}/${token_id}?owner=${owner}`).then((response) => response.data)
+    return client
+        .put(`/assets/${asset_contract_address}/${token_id}?owner=${owner}`)
+        .then((response) => response.data)
 }

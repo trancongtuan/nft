@@ -23,11 +23,9 @@ const queryClient = new QueryClient({
     },
 })
 
-const TopProgressBar = dynamic(
-    () => import('../components/TopProgressBar'),
-    { ssr: false },
-);
-
+const TopProgressBar = dynamic(() => import('../components/TopProgressBar'), {
+    ssr: false,
+})
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
     return (

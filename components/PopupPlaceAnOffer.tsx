@@ -1,10 +1,17 @@
-import { useState } from 'react'
+import React, { useState, FC } from 'react'
 import { Box, Button, Flex, Text } from 'theme-ui'
-import React, { FC } from 'react'
+
 import CustomInput from './CustomInput'
 
-export const PopupPurchase: FC = ({ onConfirm, loading }) => {
-    const [offer, setOffer] = useState()
+interface Props {
+    name,
+    onConfirm: (offer: string) => void
+    loading: boolean
+    onClose: () => void
+}
+
+export const PopupPurchase = ({ name, onConfirm, loading }: Props) => {
+    const [offer, setOffer] = useState('')
 
     return (
         <Flex
@@ -15,12 +22,12 @@ export const PopupPurchase: FC = ({ onConfirm, loading }) => {
             }}
         >
             <Text sx={{ color: 'text' }}>
-                You are about to place a offer for{' '}
+                You are about to place a offer for {name}
                 {/* <b>CRYPTOxPINS #25 Crypto Boy</b> */}
             </Text>
             <Box sx={{ width: '100%' }} mt={3}>
                 <CustomInput
-                    onChange={v => setOffer(v)}
+                    onChange={(v) => setOffer(v || '')}
                     label="Your offer"
                     value={offer}
                     placeholder="Enter offer"
@@ -101,7 +108,7 @@ export const PopupPurchase: FC = ({ onConfirm, loading }) => {
                 sx={{ width: '100%', height: '40px' }}
                 onClick={() => onConfirm(offer)}
             >
-                { loading ? 'Loading...' : 'Create Offer' }
+                {loading ? 'Loading...' : 'Create Offer'}
             </Button>
         </Flex>
     )

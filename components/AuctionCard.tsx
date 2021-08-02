@@ -66,11 +66,9 @@ const AuctionCard: FC<AuctionCardProps> = ({
     image,
     type = 'single',
     quantity = 1,
-    price = 0,
     favorite = 0,
     liked,
     onLike,
-    gradientColor,
     countDown,
     onCLick,
 }) => {

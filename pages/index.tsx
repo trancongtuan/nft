@@ -54,12 +54,7 @@ export const getServerSideProps: GetServerSideProps<{
     hotBids: Asset[]
     users: any[]
 }> = async ({ locale }) => {
-    const [
-        collections,
-        assets,
-        hotBids,
-        users,
-    ] = await Promise.all([
+    const [collections, assets, hotBids, users] = await Promise.all([
         fetchCollections({}),
         fetchAssets({ _start: 0, _limit: 10, ultcube_explore: true }),
         fetchAssets({
@@ -72,7 +67,7 @@ export const getServerSideProps: GetServerSideProps<{
             _limit: 15,
             _sort: 'sales_amount:DESC',
         }),
-    ]);
+    ])
 
     return {
         props: {
@@ -118,7 +113,12 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         assetType,
         assetType === 'all'
             ? assets
-            : { pages: [], pageParams: [{ _start: 0, _limit: 10, ultcube_explore: true }] }
+            : {
+                  pages: [],
+                  pageParams: [
+                      { _start: 0, _limit: 10, ultcube_explore: true },
+                  ],
+              }
     )
 
     const { data: collectionsData } = useGetCollectionsQuery({}, collections)

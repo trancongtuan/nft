@@ -5,7 +5,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Popover from 'react-popover'
 import { Box, Text, Flex, Image, Button, useColorMode } from 'theme-ui'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { OpenSeaPort, Network } from 'opensea-js'
 import { OrderSide } from 'opensea-js/lib/types'
@@ -121,7 +121,7 @@ export const getServerSideProps: GetServerSideProps<
 const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     asset,
 }) => {
-    const { connected, setConnected } = useAuth()
+    const { connected } = useAuth()
     const [seaport, setSeaport] = useState<any>()
     const [colorMode] = useColorMode()
     const checkHeartIconColor = (): string => {
@@ -132,15 +132,18 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     }
 
     const ownerAddress = asset?.owner_address || ''
-    const iAmOwner = connected ? connected.toLocaleLowerCase() == ownerAddress.toLocaleLowerCase() : false
+    const iAmOwner =
+        connected && typeof connected === 'string'
+            ? connected.toLocaleLowerCase() === ownerAddress.toLocaleLowerCase()
+            : false
 
     useEffect(() => {
         const provider =
             typeof window.web3 !== 'undefined'
                 ? window.web3.currentProvider
                 : new Web3.providers.HttpProvider(
-                    'https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74'
-                )
+                      'https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74'
+                  )
 
         const seaPort = new OpenSeaPort(provider, {
             // networkName: Network.Main
@@ -149,8 +152,8 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         setSeaport(seaPort)
     }, [])
 
-    const router = useRouter()
-    const { asset_contract_address, token_id } = router.query as ProductParams
+    // const router = useRouter()
+    // const { asset_contract_address, token_id } = router.query as ProductParams
     const [liked, setLiked] = useState(false)
     const [showProduct, setShowProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(selectionItems[0].id)
@@ -188,10 +191,14 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
             })
 
             if (transactionHash) {
-                await updateSingleAsset(asset_contract_address, token_id, accountAddress);
-                alert('Purchased');
-            }            
-            setOpenPopupPlaceABid(false);
+                await updateSingleAsset(
+                    asset_contract_address,
+                    token_id,
+                    accountAddress
+                )
+                alert('Purchased')
+            }
+            setOpenPopupPlaceABid(false)
         } catch (e) {
             alert(e.message)
         } finally {
@@ -199,7 +206,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         }
     }
 
-    const makeOffer = async (price) => {
+    const makeOffer = async (price): Promise<void> => {
         setLoading(true)
 
         // Get Address
@@ -221,7 +228,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 },
                 startAmount: price,
                 expirationTime: 0,
-                accountAddress: accountAddress,
+                accountAddress,
             })
 
             const fixedPriceSellOrder = await seaport.createSellOrder({
@@ -231,12 +238,12 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 },
                 startAmount: price,
                 expirationTime: 0,
-                accountAddress: accountAddress,
-            });
+                accountAddress,
+            })
 
             alert(
                 `Successfully created a fixed-price sell order! ${fixedPriceSellOrder.asset.openseaLink}\n`
-            );
+            )
             setOpenPopupPlaceAnOffer(false)
         } catch (e) {
             alert(e.message)
@@ -779,27 +786,29 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             </Flex>
 
                             <Flex>
-                                {
-                                    iAmOwner ?
-                                        <Button
-                                            variant="primary"
-                                            mr={10}
-                                            sx={{ width: '50%', height: '40px' }}
-                                            onClick={() => setOpenPopupPlaceAnOffer(true)}
-                                        >
-                                            Sell Item
-                                        </Button>
-                                        :
-                                        <Button
-                                            variant="primary"
-                                            mr={10}
-                                            sx={{ width: '50%', height: '40px' }}
-                                            onClick={() => setOpenPopupPlaceABid(true)}
-                                        >
-                                            Place a bid
-                                        </Button>
-
-                                }
+                                {iAmOwner ? (
+                                    <Button
+                                        variant="primary"
+                                        mr={10}
+                                        sx={{ width: '50%', height: '40px' }}
+                                        onClick={() =>
+                                            setOpenPopupPlaceAnOffer(true)
+                                        }
+                                    >
+                                        Sell Item
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="primary"
+                                        mr={10}
+                                        sx={{ width: '50%', height: '40px' }}
+                                        onClick={() =>
+                                            setOpenPopupPlaceABid(true)
+                                        }
+                                    >
+                                        Place a bid
+                                    </Button>
+                                )}
                                 <Button
                                     variant="secondary"
                                     ml={10}
@@ -833,7 +842,9 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 <PopupPlaceAnOffer
                                     name={data?.name || ''}
                                     onConfirm={makeOffer}
-                                    onClose={() => setOpenPopupPlaceAnOffer(false)}
+                                    onClose={() =>
+                                        setOpenPopupPlaceAnOffer(false)
+                                    }
                                     loading={loading}
                                 />
                             </Popup>

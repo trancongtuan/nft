@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { Box, Button, Flex, Text } from 'theme-ui'
+import { Box, Flex, Text } from 'theme-ui'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import { useTranslation } from 'react-i18next'
