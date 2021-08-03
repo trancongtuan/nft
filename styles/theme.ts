@@ -167,7 +167,7 @@ export const theme: Theme = {
             fontSize: 15,
             fontWeight: 'heavy',
             ':hover': {
-                backgroundColor: 'rgba(0, 102, 255, 0.95)',
+                backgroundColor: 'rgba(0, 238, 185, 0.95)',
                 color: 'rgba(255,255,255,0.9)',
             },
             ':focus': {

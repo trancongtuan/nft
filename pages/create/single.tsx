@@ -21,7 +21,9 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
-
+import * as sigUtil from 'eth-sig-util'
+import * as ethUtil from 'ethereumjs-util'
+import { uploadFile, createAsset } from '../../queries'
 import { format } from 'date-fns'
 import Layout from '../../containers/Layout'
 import ToggleButton from '../../components/ToggleButton'
@@ -38,6 +40,7 @@ import CustomInput from '../../components/CustomInput'
 import Tooltip, { TooltipItemProps } from '../../components/Tooltip'
 import DateTimePicker from '../../components/DateTimePicker'
 import Popup from '../../components/Popup'
+import { randomString } from '../../utils';
 
 interface CurrencyIconProps {
     name: string
@@ -183,13 +186,14 @@ const expirationDateList = [
 ]
 
 const collectionList = [
+    // {
+    //     id: 1,
+    //     icon: () => <CreateIcon />,
+    //     label: 'Create',
+    //     subLabel: 'ERC-721',
+    // },
     {
-        id: 1,
-        icon: () => <CreateIcon />,
-        label: 'Create',
-        subLabel: 'ERC-721',
-    },
-    {
+        creatable: false,
         id: 2,
         icon: () => (
             <Box
@@ -208,8 +212,8 @@ const collectionList = [
                 />
             </Box>
         ),
-        label: 'Rarible',
-        subLabel: 'RARI',
+        label: 'ULTCube',
+        subLabel: 'ULTC Collection',
     },
 ]
 interface MarketplaceItemProps {
@@ -423,10 +427,41 @@ const Create: FC = () => {
 const Single: FC = () => {
     const ref = useRef<HTMLInputElement>(null)
     const [file, setFile] = useState<string | null>(null)
-    const onChangeFile: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const [loading, setLoading] = useState(false)
+    const defaultAddress = 'ultcube_local_' + randomString(20);
+    const [assetData, setAssetData] = useState<{
+        name: string
+        price: string
+        minBid: string
+        image_url: string
+        token_id: string
+        asset_contract_address: string
+        asset_contract: { address: string }
+        description?: string
+        royalties?: string
+    }>({ 
+        name: '',
+        price: '',
+        minBid: '',
+        image_url: '',
+        token_id: '0',
+        asset_contract_address: defaultAddress,
+        asset_contract: { address: defaultAddress },
+    })
+    const onChangeFile: ChangeEventHandler<HTMLInputElement> = async (event) => {
         event.stopPropagation()
         event.preventDefault()
         setFile(URL.createObjectURL(event.target.files[0]))
+
+        try {
+            const files = Array.from([event.target.files[0]])
+            if (files.length < 1) return
+
+            const result = await uploadFile(files)
+            setAssetData(ori => ({ ...ori, image_url: 'https://api.ultcube.scc.sh' + result[0].url }))
+        } catch (e) {
+            alert(e.toString())
+        }
     }
     const [showMarketplace, setShowMarketplace] = useState(true)
     const [showTypePrice, setShowTypePrice] = useState(false)
@@ -463,6 +498,75 @@ const Single: FC = () => {
         false
     )
     const [showCreatePopup, setShowCreatePopup] = useState(false)
+    
+    const onCreate = async (data) => {
+        try {
+            setLoading(true)
+            const chainId = 'RINKEBY' ? 4 : 1
+            const msgParams = JSON.stringify({
+                domain: {
+                    chainId,
+                    name: 'ULTCube minting',
+                    verifyingContract:
+                        '0x0000000000000000000000000000000000000000',
+                    version: '1',
+                },
+                message: data,
+                primaryType: 'Mail',
+                types: { Mail: [] },
+            })
+
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            const from = (await window.ethereum.enable())[0]
+            if (!from) throw new Error('No account selected.')
+
+            const params = [from, msgParams]
+            const method = 'eth_signTypedData_v4'
+
+            window.web3.currentProvider.sendAsync(
+                {
+                    method,
+                    params,
+                    from,
+                },
+                async (err, result) => {
+                    if (err) return console.dir(err)
+                    if (result.error) {
+                        alert(result.error.message)
+                    }
+                    if (result.error) return console.error('ERROR', result)
+
+                    const recovered = sigUtil.recoverTypedSignature_v4({
+                        data: JSON.parse(msgParams),
+                        sig: result.result,
+                    })
+
+                    if (
+                        ethUtil.toChecksumAddress(recovered) ===
+                        ethUtil.toChecksumAddress(from)
+                    ) {
+                        const createResult = await createAsset({
+                            ...data,
+                            owner_address: from
+                        })
+                        
+                        alert(`${data.name} created!`)
+                        router.push('/my_items')
+                    } else {
+                        alert(
+                            `Failed to verify signer when comparing ${result} to ${from}`
+                        )
+                    }
+                    return true
+                }
+            )
+        } catch (e) {
+            alert(e.toString())
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <Layout>
             <Popup
@@ -676,8 +780,9 @@ const Single: FC = () => {
                                     {marketplace === marketplaceList[0] && (
                                         <Box mt={40}>
                                             <CustomInput
+                                                onChange={(value) => setAssetData(ori => ({ ...ori, price: value }))}
                                                 label="Price"
-                                                value=""
+                                                value={assetData.price || ''}
                                                 placeholder="Enter price for one piece"
                                                 staticRight={
                                                     <Popover
@@ -777,8 +882,9 @@ const Single: FC = () => {
                                     {marketplace === marketplaceList[1] && (
                                         <Box mt={40}>
                                             <CustomInput
+                                                onChange={(value) => setAssetData(ori => ({ ...ori, minBid: value }))}
+                                                value={assetData.minBid || ''}
                                                 label="Minimum bid"
-                                                value=""
                                                 placeholder="Enter minimum bid"
                                                 staticRight={
                                                     <Popover
@@ -1150,7 +1256,7 @@ const Single: FC = () => {
                                     )}
                                 </>
                             )}
-                            <Flex mt={40} sx={{ width: '100%' }}>
+                            {/* <Flex mt={40} sx={{ width: '100%' }}>
                                 <Flex
                                     sx={{
                                         flexDirection: 'column',
@@ -1189,7 +1295,7 @@ const Single: FC = () => {
                                         size="large"
                                     />
                                 </Flex>
-                            </Flex>
+                            </Flex> */}
                             {unlock && (
                                 <>
                                     <CustomInput
@@ -1222,7 +1328,7 @@ const Single: FC = () => {
                                     <CollectionItem
                                         onClick={() => {
                                             setCollection(item)
-                                            if (item === collectionList[0])
+                                            if (item.creatable)
                                                 setShowCreatePopup(true)
                                         }}
                                         key={item.id}
@@ -1241,21 +1347,24 @@ const Single: FC = () => {
                             <CustomInput
                                 label="Title"
                                 placeholder={`e. g. "Redeemable T-Shirt with logo"`}
-                                value=""
+                                onChange={(value) => setAssetData(ori => ({ ...ori, name: value }))}
+                                value={assetData.name || ''}
                             />
                             <Box mt={40}>
                                 <CustomInput
                                     label="Description"
                                     optionLabel="Optional"
                                     placeholder={`e. g. "After purchasing you’ll be able to get the real T-Shirt"`}
-                                    value=""
+                                    onChange={(value) => setAssetData(ori => ({ ...ori, description: value }))}
+                                    value={assetData.description || ''}
                                 />
                             </Box>
                             <Box mt={40}>
                                 <CustomInput
                                     label="Royalties"
                                     placeholder={`E. g. 10%"`}
-                                    value="10"
+                                    onChange={(value) => setAssetData(ori => ({ ...ori, royalties: value }))}
+                                    value={assetData.royalties || ''}
                                     staticRight={
                                         <Text
                                             color="textSecondary"
@@ -1270,7 +1379,7 @@ const Single: FC = () => {
                                     staticBottom="Suggested: 10%, 20%, 30%"
                                 />
                             </Box>
-                            <Text
+                            {/* <Text
                                 mt={40}
                                 color="text"
                                 sx={{ fontWeight: 'bold', fontSize: 2 }}
@@ -1295,17 +1404,21 @@ const Single: FC = () => {
                                     placeholder="e.g M"
                                     value=""
                                 />
-                            </Grid>
+                            </Grid> */}
                             <Flex mt={32} sx={{ alignItems: 'center' }}>
-                                <Button sx={{ minWidth: 192 }}>
-                                    Create item
+                                <Button
+                                    disabled={loading} 
+                                    sx={{ minWidth: 192 }}
+                                    onClick={() => onCreate(assetData)}
+                                >
+                                    { loading ? 'Loading' : 'Create item' }
                                 </Button>
                                 <Text
                                     ml="auto"
                                     color="textSecondary"
                                     sx={{ fontSize: 1, fontWeight: 'body' }}
                                 >
-                                    Saved 8 minutes ago
+                                    {/* Saved 8 minutes ago */}
                                 </Text>
                                 <Popover
                                     isOpen={showHelp}

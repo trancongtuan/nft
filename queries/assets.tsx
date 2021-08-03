@@ -303,3 +303,9 @@ export const updateSingleAsset = (asset_contract_address, token_id, owner) => {
         .put(`/assets/${asset_contract_address}/${token_id}?owner=${owner}`)
         .then((response) => response.data)
 }
+
+export const createAsset = (data) => {
+    return client
+        .post(`/assets`, data)
+        .then((response) => response.data)
+}
