@@ -303,7 +303,7 @@ const BidCard: FC<BidCardProps> = ({
                                             m: '-4px',
                                             borderRadius: 3,
                                             background:
-                                                'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
+                                                'linear-gradient(to right, rgb(0, 238, 185) 0%, rgb(0, 238, 185) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
                                         },
                                         fontSize: 13,
                                         color: 'text',
@@ -361,7 +361,7 @@ const BidCard: FC<BidCardProps> = ({
                             mr={8}
                             sx={{
                                 color: gradientColor
-                                    ? 'rgb(12, 80, 255)'
+                                    ? 'rgb(0, 238, 185)'
                                     : 'text',
                                 WebkitTextFillColor: gradientColor
                                     ? 'transparent'
@@ -370,7 +370,7 @@ const BidCard: FC<BidCardProps> = ({
                                     ? 'text'
                                     : undefined,
                                 backgroundImage: gradientColor
-                                    ? 'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)'
+                                    ? 'linear-gradient(to right, rgb(0, 238, 185) 0%, rgb(0, 238, 185) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)'
                                     : undefined,
                                 cursor: 'text',
                             }}
@@ -386,11 +386,11 @@ const BidCard: FC<BidCardProps> = ({
                                     : undefined
                             }
                             sx={{
-                                color: 'rgb(12, 80, 255)',
+                                color: 'rgb(0, 238, 185)',
                                 WebkitTextFillColor: 'transparent',
                                 WebkitBackgroundClip: 'text',
                                 backgroundImage:
-                                    'linear-gradient(126.49deg, rgb(0, 163, 255) 0%, rgb(0, 102, 255) 100%)',
+                                    'linear-gradient(126.49deg, rgb(0, 238, 185) 0%, rgb(0, 179, 139) 100%)',
                             }}
                         >
                             {bid ? (

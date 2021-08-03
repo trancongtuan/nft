@@ -535,11 +535,11 @@ const Catalog: FC<CatalogProps> = ({ onClose }) => {
                         sx={{
                             fontSize: 18,
                             fontWeight: 'heavy',
-                            color: 'rgb(12, 80, 255)',
+                            color: 'rgb(0, 238, 185)',
                             WebkitTextFillColor: 'transparent',
                             WebkitBackgroundClip: 'text',
                             backgroundImage:
-                                'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
+                                'linear-gradient(to right, rgb(0, 238, 185) 0%, rgb(0, 238, 185) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
                         }}
                     >
                         {t('general.community')}

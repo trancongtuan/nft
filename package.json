@@ -17,6 +17,7 @@
         "@theme-ui/color": "^0.7.3",
         "axios": "^0.21.1",
         "date-fns": "^2.21.2",
+        "dayjs": "^1.10.6",
         "eth-sig-util": "^3.0.1",
         "ethereumjs-util": "^7.1.0",
         "lodash": "^4.17.21",

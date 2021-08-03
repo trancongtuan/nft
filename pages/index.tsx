@@ -11,7 +11,7 @@ import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { v4 as uuidv4 } from 'uuid'
 import InfiniteScroll from 'react-infinite-scroll-component'
-
+import dayjs from 'dayjs';
 import { InfiniteData } from 'react-query'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
@@ -52,15 +52,21 @@ export const getServerSideProps: GetServerSideProps<{
     collections: Collection[]
     assets: InfiniteData<Asset[]> // TODO: Change to correct type
     hotBids: Asset[]
+    liveAuctions: Asset[]
     users: any[]
 }> = async ({ locale }) => {
-    const [collections, assets, hotBids, users] = await Promise.all([
+    const [collections, assets, hotBids, liveAuctions, users] = await Promise.all([
         fetchCollections({}),
         fetchAssets({ _start: 0, _limit: 10, ultcube_explore: true }),
         fetchAssets({
             _start: 0,
             _limit: 10,
             ultcube_hot_bids: true,
+        }),
+        fetchAssets({
+            _start: 0,
+            _limit: 10,
+            ultcube_live_auction: true,
         }),
         fetchUsers({
             _start: 0,
@@ -82,6 +88,7 @@ export const getServerSideProps: GetServerSideProps<{
                 pageParams: [{ _start: 0, _limit: 10 }],
             },
             hotBids: hotBids || [],
+            liveAuctions: liveAuctions || [],
             users,
         },
     }
@@ -91,6 +98,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     collections,
     assets,
     hotBids,
+    liveAuctions,
     users: defaultUsers,
 }) => {
     const router = useRouter()
@@ -114,11 +122,11 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         assetType === 'all'
             ? assets
             : {
-                  pages: [],
-                  pageParams: [
-                      { _start: 0, _limit: 10, ultcube_explore: true },
-                  ],
-              }
+                pages: [],
+                pageParams: [
+                    { _start: 0, _limit: 10, ultcube_explore: true },
+                ],
+            }
     )
 
     const { data: collectionsData } = useGetCollectionsQuery({}, collections)
@@ -310,39 +318,43 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         <TimerIcon />
                     </Flex>
 
-                    <Carousel slidesToShow={4} length={hotBids.length}>
-                        {hotBids?.map((item) => (
-                            <Box key={item.id} px={20}>
-                                <AuctionCard
-                                    name={item.name}
-                                    currency="ETH"
-                                    image={item.image_url}
-                                    price={item.top_bid ?? 0}
-                                    onCLick={() =>
-                                        router.push(
-                                            `/product/${item.asset_contract.address}/${item.token_id}`
-                                        )
-                                    }
-                                    bid={100}
-                                    countDown={20000}
-                                    {...{
-                                        creator: {
-                                            src: item.creator?.profile_img_url,
-                                        },
-                                    }}
-                                    {...{
-                                        owner: {
-                                            src: item.owner?.profile_img_url,
-                                        },
-                                    }}
-                                    {...{
-                                        collection: {
-                                            src: item.collection?.image_url,
-                                        },
-                                    }}
-                                />
-                            </Box>
-                        ))}
+                    <Carousel slidesToShow={4} length={liveAuctions.length}>
+                        {liveAuctions?.map((item) => {
+                            const countDown = item?.sell_orders?.[0]?.closing_date ? 
+                                dayjs(item?.sell_orders?.[0]?.closing_date).diff(dayjs()) : 0;
+                            return (
+                                <Box key={item.id} px={20}>
+                                    <AuctionCard
+                                        name={item.name}
+                                        currency="ETH"
+                                        image={item.image_url}
+                                        price={item.top_bid ?? 0}
+                                        onCLick={() =>
+                                            router.push(
+                                                `/product/${item.asset_contract.address}/${item.token_id}`
+                                            )
+                                        }
+                                        bid={item.top_bid}
+                                        countDown={countDown}
+                                        {...{
+                                            creator: {
+                                                src: item.creator?.profile_img_url,
+                                            },
+                                        }}
+                                        {...{
+                                            owner: {
+                                                src: item.owner?.profile_img_url,
+                                            },
+                                        }}
+                                        {...{
+                                            collection: {
+                                                src: item.collection?.image_url,
+                                            },
+                                        }}
+                                    />
+                                </Box>
+                            )
+                        })}
                     </Carousel>
                 </Flex>
                 <Flex mb={32} sx={{ flexDirection: 'column' }}>

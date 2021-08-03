@@ -633,7 +633,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             sx={{
                                 height: '5px',
                                 background:
-                                    'linear-gradient(to right, rgb(12, 80, 255) 0%, rgb(12, 80, 255) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
+                                    'linear-gradient(to right, rgb(0, 238, 185) 0%, rgb(0, 238, 185) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
                             }}
                         />
                         <Box

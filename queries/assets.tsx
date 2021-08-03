@@ -239,6 +239,7 @@ export const fetchAssets: ({
     _start,
     _limit,
     ultcube_hot_bids,
+    ultcube_live_auction,
     asset_type,
     collection_slug,
     owner_address_contains,
@@ -248,6 +249,7 @@ export const fetchAssets: ({
     _start?: number
     _limit?: number
     ultcube_hot_bids?: boolean
+    ultcube_live_auction?: boolean
     ultcube_explore?: boolean
     asset_type?: string
     collection_slug?: string
@@ -262,6 +264,7 @@ export const fetchAssets: ({
     if (!params.owner_address_contains) delete params.owner_address_contains
     if (!params.asset_contract_address) delete params.asset_contract_address
     if (!params.token_id) delete params.token_id
+    if (!params.ultcube_live_auction) delete params.ultcube_live_auction
 
     return client.get('/assets', { params }).then((response) => response.data)
 }

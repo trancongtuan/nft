@@ -396,7 +396,7 @@ const AuctionCard: FC<AuctionCardProps> = ({
                                     : undefined
                             }
                             sx={{
-                                color: 'rgb(12, 80, 255)',
+                                color: 'rgb(0, 238, 185)',
                                 fontWeight: 'bold',
                             }}
                         >
