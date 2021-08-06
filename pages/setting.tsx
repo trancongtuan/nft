@@ -233,11 +233,17 @@ const Setting: FC = () => {
                         <CustomInput
                             label={t('setting.display_name')}
                             value={profile.display_name}
+                            onChange={(v) =>
+                                setProfile((ori) => ({ ...ori, display_name: v }))
+                            }
                             placeholder={t('setting.display_name_placeholder')}
                         />
                         <CustomInput
                             label={t('setting.custom_URL')}
                             value={profile.custom_url}
+                            onChange={(v) =>
+                                setProfile((ori) => ({ ...ori, custom_url: v }))
+                            }
                             staticLeft={
                                 <Text
                                     mr={2}
@@ -256,6 +262,9 @@ const Setting: FC = () => {
                         <CustomInput
                             label={t('setting.bio')}
                             value={profile.bio}
+                            onChange={(v) =>
+                                setProfile((ori) => ({ ...ori, bio: v }))
+                            }
                             placeholder={t('setting.bio_placeholder')}
                         />
                         <CustomInput
@@ -301,29 +310,29 @@ const Setting: FC = () => {
                         />
                         <CustomInput
                             label={t('setting.email')}
-                            type="password"
-                            subLabel={t('setting.email_sub')}
+                            type="email"
+                            // subLabel={t('setting.email_sub')}
                             value={profile.email}
-                            Icon={<LockIcon />}
+                            // Icon={<LockIcon />}
                             placeholder={t('setting.email_placeholder')}
-                            staticBottom={
-                                <Box
-                                    sx={{
-                                        fontWeight: 'bold',
-                                        color: 'textSecondary',
-                                    }}
-                                >
-                                    <Text>{t('setting.email_bottom')}</Text>{' '}
-                                    <Text
-                                        sx={{
-                                            color: 'primary',
-                                            cursor: 'pointer',
-                                        }}
-                                    >
-                                        {t('setting.sign_message')}
-                                    </Text>
-                                </Box>
-                            }
+                            // staticBottom={
+                            //     <Box
+                            //         sx={{
+                            //             fontWeight: 'bold',
+                            //             color: 'textSecondary',
+                            //         }}
+                            //     >
+                            //         <Text>{t('setting.email_bottom')}</Text>{' '}
+                            //         <Text
+                            //             sx={{
+                            //                 color: 'primary',
+                            //                 cursor: 'pointer',
+                            //             }}
+                            //         >
+                            //             {t('setting.sign_message')}
+                            //         </Text>
+                            //     </Box>
+                            // }
                             onChange={(v) =>
                                 setProfile((ori) => ({ ...ori, email: v }))
                             }

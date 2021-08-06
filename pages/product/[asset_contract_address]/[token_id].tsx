@@ -136,14 +136,15 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         connected && typeof connected === 'string'
             ? connected.toLocaleLowerCase() === ownerAddress.toLocaleLowerCase()
             : false
+    const sellOrders = asset.sell_orders;
 
     useEffect(() => {
         const provider =
             typeof window.web3 !== 'undefined'
                 ? window.web3.currentProvider
                 : new Web3.providers.HttpProvider(
-                      'https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74'
-                  )
+                    'https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74'
+                )
 
         const seaPort = new OpenSeaPort(provider, {
             // networkName: Network.Main
@@ -162,7 +163,9 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
     const [loading, setLoading] = useState(false)
-    const data = asset
+    const [data, setData] = useState(asset)
+
+    const topOwner = data?.top_ownerships?.[0]?.owner || null;
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const makeBid = async () => {
@@ -221,16 +224,6 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 asset_contract: { address: asset_contract_address },
             } = data
 
-            console.log({
-                asset: {
-                    tokenId: token_id,
-                    tokenAddress: asset_contract_address,
-                },
-                startAmount: price,
-                expirationTime: 0,
-                accountAddress,
-            })
-
             const fixedPriceSellOrder = await seaport.createSellOrder({
                 asset: {
                     tokenId: token_id,
@@ -251,6 +244,27 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
             setLoading(false)
         }
     }
+
+    const reFetchAsset = async () => {
+        try {
+            const {
+                token_id,
+                asset_contract: { address: asset_contract_address },
+            } = data
+
+            const result = await updateSingleAsset(
+                asset_contract_address,
+                token_id,
+            )
+            setData(result);
+        } catch (e) {
+            alert(e.toString())
+        }
+    }
+
+    useEffect(() => {
+        // reFetchAsset();
+    }, []);
 
     return (
         <Box>
@@ -389,14 +403,14 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 fontSize: '13px',
                             }}
                         >
-                            <Text mr={2} sx={{ color: 'textSecondary' }}>
+                            {/* <Text mr={2} sx={{ color: 'textSecondary' }}>
                                 Highest bid
                             </Text>
                             <Text mr={2} sx={{ color: 'primary' }}>
                                 {data?.top_bid ?? '0.634'} WETH
-                            </Text>
+                            </Text> */}
                             <Text sx={{ color: 'textSecondary' }}>
-                                / 1 of 1
+                                1 of 1
                             </Text>
                         </Box>
                         <Box mt={16}>
@@ -521,15 +535,15 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             />
                             {selectedTab === '1' && (
                                 <Box>
-                                    {[...Array(3)].map((item) => (
-                                        <Box my={20} key={item}>
+                                    {[{ name: 'Haylos', amount: 3 }, { name: 'kaprika', amount: 1.22 }].map((item) => (
+                                        <Box my={20} key={item.name}>
                                             <TopSellerCard
-                                                name="Ahihi"
-                                                wallet={24}
+                                                name={item.name}
+                                                wallet={item.amount}
                                                 size="sm"
                                                 user={{
                                                     src:
-                                                        'https://picsum.photos/200/300',
+                                                        `https://picsum.photos/200/300?name=${item.name}`,
                                                     verified: true,
                                                 }}
                                             />
@@ -666,15 +680,14 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                             fontSize: 1,
                                         }}
                                     >
-                                        Auction ends in
+                                        Auction ended
                                     </Text>
                                     <TopSellerCard
                                         name="Highest bid by Aito"
                                         wallet={24}
                                         size="sm"
                                         user={{
-                                            src:
-                                                'https://picsum.photos/200/300',
+                                            src: topOwner?.profile_img_url,
                                             verified: true,
                                         }}
                                     />
@@ -788,6 +801,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             <Flex>
                                 {iAmOwner ? (
                                     <Button
+                                        disabled={Array.isArray(sellOrders) && sellOrders.length > 0}
                                         variant="primary"
                                         mr={10}
                                         sx={{ width: '50%', height: '40px' }}
@@ -795,10 +809,11 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                             setOpenPopupPlaceAnOffer(true)
                                         }
                                     >
-                                        Sell Item
+                                        {Array.isArray(sellOrders) && sellOrders.length > 0 ? 'Selling' : 'Sell Item'}
                                     </Button>
                                 ) : (
                                     <Button
+                                        disabled={!sellOrders}
                                         variant="primary"
                                         mr={10}
                                         sx={{ width: '50%', height: '40px' }}
@@ -806,7 +821,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                             setOpenPopupPlaceABid(true)
                                         }
                                     >
-                                        Place a bid
+                                        {!sellOrders ? 'Not Selling' : 'Buy Now'}
                                     </Button>
                                 )}
                                 <Button

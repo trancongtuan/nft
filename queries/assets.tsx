@@ -226,6 +226,7 @@ export interface Asset {
     transfer_fee?: any
     ultcube_hot_bids?: boolean
     owner_address?: string
+    top_ownerships: { owner: { address: string, config: string, profile_img_url: string } }[]
 }
 
 /*
@@ -298,9 +299,12 @@ export function useAssetTypeQuery() {
     return useQuery(['assetType'], () => fetchAssetTypes())
 }
 
-export const updateSingleAsset = (asset_contract_address, token_id, owner) => {
+export const updateSingleAsset = (asset_contract_address: string, token_id: string, owner?: string) => {
+    let url = `/assets/${asset_contract_address}/${token_id}`
+    if (owner) url += `?owner=${owner}`
+    
     return client
-        .put(`/assets/${asset_contract_address}/${token_id}?owner=${owner}`)
+        .put(url)
         .then((response) => response.data)
 }
 

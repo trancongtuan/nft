@@ -286,7 +286,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                                 verified: true,
                                             }}
                                             onClick={() =>
-                                                router.push('/my_items')
+                                                router.push(`/user/${user.address || '-'}`)
                                             }
                                         />
                                     </Box>

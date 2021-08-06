@@ -180,7 +180,7 @@ export interface AssetResponseData {
     highest_buyer_commitment?: any
 }
 
-export const fetchAsset: (
+export const fetchOpenseaAsset: (
     variables: AssetVariables
 ) => Promise<AssetResponseData> = (variables) =>
     testNetClient
@@ -200,7 +200,7 @@ export function useGetSingleAssetQuery(
 ): UseQueryResult<AssetResponseData, unknown> {
     return useQuery(
         ['asset', ...Object.values(variables)],
-        () => fetchAsset(variables),
+        () => fetchOpenseaAsset(variables),
         {
             initialData,
         }
