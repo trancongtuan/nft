@@ -24,6 +24,7 @@ import {
 import NavigationBar from '../components/NavigationBar'
 import Footer from '../components/Footer'
 import CustomInput from '../components/CustomInput'
+import Popup from '../components/Popup'
 import LockIcon from '../public/assets/images/icons/lock.svg'
 
 import { useAuth } from '../hooks/auth'
@@ -35,6 +36,7 @@ const Setting: FC = () => {
     const inputFile = useRef(null)
     const { connected, setConnected } = useAuth()
     const [reLink, setReLink] = useState(false)
+    const [openPopup, setOpenPopup] = useState<boolean>(false)
     const [profile, setProfile] = useState<EthUser>({
         id: null,
         display_name: '',
@@ -73,10 +75,10 @@ const Setting: FC = () => {
 
             if (data.id) {
                 await updateUser(data.id, data)
-                alert('Profile updated.')
+                setOpenPopup(!openPopup)
             } else {
                 await createUser({ ...data, address: from })
-                alert('Profile updated.')
+                setOpenPopup(!openPopup)
             }
         } catch (e) {
             alert(e.toString())
@@ -176,6 +178,32 @@ const Setting: FC = () => {
 
     return (
         <Box>
+            <Popup
+                isOpen={openPopup}
+                onClose={() => {
+                    setOpenPopup(!openPopup)
+                }}
+                label="Success"
+                labelCenter
+            >
+                <Image
+                    sx={{ width: '50px', alignSelf: 'center' }}
+                    src="/assets/images/icon-success.png"
+                    alt="success"
+                />
+                <span
+                    style={{
+                        marginTop: '2rem',
+                        boxSizing: 'border-box',
+                        fontFamily: 'sans-serif',
+                        fontWeight: 700,
+                        width: '300px',
+                        textAlign: 'center',
+                    }}
+                >
+                    Profile updated.
+                </span>
+            </Popup>
             <NavigationBar />
             <Box
                 py={4}
