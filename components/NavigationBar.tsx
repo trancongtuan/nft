@@ -643,7 +643,7 @@ const NavigationBar: FC = () => {
     const [autoPlay, setAutoPlay] = useState(true)
     const [showSearch, setShowSearch] = useState(false)
     const [showCatalog, setShowCatalog] = useState(false)
-    const { connected, setConnected } = useAuth()
+    const { profile, connected, setConnected } = useAuth()
     const { t } = useTranslation('common')
     const user = null
 
@@ -1289,7 +1289,11 @@ const NavigationBar: FC = () => {
                                 </Text>
                                 <Avatar
                                     // onClick={() => setShowDetail(!showDetail)}
-                                    src="https://via.placeholder.com/500x100"
+                                    src={
+                                        profile?.profile_pic?.url
+                                            ? `https://api.ultcube.scc.sh${profile?.profile_pic?.url}`
+                                            : '/assets/images/empty_placeholder.png'
+                                    }
                                     alt="avatar"
                                     sx={{
                                         position: 'absolute',

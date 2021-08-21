@@ -8,6 +8,7 @@ interface PopupProps {
     children: React.ReactNode
     label: string
     closeType?: 'inside' | 'outside'
+    labelCenter?: boolean
 }
 
 const Popup: FC<PopupProps> = ({
@@ -16,6 +17,7 @@ const Popup: FC<PopupProps> = ({
     children,
     label,
     closeType = 'outside',
+    labelCenter,
 }) => {
     useEffect(() => {
         if (isOpen) document.body.style.overflow = 'hidden'
@@ -101,7 +103,9 @@ const Popup: FC<PopupProps> = ({
                     <Flex
                         sx={{
                             flex: 1,
-                            justifyContent: 'space-between',
+                            justifyContent: labelCenter
+                                ? 'center'
+                                : 'space-between',
                             alignItems: 'center',
                         }}
                     >
