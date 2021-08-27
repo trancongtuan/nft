@@ -23,8 +23,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import * as sigUtil from 'eth-sig-util'
 import * as ethUtil from 'ethereumjs-util'
-import { uploadFile, createAsset } from '../../queries'
 import { format } from 'date-fns'
+import { uploadFile, createAsset } from '../../queries'
 import Layout from '../../containers/Layout'
 import ToggleButton from '../../components/ToggleButton'
 import PriceIcon from '../../public/assets/images/icons/price.svg'
@@ -40,7 +40,7 @@ import CustomInput from '../../components/CustomInput'
 import Tooltip, { TooltipItemProps } from '../../components/Tooltip'
 import DateTimePicker from '../../components/DateTimePicker'
 import Popup from '../../components/Popup'
-import { randomString } from '../../utils';
+import { randomString } from '../../utils'
 
 interface CurrencyIconProps {
     name: string
@@ -428,7 +428,7 @@ const Single: FC = () => {
     const ref = useRef<HTMLInputElement>(null)
     const [file, setFile] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
-    const defaultAddress = 'ultcube_local_' + randomString(20);
+    const defaultAddress = `ultcube_local_${randomString(20)}`
     const [assetData, setAssetData] = useState<{
         name: string
         price: string
@@ -439,7 +439,7 @@ const Single: FC = () => {
         asset_contract: { address: string }
         description?: string
         royalties?: string
-    }>({ 
+    }>({
         name: '',
         price: '',
         minBid: '',
@@ -448,7 +448,9 @@ const Single: FC = () => {
         asset_contract_address: defaultAddress,
         asset_contract: { address: defaultAddress },
     })
-    const onChangeFile: ChangeEventHandler<HTMLInputElement> = async (event) => {
+    const onChangeFile: ChangeEventHandler<HTMLInputElement> = async (
+        event
+    ) => {
         event.stopPropagation()
         event.preventDefault()
         setFile(URL.createObjectURL(event.target.files[0]))
@@ -458,7 +460,10 @@ const Single: FC = () => {
             if (files.length < 1) return
 
             const result = await uploadFile(files)
-            setAssetData(ori => ({ ...ori, image_url: 'https://api.ultcube.scc.sh' + result[0].url }))
+            setAssetData((ori) => ({
+                ...ori,
+                image_url: `https://api.ultcube.scc.sh${result[0].url}`,
+            }))
         } catch (e) {
             alert(e.toString())
         }
@@ -498,8 +503,8 @@ const Single: FC = () => {
         false
     )
     const [showCreatePopup, setShowCreatePopup] = useState(false)
-    
-    const onCreate = async (data) => {
+
+    const onCreate: (event) => void = async (data) => {
         try {
             setLoading(true)
             const chainId = 'RINKEBY' ? 4 : 1
@@ -547,9 +552,9 @@ const Single: FC = () => {
                     ) {
                         const createResult = await createAsset({
                             ...data,
-                            owner_address: from
+                            owner_address: from,
                         })
-                        
+
                         alert(`${data.name} created!`)
                         router.push('/my_items')
                     } else {
@@ -780,7 +785,12 @@ const Single: FC = () => {
                                     {marketplace === marketplaceList[0] && (
                                         <Box mt={40}>
                                             <CustomInput
-                                                onChange={(value) => setAssetData(ori => ({ ...ori, price: value }))}
+                                                onChange={(value) =>
+                                                    setAssetData((ori) => ({
+                                                        ...ori,
+                                                        price: value,
+                                                    }))
+                                                }
                                                 label="Price"
                                                 value={assetData.price || ''}
                                                 placeholder="Enter price for one piece"
@@ -882,7 +892,12 @@ const Single: FC = () => {
                                     {marketplace === marketplaceList[1] && (
                                         <Box mt={40}>
                                             <CustomInput
-                                                onChange={(value) => setAssetData(ori => ({ ...ori, minBid: value }))}
+                                                onChange={(value) =>
+                                                    setAssetData((ori) => ({
+                                                        ...ori,
+                                                        minBid: value,
+                                                    }))
+                                                }
                                                 value={assetData.minBid || ''}
                                                 label="Minimum bid"
                                                 placeholder="Enter minimum bid"
@@ -1347,7 +1362,12 @@ const Single: FC = () => {
                             <CustomInput
                                 label="Title"
                                 placeholder={`e. g. "Redeemable T-Shirt with logo"`}
-                                onChange={(value) => setAssetData(ori => ({ ...ori, name: value }))}
+                                onChange={(value) =>
+                                    setAssetData((ori) => ({
+                                        ...ori,
+                                        name: value,
+                                    }))
+                                }
                                 value={assetData.name || ''}
                             />
                             <Box mt={40}>
@@ -1355,7 +1375,12 @@ const Single: FC = () => {
                                     label="Description"
                                     optionLabel="Optional"
                                     placeholder={`e. g. "After purchasing you’ll be able to get the real T-Shirt"`}
-                                    onChange={(value) => setAssetData(ori => ({ ...ori, description: value }))}
+                                    onChange={(value) =>
+                                        setAssetData((ori) => ({
+                                            ...ori,
+                                            description: value,
+                                        }))
+                                    }
                                     value={assetData.description || ''}
                                 />
                             </Box>
@@ -1363,7 +1388,12 @@ const Single: FC = () => {
                                 <CustomInput
                                     label="Royalties"
                                     placeholder={`E. g. 10%"`}
-                                    onChange={(value) => setAssetData(ori => ({ ...ori, royalties: value }))}
+                                    onChange={(value) =>
+                                        setAssetData((ori) => ({
+                                            ...ori,
+                                            royalties: value,
+                                        }))
+                                    }
                                     value={assetData.royalties || ''}
                                     staticRight={
                                         <Text
@@ -1407,11 +1437,11 @@ const Single: FC = () => {
                             </Grid> */}
                             <Flex mt={32} sx={{ alignItems: 'center' }}>
                                 <Button
-                                    disabled={loading} 
+                                    disabled={loading}
                                     sx={{ minWidth: 192 }}
                                     onClick={() => onCreate(assetData)}
                                 >
-                                    { loading ? 'Loading' : 'Create item' }
+                                    {loading ? 'Loading' : 'Create item'}
                                 </Button>
                                 <Text
                                     ml="auto"

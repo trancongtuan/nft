@@ -309,7 +309,5 @@ export const updateSingleAsset = (asset_contract_address: string, token_id: stri
 }
 
 export const createAsset = (data) => {
-    return client
-        .post(`/assets`, data)
-        .then((response) => response.data)
+    return client.post(`/assets`, data).then((response) => response.data)
 }

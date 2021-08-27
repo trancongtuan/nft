@@ -4,13 +4,13 @@ import { Box, Button, Flex, Text } from 'theme-ui'
 import CustomInput from './CustomInput'
 
 interface Props {
-    name,
+    name
     onConfirm: (offer: string) => void
     loading: boolean
-    onClose: () => void
+    onClose?: () => void
 }
 
-export const PopupPurchase = ({ name, onConfirm, loading }: Props) => {
+export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
     const [offer, setOffer] = useState('')
 
     return (

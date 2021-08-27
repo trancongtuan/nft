@@ -11,7 +11,7 @@ import { useRouter } from 'next/router'
 import Popover from 'react-popover'
 import { v4 as uuidv4 } from 'uuid'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 import { InfiniteData } from 'react-query'
 import BidCard from '../components/BidCard'
 import Carousel from '../components/Carousel'
@@ -55,7 +55,13 @@ export const getServerSideProps: GetServerSideProps<{
     liveAuctions: Asset[]
     users: any[]
 }> = async ({ locale }) => {
-    const [collections, assets, hotBids, liveAuctions, users] = await Promise.all([
+    const [
+        collections,
+        assets,
+        hotBids,
+        liveAuctions,
+        users,
+    ] = await Promise.all([
         fetchCollections({}),
         fetchAssets({ _start: 0, _limit: 10, ultcube_explore: true }),
         fetchAssets({
@@ -122,11 +128,11 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         assetType === 'all'
             ? assets
             : {
-                pages: [],
-                pageParams: [
-                    { _start: 0, _limit: 10, ultcube_explore: true },
-                ],
-            }
+                  pages: [],
+                  pageParams: [
+                      { _start: 0, _limit: 10, ultcube_explore: true },
+                  ],
+              }
     )
 
     const { data: collectionsData } = useGetCollectionsQuery({}, collections)
@@ -320,8 +326,12 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
 
                     <Carousel slidesToShow={4} length={liveAuctions.length}>
                         {liveAuctions?.map((item) => {
-                            const countDown = item?.sell_orders?.[0]?.closing_date ? 
-                                dayjs(item?.sell_orders?.[0]?.closing_date).diff(dayjs()) : 0;
+                            const countDown = item?.sell_orders?.[0]
+                                ?.closing_date
+                                ? dayjs(
+                                      item?.sell_orders?.[0]?.closing_date
+                                  ).diff(dayjs())
+                                : 0
                             return (
                                 <Box key={item.id} px={20}>
                                     <AuctionCard
@@ -338,12 +348,15 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         countDown={countDown}
                                         {...{
                                             creator: {
-                                                src: item.creator?.profile_img_url,
+                                                src:
+                                                    item.creator
+                                                        ?.profile_img_url,
                                             },
                                         }}
                                         {...{
                                             owner: {
-                                                src: item.owner?.profile_img_url,
+                                                src:
+                                                    item.owner?.profile_img_url,
                                             },
                                         }}
                                         {...{
