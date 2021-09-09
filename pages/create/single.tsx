@@ -41,6 +41,7 @@ import Tooltip, { TooltipItemProps } from '../../components/Tooltip'
 import DateTimePicker from '../../components/DateTimePicker'
 import Popup from '../../components/Popup'
 import { randomString } from '../../utils'
+import { uploadJsonToIPFS, uploadImageToIPFS, mint } from '../../queries';
 
 interface CurrencyIconProps {
     name: string
@@ -433,7 +434,7 @@ const Single: FC = () => {
         name: string
         price: string
         minBid: string
-        image_url: string
+        image: string
         token_id: string
         asset_contract_address: string
         asset_contract: { address: string }
@@ -441,9 +442,10 @@ const Single: FC = () => {
         royalties?: string
     }>({
         name: '',
+        image: '',
+        description: '',
         price: '',
         minBid: '',
-        image_url: '',
         token_id: '0',
         asset_contract_address: defaultAddress,
         asset_contract: { address: defaultAddress },
@@ -459,10 +461,10 @@ const Single: FC = () => {
             const files = Array.from([event.target.files[0]])
             if (files.length < 1) return
 
-            const result = await uploadFile(files)
+            const result = await uploadImageToIPFS(files)
             setAssetData((ori) => ({
                 ...ori,
-                image_url: `https://api.ultcube.scc.sh${result[0].url}`,
+                image: `https://gateway.pinata.cloud/ipfs/${result.IpfsHash}`,
             }))
         } catch (e) {
             alert(e.toString())
@@ -504,67 +506,19 @@ const Single: FC = () => {
     )
     const [showCreatePopup, setShowCreatePopup] = useState(false)
 
-    const onCreate: (event) => void = async (data) => {
+    const onCreate: (event) => void = async (assetData) => {
+        const nftData = {
+            name: assetData.name,
+            image: assetData.image,
+            description: assetData.description,
+            attributes: {},
+        }
+    
         try {
             setLoading(true)
-            const chainId = 'RINKEBY' ? 4 : 1
-            const msgParams = JSON.stringify({
-                domain: {
-                    chainId,
-                    name: 'ULTCube minting',
-                    verifyingContract:
-                        '0x0000000000000000000000000000000000000000',
-                    version: '1',
-                },
-                message: data,
-                primaryType: 'Mail',
-                types: { Mail: [] },
-            })
-
-            if (!window.ethereum) throw new Error('Please install MetaMask.')
-            const from = (await window.ethereum.enable())[0]
-            if (!from) throw new Error('No account selected.')
-
-            const params = [from, msgParams]
-            const method = 'eth_signTypedData_v4'
-
-            window.web3.currentProvider.sendAsync(
-                {
-                    method,
-                    params,
-                    from,
-                },
-                async (err, result) => {
-                    if (err) return console.dir(err)
-                    if (result.error) {
-                        alert(result.error.message)
-                    }
-                    if (result.error) return console.error('ERROR', result)
-
-                    const recovered = sigUtil.recoverTypedSignature_v4({
-                        data: JSON.parse(msgParams),
-                        sig: result.result,
-                    })
-
-                    if (
-                        ethUtil.toChecksumAddress(recovered) ===
-                        ethUtil.toChecksumAddress(from)
-                    ) {
-                        const createResult = await createAsset({
-                            ...data,
-                            owner_address: from,
-                        })
-
-                        alert(`${data.name} created!`)
-                        router.push('/my_items')
-                    } else {
-                        alert(
-                            `Failed to verify signer when comparing ${result} to ${from}`
-                        )
-                    }
-                    return true
-                }
-            )
+            const result = await uploadJsonToIPFS(nftData);
+            const hash = await mint(`https://gateway.pinata.cloud/ipfs/${result.IpfsHash}`)
+            alert(`Minted: ${hash}`);
         } catch (e) {
             alert(e.toString())
         } finally {

@@ -1,9 +1,9 @@
 import axios from 'axios'
 
+const API_URL = process.env.NEXT_PUBLIC_ALCHEMY_URL;
+
 const axiosInstance = axios.create({
-    baseURL: 'https://api.ultcube.scc.sh',
-    // baseURL: 'http://localhost:1337',
-    // baseURL: 'https://testnets-api.opensea.io/api/v1',
+    baseURL: API_URL,
     timeout: 15000,
 })
 

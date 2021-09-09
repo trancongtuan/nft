@@ -11,6 +11,7 @@
         "storybook": "start-storybook -p 6006 -c .storybook"
     },
     "dependencies": {
+        "@alch/alchemy-web3": "^1.1.4",
         "@storybook/addon-actions": "^6.2.8",
         "@storybook/addon-knobs": "^6.2.8",
         "@storybook/react": "^6.2.8",
