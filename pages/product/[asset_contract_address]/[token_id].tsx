@@ -24,23 +24,31 @@ import PreviewProduct from '../../../components/PreviewProduct'
 import { useAuth } from '../../../hooks/auth'
 
 import { Asset, updateSingleAsset, fetchAssets } from '../../../queries'
-
+const OPENSEA_URL = process.env.NEXT_PUBLIC_OPENSEA_URL;
 const Web3 = require('web3')
 
-const tooltipItems = [
-    {
+const createTooltipItems = (allowPlaceBid = false, address, tokenId, setOpenPopupShare): Array<{ id: number, label: string }> => {
+    const items = [
+        {
+            id: 2,
+            label: 'View on OpenSea',
+            action: () => window.open(`${OPENSEA_URL}/${address}/${tokenId}`, '_blank'),
+        },
+        {
+            id: 3,
+            label: 'Share',
+            action: () => setOpenPopupShare(true),
+        },
+    ]
+
+    if (allowPlaceBid) items.unshift({
         id: 1,
         label: 'Place a bid',
-    },
-    {
-        id: 2,
-        label: 'View on OpenSea',
-    },
-    {
-        id: 3,
-        label: 'Share',
-    },
-]
+        action: () => new Promise((res, rej) => { rej() }),
+    })
+
+    return items;
+}
 
 const selectionItems = [
     {
@@ -136,7 +144,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         connected && typeof connected === 'string'
             ? connected.toLocaleLowerCase() === ownerAddress.toLocaleLowerCase()
             : false
-    const sellOrders = asset.sell_orders;
+    const sellOrders = asset?.sell_orders || null;
 
     useEffect(() => {
         const provider =
@@ -166,6 +174,10 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [data, setData] = useState(asset)
 
     const topOwner = data?.top_ownerships?.[0]?.owner || null;
+    const {
+        token_id,
+        asset_contract: { address: asset_contract_address },
+    } = data
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const makeBid = async () => {
@@ -263,7 +275,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     }
 
     useEffect(() => {
-        // reFetchAsset();
+        reFetchAsset();
     }, []);
 
     return (
@@ -378,7 +390,11 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 <Popover
                                     onOuterAction={() => setShowProduct(false)}
                                     isOpen={showProduct}
-                                    body={<Tooltip items={tooltipItems} />}
+                                    body={
+                                        <Tooltip
+                                            items={createTooltipItems(sellOrders !== null, asset_contract_address, token_id, setOpenPopupShare)}
+                                            onClick={(item: any) => item?.action()}
+                                        />}
                                     place="below"
                                     tipSize={0.01}
                                 >
@@ -421,7 +437,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     flexShrink: 0,
                                 }}
                             >
-                                🌈 Art
+                                {asset.asset_type?.name}
                             </Button>
                         </Box>
                         <Box
@@ -657,147 +673,6 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 height: '185px',
                             }}
                         >
-                            <Flex
-                                mb={14}
-                                sx={{
-                                    borderBottom: '1px solid',
-                                    borderColor: 'placeHolder',
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        width: '50%',
-                                    }}
-                                    pr={18}
-                                    pb={16}
-                                >
-                                    <Text
-                                        mb={14}
-                                        sx={{
-                                            display: 'block',
-                                            color: 'textSecondary',
-                                            fontWeight: 'semiBold',
-                                            fontSize: 1,
-                                        }}
-                                    >
-                                        Auction ended
-                                    </Text>
-                                    <TopSellerCard
-                                        name="Highest bid by Aito"
-                                        wallet={24}
-                                        size="sm"
-                                        user={{
-                                            src: topOwner?.profile_img_url,
-                                            verified: true,
-                                        }}
-                                    />
-                                </Box>
-                                <Box
-                                    sx={{
-                                        width: '50%',
-                                        borderLeft: '1px solid',
-                                        borderColor: 'placeHolder',
-                                    }}
-                                    pl={18}
-                                >
-                                    <Text
-                                        mb={14}
-                                        sx={{
-                                            display: 'block',
-                                            color: 'textSecondary',
-                                            fontWeight: 'semiBold',
-                                            fontSize: 1,
-                                        }}
-                                    >
-                                        Auction ends in
-                                    </Text>
-                                    <Flex
-                                        sx={{ justifyContent: 'space-between' }}
-                                    >
-                                        <Box>
-                                            <Text
-                                                sx={{
-                                                    display: 'block',
-                                                    color: 'text',
-                                                    fontWeight: '600',
-                                                }}
-                                            >
-                                                0
-                                            </Text>
-                                            <Text
-                                                sx={{
-                                                    color: 'textSecondary',
-                                                    fontWeight: 'semiBold',
-                                                    fontSize: 1,
-                                                }}
-                                            >
-                                                Days
-                                            </Text>
-                                        </Box>
-                                        <Box>
-                                            <Text
-                                                sx={{
-                                                    display: 'block',
-                                                    color: 'text',
-                                                    fontWeight: '600',
-                                                }}
-                                            >
-                                                4
-                                            </Text>
-                                            <Text
-                                                sx={{
-                                                    color: 'textSecondary',
-                                                    fontWeight: 'semiBold',
-                                                    fontSize: 1,
-                                                }}
-                                            >
-                                                Hours
-                                            </Text>
-                                        </Box>
-                                        <Box>
-                                            <Text
-                                                sx={{
-                                                    display: 'block',
-                                                    color: 'text',
-                                                    fontWeight: '600',
-                                                }}
-                                            >
-                                                55
-                                            </Text>
-                                            <Text
-                                                sx={{
-                                                    color: 'textSecondary',
-                                                    fontWeight: 'semiBold',
-                                                    fontSize: 1,
-                                                }}
-                                            >
-                                                Minutes
-                                            </Text>
-                                        </Box>
-                                        <Box>
-                                            <Text
-                                                sx={{
-                                                    display: 'block',
-                                                    color: 'text',
-                                                    fontWeight: '600',
-                                                }}
-                                            >
-                                                55
-                                            </Text>
-                                            <Text
-                                                sx={{
-                                                    color: 'textSecondary',
-                                                    fontWeight: 'semiBold',
-                                                    fontSize: 1,
-                                                }}
-                                            >
-                                                Seconds
-                                            </Text>
-                                        </Box>
-                                    </Flex>
-                                </Box>
-                            </Flex>
-
                             <Flex>
                                 {iAmOwner ? (
                                     <Button
@@ -816,12 +691,12 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         disabled={!sellOrders}
                                         variant="primary"
                                         mr={10}
-                                        sx={{ width: '50%', height: '40px' }}
+                                        sx={{ width: '50%', height: '40px', opacity: sellOrders ? '100%': '50%', cursor: sellOrders ? 'pointer' : 'not-allowed' }}
                                         onClick={() =>
                                             setOpenPopupPlaceABid(true)
                                         }
                                     >
-                                        {!sellOrders ? 'Not Selling' : 'Buy Now'}
+                                        {!sellOrders ? 'This item is not on sale' : 'Buy Now'}
                                     </Button>
                                 )}
                                 <Button

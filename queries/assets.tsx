@@ -226,6 +226,7 @@ export interface Asset {
     transfer_fee?: any
     ultcube_hot_bids?: boolean
     owner_address?: string
+    asset_type?: { name: string }
     top_ownerships: { owner: { address: string, config: string, profile_img_url: string } }[]
 }
 
@@ -246,6 +247,7 @@ export const fetchAssets: ({
     owner_address_contains,
     asset_contract_address,
     token_id,
+    name_contains,
 }: {
     _start?: number
     _limit?: number
@@ -257,6 +259,7 @@ export const fetchAssets: ({
     owner_address_contains?: string
     asset_contract_address?: string
     token_id?: string
+    name_contains?: string
 }) => Promise<Asset[]> = (_params) => {
     const params = { ..._params }
     if (!params.asset_type || params.asset_type === 'all')
@@ -266,6 +269,7 @@ export const fetchAssets: ({
     if (!params.asset_contract_address) delete params.asset_contract_address
     if (!params.token_id) delete params.token_id
     if (!params.ultcube_live_auction) delete params.ultcube_live_auction
+    if (!params.name_contains) delete params.name_contains;
 
     return client.get('/assets', { params }).then((response) => response.data)
 }

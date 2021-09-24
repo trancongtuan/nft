@@ -1,13 +1,15 @@
 import React, { FC, useState } from 'react'
 import { Box, Text, Flex } from 'theme-ui'
+import { fetchAssets } from '../../queries'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import { useTranslation } from 'react-i18next'
-import NavigationBar from '../components/NavigationBar'
-import Footer from '../components/Footer'
-import Selection, { SelectionItemsProps } from '../components/Selection'
-import BidCard from '../components/BidCard'
-import HotCollection from '../components/HotCollection'
+import NavigationBar from '../../components/NavigationBar'
+import Footer from '../../components/Footer'
+import Selection, { SelectionItemsProps } from '../../components/Selection'
+import BidCard from '../../components/BidCard'
+import HotCollection from '../../components/HotCollection'
+import { useRouter } from 'next/router'
 
 const selectionItems = [
     {
@@ -27,11 +29,13 @@ const selectionItems = [
     },
 ]
 
-const Search: FC = () => {
+const Search = ({ assets, text }: { assets: any[], text: string }) => {
+    const router = useRouter()
     const { t } = useTranslation('common')
     const [selectedTab, setSelectedTab] = useState<SelectionItemsProps>(
         selectionItems[0]
     )
+
     return (
         <Box>
             <NavigationBar />
@@ -57,7 +61,7 @@ const Search: FC = () => {
                             color: 'text',
                         }}
                     >
-                        result
+                        {text}
                     </Text>
                 </Box>
                 <Box my={32} mx={10}>
@@ -68,7 +72,7 @@ const Search: FC = () => {
                 </Box>
                 <Flex sx={{ flexWrap: 'wrap' }}>
                     {selectedTab.id === '1' &&
-                        [...Array(10)].map((item) => {
+                        assets.map((item) => {
                             return (
                                 <Box
                                     key={item}
@@ -91,27 +95,15 @@ const Search: FC = () => {
                                     }}
                                 >
                                     <BidCard
-                                        favorite={10}
-                                        price={10}
-                                        type="multiple"
-                                        image="https://picsum.photos/200/400"
-                                        collection={{
-                                            src:
-                                                'https://picsum.photos/300/300',
-                                            verified: true,
-                                        }}
-                                        owner={{
-                                            src:
-                                                'https://picsum.photos/200/300',
-                                        }}
-                                        creator={{
-                                            src:
-                                                'https://picsum.photos/200/400',
-                                            verified: true,
-                                        }}
-                                        name="Test"
-                                        bid={50}
-                                        currency="WETH"
+                                        name={item.name}
+                                        currency="ETH"
+                                        image={item.image_url}
+                                        price={item.top_bid ?? 0}
+                                        onCLick={() =>
+                                            router.push(
+                                                `/product/${item.asset_contract.address}/${item.token_id}`
+                                            )
+                                        }
                                     />
                                 </Box>
                             )
@@ -197,10 +189,17 @@ const Search: FC = () => {
     )
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-    props: {
-        ...(await serverSideTranslations(locale, ['common', 'footer'])),
-    },
-})
+export const getServerSideProps: GetStaticProps = async ({ locale, params }) => {
+    const name_contains = Array.isArray(params.text) ? params.text.join(',') : params.text
+    const assets = await fetchAssets({ name_contains, _start: 0, _limit: 20 })
+
+    return {
+        props: {
+            assets,
+            text: params.text,
+            ...(await serverSideTranslations(locale, ['common', 'footer'])),
+        },
+    }
+}
 
 export default Search

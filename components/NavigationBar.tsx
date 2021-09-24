@@ -6,6 +6,7 @@ import React, {
     ReactNode,
     useEffect,
     useState,
+    useCallback,
 } from 'react'
 import {
     Avatar,
@@ -192,12 +193,13 @@ const SearchInput: FC = () => {
     const router = useRouter()
     const [colorMode] = useColorMode()
     const [value, setValue] = useState('')
-    const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = (event) => {
+    const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = useCallback((event) => {
         if (event.key === 'Enter') {
-            router.push('/search')
+            router.push(`/search/${value}`)
         }
-    }
+    }, [value])
     const [bg, borderColor, boxShadow] = useColorInput(focus, colorMode)
+
     return (
         <Flex
             pl={3}
@@ -1072,13 +1074,7 @@ const NavigationBar: FC = () => {
                                                 cursor: 'pointer',
                                             }}
                                         >
-                                            {user?.status === 'success'
-                                                ? user.data[0] &&
-                                                  user.data[0].display_name
-                                                      ?.length > 0
-                                                    ? user.data[0].display_name
-                                                    : 'Set display name'
-                                                : 'Loading...'}
+                                            {profile.display_name || ''}
                                         </Text>
                                     </Link>
                                     <Box mt={16}>
@@ -1122,82 +1118,12 @@ const NavigationBar: FC = () => {
                                                 </Text>
                                             </Flex>
                                         </Flex>
-                                        <Flex mt={8} sx={{ width: '100%' }}>
-                                            <Flex
-                                                mr={12}
-                                                color="white"
-                                                bg="#ccc"
-                                                sx={{
-                                                    width: 40,
-                                                    height: 40,
-                                                    borderRadius: 4,
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    svg: {
-                                                        width: 20,
-                                                        height: 20,
-                                                    },
-                                                }}
-                                            >
-                                                <PurchaseIcon />
-                                            </Flex>
-                                            <Flex
-                                                sx={{
-                                                    flexDirection: 'column',
-                                                    fontSize: 1,
-                                                    fontWeight: 'bold',
-                                                }}
-                                            >
-                                                <Flex
-                                                    sx={{
-                                                        alignItems: 'center',
-                                                    }}
-                                                >
-                                                    <Text
-                                                        color="textSecondary"
-                                                        mb="2px"
-                                                    >
-                                                        Bidding balance{' '}
-                                                    </Text>
-                                                    <Button
-                                                        ml={8}
-                                                        variant="circle"
-                                                        p={0}
-                                                        sx={{
-                                                            width: 16,
-                                                            height: 16,
-                                                            svg: {
-                                                                width: 8,
-                                                                height: 8,
-                                                            },
-                                                        }}
-                                                    >
-                                                        <HelpIcon />
-                                                    </Button>
-                                                </Flex>
-                                                <Text color="text">
-                                                    0 ETH{' '}
-                                                    <Text color="textSecondary">
-                                                        $0.00
-                                                    </Text>
-                                                </Text>
-                                            </Flex>
-                                            <Button
-                                                ml="auto"
-                                                variant="circle"
-                                                p={0}
-                                                sx={{
-                                                    flexShrink: 0,
-                                                }}
-                                            >
-                                                <ConvertIcon />
-                                            </Button>
-                                        </Flex>
                                     </Box>
                                     <Button
                                         mt={16}
                                         variant="border"
                                         sx={{ width: '100%' }}
+                                        onClick={() => window.open('https://pay.sendwyre.com/', '_blank')}
                                     >
                                         Add funds width <MasterCardIcon />{' '}
                                         <VisaIcon />
@@ -1216,7 +1142,7 @@ const NavigationBar: FC = () => {
                                     label="Edit profile"
                                     onClick={() => router.push('/setting')}
                                 />
-                                <TooltipItem
+                                {/* <TooltipItem
                                     label="Manage funds"
                                     onClick={() => router.push('/my_items')}
                                 />
@@ -1230,7 +1156,7 @@ const NavigationBar: FC = () => {
                                             }
                                         />
                                     )}
-                                />
+                                /> */}
                                 <TooltipItem
                                     label="Dark theme"
                                     rightStatic={() => (

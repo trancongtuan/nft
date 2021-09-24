@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Box, Button, Flex, Text } from 'theme-ui'
 import React, { FC } from 'react'
 import CustomInput from './CustomInput'
@@ -7,6 +8,8 @@ interface PopupCancelProps {
 }
 
 export const PopupShare: FC<PopupCancelProps> = ({ onClose }) => {
+    const [reason, setReason] = useState('');
+
     return (
         <Flex
             sx={{
@@ -21,8 +24,9 @@ export const PopupShare: FC<PopupCancelProps> = ({ onClose }) => {
             <Box sx={{ width: '100%' }} mt={3}>
                 <CustomInput
                     label="Message"
-                    value=""
+                    value={reason}
                     placeholder="Tell us some detail"
+                    onChange={(v) => setReason(v)}
                 />
             </Box>
             <Button
@@ -30,6 +34,12 @@ export const PopupShare: FC<PopupCancelProps> = ({ onClose }) => {
                 mr={10}
                 mt={3}
                 sx={{ width: '100%', height: '40px' }}
+                onClick={() => {
+                    setTimeout(() => {
+                        alert('We received your report and will get back you soon!')
+                        onClose()
+                    }, 200)
+                }}
             >
                 Report
             </Button>
