@@ -65,7 +65,7 @@ const CustomInput: FC<CustomInputProps> = ({
             <Flex
                 sx={{ alignItems: 'center', borderBottom: '2px #eaeaea solid' }}
             >
-                {staticLeft && staticLeft}
+                {staticLeft}
                 <Input
                     color="text"
                     type={type}
@@ -88,7 +88,7 @@ const CustomInput: FC<CustomInputProps> = ({
                         {staticRight}
                     </Flex>
                 )}
-                {Icon && Icon}
+                {Icon}
             </Flex>
             {staticBottom && (
                 <Box mt={2}>

@@ -260,7 +260,7 @@ const Setting: FC = () => {
                     >
                         <CustomInput
                             label={t('setting.display_name')}
-                            value={profile.display_name}
+                            value={profile?.display_name}
                             onChange={(v) =>
                                 setProfile((ori) => ({ ...ori, display_name: v }))
                             }

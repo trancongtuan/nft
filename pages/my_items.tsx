@@ -41,30 +41,6 @@ const selectionItems = [
         value: 'On sale',
         count: 0,
     },
-    // {
-    //     id: '2',
-    //     label: 'general.collectibles',
-    //     value: 'Collectibles',
-    //     count: 0,
-    // },
-    // {
-    //     id: '3',
-    //     label: 'general.created',
-    //     value: 'Created',
-    //     count: 0,
-    // },
-    // {
-    //     id: '4',
-    //     label: 'general.liked',
-    //     value: 'Liked',
-    //     count: 2,
-    // },
-    // {
-    //     id: '5',
-    //     label: 'general.activity',
-    //     value: 'Activity',
-    //     count: 5,
-    // },
 ]
 const Items: FC = () => {
     const { t } = useTranslation('common')
@@ -383,7 +359,6 @@ const Items: FC = () => {
         if (showCards && !showActivity) {
             return (
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {assets === null && 'Loading...'}
                     {assets?.map((item) => (
                         <Box
                             key={uuidv4()}
@@ -415,7 +390,10 @@ const Items: FC = () => {
                                 name={item.name}
                                 image={item.image_url}
                                 currency="ETH"
-                                price={item.top_bid ?? 0}
+                                price={
+                                    item.sell_orders?.[0]?.current_price / 1000000000000000000
+                                    || item.orders?.[0]?.current_price / 1000000000000000000
+                                    ||  0}
                                 {...(item?.creator && {
                                     creator: {
                                         src: item.creator?.profile_img_url,
@@ -869,7 +847,11 @@ const Items: FC = () => {
                     </Box>
                 </Flex>
                 {showActivity && renderActivity()}
-                {renderCards()}
+                {
+                    assets === null ?
+                        <h3 style={{ textAlign: 'center', marginTop: 20 }}>Loading...</h3>
+                        : renderCards()
+                }
             </Box>
             <Footer />
             <Popup

@@ -31,10 +31,10 @@ import {
     useAssetTypeQuery,
 } from '../queries'
 import {
-    Collection,
     fetchCollections,
     useGetCollectionsQuery,
 } from '../queries/collections'
+import { Collection } from '../types/model'
 import AuctionCard from '../components/AuctionCard'
 
 const sellerList = [
@@ -338,7 +338,10 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         name={item.name}
                                         currency="ETH"
                                         image={item.image_url}
-                                        price={item.top_bid ?? 0}
+                                        price={
+                                            item.sell_orders?.[0]?.current_price / 1000000000000000000
+                                            || item.orders?.[0]?.current_price / 1000000000000000000
+                                            ||  0}
                                         onCLick={() =>
                                             router.push(
                                                 `/product/${item.asset_contract.address}/${item.token_id}`
@@ -385,7 +388,10 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     name={item.name}
                                     currency="ETH"
                                     image={item.image_url}
-                                    price={item.top_bid ?? 0}
+                                    price={
+                                        item.sell_orders?.[0]?.current_price / 1000000000000000000
+                                        || item.orders?.[0]?.current_price / 1000000000000000000
+                                        ||  0}
                                     onCLick={() =>
                                         router.push(
                                             `/product/${item.asset_contract.address}/${item.token_id}`
@@ -506,7 +512,10 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     name={item.name}
                                     image={item.image_url}
                                     currency="ETH"
-                                    price={item.top_bid ?? 0}
+                                    price={
+                                        item.sell_orders?.[0]?.current_price / 1000000000000000000
+                                        || item.orders?.[0]?.current_price / 1000000000000000000
+                                        ||  0}
                                     {...(item?.creator && {
                                         creator: {
                                             src: item.creator?.profile_img_url,

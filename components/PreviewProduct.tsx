@@ -6,12 +6,16 @@ interface PreviewProductProps {
     isOpen: boolean
     onClose: () => void
     image: string
+    name?: string
+    ethUserName?: string
 }
 
 const PreviewProduct: FC<PreviewProductProps> = ({
     isOpen,
     onClose,
     image,
+    name,
+    ethUserName,
 }) => {
     useEffect(() => {
         if (isOpen) document.body.style.overflow = 'hidden'
@@ -70,10 +74,8 @@ const PreviewProduct: FC<PreviewProductProps> = ({
                 src={image}
                 sx={{
                     objectFit: 'cover',
-                    width: ['80%', '250px', '30vw', '35vw'],
-                    height: ['80vw', '250px', '30vw', '35vw'],
-                    maxWidth: '588px',
-                    maxHeight: '588px',
+                    height: '100%',
+                    width: 'auto',
                     borderRadius: 10,
                     cursor: 'zoom-out',
                 }}
@@ -91,7 +93,7 @@ const PreviewProduct: FC<PreviewProductProps> = ({
                 }}
             >
                 <Text sx={{ cursor: 'text' }}>
-                    Crypto Geisha 039 - by Nathan Head
+                    {name}
                 </Text>
                 <Text sx={{ color: 'textSecondary', cursor: 'text' }}>
                     {' '}
@@ -104,7 +106,7 @@ const PreviewProduct: FC<PreviewProductProps> = ({
                         },
                     }}
                 >
-                    ⚡️ Crypto Geisha ⚡️ on Rarible
+                    {ethUserName}
                 </Text>
             </Box>
         </Box>

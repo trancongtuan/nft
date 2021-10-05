@@ -9,6 +9,7 @@ interface TopSellerCardProps {
     id?: number | string
     name: string
     wallet: number
+    walletUnit?: string
     user: UserProps
     size?: Size
     onClick?: () => void
@@ -20,6 +21,7 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
     user,
     size,
     wallet,
+    walletUnit,
     onClick,
 }) => {
     return (
@@ -62,7 +64,7 @@ const TopSellerCard: FC<TopSellerCardProps> = ({
                         color="textSecondary"
                         sx={{ fontSize: 1, color: '#00eeb9' }}
                     >
-                        {wallet} ETH
+                        {wallet} {walletUnit || 'ETH'}
                     </Text>
                 </Flex>
             </Flex>

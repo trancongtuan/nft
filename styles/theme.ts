@@ -195,8 +195,8 @@ export const theme: Theme = {
             transition: 'all 0.12s ease-in-out 0s',
             cursor: 'pointer',
             ':hover': {
-                color: 'rgba(0, 102, 255, 0.9)',
-                backgroundColor: 'rgba(0, 102, 255, 0.2)',
+                color: '#00382c',
+                backgroundColor: '#009a78',
             },
             ':focus': {
                 outline: 'none',

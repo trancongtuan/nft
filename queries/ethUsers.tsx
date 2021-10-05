@@ -28,6 +28,7 @@ interface fetchUserRequest {
     _limit?: number
     _sort?: string
     address?: string
+    display_name_contains?: string
 }
 
 export const fetchUsers: (

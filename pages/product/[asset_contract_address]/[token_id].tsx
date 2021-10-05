@@ -14,7 +14,6 @@ import Tooltip from '../../../components/Tooltip'
 import Avatar from '../../../components/Avatar'
 import ThreeDos from '../../../public/assets/images/icons/threedos.svg'
 import FavoriteIcon from '../../../public/assets/images/icons/favorite.svg'
-import Selection from '../../../components/Selection'
 import TopSellerCard from '../../../components/TopSellerCard'
 import Popup from '../../../components/Popup'
 import PopupPlaceABid from '../../../components/PopupPurchase'
@@ -22,10 +21,28 @@ import PopupPlaceAnOffer from '../../../components/PopupPlaceAnOffer'
 import PopupShare from '../../../components/PopupShare'
 import PreviewProduct from '../../../components/PreviewProduct'
 import { useAuth } from '../../../hooks/auth'
-
 import { Asset, updateSingleAsset, fetchAssets } from '../../../queries'
 const OPENSEA_URL = process.env.NEXT_PUBLIC_OPENSEA_URL;
 const Web3 = require('web3')
+
+
+const selectionItems = [
+    {
+        id: '1',
+        label: 'Bids',
+        value: 'Bids',
+    },
+    {
+        id: '2',
+        label: 'Details',
+        value: 'Details',
+    },
+    {
+        id: '3',
+        label: 'History',
+        value: 'History',
+    },
+]
 
 const createTooltipItems = (allowPlaceBid = false, address, tokenId, setOpenPopupShare): Array<{ id: number, label: string }> => {
     const items = [
@@ -49,57 +66,6 @@ const createTooltipItems = (allowPlaceBid = false, address, tokenId, setOpenPopu
 
     return items;
 }
-
-const selectionItems = [
-    {
-        id: '1',
-        label: 'Bids',
-        value: 'Bids',
-    },
-    {
-        id: '2',
-        label: 'Details',
-        value: 'Details',
-    },
-    {
-        id: '3',
-        label: 'History',
-        value: 'History',
-    },
-]
-
-const detailItems = [
-    {
-        id: '1',
-        label: 'Nose Orientation',
-        value: 'Straight',
-    },
-    {
-        id: '2',
-        label: 'Eyes',
-        value: 'Wiggly',
-    },
-    {
-        id: '3',
-        label: 'Material',
-        value: 'Lava',
-    },
-    {
-        id: '4',
-        label: 'Colour',
-        value: 'Orange / Black',
-    },
-    {
-        id: '5',
-        label: 'Nose',
-        value: 'Lava',
-    },
-    {
-        id: '6',
-        label: 'Mouth',
-        value: 'Lava',
-    },
-]
 
 type ProductParams = {
     asset_contract_address: string
@@ -127,7 +93,7 @@ export const getServerSideProps: GetServerSideProps<
 }
 
 const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
-    asset,
+    asset, // This asset only use for initial state for data
 }) => {
     const { connected } = useAuth()
     const [seaport, setSeaport] = useState<any>()
@@ -138,13 +104,6 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         }
         return 'text'
     }
-
-    const ownerAddress = asset?.owner_address || ''
-    const iAmOwner =
-        connected && typeof connected === 'string'
-            ? connected.toLocaleLowerCase() === ownerAddress.toLocaleLowerCase()
-            : false
-    const sellOrders = asset?.sell_orders || null;
 
     useEffect(() => {
         const provider =
@@ -161,23 +120,24 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         setSeaport(seaPort)
     }, [])
 
-    // const router = useRouter()
-    // const { asset_contract_address, token_id } = router.query as ProductParams
     const [liked, setLiked] = useState(false)
     const [showProduct, setShowProduct] = useState(false)
-    const [selectedTab, setSelectedTab] = useState(selectionItems[0].id)
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
     const [openPopupPlaceAnOffer, setOpenPopupPlaceAnOffer] = useState(false)
     const [openPopupShare, setOpenPopupShare] = useState(false)
     const [openPreview, setOpenPreview] = useState(false)
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState(asset)
-
-    const topOwner = data?.top_ownerships?.[0]?.owner || null;
     const {
         token_id,
         asset_contract: { address: asset_contract_address },
     } = data
+    const ownerAddress = data?.owner?.address || data?.owner_address || ''
+    const iAmOwner =
+        connected && typeof connected === 'string'
+            ? connected.toLocaleLowerCase() === ownerAddress.toLocaleLowerCase()
+            : false
+    const sellOrders = data?.orders || null;
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const makeBid = async () => {
@@ -212,6 +172,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                     accountAddress
                 )
                 alert('Purchased')
+                reFetchAsset()
             }
             setOpenPopupPlaceABid(false)
         } catch (e) {
@@ -222,10 +183,9 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     }
 
     const makeOffer = async (price): Promise<void> => {
-        setLoading(true)
-
         // Get Address
         try {
+            setLoading(true)
             if (!window.ethereum) throw new Error('Please install MetaMask.')
             let accountAddress = await window.ethereum.enable()
             if (!accountAddress[0]) throw new Error('No account selected.')
@@ -250,6 +210,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 `Successfully created a fixed-price sell order! ${fixedPriceSellOrder.asset.openseaLink}\n`
             )
             setOpenPopupPlaceAnOffer(false)
+            reFetchAsset()
         } catch (e) {
             alert(e.message)
         } finally {
@@ -268,7 +229,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 asset_contract_address,
                 token_id,
             )
-            setData(result);
+            setData(result)
         } catch (e) {
             alert(e.toString())
         }
@@ -305,10 +266,9 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         src={data?.image_url ?? 'https://picsum.photos/200/300'}
                         sx={{
                             objectFit: 'cover',
-                            width: ['100%', '250px', '30vw', '30vw'],
-                            height: ['100vw', '250px', '30vw', '30vw'],
-                            maxWidth: '588px',
                             maxHeight: '588px',
+                            height: '90%',
+                            width: 'auto',
                             borderRadius: 10,
                             cursor: 'zoom-in',
                         }}
@@ -319,7 +279,9 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         onClose={() => {
                             setOpenPreview(false)
                         }}
-                        image="https://picsum.photos/200/300"
+                        image={data?.image_url ?? 'https://picsum.photos/200/300'}
+                        name={data?.name}
+                        ethUserName=""
                     />
                 </Flex>
                 <Flex
@@ -357,36 +319,6 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 {data?.name}
                             </Text>
                             <Flex>
-                                <Button
-                                    variant="border"
-                                    onClick={() => {
-                                        setLiked(!liked)
-                                    }}
-                                    py="6px"
-                                    px="12px"
-                                    sx={{
-                                        minWidth: '40px',
-                                        marginLeft: '5px',
-                                        svg: {
-                                            stroke: liked
-                                                ? '#00eeb9'
-                                                : checkHeartIconColor,
-                                            fill: liked ? '#00eeb9' : 'text',
-                                        },
-                                    }}
-                                >
-                                    <FavoriteIcon />
-                                    <Text
-                                        ml="4px"
-                                        sx={{
-                                            fontSize: '14px',
-                                            fontWeight: 'heavy',
-                                            color: 'text',
-                                        }}
-                                    >
-                                        20
-                                    </Text>
-                                </Button>
                                 <Popover
                                     onOuterAction={() => setShowProduct(false)}
                                     isOpen={showProduct}
@@ -425,20 +357,9 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             <Text mr={2} sx={{ color: 'primary' }}>
                                 {data?.top_bid ?? '0.634'} WETH
                             </Text> */}
-                            <Text sx={{ color: 'textSecondary' }}>
+                            {/* <Text sx={{ color: 'textSecondary' }}>
                                 1 of 1
-                            </Text>
-                        </Box>
-                        <Box mt={16}>
-                            <Button
-                                mr={12}
-                                variant="border"
-                                sx={{
-                                    flexShrink: 0,
-                                }}
-                            >
-                                {asset.asset_type?.name}
-                            </Button>
+                            </Text> */}
                         </Box>
                         <Box
                             sx={{
@@ -450,7 +371,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 },
                             }}
                         >
-                            <Text>{data?.asset_contract?.description}</Text>
+                            <Text>{data?.description}</Text>
                         </Box>
                         <Flex>
                             {data?.creator && (
@@ -482,8 +403,10 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                                 fontSize: 1,
                                             }}
                                         >
-                                            {data?.creator?.user?.username ||
-                                                '-'}
+                                            {
+                                                data.creator.user?.username
+                                                || `${data.creator.address}`.substr(0, 10) + '...'
+                                            }
                                         </Text>
                                     </Flex>
                                 </Box>
@@ -505,7 +428,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     }}
                                 >
                                     <Avatar
-                                        src={data?.collection?.image_url}
+                                        src={data?.collection_details?.image_url}
                                         verified
                                         size="sm"
                                     />
@@ -513,144 +436,37 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         ml={3}
                                         sx={{ fontWeight: 'bold', fontSize: 1 }}
                                     >
-                                        {data?.collection?.name}
+                                        {data?.collection_details?.name}
                                     </Text>
                                 </Flex>
                             </Box>
                         </Flex>
-                        <Box
-                            mt={3}
-                            px={22}
-                            sx={{
-                                width: '100%',
-                                borderRadius: 30,
-                                backgroundColor: 'backgroundYellow',
-                            }}
-                        >
+                        <Box mt={20}>
                             <Text
-                                p={3}
                                 sx={{
-                                    display: 'block',
-                                    textAlign: 'center',
-                                    color: 'textSecondary',
-                                    fontSize: 1,
                                     fontWeight: 'bold',
+                                    fontSize: 0,
+                                    color: 'textSecondary',
                                 }}
                             >
-                                10% of sales will go to creator
+                                Ownership
                             </Text>
-                        </Box>
-                        <Box mt={3}>
-                            <Selection
-                                borderBottom
-                                items={selectionItems}
-                                fontSize={2}
-                                onChange={(value) =>
-                                    setSelectedTab(value.toString())
-                                }
-                            />
-                            {selectedTab === '1' && (
-                                <Box>
-                                    {[{ name: 'Haylos', amount: 3 }, { name: 'kaprika', amount: 1.22 }].map((item) => (
-                                        <Box my={20} key={item.name}>
-                                            <TopSellerCard
-                                                name={item.name}
-                                                wallet={item.amount}
-                                                size="sm"
-                                                user={{
-                                                    src:
-                                                        `https://picsum.photos/200/300?name=${item.name}`,
-                                                    verified: true,
-                                                }}
-                                            />
-                                        </Box>
-                                    ))}
-                                </Box>
-                            )}
-                            {selectedTab === '2' && (
-                                <Box>
-                                    <Box sx={{ width: '100%' }} mt={3}>
-                                        <Text
-                                            sx={{
-                                                fontWeight: 'bold',
-                                                fontSize: 0,
-                                                color: 'textSecondary',
+                            <Flex>
+                                {data.top_ownerships?.map((item, i) => (
+                                    <Box sx={{ width: '50%' }} my={10} key={i}>
+                                        <TopSellerCard
+                                            name={item.owner?.user?.username || item.owner.address}
+                                            wallet={item.quantity}
+                                            walletUnit="Qty"
+                                            size="sm"
+                                            user={{
+                                                src: item.owner.profile_img_url,
+                                                verified: true,
                                             }}
-                                        >
-                                            Creator
-                                        </Text>
-                                        <Flex
-                                            mt={2}
-                                            sx={{
-                                                alignItems: 'center',
-                                            }}
-                                        >
-                                            <Avatar
-                                                src="https://picsum.photos/300/300"
-                                                verified
-                                                size="sm"
-                                            />
-                                            <Text
-                                                ml={3}
-                                                sx={{
-                                                    fontWeight: 'bold',
-                                                    fontSize: 1,
-                                                }}
-                                            >
-                                                NUMAN KHAN
-                                            </Text>
-                                        </Flex>
+                                        />
                                     </Box>
-                                    {detailItems.map((item) => {
-                                        return (
-                                            <Box
-                                                key={item.id}
-                                                sx={{ width: '100%' }}
-                                                mt={4}
-                                                mb={3}
-                                            >
-                                                <Text
-                                                    mb={2}
-                                                    sx={{
-                                                        display: 'block',
-                                                        fontWeight: 'bold',
-                                                        fontSize: 0,
-                                                        color: 'textSecondary',
-                                                    }}
-                                                >
-                                                    Nose Orientation
-                                                </Text>
-                                                <Text
-                                                    sx={{
-                                                        fontWeight: 'bold',
-                                                        fontSize: 1,
-                                                    }}
-                                                >
-                                                    Straight
-                                                </Text>
-                                            </Box>
-                                        )
-                                    })}
-                                </Box>
-                            )}
-                            {selectedTab === '3' && (
-                                <Box>
-                                    {[...Array(3)].map((item) => (
-                                        <Box my={20} key={item}>
-                                            <TopSellerCard
-                                                name="Bought for 0.633 WETH 11 hours ago"
-                                                wallet={24}
-                                                size="sm"
-                                                user={{
-                                                    src:
-                                                        'https://picsum.photos/200/300',
-                                                    verified: true,
-                                                }}
-                                            />
-                                        </Box>
-                                    ))}
-                                </Box>
-                            )}
+                                ))}
+                            </Flex>
                         </Box>
                     </Box>
                     <Box
@@ -676,7 +492,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             <Flex>
                                 {iAmOwner ? (
                                     <Button
-                                        disabled={Array.isArray(sellOrders) && sellOrders.length > 0}
+                                        disabled={(Array.isArray(sellOrders) && sellOrders.length > 0)}
                                         variant="primary"
                                         mr={10}
                                         sx={{ width: '50%', height: '40px' }}
@@ -684,14 +500,14 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                             setOpenPopupPlaceAnOffer(true)
                                         }
                                     >
-                                        {Array.isArray(sellOrders) && sellOrders.length > 0 ? 'Selling' : 'Sell Item'}
+                                        {(Array.isArray(sellOrders) && sellOrders.length > 0) ? 'Selling' : 'Sell Item'}
                                     </Button>
                                 ) : (
                                     <Button
                                         disabled={!sellOrders}
                                         variant="primary"
                                         mr={10}
-                                        sx={{ width: '50%', height: '40px', opacity: sellOrders ? '100%': '50%', cursor: sellOrders ? 'pointer' : 'not-allowed' }}
+                                        sx={{ width: '50%', height: '40px', opacity: sellOrders ? '100%' : '50%', cursor: sellOrders ? 'pointer' : 'not-allowed' }}
                                         onClick={() =>
                                             setOpenPopupPlaceABid(true)
                                         }

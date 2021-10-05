@@ -411,7 +411,7 @@ const BidCard: FC<BidCardProps> = ({
                                     color="primary"
                                     sx={{ fontSize: 0, cursor: 'pointer' }}
                                 >
-                                    Place a bid
+                                    Buy Now
                                 </Text>
                             )}
                         </TextWithTooltip>

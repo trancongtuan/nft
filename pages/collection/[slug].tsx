@@ -20,10 +20,9 @@ import Popup from '../../components/Popup'
 import PopupReport from '../../components/PopupReport'
 import PopupShare from '../../components/PopupShare'
 import { Asset, fetchAssets } from '../../queries'
-import {
-    Collection as TCollection,
-    fetchCollections,
-} from '../../queries/collections'
+import { fetchCollections } from '../../queries/collections'
+import { Collection as TCollection } from '../../types/model'
+import Error from '../_error';
 
 export const getServerSideProps: GetServerSideProps<{
     collection: TCollection
@@ -40,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<{
     return {
         props: {
             ...(await serverSideTranslations(locale, ['common', 'footer'])),
-            collection: collections[0],
+            collection: collections?.[0] || null,
             assets: {
                 pages: [assets],
                 pageParams: [{ _start: 0, _limit: 10 }],
@@ -65,6 +64,11 @@ const Collection: FC<
         }
         return setCounter(0)
     }, [counter])
+
+    if (collection === null) {
+        return (<Error statusCode={404} message="Cocllection Not Found" />)
+    }
+
     return (
         <Layout>
             <Flex
@@ -237,7 +241,10 @@ const Collection: FC<
                                 name={item.name}
                                 image={item.image_url}
                                 currency="ETH"
-                                price={item.top_bid ?? 0}
+                                price={
+                                    item.sell_orders?.[0]?.current_price / 1000000000000000000
+                                    || item.orders?.[0]?.current_price / 1000000000000000000
+                                    ||  0}
                                 {...(item?.creator && {
                                     creator: {
                                         src: item.creator?.profile_img_url,

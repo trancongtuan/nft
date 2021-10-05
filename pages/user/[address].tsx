@@ -74,7 +74,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, params })
     },
 })
 
-const Items: FC = ({ }) => {
+const Items: FC = () => {
     const { t } = useTranslation('common')
     const router = useRouter()
     const { address: ethUserAddress } = router.query
@@ -397,7 +397,10 @@ const Items: FC = ({ }) => {
                                 name={item.name}
                                 image={item.image_url}
                                 currency="ETH"
-                                price={item.top_bid ?? 0}
+                                price={
+                                    item.sell_orders?.[0]?.current_price / 1000000000000000000
+                                    || item.orders?.[0]?.current_price / 1000000000000000000
+                                    ||  0}
                                 {...(item?.creator && {
                                     creator: {
                                         src: item.creator?.profile_img_url,

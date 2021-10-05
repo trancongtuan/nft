@@ -140,7 +140,7 @@ export interface SellOrder {
     exchange: string
     maker: Maker
     taker: Taker
-    current_price: string
+    current_price: number
     current_bounty: string
     bounty_multiple: string
     maker_relayer_fee: string
@@ -212,6 +212,7 @@ export interface Asset {
     asset_contract: AssetContract
     owner: Owner
     permalink: string
+    collection_details: Collection
     collection: Collection
     decimals?: any
     token_metadata: string
@@ -227,7 +228,20 @@ export interface Asset {
     ultcube_hot_bids?: boolean
     owner_address?: string
     asset_type?: { name: string }
-    top_ownerships: { owner: { address: string, config: string, profile_img_url: string } }[]
+    orders: {
+        current_price: number
+    }[]
+    top_ownerships: {
+        owner: {
+            user: {
+                username: string,
+            }
+            address: string,
+            config: string,
+            profile_img_url: string
+        },
+        quantity: number
+    }[]
 }
 
 /*

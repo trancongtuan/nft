@@ -31,7 +31,7 @@ export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
                     label="Your offer"
                     value={offer}
                     placeholder="Enter offer"
-                    staticRight="WETH"
+                    staticRight="ETH"
                 />
             </Box>
             <Box sx={{ width: '100%' }} mt={3}>
@@ -68,7 +68,7 @@ export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
                             fontSize: 1,
                         }}
                     >
-                        0 WETH
+                        0 ETH
                     </Text>
                 </Flex> */}
                 {/* <Flex sx={{ justifyContent: 'space-between' }} my={1}>
@@ -82,7 +82,7 @@ export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
                             fontSize: 1,
                         }}
                     >
-                        0.026 WETH
+                        0.026 ETH
                     </Text>
                 </Flex> */}
                 <Flex sx={{ justifyContent: 'space-between' }} my={1}>
@@ -96,7 +96,7 @@ export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
                             fontSize: 1,
                         }}
                     >
-                        0.026 WETH
+                        {offer} ETH
                     </Text>
                 </Flex>
             </Box>
