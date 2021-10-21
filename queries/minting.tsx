@@ -5,8 +5,8 @@ const API_URL = process.env.NEXT_PUBLIC_ALCHEMY_URL;
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(API_URL);
 
-const singleContract = require("../utils/contracts/UltcubeNFTCollection.json");
-const multiContract = require("../utils/contracts/UltcubeNFTCollectionMulti.json");
+const singleContract = require("../utils/contracts/single.json");
+const multiContract = require("../utils/contracts/multi.json");
 const singleMintingContractAddress = "0xDf990Bbf74ed828d68992F9D5CFdC48932E28EE3";
 const multiMintingContractAddress = "0x50277b27624751a1FDe7c473BD61f3e9A9C2e0D2";
 
