@@ -16,26 +16,21 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import { useTranslation } from 'react-i18next'
 import Popover from 'react-popover'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
-
 import Layout from '../../containers/Layout'
-import ToggleButton from '../../components/ToggleButton'
-import PriceIcon from '../../public/assets/images/icons/price.svg'
-import UnlimitedIcon from '../../public/assets/images/icons/unlimited.svg'
 import CloseIcon from '../../public/assets/images/icons/close.svg'
-import DropdownIcon from '../../public/assets/images/icons/drop-down.svg'
 import HelpIcon from '../../public/assets/images/icons/help.svg'
 import BackIcon from '../../public/assets/images/icons/back.svg'
-import CreateIcon from '../../public/assets/images/icons/create.svg'
+
 import BidCard from '../../components/BidCard'
 import CustomInput from '../../components/CustomInput'
-import Tooltip, { TooltipItemProps } from '../../components/Tooltip'
-import Popup from '../../components/Popup'
+import Tooltip from '../../components/Tooltip'
+import { randomString } from '../../utils'
+import { uploadJsonToUltcube, uploadImageToIPFS, mintMultiple } from '../../queries';
 
 interface CurrencyIconProps {
     name: string
@@ -60,83 +55,6 @@ const CurrencyIcon: FC<CurrencyIconProps> = ({ name }) => (
     </Box>
 )
 
-const currencyList = [
-    {
-        id: 1,
-        label: 'ETH',
-        icon: () => <CurrencyIcon name="ETH" />,
-        checked: true,
-    },
-    {
-        id: 2,
-        label: 'DAI',
-        icon: () => <CurrencyIcon name="DAI" />,
-    },
-    {
-        id: 3,
-        label: 'RARI',
-        icon: () => <CurrencyIcon name="RARI" />,
-    },
-    {
-        id: 4,
-        label: 'ATRI',
-        icon: () => <CurrencyIcon name="ATRI" />,
-    },
-    {
-        id: 5,
-        label: 'ABST',
-        icon: () => <CurrencyIcon name="ABST" />,
-    },
-    {
-        id: 6,
-        label: 'ADORs',
-        icon: () => <CurrencyIcon name="ADORs" />,
-    },
-]
-
-const marketplaceList = [
-    {
-        id: 1,
-        icon: () => <PriceIcon />,
-        label: 'fixed_price',
-    },
-    {
-        id: 2,
-        icon: () => <UnlimitedIcon />,
-        label: 'unlimited_auction',
-    },
-]
-
-const collectionList = [
-    {
-        id: 1,
-        icon: () => <CreateIcon />,
-        label: 'Create',
-        subLabel: 'ERC-721',
-    },
-    {
-        id: 2,
-        icon: () => (
-            <Box
-                sx={{
-                    borderRadius: 9999,
-                    overflow: 'hidden',
-                    width: 40,
-                    height: 40,
-                }}
-            >
-                <Image
-                    src="/assets/images/rarible.png"
-                    alt="rarible"
-                    width={40}
-                    height={40}
-                />
-            </Box>
-        ),
-        label: 'Rarible',
-        subLabel: 'RARI',
-    },
-]
 interface MarketplaceItemProps {
     id: string | number
     icon: () => ReactNode
@@ -151,62 +69,6 @@ const MarketplaceItem: FC<MarketplaceItemProps> = ({
     label,
     onClick,
     selected,
-}) => {
-    const { t } = useTranslation('common')
-    return (
-        <Flex
-            onClick={onClick}
-            key={id}
-            px={20}
-            sx={{
-                flex: 1,
-                height: 140,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderWidth: 2,
-                borderStyle: 'solid',
-                borderColor: selected ? 'primary' : 'borderColor',
-                borderRadius: 1,
-                ':hover': {
-                    borderColor: selected ? 'primary' : 'borderHoverColor',
-                },
-                flexDirection: 'column',
-                cursor: 'pointer',
-            }}
-            color="text"
-        >
-            {icon()}
-            <Text
-                mt={8}
-                sx={{
-                    maxWidth: 60,
-                    textAlign: 'center',
-                    fontSize: [12, 14],
-                    fontWeight: 'heavy',
-                }}
-            >
-                {t(`create.${label}`)}
-            </Text>
-        </Flex>
-    )
-}
-
-interface CollectionItemProps {
-    id: string | number
-    icon: () => ReactNode
-    label: string
-    onClick?: () => void
-    selected?: boolean
-    subLabel: string
-}
-
-const CollectionItem: FC<CollectionItemProps> = ({
-    id,
-    icon,
-    label,
-    onClick,
-    selected,
-    subLabel,
 }) => (
     <Flex
         onClick={onClick}
@@ -235,157 +97,90 @@ const CollectionItem: FC<CollectionItemProps> = ({
             sx={{
                 maxWidth: 60,
                 textAlign: 'center',
-                fontSize: 2,
+                fontSize: [12, 14],
                 fontWeight: 'heavy',
             }}
         >
             {label}
         </Text>
-        <Text color="textSecondary" sx={{ fontSize: 0 }}>
-            {subLabel}
-        </Text>
     </Flex>
 )
 
-const Create: FC = () => {
-    const { t } = useTranslation('common')
-    const ref = useRef<HTMLInputElement>(null)
-    const [file, setFile] = useState<string>('/assets/images/avt-default.svg')
-    const onChangeFile: ChangeEventHandler<HTMLInputElement> = (event) => {
-        event.stopPropagation()
-        event.preventDefault()
-        setFile(URL.createObjectURL(event.target.files[0]))
-    }
-    return (
-        <Flex sx={{ width: 324, flexDirection: 'column' }}>
-            <Flex sx={{ alignItems: 'center' }}>
-                <Flex
-                    sx={{
-                        borderRadius: 9999,
-                        overflow: 'hidden',
-                        flexShrink: 0,
-                    }}
-                >
-                    <UIIMage
-                        src={file}
-                        sx={{
-                            width: 100,
-                            height: 100,
-                            objectFit: 'cover',
-                        }}
-                    />
-                    <Input
-                        sx={{
-                            display: 'none',
-                        }}
-                        ref={ref}
-                        type="file"
-                        onChange={onChangeFile}
-                    />
-                </Flex>
-                <Flex ml={16} sx={{ flexDirection: 'column' }}>
-                    <Text
-                        color="textSecondary"
-                        sx={{ fontSize: 1, fontWeight: 'body' }}
-                    >
-                        We recommend an image of at least 400x400. Gifs work
-                        too.
-                    </Text>
-                    <Button
-                        onClick={() => ref.current.click()}
-                        mt={16}
-                        variant="secondary"
-                        sx={{ width: 120 }}
-                    >
-                        {t('create.choose_file')}
-                    </Button>
-                </Flex>
-            </Flex>
-            <Box mt={16}>
-                <CustomInput
-                    label={t('create.display_name')}
-                    optionLabel="required"
-                    placeholder={t('create.display_name_placeholder')}
-                    value=""
-                    staticBottom={`${t('create.display_name_bottom')}`}
-                />
-            </Box>
-            <Box mt={16}>
-                <CustomInput
-                    label={t('create.symbol')}
-                    optionLabel="required"
-                    placeholder={t('create.symbol_placeholder')}
-                    value=""
-                />
-            </Box>
-            <Box mt={16}>
-                <CustomInput
-                    label={t('create.description')}
-                    optionLabel="optional"
-                    placeholder={t('create.description_placeholder')}
-                    value=""
-                />
-            </Box>
-            <Box mt={16}>
-                <CustomInput
-                    label={t('create.short_url')}
-                    placeholder={t('create.short_url_placeholder')}
-                    value=""
-                    staticLeft={
-                        <Flex mr={8} sx={{ flexShrink: 0 }}>
-                            <Text
-                                color="text"
-                                sx={{ fontWeight: 'body', fontSize: 2 }}
-                            >
-                                rarible.com/
-                            </Text>
-                        </Flex>
-                    }
-                    staticBottom={`${t('create.short_url_bottom')}`}
-                />
-            </Box>
-            <Button mt={16}>{t('create.create_collection')}</Button>
-        </Flex>
-    )
+interface CollectionItemProps {
+    id: string | number
+    icon: () => ReactNode
+    label: string
+    onClick?: () => void
+    selected?: boolean
+    subLabel: string
 }
 
 const Multiple: FC = () => {
-    const { t } = useTranslation('common')
     const ref = useRef<HTMLInputElement>(null)
-    const [file, setFile] = useState<string | null>(null)
-    const onChangeFile: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const [file, setFile] = useState<File>(null)
+    const [loading, setLoading] = useState(false)
+    const defaultAddress = `ultcube_local_${randomString(20)}`
+    const [assetData, setAssetData] = useState<{
+        name: string
+        price: string
+        minBid: string
+        image: string
+        token_id: string
+        asset_contract_address: string
+        asset_contract: { address: string }
+        description?: string
+        amount?: number
+    }>({
+        name: '',
+        image: '',
+        description: '',
+        price: '',
+        minBid: '',
+        token_id: '0',
+        asset_contract_address: defaultAddress,
+        asset_contract: { address: defaultAddress },
+        amount: null
+    })
+
+    const onChangeFile: ChangeEventHandler<HTMLInputElement> = async (
+        event
+    ) => {
         event.stopPropagation()
         event.preventDefault()
-        setFile(URL.createObjectURL(event.target.files[0]))
+        setFile(event.target.files[0])
     }
-    const [showMarketplace, setShowMarketplace] = useState(true)
-    const [showTypePrice, setShowTypePrice] = useState(false)
-    const [unlock, setUnlock] = useState(false)
     const [showHelp, setShowHelp] = useState(false)
-    const [unlockValue, setUnlockValue] = useState('')
-    const [marketplace, setMarketplace] = useState(marketplaceList[0])
-    const [collection, setCollection] = useState(collectionList[1])
-    const [currency, setCurrency] = useState<TooltipItemProps>(currencyList[0])
     const router = useRouter()
-    const content = useMemo<string>(() => {
-        if (showMarketplace) {
-            if (marketplace === marketplaceList[0])
-                return 'Enter price to allow users instantly purchase your NFT'
-            return 'Allow other users to make bids on your NFT'
+
+    const onCreate: (event) => void = async (assetData) => {
+        try {
+            setLoading(true)
+
+            const files = Array.from([file])
+            if (files.length < 1) return
+
+            const mediaUploadResult = await uploadImageToIPFS(files)
+            const nftData = {
+                name: assetData.name,
+                image: `https://gateway.pinata.cloud/ipfs/${mediaUploadResult.IpfsHash}`,
+                description: assetData.description,
+                attributes: {},
+            }
+        
+            const result = await uploadJsonToUltcube(nftData);
+            const hash = await mintMultiple(assetData.amount);
+            alert(`Minted: ${hash}, please wait for network confirmation and refresh My Item page.`);
+            router.push('/my_items')
+        } catch (e) {
+            if (e.message) return alert(e.message)
+            alert(e.toString())
+        } finally {
+            setLoading(false)
         }
-        return `Put your new NFT on Rarible's marketplace`
-    }, [marketplace, showMarketplace])
-    const [showCreatePopup, setShowCreatePopup] = useState(false)
+    }
+
     return (
         <Layout>
-            <Popup
-                isOpen={showCreatePopup}
-                onClose={() => setShowCreatePopup(false)}
-                label={t('create.collection')}
-                closeType="outside"
-            >
-                <Create />
-            </Popup>
             <Box mx="auto" sx={{ maxWidth: 815 }}>
                 <Flex
                     py={[28, 48]}
@@ -403,7 +198,7 @@ const Multiple: FC = () => {
                     >
                         <BackIcon />
                         <Text ml={8} sx={{ fontWeight: 'bold', fontSize: 2 }}>
-                            {t('create.manage')}
+                            Manage collectible type
                         </Text>
                     </Flex>
                     <Text
@@ -412,7 +207,7 @@ const Multiple: FC = () => {
                         mb={32}
                         sx={{ fontSize: [24, 32, 36], fontWeight: 'heavy' }}
                     >
-                        {t('create.multiple.heading')}
+                        Create multiple collectible
                     </Text>
                     <Flex
                         sx={{ flexDirection: 'row', alignItems: 'flex-start' }}
@@ -425,7 +220,7 @@ const Multiple: FC = () => {
                                 color="text"
                                 sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
-                                {t('create.upload_file')}
+                                Upload file
                             </Text>
                             <Flex
                                 py={4}
@@ -463,7 +258,7 @@ const Multiple: FC = () => {
                                             <CloseIcon />
                                         </Button>
                                         <UIIMage
-                                            src={file}
+                                            src={URL.createObjectURL(file)}
                                             sx={{
                                                 width: 300,
                                                 borderRadius: 0,
@@ -489,7 +284,7 @@ const Multiple: FC = () => {
                                             sx={{ minWidth: 160 }}
                                             onClick={() => ref.current.click()}
                                         >
-                                            {t('general.choose_file')}
+                                            Choose File
                                         </Button>
                                     </>
                                 )}
@@ -502,332 +297,60 @@ const Multiple: FC = () => {
                                     onChange={onChangeFile}
                                 />
                             </Flex>
-                            <Flex sx={{ width: '100%' }}>
-                                <Flex
-                                    sx={{
-                                        flexDirection: 'column',
-                                        width: '100%',
-                                    }}
-                                >
-                                    <Text
-                                        mb="4px"
-                                        color="text"
-                                        sx={{
-                                            fontSize: 17,
-                                            fontWeight: 'heavy',
-                                        }}
-                                    >
-                                        {t('create.put_on_market')}
-                                    </Text>
-                                    <Text
-                                        color="textSecondary"
-                                        sx={{ fontSize: 1, fontWeight: 'body' }}
-                                    >
-                                        {content}
-                                    </Text>
-                                </Flex>
-                                <Flex mt={8} ml={16} sx={{ flexShrink: 0 }}>
-                                    <ToggleButton
-                                        toggle={showMarketplace}
-                                        setToggle={setShowMarketplace}
-                                        size="large"
-                                    />
-                                </Flex>
-                            </Flex>
-                            {showMarketplace && (
-                                <>
-                                    <Grid gap={16} width={0.5} mt={16}>
-                                        {marketplaceList.map((item) => (
-                                            <MarketplaceItem
-                                                onClick={() =>
-                                                    setMarketplace(item)
-                                                }
-                                                key={item.id}
-                                                {...item}
-                                                selected={marketplace === item}
-                                            />
-                                        ))}
-                                    </Grid>
-                                    {marketplace === marketplaceList[0] && (
-                                        <Box mt={40}>
-                                            <CustomInput
-                                                label={t('create.price')}
-                                                value=""
-                                                placeholder={t(
-                                                    'create.price_placeholder'
-                                                )}
-                                                staticRight={
-                                                    <Popover
-                                                        onOuterAction={() =>
-                                                            setShowTypePrice(
-                                                                false
-                                                            )
-                                                        }
-                                                        isOpen={showTypePrice}
-                                                        body={
-                                                            <Tooltip
-                                                                minWidth={172}
-                                                                items={
-                                                                    currencyList
-                                                                }
-                                                                onClick={(
-                                                                    item
-                                                                ) =>
-                                                                    setCurrency(
-                                                                        item
-                                                                    )
-                                                                }
-                                                                selectedItem={
-                                                                    currency
-                                                                }
-                                                            />
-                                                        }
-                                                        place="below"
-                                                        tipSize={0.01}
-                                                    >
-                                                        <Flex
-                                                            color="textSecondary"
-                                                            sx={{
-                                                                svg: {
-                                                                    fill:
-                                                                        'textSecondary',
-                                                                },
-                                                                alignItems:
-                                                                    'center',
-                                                                cursor:
-                                                                    'pointer',
-                                                            }}
-                                                            onClick={() =>
-                                                                setShowTypePrice(
-                                                                    !showTypePrice
-                                                                )
-                                                            }
-                                                        >
-                                                            <Text
-                                                                mr={8}
-                                                                sx={{
-                                                                    fontSize: 1,
-                                                                    fontWeight:
-                                                                        'bold',
-                                                                }}
-                                                            >
-                                                                {currency.label}
-                                                            </Text>
-                                                            <DropdownIcon />
-                                                        </Flex>
-                                                    </Popover>
-                                                }
-                                            />
-                                            <Flex
-                                                sx={{ flexDirection: 'column' }}
-                                            >
-                                                <Text
-                                                    color="textSecondary"
-                                                    sx={{
-                                                        fontSize: 15,
-                                                        fontWeight: 'body',
-                                                        lineHeight: '20.7px',
-                                                    }}
-                                                >
-                                                    {t('create.service_fee')}{' '}
-                                                    <Text color="text">
-                                                        2.5%
-                                                    </Text>
-                                                </Text>
-                                                <Text
-                                                    color="textSecondary"
-                                                    sx={{
-                                                        fontSize: 15,
-                                                        fontWeight: 'body',
-                                                        lineHeight: '20.7px',
-                                                    }}
-                                                >
-                                                    {t(
-                                                        'create.you_will_receive'
-                                                    )}{' '}
-                                                    <Text color="text">
-                                                        0 ETH{' '}
-                                                    </Text>
-                                                    $0.00
-                                                </Text>
-                                            </Flex>
-                                        </Box>
-                                    )}
-                                </>
-                            )}
-                            <Flex mt={40} sx={{ width: '100%' }}>
-                                <Flex
-                                    sx={{
-                                        flexDirection: 'column',
-                                        width: '100%',
-                                    }}
-                                >
-                                    <Text>
-                                        <Text
-                                            mb="4px"
-                                            color="primary"
-                                            sx={{
-                                                fontSize: 17,
-                                                fontWeight: 'heavy',
-                                                WebkitTextFillColor:
-                                                    'transparent',
-                                                WebkitBackgroundClip: 'text',
-                                                backgroundImage:
-                                                    'linear-gradient(to right, rgb(0, 238, 185) 0%, rgb(0, 238, 185) 24%, rgb(91, 157, 255) 55.73%, rgb(255, 116, 241) 75%, rgb(255, 116, 241) 100%)',
-                                            }}
-                                        >
-                                            {t('create.unlock_once_purchased')}
-                                        </Text>
-                                    </Text>
-                                    <Text
-                                        color="textSecondary"
-                                        sx={{ fontSize: 1, fontWeight: 'body' }}
-                                    >
-                                        {t(
-                                            'create.unlock_once_purchased_description'
-                                        )}
-                                    </Text>
-                                </Flex>
-                                <Flex mt={8} ml={16} sx={{ flexShrink: 0 }}>
-                                    <ToggleButton
-                                        toggle={unlock}
-                                        setToggle={setUnlock}
-                                        size="large"
-                                    />
-                                </Flex>
-                            </Flex>
-                            {unlock && (
-                                <>
-                                    <CustomInput
-                                        label=""
-                                        placeholder={t(
-                                            'create.price_placeholder2'
-                                        )}
-                                        value={unlockValue}
-                                        onChange={(text) =>
-                                            setUnlockValue(text)
-                                        }
-                                    />
-                                    <Text
-                                        mt={8}
-                                        color="textSecondary"
-                                        sx={{ fontSize: 1, fontWeight: 'body' }}
-                                    >
-                                        {t('create.price_bottom')}
-                                    </Text>
-                                </>
-                            )}
-                            <Text
-                                mt={40}
-                                mb="4px"
-                                color="text"
-                                sx={{ fontSize: 17, fontWeight: 'heavy' }}
-                            >
-                                {t('create.choose_collection')}
-                            </Text>
-                            <Grid gap={16} width={1 / 3} mt={16} mb={40}>
-                                {collectionList.map((item) => (
-                                    <CollectionItem
-                                        onClick={() => {
-                                            setCollection(item)
-                                            if (item === collectionList[0])
-                                                setShowCreatePopup(true)
-                                        }}
-                                        key={item.id}
-                                        {...item}
-                                        selected={collection === item}
-                                    />
-                                ))}
-                                <Flex
-                                    px={20}
-                                    sx={{
-                                        flex: 1,
-                                        height: 140,
-                                    }}
-                                />
-                            </Grid>
+                            
+                            
                             <CustomInput
-                                label={t('create.title')}
-                                placeholder={t('create.title_placeholder')}
-                                value=""
+                                label="Title"
+                                placeholder={`e. g. "Redeemable T-Shirt with logo"`}
+                                onChange={(value) =>
+                                    setAssetData((ori) => ({
+                                        ...ori,
+                                        name: value,
+                                    }))
+                                }
+                                value={assetData.name || ''}
                             />
                             <Box mt={40}>
                                 <CustomInput
-                                    label={t('create.description')}
+                                    label="Description"
                                     optionLabel="Optional"
-                                    placeholder={t(
-                                        'create.description_placeholder'
-                                    )}
-                                    value=""
+                                    placeholder={`e. g. "After purchasing you’ll be able to get the real T-Shirt"`}
+                                    onChange={(value) =>
+                                        setAssetData((ori) => ({
+                                            ...ori,
+                                            description: value,
+                                        }))
+                                    }
+                                    value={assetData.description || ''}
                                 />
                             </Box>
                             <Box mt={40}>
-                                <Grid gap={16} width="40%">
-                                    <CustomInput
-                                        label={t('create.royalties')}
-                                        placeholder={`E. g. 10%"`}
-                                        value="10"
-                                        staticRight={
-                                            <Text
-                                                color="textSecondary"
-                                                sx={{
-                                                    fontSize: 2,
-                                                    fontWeight: 'body',
-                                                }}
-                                            >
-                                                %
-                                            </Text>
-                                        }
-                                        staticBottom={`${t(
-                                            'create.royalties'
-                                        )}: 10%, 20%, 30%`}
-                                    />
-                                    <CustomInput
-                                        label={t('create.number_of_copies')}
-                                        placeholder={`E. g. 10"`}
-                                        value=""
-                                        staticBottom={`${t(
-                                            'create.number_of_copies_bottom'
-                                        )}`}
-                                    />
-                                </Grid>
+                                <CustomInput
+                                    label="Number of copies"
+                                    placeholder={`Amount of tokens, e. g. "100"`}
+                                    onChange={(value) =>
+                                        setAssetData((ori) => ({
+                                            ...ori,
+                                            amount: value,
+                                        }))
+                                    }
+                                    value={assetData.amount || ''}
+                                />
                             </Box>
-                            <Text
-                                mt={40}
-                                color="text"
-                                sx={{ fontWeight: 'bold', fontSize: 2 }}
-                            >
-                                {t('create.properties')}
-                                <Text
-                                    ml={8}
-                                    color="textSecondary"
-                                    sx={{ fontSize: 1, fontWeight: 'body' }}
-                                >
-                                    (Optional)
-                                </Text>
-                            </Text>
-                            <Grid gap={16} width="40%">
-                                <CustomInput
-                                    label=""
-                                    placeholder="e.g Size"
-                                    value=""
-                                />
-                                <CustomInput
-                                    label=""
-                                    placeholder="e.g M"
-                                    value=""
-                                />
-                            </Grid>
                             <Flex mt={32} sx={{ alignItems: 'center' }}>
-                                <Button sx={{ minWidth: 192 }}>
-                                    {t('create.create_item')}
+                                <Button
+                                    disabled={loading}
+                                    sx={{ minWidth: 192 }}
+                                    onClick={() => onCreate(assetData)}
+                                >
+                                    {loading ? 'Loading' : 'Create item'}
                                 </Button>
                                 <Text
                                     ml="auto"
                                     color="textSecondary"
                                     sx={{ fontSize: 1, fontWeight: 'body' }}
                                 >
-                                    Saved 8 minutes ago
+                                    {/* Saved 8 minutes ago */}
                                 </Text>
                                 <Popover
                                     isOpen={showHelp}
@@ -848,7 +371,9 @@ const Multiple: FC = () => {
                                                         textAlign: 'center',
                                                     }}
                                                 >
-                                                    {t('create.auto_saving')}
+                                                    Auto-saving is enabled. All
+                                                    data will be stored in your
+                                                    browser only
                                                 </Text>
                                             </Flex>
                                         </Tooltip>
@@ -891,14 +416,14 @@ const Multiple: FC = () => {
                                 color="text"
                                 sx={{ fontSize: 17, fontWeight: 'heavy' }}
                             >
-                                {t('create.preview')}
+                                Preview
                             </Text>
                             {file ? (
                                 <BidCard
                                     favorite={10}
-                                    price={10}
-                                    type="single"
-                                    image={file}
+                                    price={1}
+                                    type="Multiple"
+                                    image={URL.createObjectURL(file)}
                                     collection={{
                                         src: 'https://picsum.photos/300/300',
                                         verified: true,
@@ -910,9 +435,9 @@ const Multiple: FC = () => {
                                         src: 'https://picsum.photos/200/400',
                                         verified: true,
                                     }}
-                                    name="Test"
-                                    bid={50}
-                                    currency="WETH"
+                                    name={assetData.name}
+                                    // bid={50}
+                                    currency="ETH"
                                 />
                             ) : (
                                 <Flex
@@ -942,48 +467,10 @@ const Multiple: FC = () => {
                                                 fontWeight: 'body',
                                             }}
                                         >
-                                            {t('create.preview_upload')}
+                                            Upload file to preview your brand
+                                            new NFT
                                         </Text>
                                     </Flex>
-                                </Flex>
-                            )}
-                            {unlock && (
-                                <Flex
-                                    mt={16}
-                                    sx={{
-                                        with: '100%',
-                                        height: '100%',
-                                        borderRadius: 1,
-                                        borderWidth: 1,
-                                        borderColor: 'borderColor',
-                                        borderStyle: 'solid',
-                                    }}
-                                    py={[18, 22]}
-                                    px={[22, 24]}
-                                >
-                                    {unlockValue ? (
-                                        <Text
-                                            color="text"
-                                            sx={{
-                                                fontSize: 15,
-                                                fontWeight: 'bold',
-                                            }}
-                                        >
-                                            {unlockValue}
-                                        </Text>
-                                    ) : (
-                                        <Text
-                                            color="textSecondary"
-                                            sx={{
-                                                width: '100%',
-                                                fontSize: 15,
-                                                fontWeight: 'bold',
-                                                textAlign: 'center',
-                                            }}
-                                        >
-                                            {t('create.unlockable_content')}
-                                        </Text>
-                                    )}
                                 </Flex>
                             )}
                         </Flex>

@@ -5,12 +5,22 @@ const API_URL = process.env.NEXT_PUBLIC_ALCHEMY_URL;
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(API_URL);
 
-const contract = require("../utils/contracts/UltcubeNFTCollection.json");
-const contractAddress = "0xDf990Bbf74ed828d68992F9D5CFdC48932E28EE3";
-const nftContract = new web3.eth.Contract(contract.abi, contractAddress);
+const singleContract = require("../utils/contracts/UltcubeNFTCollection.json");
+const multiContract = require("../utils/contracts/UltcubeNFTCollectionMulti.json");
+const singleMintingContractAddress = "0xDf990Bbf74ed828d68992F9D5CFdC48932E28EE3";
+const multiMintingContractAddress = "0x50277b27624751a1FDe7c473BD61f3e9A9C2e0D2";
+
+const singleContractConnection = new web3.eth.Contract(singleContract.abi, singleMintingContractAddress);
+const multiContractConncetion = new web3.eth.Contract(multiContract.abi, multiMintingContractAddress);
+
+const path = '/minters';
+
+const uploadJsonToUltcube: (data: any) => Promise<{ token_id: string, data: any }> = (data) => {
+  return client.post(`${path}`, data)
+}
 
 const uploadJsonToIPFS: (data: any) => Promise<{ IpfsHash: string }> = (data) => {
-  return client.post(`/minter/ipfs?type=json`, data).then((response) => response.data)
+  return client.post(`${path}/ipfs?type=json`, data).then((response) => response.data)
 }
 
 const uploadImageToIPFS: (files: File[]) => Promise<{ IpfsHash: string }> = (files) => {
@@ -18,7 +28,7 @@ const uploadImageToIPFS: (files: File[]) => Promise<{ IpfsHash: string }> = (fil
   data.append('files.image', files[0])
   data.append('data', 'null')
 
-  return client.post(`/minter/ipfs?type=files`, data).then((response) => response.data)
+  return client.post(`${path}/ipfs?type=files`, data).then((response) => response.data)
 }
 
 const mint = async (attributesJsonUrl: string) => {
@@ -30,10 +40,10 @@ const mint = async (attributesJsonUrl: string) => {
   //the transaction
   const tx = {
     from: creatorKey,
-    to: contractAddress,
+    to: singleMintingContractAddress,
     nonce: `${nonce}`,
     gas: '500000',
-    data: nftContract.methods.mintNFT(creatorKey, attributesJsonUrl).encodeABI(),
+    data: singleContractConnection.methods.mintNFT(creatorKey, attributesJsonUrl).encodeABI(),
   }
 
   const txHash = await window.ethereum.request({
@@ -44,4 +54,27 @@ const mint = async (attributesJsonUrl: string) => {
   return txHash;
 }
 
-export { uploadJsonToIPFS, uploadImageToIPFS, mint }
+const mintMultiple = async (amount: number) => {
+  if (!window.ethereum) throw new Error('Please install MetaMask.')
+  const creatorKey = (await window.ethereum.enable())[0]
+  if (!creatorKey) throw new Error('No account selected.')
+  const nonce = await web3.eth.getTransactionCount(creatorKey, "latest") //get latest nonce
+
+  //the transaction
+  const tx = {
+    from: creatorKey,
+    to: multiMintingContractAddress,
+    nonce: `${nonce}`,
+    gas: '500000',
+    data: multiContractConncetion.methods.bakePizza(amount).encodeABI(),
+  }
+
+  const txHash = await window.ethereum.request({
+    method: 'eth_sendTransaction',
+    params: [tx],
+  });
+  
+  return txHash;
+}
+
+export { uploadJsonToUltcube, uploadJsonToIPFS, uploadImageToIPFS, mint, mintMultiple }

@@ -198,5 +198,24 @@
         "vote_for_platform_upgrades": "Vote for platform upgrades",
         "choose_featured_artworks": "Choose featured artworks",
         "participate_in_moderation": "Participate in moderation"
+    },
+    "filter_sidebar": {
+        "filter": "Filter",
+        "status": "Status",
+        "buy_now": "Buy Now",
+        "new": "New",
+        "price": "Price",
+        "asset": "Asset",
+        "user": "User",
+        "collection": "Collection",
+        "type": "Type",
+        "categories": "Categories",
+        "Music": "🎵 Music",
+        "Domains": "🏷 Domains",
+        "Metaverses": "👾 Metaverses",
+        "DeFi": "💰 DeFi",
+        "Photography": "📸 Photography",
+        "Games": "🕹 Games",
+        "Memes": "🤡 Memes"
     }
 }
