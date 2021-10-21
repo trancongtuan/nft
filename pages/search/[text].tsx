@@ -6,8 +6,7 @@ import { GetStaticProps } from 'next'
 import { useTranslation } from 'react-i18next'
 import _ from 'lodash'
 import NavigationBar from '../../components/NavigationBar'
-import Footer from '../../components/Footer'
-import Selection, { SelectionItemsProps } from '../../components/Selection'
+import dayjs from 'dayjs';
 import BidCard from '../../components/BidCard'
 import HotCollection from '../../components/HotCollection'
 import TopSellerCard from '../../components/TopSellerCard'
@@ -25,6 +24,37 @@ const Search = ({ assets, collections, users, text }: ISearch) => {
     const router = useRouter()
     const { t } = useTranslation('common')
     const [selectedTab, setSelectedTab] = useState<string>('asset')
+    const [filter, setFilter] = useState([]);
+    const [priceMin, setPriceMin] = useState(null);
+    const [priceMax, setPriceMax] = useState(null);
+    const [typeFilter, setTypeFilter] = useState([]);
+
+    let filteredAssets = assets;
+    if (filter.includes('new')) {
+        filteredAssets = filteredAssets.filter(item => dayjs().diff(dayjs(item.createdAt)) < 604800000) // 7 days
+    }
+
+    if (priceMin) {
+        filteredAssets = filteredAssets.filter(item => {
+            const price = item.sell_orders?.[0]?.current_price / 1000000000000000000
+                || item.orders?.[0]?.current_price / 1000000000000000000
+                ||  0
+            return price > priceMin;
+        })
+    }
+
+    if (priceMax) {
+        filteredAssets = filteredAssets.filter(item => {
+            const price = item.sell_orders?.[0]?.current_price / 1000000000000000000
+                || item.orders?.[0]?.current_price / 1000000000000000000
+                ||  0
+            return price < priceMax;
+        })
+    }
+
+    if (typeFilter.length > 0) {
+        filteredAssets = filteredAssets.filter(item => typeFilter.includes(item.asset_type?.name));
+    }
 
     return (
         <Box>
@@ -33,6 +63,12 @@ const Search = ({ assets, collections, users, text }: ISearch) => {
                 <FilterSidebar 
                     selectedTab={selectedTab}
                     setSelectedTab={setSelectedTab}
+                    filter={filter}
+                    setFilter={setFilter}
+                    setPriceMin={setPriceMin}
+                    setPriceMax={setPriceMax}
+                    typeFilter={typeFilter}
+                    setTypeFilter={setTypeFilter}
                 />
                 <Box bg="muted" sx={{ height: 'calc(100vh - 83px)', overflow: 'scroll' }}>
                     <Text
@@ -48,10 +84,10 @@ const Search = ({ assets, collections, users, text }: ISearch) => {
 
                     <Flex sx={{ flexWrap: 'wrap' }}>
                         {selectedTab === 'asset' &&
-                            assets.map((item) => {
+                            filteredAssets.map((item, i) => {
                                 return (
                                     <Box
-                                        key={item}
+                                        key={`${item.asset_contract_address}/${item.token_id}`}
                                         p={10}
                                         sx={{
                                             maxWidth: [
@@ -119,10 +155,10 @@ const Search = ({ assets, collections, users, text }: ISearch) => {
                             ))
                         }
                         {selectedTab === 'collection' &&
-                            collections.map((item) => {
+                            collections.map((item, i) => {
                                 return (
                                     <Box
-                                        key={item}
+                                        key={`${item + i}`}
                                         p={10}
                                         sx={{
                                             maxWidth: [

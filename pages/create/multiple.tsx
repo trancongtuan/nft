@@ -129,7 +129,7 @@ const Multiple: FC = () => {
         asset_contract_address: string
         asset_contract: { address: string }
         description?: string
-        amount?: number
+        amount?: string
     }>({
         name: '',
         image: '',
@@ -422,7 +422,7 @@ const Multiple: FC = () => {
                                 <BidCard
                                     favorite={10}
                                     price={1}
-                                    type="Multiple"
+                                    type="multiple"
                                     image={URL.createObjectURL(file)}
                                     collection={{
                                         src: 'https://picsum.photos/300/300',

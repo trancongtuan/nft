@@ -2,10 +2,9 @@ import React, { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Input } from 'theme-ui'
 
-const FilterSidebar = ({ selectedTab, setSelectedTab }) => {
+const FilterSidebar = ({ selectedTab, setSelectedTab, filter, setFilter, setPriceMin, setPriceMax, typeFilter, setTypeFilter }) => {
   const { t } = useTranslation('common')
   const [open, setOpen] = useState(null);
-  const [filter, setFilter] = useState([]);
 
   const _setOpen = (type: string) => {
     setOpen(ori => ori === type ? null : type);
@@ -71,9 +70,9 @@ const FilterSidebar = ({ selectedTab, setSelectedTab }) => {
         {t('filter_sidebar.price')}
       </div>
       <div className="transition-all px-4 font-bold cursor-pointer flex flex-row overflow-hidden" style={{ height: open === 'price' ? 30 : 0 }}>
-        <Input p={0} mr={2} placeholder="min." />
+        <Input p={0} mr={2} placeholder="min." type="number" onChange={(e) => setPriceMin(e.target?.value)}/>
         to
-        <Input p={0} ml={2} placeholder="max." />
+        <Input p={0} ml={2} placeholder="max." type="number" onChange={(e) => setPriceMax(e.target?.value)}/>
       </div>
 
       <div className="p-4 font-bold cursor-pointer" onClick={() => _setOpen('categories')}>
@@ -82,17 +81,17 @@ const FilterSidebar = ({ selectedTab, setSelectedTab }) => {
       <div className={`transition-all px-4 font-bold cursor-pointer overflow-hidden`} style={{ height: open === 'categories' ? 300 : 0 }}>
         {
           [
-            'Music',
-            'Domains',
-            'Metaverses',
-            'DeFi',
-            'Photography',
-            'Games',
-            'Memes',
+            "🎵 Music",
+            "🏷 Domains",
+            "👾 Metaverses",
+            "💰 DeFi",
+            "📸 Photography",
+            "🕹 Games",
+            "🤡 Memes"
           ].map(item => (
             <Button
-              onClick={() => _setFilter(item)}
-              variant={filter.includes(item) ? 'primary' : 'secondary'}
+              onClick={() => setTypeFilter(item)}
+              variant={typeFilter.includes(item) ? 'primary' : 'secondary'}
               sx={{
                 fontSize: 1,
                 height: 30,

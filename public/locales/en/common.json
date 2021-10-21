@@ -210,12 +210,12 @@
         "collection": "Collection",
         "type": "Type",
         "categories": "Categories",
-        "Music": "🎵 Music",
-        "Domains": "🏷 Domains",
-        "Metaverses": "👾 Metaverses",
-        "DeFi": "💰 DeFi",
-        "Photography": "📸 Photography",
-        "Games": "🕹 Games",
-        "Memes": "🤡 Memes"
+        "🎵 Music": "🎵 Music",
+        "🏷 Domains": "🏷 Domains",
+        "👾 Metaverses": "👾 Metaverses",
+        "💰 DeFi": "💰 DeFi",
+        "📸 Photography": "📸 Photography",
+        "🕹 Games": "🕹 Games",
+        "🤡 Memes": "🤡 Memes"
     }
 }
