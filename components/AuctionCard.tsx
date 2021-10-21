@@ -8,25 +8,7 @@ import StarIcon from '../public/assets/images/icons/star.svg'
 import Avatar, { AvatarProps } from './Avatar'
 import Tooltip from './Tooltip'
 import TextWithTooltip from './TextWithTooltip'
-
-const items = [
-    {
-        id: 1,
-        label: 'Purchase now',
-    },
-    {
-        id: 2,
-        label: 'Place a bid',
-    },
-    {
-        id: 3,
-        label: 'View on OpenSea',
-    },
-    {
-        id: 4,
-        label: 'Share',
-    },
-]
+import { useTranslation } from 'react-i18next'
 
 type UserProps = Pick<AvatarProps, 'src' | 'verified'>
 
@@ -72,6 +54,7 @@ const AuctionCard: FC<AuctionCardProps> = ({
     countDown,
     onCLick,
 }) => {
+    const { t } = useTranslation('common')
     const [visible, setVisible] = useState(false)
     const [colorMode] = useColorMode()
     const [like, setLike] = useState(liked)
@@ -83,6 +66,25 @@ const AuctionCard: FC<AuctionCardProps> = ({
         }
         return 'text'
     }
+
+    const items = [
+        {
+            id: 1,
+            label: t('auction_card.purchase_now'),
+        },
+        {
+            id: 2,
+            label: t('auction_card.place_a_bid'),
+        },
+        {
+            id: 3,
+            label: t('auction_card.view_on_ppensea'),
+        },
+        {
+            id: 4,
+            label: t('auction_card.share'),
+        },
+    ]
 
     useEffect(() => {
         if (counter > 0) {
@@ -386,7 +388,7 @@ const AuctionCard: FC<AuctionCardProps> = ({
                         }}
                     >
                         <Text sx={{ fontSize: 0, cursor: 'pointer' }}>
-                            Highest bid 1 of {quantity}
+                            {t('auction_card.highest_bid')} 1 of {quantity}
                         </Text>
                         <br />
                         <TextWithTooltip

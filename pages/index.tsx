@@ -318,8 +318,8 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                             mr={16}
                             color="text"
                             sx={{ fontSize: [24, 27, 30], fontWeight: 'bold' }}
-                        >
-                            Live auctions
+                            >
+                            {t('home.live_auctions')}
                         </Text>
                         <TimerIcon />
                     </Flex>
@@ -463,7 +463,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 }}
                                 onClick={() => setAssetType('all')}
                             >
-                                All
+                                {t('filter_sidebar.All')}
                             </Button>
                             {assetTypeList.status === 'success' ? (
                                 assetTypeList.data.map((item) => (
@@ -480,7 +480,7 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         key={item.id}
                                         onClick={() => setAssetType(item.id)}
                                     >
-                                        {item.name}
+                                        {t(`filter_sidebar.${item.name}`)}
                                     </Button>
                                 ))
                             ) : (

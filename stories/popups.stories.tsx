@@ -23,7 +23,7 @@ export const PopupShareStory: FC = () => {
                 onClose={() => {
                     setOpenPopup(false)
                 }}
-                label="Share this NFT"
+                label="Share This NFT"
             >
                 <PopupShare />
             </Popup>

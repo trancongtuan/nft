@@ -35,7 +35,14 @@
         "transfers": "轉讓",
         "burns": "燒毀",
         "bids": "競投",
-        "likes": "贊"
+        "likes": "贊",
+        "RARI_token": "ULTCUBE 幣",
+        "suggest_feature": "建議功能",
+        "subscribe": "關注",
+        "explore": "探索",
+        "search_items": "搜尋",
+        "my_items": "我的NFT",
+        "community": "社群"
     },
     "navigation": {
         "placeholder": "占位符",
@@ -54,17 +61,24 @@
         "history": "歷史",
         "auction_ends_in": "拍賣結束於",
         "place_a_bid": "出價",
-        "share": "分享"
+        "share": "分享",
+        "ownership": "擁有人",
+        "selling": "出售",
+        "sell_item": "出售物品",
+        "this_item_is_not_on_sale": "此商品不作銷售",
+        "buy_now": "立即購買",
+        "share_this_nft": "分享此NFT"
     },
     "home": {
-        "top": "返回頂部",
+        "top": "最暢銷賣家",
         "day": "天",
         "days": "天",
         "hot_bids": "熱門投標",
         "hot_collections": "熱門收藏品",
         "explore": "探索",
         "load_more": "加載更多",
-        "in": "在"
+        "in": "在",
+        "live_auctions": "實時拍賣"
     },
     "setting": {
         "edit_profile": "編輯個人資料",
@@ -193,5 +207,33 @@
         "vote_for_platform_upgrades": "對平臺升級進行投票",
         "choose_featured_artworks": "選擇特色藝術品",
         "participate_in_moderation": "參與審核工作"
+    },
+    "auction_card": {
+        "purchase_now": "立即購買",
+        "place_a_bid": "投標",
+        "view_on_ppensea": "在OpenSea上瀏覽",
+        "share": "分享",
+        "highest_bid": "最高出價"
+    },
+    "filter_sidebar": {
+        "filter": "過濾器",
+        "status": "狀態",
+        "buy_now": "立即購買",
+        "new": "新",
+        "price": "價格",
+        "asset": "資產",
+        "user": "用戶",
+        "collection": "集合",
+        "type": "類型",
+        "categories": "類別",
+        "All": "所有",
+        "🎵 Music": "🎵 音樂",
+        "🏷 Domains": "🏷 域名",
+        "👾 Metaverses": "👾 元宇宙",
+        "💰 DeFi": "💰 DeFi",
+        "🌈 Art": "🌈 藝術",
+        "📸 Photography": "📸 攝影",
+        "🕹 Games": "🕹 遊戲",
+        "🤡 Memes": "🤡 表情包"
     }
 }

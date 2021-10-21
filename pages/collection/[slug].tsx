@@ -7,6 +7,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { InfiniteData } from 'react-query'
 import { v4 as uuidv4 } from 'uuid'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { useTranslation } from 'react-i18next'
 import Avatar from '../../components/Avatar'
 import Selection from '../../components/Selection'
 import Layout from '../../containers/Layout'
@@ -51,6 +52,7 @@ export const getServerSideProps: GetServerSideProps<{
 const Collection: FC<
     InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ collection, assets }) => {
+    const { t } = useTranslation('common')
     const router = useRouter()
     const [showReport, setShowReport] = useState(false)
     const [showShare, setShowShare] = useState(false)
@@ -154,7 +156,7 @@ const Collection: FC<
                             onClose={() => {
                                 setShowShare(false)
                             }}
-                            label="Share this NFT"
+                            label={t("share_this_nft")}
                         >
                             <PopupShare />
                         </Popup>

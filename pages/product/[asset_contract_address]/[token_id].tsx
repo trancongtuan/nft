@@ -9,6 +9,7 @@ import { Box, Text, Flex, Image, Button, useColorMode } from 'theme-ui'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { OpenSeaPort, Network } from 'opensea-js'
 import { OrderSide } from 'opensea-js/lib/types'
+import { useTranslation } from 'react-i18next'
 import NavigationBar from '../../../components/NavigationBar'
 import Tooltip from '../../../components/Tooltip'
 import Avatar from '../../../components/Avatar'
@@ -25,47 +26,6 @@ import { Asset, updateSingleAsset, fetchAssets } from '../../../queries'
 const OPENSEA_URL = process.env.NEXT_PUBLIC_OPENSEA_URL;
 const Web3 = require('web3')
 
-
-const selectionItems = [
-    {
-        id: '1',
-        label: 'Bids',
-        value: 'Bids',
-    },
-    {
-        id: '2',
-        label: 'Details',
-        value: 'Details',
-    },
-    {
-        id: '3',
-        label: 'History',
-        value: 'History',
-    },
-]
-
-const createTooltipItems = (allowPlaceBid = false, address, tokenId, setOpenPopupShare): Array<{ id: number, label: string }> => {
-    const items = [
-        {
-            id: 2,
-            label: 'View on OpenSea',
-            action: () => window.open(`${OPENSEA_URL}/${address}/${tokenId}`, '_blank'),
-        },
-        {
-            id: 3,
-            label: 'Share',
-            action: () => setOpenPopupShare(true),
-        },
-    ]
-
-    if (allowPlaceBid) items.unshift({
-        id: 1,
-        label: 'Place a bid',
-        action: () => new Promise((res, rej) => { rej() }),
-    })
-
-    return items;
-}
 
 type ProductParams = {
     asset_contract_address: string
@@ -95,6 +55,7 @@ export const getServerSideProps: GetServerSideProps<
 const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     asset, // This asset only use for initial state for data
 }) => {
+    const { t } = useTranslation('common')
     const { connected } = useAuth()
     const [seaport, setSeaport] = useState<any>()
     const [colorMode] = useColorMode()
@@ -103,6 +64,29 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
             return 'white'
         }
         return 'text'
+    }
+
+    const createTooltipItems = (allowPlaceBid = false, address, tokenId, setOpenPopupShare): Array<{ id: number, label: string }> => {
+        const items = [
+            {
+                id: 2,
+                label: t('auction_card.view_on_ppensea'),
+                action: () => window.open(`${OPENSEA_URL}/${address}/${tokenId}`, '_blank'),
+            },
+            {
+                id: 3,
+                label: t('product.share'),
+                action: () => setOpenPopupShare(true),
+            },
+        ]
+    
+        if (allowPlaceBid) items.unshift({
+            id: 1,
+            label: t('product.place_a_bid'),
+            action: () => new Promise((res, rej) => { rej() }),
+        })
+    
+        return items;
     }
 
     useEffect(() => {
@@ -120,7 +104,6 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         setSeaport(seaPort)
     }, [])
 
-    const [liked, setLiked] = useState(false)
     const [showProduct, setShowProduct] = useState(false)
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
     const [openPopupPlaceAnOffer, setOpenPopupPlaceAnOffer] = useState(false)
@@ -419,7 +402,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         color: 'textSecondary',
                                     }}
                                 >
-                                    Collection
+                                    {t('product.collection')}
                                 </Text>
                                 <Flex
                                     mt={2}
@@ -449,7 +432,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     color: 'textSecondary',
                                 }}
                             >
-                                Ownership
+                                {t('Ownership')}
                             </Text>
                             <Flex>
                                 {data.top_ownerships?.map((item, i) => (
@@ -500,7 +483,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                             setOpenPopupPlaceAnOffer(true)
                                         }
                                     >
-                                        {(Array.isArray(sellOrders) && sellOrders.length > 0) ? 'Selling' : 'Sell Item'}
+                                        {(Array.isArray(sellOrders) && sellOrders.length > 0) ? t('product.selling') : t('product.sell_item')}
                                     </Button>
                                 ) : (
                                     <Button
@@ -512,7 +495,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                             setOpenPopupPlaceABid(true)
                                         }
                                     >
-                                        {!sellOrders ? 'This item is not on sale' : 'Buy Now'}
+                                        {!sellOrders ? t('product.this_item_is_not_on_sale') : t('product.buy_now')}
                                     </Button>
                                 )}
                                 <Button
@@ -521,7 +504,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                     sx={{ width: '50%', height: '40px' }}
                                     onClick={() => setOpenPopupShare(true)}
                                 >
-                                    Share
+                                    {t('product.share')}
                                 </Button>
                             </Flex>
                             <Popup
@@ -560,7 +543,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 onClose={() => {
                                     setOpenPopupShare(false)
                                 }}
-                                label="Share this NFT"
+                                label={t("share_this_nft")}
                             >
                                 <PopupShare />
                             </Popup>
