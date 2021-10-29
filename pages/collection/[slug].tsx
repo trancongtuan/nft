@@ -68,7 +68,7 @@ const Collection: FC<
     }, [counter])
 
     if (collection === null) {
-        return (<Error statusCode={404} message="Cocllection Not Found" />)
+        return (<Error statusCode={404} message="Collection Not Found" />)
     }
 
     return (
@@ -124,7 +124,7 @@ const Collection: FC<
                         </Text>
                         <CopyToClipboard
                             onCopy={() => setCounter(2)}
-                            text="0xd92e44ac213b9ebda0178e1523cc0ce177b7fa96"
+                            text={collection.primary_asset_contracts?.[0]?.address || ''}
                         >
                             <Box
                                 ml={8}
@@ -156,7 +156,7 @@ const Collection: FC<
                             onClose={() => {
                                 setShowShare(false)
                             }}
-                            label={t("share_this_nft")}
+                            label={t("product.share_this_nft")}
                         >
                             <PopupShare />
                         </Popup>
@@ -200,17 +200,6 @@ const Collection: FC<
                         </Popover>
                     </Flex>
                 </Flex>
-                <Selection
-                    borderBottom
-                    items={[
-                        { id: '1', label: 'general.on_sale', value: 'On sale' },
-                        {
-                            id: '2',
-                            label: 'general.collectibles',
-                            value: 'Collectibles',
-                        },
-                    ]}
-                />
                 <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
                     {assets.pages[0].map((item) => (
                         <Box
@@ -233,6 +222,7 @@ const Collection: FC<
                                 ],
                             }}
                         >
+                            {console.log(item)}
                             <BidCard
                                 key={item.id}
                                 onCLick={() =>
@@ -247,21 +237,9 @@ const Collection: FC<
                                     item.sell_orders?.[0]?.current_price / 1000000000000000000
                                     || item.orders?.[0]?.current_price / 1000000000000000000
                                     ||  0}
-                                {...(item?.creator && {
-                                    creator: {
-                                        src: item.creator?.profile_img_url,
-                                    },
-                                })}
-                                {...(item?.owner && {
-                                    owner: {
-                                        src: item.owner?.profile_img_url,
-                                    },
-                                })}
-                                {...(item?.collection && {
-                                    collection: {
-                                        src: item.collection?.image_url,
-                                    },
-                                })}
+                                creator={item.creator}
+                                owner={item.owner}
+                                collection={item.collection_details}
                             />
                         </Box>
                     ))}

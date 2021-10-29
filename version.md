@@ -1,20 +1,22 @@
 Done:
 - Menu bar [Explore] button go to Seach page with all NFT
 - Profile update should auto update the nav bar icon
-
-Pending:
 - Collection copy id missing the collection address
 - All [Share this NFT button] need to link with Social Media
 - Collection/page > On sale, Colectables no different
-- Bid card > Buy now, heart not working
 - Top profile creator and owner should clickable
 - Top profile creator and owner should have mouse over hint
-- Bid card > top right ... should link
 - [collection]/[token_id]: creator, collection, owner should clickable
-- If no matching order found, should show not selling
 - Zoom in image [by ...] missing creator name
-- user/[user_id] follow is not working
 - Should allow user add profile banner
+
+Hidden
+- Bid card > Buy now, heart not working
+- Bid card > top right ... should link
+- user/[user_id] follow is not working
+
+Pending:
+- If no matching order found, should show not selling
 - /my_items > On Sales + All Items
 - Menu bar > Following, should show favourite item and change the name to favourite
 - Activity page should fully changes

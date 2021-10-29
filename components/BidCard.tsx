@@ -1,11 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Text, Box, Flex, Image, Button, useColorMode } from 'theme-ui'
+import Link from 'next/link'
 import Popover from 'react-popover'
+import { Box, Flex, Image, Text, useColorMode, } from 'theme-ui'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
-import FavoriteIcon from '../public/assets/images/icons/favorite.svg'
 import Avatar, { AvatarProps } from './Avatar'
-import Tooltip from './Tooltip'
 import TextWithTooltip from './TextWithTooltip'
+import Tooltip from './Tooltip'
+import { Creator, Owner } from '../queries/asset'
+import ReactTooltip from 'react-tooltip';
 
 const items = [
     {
@@ -33,9 +35,9 @@ export interface BidCardProps {
     name: string
     bid?: number
     currency: string
-    collection?: UserProps
-    owner?: UserProps
-    creator?: UserProps
+    collection?: Collection
+    owner?: Owner
+    creator?: Creator
     image: string
     quantity?: number
     price?: number
@@ -65,16 +67,15 @@ const BidCard: FC<BidCardProps> = ({
     type = 'single',
     quantity = 1,
     price = 0,
-    favorite = 0,
-    liked,
-    onLike,
+    // favorite = 0,
+    // liked,
+    // onLike,
     gradientColor,
     countDown,
     onCLick,
 }) => {
     const [visible, setVisible] = useState(false)
     const [colorMode] = useColorMode()
-    const [like, setLike] = useState(liked)
     const [counter, setCounter] = useState(countDown)
     useEffect(() => {
         if (counter > 0) {
@@ -83,18 +84,24 @@ const BidCard: FC<BidCardProps> = ({
         }
         return setCounter(0)
     }, [counter])
-    const checkHeartIconColor = (): string => {
-        if (colorMode === 'dark') {
-            return 'white'
-        }
-        return 'text'
-    }
+
+    // console.log(
+    //     collection,
+    //     owner,
+    //     creator,
+    // )
+
     return (
         <Box
             sx={{
                 position: 'relative',
             }}
         >
+            <ReactTooltip
+                className="z-auto"
+                offset={{ top: 10 }}
+            />
+
             {type === 'multiple' && (
                 <Box
                     sx={{
@@ -161,23 +168,34 @@ const BidCard: FC<BidCardProps> = ({
                     }}
                 >
                     <Flex>
-                        {collection && (
-                            <Flex>
-                                <Avatar {...collection} size="xs" />
+                        <Link href={`/collection/${collection?.slug}`}>
+                            <Flex
+                                data-tip={collection?.name || 'Unknow Collection'}
+                                className="hover:z-50 transition-all transform hover:scale-110 hover:-translate-y-1"
+                            >
+                                <Avatar src={collection?.banner_image_url} size="xs" />
                             </Flex>
-                        )}
-                        {owner && (
-                            <Flex ml="-10px">
-                                <Avatar {...owner} size="xs" />
+                        </Link>
+                        <Link href={`/user/${owner?.address}`}>
+                            <Flex
+                                data-tip={owner?.user?.username || 'Unknow Owner'}
+                                className="hover:z-50 transition-all transform hover:scale-110 hover:-translate-y-1"
+                                ml="-10px"
+                            >
+                                <Avatar src={owner?.profile_img_url} size="xs" />
                             </Flex>
-                        )}
-                        {creator && (
-                            <Flex ml="-10px">
-                                <Avatar {...creator} size="xs" />
+                        </Link>
+                        <Link href={`/user/${creator?.address}`}>
+                            <Flex
+                                data-tip={creator?.user?.username || 'Unknow Creator'}
+                                className="hover:z-50 transition-all transform hover:scale-110 hover:-translate-y-1"
+                                ml="-10px"
+                            >
+                                <Avatar src={creator?.profile_img_url} size="xs" />
                             </Flex>
-                        )}
+                        </Link>
                     </Flex>
-                    <Popover
+                    {/* <Popover
                         onOuterAction={() => setVisible(false)}
                         isOpen={visible}
                         body={<Tooltip items={items} />}
@@ -215,7 +233,7 @@ const BidCard: FC<BidCardProps> = ({
                         >
                             <ThreeDos />
                         </Flex>
-                    </Popover>
+                    </Popover> */}
                 </Flex>
                 <Box
                     mb={16}
@@ -416,53 +434,7 @@ const BidCard: FC<BidCardProps> = ({
                             )}
                         </TextWithTooltip>
                     </Text>
-                    <Button
-                        onClick={() => {
-                            if (onLike) onLike()
-                            setLike(!like)
-                        }}
-                        mr={-8}
-                        mb={-8}
-                        bg="transparent"
-                        py="6px"
-                        px="12px"
-                        sx={{
-                            height: 36,
-                            alignItems: 'center',
-                            display: 'flex',
-                            borderRadius: 22,
-
-                            ':focus': {
-                                outline: 'none',
-                            },
-                            cursor: 'pointer',
-                            opacity: like ? 1 : 0.5,
-                            svg: {
-                                stroke: like ? '#00eeb9' : checkHeartIconColor,
-                                fill: like ? '#00eeb9' : 'text',
-                            },
-                            ':hover': {
-                                backgroundColor:
-                                    colorMode === 'dark'
-                                        ? 'rgba(255, 255, 255, 0.06)'
-                                        : 'rgba(4, 4, 5, 0.06)',
-                                opacity: 1,
-                            },
-                            transition: 'all 0.12s ease-in-out 0s',
-                        }}
-                    >
-                        <FavoriteIcon />
-                        <Text
-                            ml="4px"
-                            sx={{
-                                fontSize: '14px',
-                                fontWeight: 'heavy',
-                                color: 'text',
-                            }}
-                        >
-                            {favorite}
-                        </Text>
-                    </Button>
+                    {/* <FavoriteIcon /> */}
                 </Flex>
             </Box>
         </Box>

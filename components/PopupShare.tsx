@@ -1,11 +1,38 @@
 import { Box, Button, Flex } from 'theme-ui'
 import React, { FC } from 'react'
+import { useRouter } from 'next/router'
 import EmailIcon from '../public/assets/images/icons/email.svg'
 import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 import TelegramIcon from '../public/assets/images/icons/telegram.svg'
 import FacebookIcon from '../public/assets/images/icons/facebook.svg'
+import {
+    EmailShareButton,
+    FacebookShareButton,
+    HatenaShareButton,
+    InstapaperShareButton,
+    LineShareButton,
+    LinkedinShareButton,
+    LivejournalShareButton,
+    MailruShareButton,
+    OKShareButton,
+    PinterestShareButton,
+    PocketShareButton,
+    RedditShareButton,
+    TelegramShareButton,
+    TumblrShareButton,
+    TwitterShareButton,
+    ViberShareButton,
+    VKShareButton,
+    WhatsappShareButton,
+    WorkplaceShareButton
+} from "react-share";
+
+
 
 export const PopupShare: FC = () => {
+    const router = useRouter()
+    const url = process.env.NEXT_PUBLIC_URL + router.asPath;
+
     return (
         <Flex
             sx={{
@@ -15,9 +42,12 @@ export const PopupShare: FC = () => {
             }}
         >
             <Box mx={15}>
-                <Button variant="circle" sx={{ width: '56px', height: '56px' }}>
-                    <TwitterIcon />
-                </Button>
+                <TwitterShareButton url={url}>
+                    <div className="border border-gray-400 flex items-center justify-center rounded-full p-4 active:scale-95 hover:border-opacity-50 transition-all mb-1">
+                        <TwitterIcon />
+                    </div>
+                </TwitterShareButton>
+
                 <Box
                     mt={1}
                     sx={{
@@ -33,9 +63,11 @@ export const PopupShare: FC = () => {
                 </Box>
             </Box>
             <Box mx={15}>
-                <Button variant="circle" sx={{ width: '56px', height: '56px' }}>
-                    <FacebookIcon />
-                </Button>
+                <FacebookShareButton url={url}>
+                    <div className="border border-gray-400 flex items-center justify-center rounded-full p-4 active:scale-95 hover:border-opacity-50 transition-all mb-1">
+                        <FacebookIcon />
+                    </div>
+                </FacebookShareButton>
                 <Box
                     mt={1}
                     sx={{
@@ -51,9 +83,11 @@ export const PopupShare: FC = () => {
                 </Box>
             </Box>
             <Box mx={15}>
-                <Button variant="circle" sx={{ width: '56px', height: '56px' }}>
-                    <TelegramIcon />
-                </Button>
+                <TelegramShareButton url={url}>
+                    <div className="border border-gray-400 flex items-center justify-center rounded-full p-4 active:scale-95 hover:border-opacity-50 transition-all mb-1">
+                        <TelegramIcon />
+                    </div>
+                </TelegramShareButton>
                 <Box
                     mt={1}
                     sx={{
@@ -69,9 +103,11 @@ export const PopupShare: FC = () => {
                 </Box>
             </Box>
             <Box mx={15}>
-                <Button variant="circle" sx={{ width: '56px', height: '56px' }}>
-                    <EmailIcon />
-                </Button>
+                <EmailShareButton url={url}>
+                    <div className="border border-gray-400 flex items-center justify-center rounded-full p-4 active:scale-95 hover:border-opacity-50 transition-all mb-1">
+                        <EmailIcon />
+                    </div>
+                </EmailShareButton>
                 <Box
                     mt={1}
                     sx={{

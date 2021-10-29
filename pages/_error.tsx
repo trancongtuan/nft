@@ -9,7 +9,7 @@ function Error({ statusCode, message }) {
             ? `An error ${statusCode} occurred on server`
             : 'An error occurred on client'}
         </p>
-        <h3>{message}</h3>
+        <h3 className="text-4xl font-bold mt-4">{message}</h3>
       </div>
     </Layout>
   )

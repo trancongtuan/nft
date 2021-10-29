@@ -264,7 +264,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                         }}
                         image={data?.image_url ?? 'https://picsum.photos/200/300'}
                         name={data?.name}
-                        ethUserName=""
+                        ethUserName={data?.owner?.user?.username || 'Unknown User'}
                     />
                 </Flex>
                 <Flex
@@ -543,7 +543,7 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                 onClose={() => {
                                     setOpenPopupShare(false)
                                 }}
-                                label={t("share_this_nft")}
+                                label={t("product.share_this_nft")}
                             >
                                 <PopupShare />
                             </Popup>

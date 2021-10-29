@@ -67,7 +67,8 @@
         "sell_item": "Sell Item",
         "this_item_is_not_on_sale": "This item is not on sale",
         "buy_now": "Buy Now",
-        "share_this_nft": "Share This NFT"
+        "share_this_nft": "Share This NFT",
+        "share_this_user": "Share This User"
     },
     "home": {
         "top": "Top",

@@ -664,7 +664,7 @@ const Product: FC = () => {
                                 onClose={() => {
                                     setOpenPopupShare(false)
                                 }}
-                                label={t("share_this_nft")}
+                                label={t("product.share_this_nft")}
                             >
                                 <PopupShare />
                             </Popup>
