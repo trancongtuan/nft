@@ -40,7 +40,9 @@
         "my_items": "My Items",
         "community": "Community",
         "search_items": "Search Items",
-        "connect_wallet": "Connect Wallet"
+        "connect_wallet": "Connect Wallet",
+        "refresh": "Refresh",
+        "loading": "Loading"
     },
     "navigation": {
         "placeholder": "Placeholder",
@@ -64,7 +66,8 @@
         "selling": "Selling",
         "sell_item": "Sell Item",
         "this_item_is_not_on_sale": "This item is not on sale",
-        "buy_now": "Buy Now"
+        "buy_now": "Buy Now",
+        "share_this_nft": "Share This NFT"
     },
     "home": {
         "top": "Top",

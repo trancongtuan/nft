@@ -42,7 +42,9 @@
         "explore": "探索",
         "search_items": "搜尋",
         "my_items": "我的NFT",
-        "community": "社群"
+        "community": "社群",
+        "refresh": "更新",
+        "loading": "載入中"
     },
     "navigation": {
         "placeholder": "占位符",

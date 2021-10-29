@@ -5,35 +5,29 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-shadow */
-import React, { FC, useRef, useState, useEffect } from 'react'
-import { Box, Text, Flex, Image, Button } from 'theme-ui'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
-import { useTranslation } from 'react-i18next'
-
-import * as ethUtil from 'ethereumjs-util'
 import * as sigUtil from 'eth-sig-util'
-import {
-    fetchUsers,
-    updateUser,
-    createUser,
-    uploadFile,
-    EthUser,
-} from '../queries'
-
-import NavigationBar from '../components/NavigationBar'
-import Footer from '../components/Footer'
+import * as ethUtil from 'ethereumjs-util'
+import { GetStaticProps } from 'next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import React, { FC, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Box, Button, Flex, Image, Text } from 'theme-ui'
 import CustomInput from '../components/CustomInput'
-import Popup from '../components/Popup'
-import LockIcon from '../public/assets/images/icons/lock.svg'
-
+import Footer from '../components/Footer'
+import NavigationBar from '../components/NavigationBar'
 import { useAuth } from '../hooks/auth'
+import {
+    createUser, EthUser, fetchUsers,
+    updateUser, uploadFile
+} from '../queries'
+import PopupAlert from '../components/PopupAlert'
 
 const chainId = 'RINKEBY' ? 4 : 1
 
 const Setting: FC = () => {
     const { t } = useTranslation('common')
-    const inputFile = useRef(null)
+    const profileFile = useRef(null)
+    const bannerFile = useRef(null)
     const { connected, setConnected } = useAuth()
     const [reLink, setReLink] = useState(false)
     const [openPopup, setOpenPopup] = useState<boolean>(false)
@@ -47,21 +41,28 @@ const Setting: FC = () => {
         website: '',
         address: '',
         profile_pic: { url: null },
+        profile_banner: { url: null },
     })
+console.log('profile', profile)
+    const handleOnClick = (type: string): void => {
+        if (type === 'profile_banner')
+            bannerFile.current.click()
 
-    const handleOnClick = (): void => {
-        inputFile.current.click()
+        if (type === 'profile_pic')
+            profileFile.current.click()
     }
 
     const handleFileSelected = async (
-        e: React.ChangeEvent<HTMLInputElement>
+        e: React.ChangeEvent<HTMLInputElement>,
+        type: string
     ): Promise<void> => {
         try {
             const files = Array.from(e.target.files)
             if (files.length < 1) return
 
             const result = await uploadFile(files)
-            setProfile((ori) => ({ ...ori, profile_pic: result[0] }))
+            
+            setProfile((ori) => ({ ...ori, [type]: result[0] }))
         } catch (e) {
             alert(e.toString())
         }
@@ -178,32 +179,11 @@ const Setting: FC = () => {
 
     return (
         <Box>
-            <Popup
-                isOpen={openPopup}
-                onClose={() => {
-                    setOpenPopup(!openPopup)
-                }}
-                label="Success"
-                labelCenter
-            >
-                <Image
-                    sx={{ width: '50px', alignSelf: 'center' }}
-                    src="/assets/images/icon-success.png"
-                    alt="success"
-                />
-                <span
-                    style={{
-                        marginTop: '2rem',
-                        boxSizing: 'border-box',
-                        fontFamily: 'sans-serif',
-                        fontWeight: 700,
-                        width: '300px',
-                        textAlign: 'center',
-                    }}
-                >
-                    Profile updated.
-                </span>
-            </Popup>
+            <PopupAlert
+                openPopup={openPopup}
+                setOpenPopup={setOpenPopup}
+                text="Profile updated."
+            />
             <NavigationBar />
             <Box
                 py={4}
@@ -234,6 +214,24 @@ const Setting: FC = () => {
                         {t('setting.edit_profile_description')}
                     </Text>
                 </Box>
+
+                <input
+                    type="file"
+                    id="profile_banner"
+                    ref={bannerFile}
+                    onChange={(e) => handleFileSelected(e, 'profile_banner')}
+                    style={{ display: 'none' }}
+                />
+                <img
+                    className="mt-4 border-none w-full h-36 bg-gray-500 rounded-lg cursor-pointer hover:opacity-50 object-cover"
+                    onClick={() => handleOnClick('profile_banner')}
+                    src={
+                        profile.profile_banner?.url
+                            ? `https://api.ultcube.scc.sh${profile.profile_banner?.url}`
+                            : '/assets/images/empty_placeholder.png'
+                    }
+                />
+
                 <Flex
                     mt={40}
                     mx={10}
@@ -339,58 +337,12 @@ const Setting: FC = () => {
                         <CustomInput
                             label={t('setting.email')}
                             type="email"
-                            // subLabel={t('setting.email_sub')}
                             value={profile.email}
-                            // Icon={<LockIcon />}
                             placeholder={t('setting.email_placeholder')}
-                            // staticBottom={
-                            //     <Box
-                            //         sx={{
-                            //             fontWeight: 'bold',
-                            //             color: 'textSecondary',
-                            //         }}
-                            //     >
-                            //         <Text>{t('setting.email_bottom')}</Text>{' '}
-                            //         <Text
-                            //             sx={{
-                            //                 color: 'primary',
-                            //                 cursor: 'pointer',
-                            //             }}
-                            //         >
-                            //             {t('setting.sign_message')}
-                            //         </Text>
-                            //     </Box>
-                            // }
                             onChange={(v) =>
                                 setProfile((ori) => ({ ...ori, email: v }))
                             }
                         />
-                        {/* <Flex>
-                            <Box>
-                                <Text variant="heading">
-                                    {t('setting.verification')}
-                                </Text>
-                                <Text
-                                    mt="4px"
-                                    sx={{
-                                        display: 'block',
-                                        color: 'textSecondary',
-                                        fontSize: '13px',
-                                        fontWeight: 'semiBold',
-                                    }}
-                                >
-                                    {t('setting.verification_description')}
-                                </Text>
-                            </Box>
-                            <Box sx={{ minWidth: '120px' }} mt="4px" ml="10px">
-                                <Button
-                                    variant="secondary"
-                                    sx={{ fontSize: '12px' }}
-                                >
-                                    {t('setting.verification_btn')}
-                                </Button>
-                            </Box>
-                        </Flex> */}
                         <Button
                             variant="primary"
                             mt={40}
@@ -451,13 +403,13 @@ const Setting: FC = () => {
                             <Button
                                 variant="secondary"
                                 sx={{ fontSize: '12px' }}
-                                onClick={handleOnClick}
+                                onClick={() => handleOnClick('profile_pic')}
                             >
                                 <input
                                     type="file"
-                                    id="file"
-                                    ref={inputFile}
-                                    onChange={handleFileSelected}
+                                    id="profile_pic"
+                                    ref={profileFile}
+                                    onChange={(e) => handleFileSelected(e, 'profile_pic')}
                                     style={{ display: 'none' }}
                                 />
                                 {t('setting.choose_file')}

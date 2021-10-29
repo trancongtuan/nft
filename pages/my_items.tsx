@@ -10,18 +10,18 @@ import React, { FC, ReactNode, useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useTranslation } from 'react-i18next'
 import Popover from 'react-popover'
-import { Box, Button, Flex, Text } from 'theme-ui'
+import { Box, Flex, Text, useColorMode } from 'theme-ui'
 import { v4 as uuidv4 } from 'uuid'
 import Web3 from 'web3'
 import ActivityCard from '../components/ActivityCard'
 import Avatar from '../components/Avatar'
 import BidCard from '../components/BidCard'
+import Button from '../components/Button'
 import FilterButton from '../components/FilterButton'
 import Footer from '../components/Footer'
 import NavigationBar from '../components/NavigationBar'
 import Popup from '../components/Popup'
 import PopupReport from '../components/PopupReport'
-import Selection from '../components/Selection'
 import Tooltip from '../components/Tooltip'
 import { useAuth } from '../hooks/auth'
 import CheckedIcon from '../public/assets/images/icons/checked.svg'
@@ -32,16 +32,8 @@ import TelegramIcon from '../public/assets/images/icons/telegram.svg'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
 import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 import UploadIcon from '../public/assets/images/icons/upload.svg'
-import { Asset, EthUser, fetchUsers, updateUserAssets } from '../queries'
+import { Asset, EthUser, fetchAssets, fetchUsers, updateUserAssets } from '../queries'
 
-const selectionItems = [
-    {
-        id: '1',
-        label: 'general.on_sale',
-        value: 'On sale',
-        count: 0,
-    },
-]
 const Items: FC = () => {
     const { t } = useTranslation('common')
     const router = useRouter()
@@ -49,8 +41,7 @@ const Items: FC = () => {
     const [showCards, setShowCards] = useState(true)
     const [showReport, setShowReport] = useState(false)
     const [showShare, setShowShare] = useState(false)
-    const [showFollowing, setShowFollowing] = useState(false)
-    const [showFollowers, setShowFollowers] = useState(false)
+    const [colorMode] = useColorMode()
     const [showActivity, setShowActivity] = useState(false)
     const [counter, setCounter] = useState(0)
     const [openPopup, setOpenPopup] = useState(false)
@@ -58,6 +49,7 @@ const Items: FC = () => {
     const [showReset, setShowReset] = useState(false)
     const [showReportPopup, setShowReportPopup] = useState(false)
     const [assets, setAssets] = useState<null | Asset[]>(null)
+    const [refreshing, setRefreshing] = useState(false)
     const [profile, setProfile] = useState<EthUser>({
         id: null,
         display_name: '',
@@ -68,6 +60,7 @@ const Items: FC = () => {
         website: '',
         address: '',
         profile_pic: { url: null },
+        profile_banner: { url: null },
     })
 
     const toogleResetFilter = (): void => {
@@ -92,17 +85,32 @@ const Items: FC = () => {
         }
     }
 
-    const updateAssets = async () => {
+    const updateAssets = async (forceReload = false) => {
+        console.log('update assets', forceReload)
         try {
             const web3 = new Web3(window.ethereum)
 
             const address = await web3.eth.getAccounts()
             const accountAddress: string = address[0]
 
-            const result = await updateUserAssets(accountAddress)
-            setAssets(result)
+            
+            let result = []; 
+            if (forceReload) {
+                setRefreshing(true)
+                result = await updateUserAssets(accountAddress)
+            } else {
+                const query = {
+                    owner_address_contains: accountAddress,
+                    _sort: 'createdAt:DESC'
+                }
+                result = await fetchAssets(query)
+            }
+
+            setAssets(result);
         } catch (e) {
             alert(e.toString())
+        } finally {
+            setRefreshing(false)
         }
     }
 
@@ -264,16 +272,9 @@ const Items: FC = () => {
                     }}
                 >
                     <Button
-                        variant="primary"
-                        onClick={() => {
-                            setOpenPopup(true)
-                        }}
-                        sx={{
-                            width: '100%',
-                        }}
-                    >
-                        Filters : All
-                    </Button>
+                        variant="primary" 
+                        onClick={() => setOpenPopup(true)}
+                    >Filters : All</Button>
                 </Box>
 
                 <Popup
@@ -340,12 +341,7 @@ const Items: FC = () => {
                         />
                         <Button
                             variant="primary"
-                            onClick={() => {
-                                setOpenPopup(false)
-                            }}
-                            sx={{
-                                width: '100%',
-                            }}
+                            onClick={() => setOpenPopup(false)}
                         >
                             {t('general.show')}
                         </Button>
@@ -387,7 +383,7 @@ const Items: FC = () => {
                                         `/product/${item.asset_contract.address}/${item.token_id}`
                                     )
                                 }
-                                name={item.name}
+                                name={item.name || 'Unnamed'}
                                 image={item.image_url}
                                 currency="ETH"
                                 price={
@@ -433,14 +429,7 @@ const Items: FC = () => {
                         {t('general.no_items_found_description')}
                     </Text>
 
-                    <Button
-                        mt={20}
-                        variant="primary"
-                        sx={{
-                            fontSize: 1,
-                            height: 40,
-                        }}
-                    >
+                    <Button variant="primary">
                         <Link href="/">{t('general.browse_marketplace')}</Link>
                     </Button>
                 </Flex>
@@ -462,9 +451,13 @@ const Items: FC = () => {
                         '@media screen and (max-width: 1110px)': {
                             height: 160,
                         },
-                        backgroundImage: 'url(https://picsum.photos/1500/300)',
+                        backgroundImage: profile.profile_banner?.url
+                            ? `https://api.ultcube.scc.sh${profile.profile_banner?.url}`
+                            : ''
+                        ,
                         backgroundPosition: 'center center',
                         backgroundSize: 'cover',
+                        backgroundColor: colorMode === 'dark' ? '#181818' : '#f5f5f5',
                     }}
                 />
                 <Box sx={{ position: 'absolute', bottom: -30 }}>
@@ -526,11 +519,12 @@ const Items: FC = () => {
                     <Flex mt={20}>
                         <Button
                             variant="primary"
-                            sx={{
-                                fontSize: 1,
-                                height: 40,
-                            }}
+                            className="text-sm h-8"
+                            onClick={() => updateAssets(true)}
                         >
+                            {refreshing ? t('general.loading') : t('general.refresh')}
+                        </Button>
+                        <Button variant="primary">
                             {t('general.follow')}
                         </Button>
                         <Popover
@@ -570,17 +564,7 @@ const Items: FC = () => {
                                                     alignItems: 'center',
                                                 }}
                                             >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
+                                                <Button variant="border">
                                                     <TwitterIcon />
                                                 </Button>
                                                 <Text
@@ -602,17 +586,7 @@ const Items: FC = () => {
                                                     alignItems: 'center',
                                                 }}
                                             >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
+                                                <Button variant="border">
                                                     <FacebookIcon />
                                                 </Button>
                                                 <Text
@@ -634,17 +608,7 @@ const Items: FC = () => {
                                                     alignItems: 'center',
                                                 }}
                                             >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
+                                                <Button variant="border">
                                                     <TelegramIcon />
                                                 </Button>
                                                 <Text
@@ -666,17 +630,7 @@ const Items: FC = () => {
                                                     alignItems: 'center',
                                                 }}
                                             >
-                                                <Button
-                                                    p={0}
-                                                    variant="border"
-                                                    sx={{
-                                                        width: 40,
-                                                        svg: {
-                                                            width: 13,
-                                                            height: 13,
-                                                        },
-                                                    }}
-                                                >
+                                                <Button variant="border">
                                                     <EmailIcon />
                                                 </Button>
                                                 <Text
@@ -700,10 +654,7 @@ const Items: FC = () => {
                         >
                             <Button
                                 onClick={() => setShowShare(!showShare)}
-                                ml={8}
                                 variant="border"
-                                p={0}
-                                sx={{ width: 40 }}
                             >
                                 <UploadIcon />
                             </Button>
@@ -725,11 +676,8 @@ const Items: FC = () => {
                             tipSize={0.01}
                         >
                             <Button
-                                ml={8}
                                 onClick={() => setShowReport(!showReport)}
                                 variant="border"
-                                p={0}
-                                sx={{ width: 40 }}
                             >
                                 <ThreeDos />
                             </Button>

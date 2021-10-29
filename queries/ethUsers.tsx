@@ -11,6 +11,7 @@ export interface EthUser {
     website: string
     address: string
     profile_pic: { url: string }
+    profile_banner: { url: string }
 }
 
 interface EthUserCreater {

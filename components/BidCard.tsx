@@ -239,7 +239,7 @@ const BidCard: FC<BidCardProps> = ({
                             cursor: 'pointer',
                             backgroundColor: image
                                 ? 'transparent'
-                                : 'lightgray',
+                                : colorMode === 'dark' ? '#181818' : '#f5f5f5',
                         }}
                     >
                         {image.includes('.mp4') ? (
