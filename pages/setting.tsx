@@ -43,7 +43,7 @@ const Setting: FC = () => {
         profile_pic: { url: null },
         profile_banner: { url: null },
     })
-console.log('profile', profile)
+
     const handleOnClick = (type: string): void => {
         if (type === 'profile_banner')
             bannerFile.current.click()
@@ -223,7 +223,7 @@ console.log('profile', profile)
                     style={{ display: 'none' }}
                 />
                 <img
-                    className="mt-4 border-none w-full h-36 bg-gray-500 rounded-lg cursor-pointer hover:opacity-50 object-cover"
+                    className="mt-4 border-none w-full h-36 bg-gray-500 rounded-xl cursor-pointer hover:opacity-50 object-cover"
                     onClick={() => handleOnClick('profile_banner')}
                     src={
                         profile.profile_banner?.url
@@ -280,7 +280,7 @@ console.log('profile', profile)
                                         minWidth: 'max-content',
                                     }}
                                 >
-                                    rarible.com/
+                                    {process.env.NEXT_PUBLIC_URL}/
                                 </Text>
                             }
                             placeholder={t('setting.custom_URL_placeholder')}

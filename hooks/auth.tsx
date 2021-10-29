@@ -19,6 +19,7 @@ const DEFAULT_PROFILE = {
     website: '',
     address: '',
     profile_pic: { url: null },
+    profile_banner: { url: null },
 }
 
 const AuthContext = React.createContext<AuthContextProps>({

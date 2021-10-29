@@ -1,13 +1,10 @@
-import React, { FC, useEffect, useState } from 'react'
 import Link from 'next/link'
-import Popover from 'react-popover'
-import { Box, Flex, Image, Text, useColorMode, } from 'theme-ui'
-import ThreeDos from '../public/assets/images/icons/threedos.svg'
-import Avatar, { AvatarProps } from './Avatar'
+import React, { FC, useEffect, useState } from 'react'
+import ReactTooltip from 'react-tooltip'
+import { Box, Flex, Image, Text, useColorMode } from 'theme-ui'
+import { Collection, Creator, Owner } from '../queries/asset'
+import Avatar from './Avatar'
 import TextWithTooltip from './TextWithTooltip'
-import Tooltip from './Tooltip'
-import { Creator, Owner } from '../queries/asset'
-import ReactTooltip from 'react-tooltip';
 
 const items = [
     {
@@ -28,16 +25,14 @@ const items = [
     },
 ]
 
-type UserProps = Pick<AvatarProps, 'src' | 'verified'>
-
 export interface BidCardProps {
     type?: 'single' | 'multiple'
     name: string
     bid?: number
     currency: string
-    collection?: Collection
-    owner?: Owner
-    creator?: Creator
+    collection?: any // TODO: Switch back to Collection
+    owner?: any // TODO: Switch back to Owner
+    creator?: any // TODO: Switch back to Creator
     image: string
     quantity?: number
     price?: number
@@ -84,12 +79,6 @@ const BidCard: FC<BidCardProps> = ({
         }
         return setCounter(0)
     }, [counter])
-
-    // console.log(
-    //     collection,
-    //     owner,
-    //     creator,
-    // )
 
     return (
         <Box

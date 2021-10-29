@@ -26,6 +26,9 @@ Pending:
 - Edit Profile > Custome URL remove rariable
 - After minting, should display a message to show the item is loading on blockchain
 - Set royalty on item, total 3 fees on transaction: Opensea 2.5%, Ultcube ?%, Creator royalty x%
+  > https://support.opensea.io/hc/en-us/articles/1500009575482-How-do-royalties-work-on-OpenSea-
+  > https://eips.ethereum.org/EIPS/eip-2981
+
 - Place an offer, You will get xxx ETH need to deduct the fees
 - Bid function chcek
 - Add notification message

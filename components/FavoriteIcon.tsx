@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Text, useColorMode } from 'theme-ui'
 import { default as Icon } from '../public/assets/images/icons/favorite.svg'
 
-const FavoriteIcon = ({ onLike, favorite }) => {
+const FavoriteIcon = ({ onLike, favorite, liked }) => {
   const [like, setLike] = useState(liked)
   const [colorMode] = useColorMode()
   const checkHeartIconColor = (): string => {
