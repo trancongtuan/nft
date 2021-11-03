@@ -2,33 +2,14 @@ import Link from 'next/link'
 import React, { FC, useEffect, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
 import { Box, Flex, Image, Text, useColorMode } from 'theme-ui'
-import { Collection, Creator, Owner } from '../queries/asset'
 import Avatar from './Avatar'
 import TextWithTooltip from './TextWithTooltip'
-
-const items = [
-    {
-        id: 1,
-        label: 'Purchase now',
-    },
-    {
-        id: 2,
-        label: 'Place a bid',
-    },
-    {
-        id: 3,
-        label: 'View on OpenSea',
-    },
-    {
-        id: 4,
-        label: 'Share',
-    },
-]
 
 export interface BidCardProps {
     type?: 'single' | 'multiple'
     name: string
     bid?: number
+    selling?: boolean
     currency: string
     collection?: any // TODO: Switch back to Collection
     owner?: any // TODO: Switch back to Owner
@@ -54,6 +35,7 @@ const getStringTime: (s: number) => string = (s) => {
 
 const BidCard: FC<BidCardProps> = ({
     bid,
+    selling,
     name,
     collection,
     owner,
@@ -69,7 +51,6 @@ const BidCard: FC<BidCardProps> = ({
     countDown,
     onCLick,
 }) => {
-    const [visible, setVisible] = useState(false)
     const [colorMode] = useColorMode()
     const [counter, setCounter] = useState(countDown)
     useEffect(() => {
@@ -167,7 +148,7 @@ const BidCard: FC<BidCardProps> = ({
                         </Link>
                         <Link href={`/user/${owner?.address}`}>
                             <Flex
-                                data-tip={owner?.user?.username || 'Unknow Owner'}
+                                data-tip={owner?.user?.username || owner?.address || 'Unknow Owner'}
                                 className="hover:z-50 transition-all transform hover:scale-110 hover:-translate-y-1"
                                 ml="-10px"
                             >
@@ -176,7 +157,7 @@ const BidCard: FC<BidCardProps> = ({
                         </Link>
                         <Link href={`/user/${creator?.address}`}>
                             <Flex
-                                data-tip={creator?.user?.username || 'Unknow Creator'}
+                                data-tip={creator?.user?.username || creator?.address || 'Unknow Creator'}
                                 className="hover:z-50 transition-all transform hover:scale-110 hover:-translate-y-1"
                                 ml="-10px"
                             >
@@ -184,45 +165,6 @@ const BidCard: FC<BidCardProps> = ({
                             </Flex>
                         </Link>
                     </Flex>
-                    {/* <Popover
-                        onOuterAction={() => setVisible(false)}
-                        isOpen={visible}
-                        body={<Tooltip items={items} />}
-                        place="below"
-                        tipSize={0.01}
-                    >
-                        <Flex
-                            sx={{
-                                position: 'relative',
-                                width: 30,
-                                height: 30,
-                                color:
-                                    colorMode === 'dark'
-                                        ? '1px solid rgba(255, 255, 255, 0.5)'
-                                        : '1px solid rgba(18, 18, 18, 0.5)',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                borderRadius: 9999,
-                                transition: 'all 0.12s ease-in-out 0s',
-                                ':hover': {
-                                    color:
-                                        colorMode === 'dark' ? 'white' : 'text',
-                                    backgroundColor:
-                                        colorMode === 'dark'
-                                            ? 'rgba(255, 255, 255, 0.06)'
-                                            : 'rgba(18, 18, 18, 0.06)',
-                                },
-                                cursor: 'pointer',
-                                svg: {
-                                    width: 14,
-                                    height: 14,
-                                },
-                            }}
-                            onClick={() => setVisible(!visible)}
-                        >
-                            <ThreeDos />
-                        </Flex>
-                    </Popover> */}
                 </Flex>
                 <Box
                     mb={16}
@@ -400,7 +342,7 @@ const BidCard: FC<BidCardProps> = ({
                                     'linear-gradient(126.49deg, rgb(0, 238, 185) 0%, rgb(0, 179, 139) 100%)',
                             }}
                         >
-                            {bid ? (
+                            {bid && (
                                 <Text
                                     color="textSecondary"
                                     sx={{
@@ -413,14 +355,16 @@ const BidCard: FC<BidCardProps> = ({
                                         WETH
                                     </Text>
                                 </Text>
-                            ) : (
+                            )}
+                            {
+                                selling &&
                                 <Text
                                     color="primary"
                                     sx={{ fontSize: 0, cursor: 'pointer' }}
                                 >
                                     Buy Now
                                 </Text>
-                            )}
+                            }
                         </TextWithTooltip>
                     </Text>
                     {/* <FavoriteIcon /> */}

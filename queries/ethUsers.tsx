@@ -12,6 +12,7 @@ export interface EthUser {
     address: string
     profile_pic: { url: string }
     profile_banner: { url: string }
+    balance?: number
 }
 
 interface EthUserCreater {
@@ -29,6 +30,7 @@ interface fetchUserRequest {
     _limit?: number
     _sort?: string
     address?: string
+    address_contains?: string
     display_name_contains?: string
 }
 

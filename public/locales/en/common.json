@@ -49,7 +49,8 @@
         "set_name": "Set name"
     },
     "items": {
-        "edit_profile": "Edit profile"
+        "edit_profile": "Edit profile",
+        "minting_pending": "We are minting your item! Please click refresh after transaction completed!"
     },
     "product": {
         "creator": "Creator",
@@ -78,7 +79,8 @@
         "hot_collections": "Hot Collections",
         "explore": "Explore",
         "load_more": "Load More",
-        "in": "in"
+        "in": "in",
+        "live_auctions": "Live Auctions"
     },
     "setting": {
         "edit_profile": "Edit profile",

@@ -326,47 +326,26 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
 
                     <Carousel slidesToShow={4} length={liveAuctions.length}>
                         {liveAuctions?.map((item) => {
-                            const countDown = item?.sell_orders?.[0]
-                                ?.closing_date
-                                ? dayjs(
-                                      item?.sell_orders?.[0]?.closing_date
-                                  ).diff(dayjs())
-                                : 0
                             return (
                                 <Box key={item.id} px={20}>
-                                    <AuctionCard
-                                        name={item.name}
-                                        currency="ETH"
-                                        image={item.image_url}
-                                        price={
-                                            item.sell_orders?.[0]?.current_price / 1000000000000000000
-                                            || item.orders?.[0]?.current_price / 1000000000000000000
-                                            ||  0}
+                                    <BidCard
+                                        key={item.id}
                                         onCLick={() =>
                                             router.push(
                                                 `/product/${item.asset_contract.address}/${item.token_id}`
                                             )
                                         }
-                                        bid={item.top_bid}
-                                        countDown={countDown}
-                                        {...{
-                                            creator: {
-                                                src:
-                                                    item.creator
-                                                        ?.profile_img_url,
-                                            },
-                                        }}
-                                        {...{
-                                            owner: {
-                                                src:
-                                                    item.owner?.profile_img_url,
-                                            },
-                                        }}
-                                        {...{
-                                            collection: {
-                                                src: item.collection?.image_url,
-                                            },
-                                        }}
+                                        name={item.name || 'Unnamed'}
+                                        image={item.image_url}
+                                        currency="ETH"
+                                        price={
+                                            item.sell_orders?.[0]?.current_price / 1000000000000000000
+                                            || item.orders?.[0]?.current_price / 1000000000000000000
+                                            || 0}
+                                        creator={item.creator}
+                                        owner={item.owner}
+                                        collection={item.collection_details}
+                                        selling={item.sell_orders?.length > 0}
                                     />
                                 </Box>
                             )
@@ -516,21 +495,9 @@ const Home: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                                         item.sell_orders?.[0]?.current_price / 1000000000000000000
                                         || item.orders?.[0]?.current_price / 1000000000000000000
                                         ||  0}
-                                    {...(item?.creator && {
-                                        creator: {
-                                            src: item.creator?.profile_img_url,
-                                        },
-                                    })}
-                                    {...(item?.owner && {
-                                        owner: {
-                                            src: item.owner?.profile_img_url,
-                                        },
-                                    })}
-                                    {...(item?.collection && {
-                                        collection: {
-                                            src: item.collection?.image_url,
-                                        },
-                                    })}
+                                    creator={item.creator}
+                                    owner={item.owner}
+                                    collection={item.collection_details}
                                 />
                             ))
                         })}

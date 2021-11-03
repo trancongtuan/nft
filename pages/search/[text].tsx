@@ -38,7 +38,7 @@ const Search = ({ assets, collections, users, text }: ISearch) => {
         filteredAssets = filteredAssets.filter(item => {
             const price = item.sell_orders?.[0]?.current_price / 1000000000000000000
                 || item.orders?.[0]?.current_price / 1000000000000000000
-                ||  0
+                || 0
             return price > priceMin;
         })
     }
@@ -47,7 +47,7 @@ const Search = ({ assets, collections, users, text }: ISearch) => {
         filteredAssets = filteredAssets.filter(item => {
             const price = item.sell_orders?.[0]?.current_price / 1000000000000000000
                 || item.orders?.[0]?.current_price / 1000000000000000000
-                ||  0
+                || 0
             return price < priceMax;
         })
     }
@@ -60,7 +60,7 @@ const Search = ({ assets, collections, users, text }: ISearch) => {
         <Box>
             <NavigationBar />
             <Grid gap={2} columns={[2, '1fr 6fr']}>
-                <FilterSidebar 
+                <FilterSidebar
                     selectedTab={selectedTab}
                     setSelectedTab={setSelectedTab}
                     filter={filter}
@@ -107,18 +107,23 @@ const Search = ({ assets, collections, users, text }: ISearch) => {
                                         }}
                                     >
                                         <BidCard
-                                            name={item.name}
-                                            currency="ETH"
-                                            image={item.image_url}
-                                            price={
-                                                item.sell_orders?.[0]?.current_price / 1000000000000000000
-                                                || item.orders?.[0]?.current_price / 1000000000000000000
-                                                || 0}
+                                            key={item.id}
                                             onCLick={() =>
                                                 router.push(
                                                     `/product/${item.asset_contract.address}/${item.token_id}`
                                                 )
                                             }
+                                            name={item.name || 'Unnamed'}
+                                            image={item.image_url}
+                                            currency="ETH"
+                                            price={
+                                                item.sell_orders?.[0]?.current_price / 1000000000000000000
+                                                || item.orders?.[0]?.current_price / 1000000000000000000
+                                                || 0}
+                                            creator={item.creator}
+                                            owner={item.owner}
+                                            collection={item.collection_details}
+                                            selling={item.sell_orders?.length > 0}
                                         />
                                     </Box>
                                 )

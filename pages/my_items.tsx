@@ -4,21 +4,17 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { FC, ReactNode, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useTranslation } from 'react-i18next'
 import Popover from 'react-popover'
+import { useRouter } from 'next/router'
 import { Box, Flex, Text, useColorMode } from 'theme-ui'
-import { v4 as uuidv4 } from 'uuid'
 import Web3 from 'web3'
-import ActivityCard from '../components/ActivityCard'
 import Avatar from '../components/Avatar'
-import BidCard from '../components/BidCard'
 import Button from '../components/Button'
-import FilterButton from '../components/FilterButton'
 import Footer from '../components/Footer'
+import MyItemCardList from '../components/MyItemCardList'
 import NavigationBar from '../components/NavigationBar'
 import Popup from '../components/Popup'
 import PopupReport from '../components/PopupReport'
@@ -35,18 +31,14 @@ import UploadIcon from '../public/assets/images/icons/upload.svg'
 import { Asset, EthUser, fetchAssets, fetchUsers, updateUserAssets } from '../queries'
 
 const Items: FC = () => {
-    const { t } = useTranslation('common')
     const router = useRouter()
+    const { minted } = router.query
+    const { t } = useTranslation('common')
     const { connected, setConnected } = useAuth()
-    const [showCards, setShowCards] = useState(true)
     const [showReport, setShowReport] = useState(false)
     const [showShare, setShowShare] = useState(false)
     const [colorMode] = useColorMode()
-    const [showActivity, setShowActivity] = useState(false)
     const [counter, setCounter] = useState(0)
-    const [openPopup, setOpenPopup] = useState(false)
-    const [resetFilter, setResetFilter] = useState(false)
-    const [showReset, setShowReset] = useState(false)
     const [showReportPopup, setShowReportPopup] = useState(false)
     const [assets, setAssets] = useState<null | Asset[]>(null)
     const [refreshing, setRefreshing] = useState(false)
@@ -61,24 +53,15 @@ const Items: FC = () => {
         address: '',
         profile_pic: { url: null },
         profile_banner: { url: null },
+        balance: 0,
     })
-
-    const toogleResetFilter = (): void => {
-        setResetFilter(true)
-        setShowReset(false)
-    }
-
-    const toggleShowReset = (): void => {
-        setShowReset(true)
-        setResetFilter(false)
-    }
 
     const updateProfile = async () => {
         try {
             if (!window.ethereum) throw new Error('Please install MetaMask.')
             const from = (await window.ethereum.enable())[0]
             if (!from) throw new Error('No account selected.')
-            const result = await fetchUsers({ address: from })
+            const result = await fetchUsers({ address_contains: from })
             if (result[0]) setProfile(result[0])
         } catch (e) {
             alert(e.toString())
@@ -86,7 +69,6 @@ const Items: FC = () => {
     }
 
     const updateAssets = async (forceReload = false) => {
-        console.log('update assets', forceReload)
         try {
             const web3 = new Web3(window.ethereum)
 
@@ -101,7 +83,8 @@ const Items: FC = () => {
             } else {
                 const query = {
                     owner_address_contains: accountAddress,
-                    _sort: 'createdAt:DESC'
+                    _sort: 'createdAt:ASC',
+                    _limit: 20,
                 }
                 result = await fetchAssets(query)
             }
@@ -137,305 +120,6 @@ const Items: FC = () => {
             updateAssets()
         }
     }, [])
-
-    const renderActivity = (): ReactNode => {
-        return (
-            <>
-                <Box>
-                    <Flex sx={{ marginTop: '17px' }}>
-                        <Box
-                            sx={{
-                                width: '65%',
-                                '@media screen and (max-width: 776px)': {
-                                    width: '100%',
-                                },
-                            }}
-                        >
-                            {new Array(10).fill(0).map(() => (
-                                <Box
-                                    key={uuidv4()}
-                                    sx={{ marginBottom: '12px' }}
-                                >
-                                    <ActivityCard
-                                        type="follow"
-                                        src="https://via.placeholder.com/500x100"
-                                        verified
-                                        name="Ahihihi"
-                                        content={{
-                                            from: {
-                                                name: 'Han Khung',
-                                                src:
-                                                    'https://via.placeholder.com/500x100',
-                                            },
-                                            to: {
-                                                name: 'Han Dien',
-                                                src:
-                                                    'https://via.placeholder.com/500x100',
-                                            },
-                                            value: 200,
-                                        }}
-                                        time="6 days ago"
-                                    />
-                                </Box>
-                            ))}
-                        </Box>
-                        <Box
-                            sx={{
-                                ml: 4,
-                                width: '35%',
-                                '@media screen and (max-width: 776px)': {
-                                    display: 'none',
-                                },
-                            }}
-                        >
-                            <Flex>
-                                <Text sx={{ fontWeight: '900' }}>
-                                    {t('general.filters')}
-                                </Text>
-                                {showReset && (
-                                    <Text
-                                        ml={20}
-                                        onClick={() => toogleResetFilter()}
-                                        sx={{
-                                            fontWeight: '900',
-                                            cursor: 'pointer',
-                                            color: 'primary',
-                                        }}
-                                    >
-                                        {t('general.reset_filters')}
-                                    </Text>
-                                )}
-                            </Flex>
-                            <Flex sx={{ mt: 3, flexWrap: 'wrap' }}>
-                                <FilterButton
-                                    toggleShowReset={() => toggleShowReset()}
-                                    reset={resetFilter}
-                                    content={t('general.listings')}
-                                    type="listings"
-                                />
-                                <FilterButton
-                                    toggleShowReset={() => toggleShowReset()}
-                                    reset={resetFilter}
-                                    content={t('general.purchases')}
-                                    type="purchases"
-                                />
-                                <FilterButton
-                                    toggleShowReset={() => toggleShowReset()}
-                                    content={t('general.sales')}
-                                    type="sales"
-                                    reset={resetFilter}
-                                />
-                                <FilterButton
-                                    toggleShowReset={() => toggleShowReset()}
-                                    content={t('general.transfers')}
-                                    type="transfers"
-                                    reset={resetFilter}
-                                />
-                                <FilterButton
-                                    toggleShowReset={() => toggleShowReset()}
-                                    reset={resetFilter}
-                                    content={t('general.burns')}
-                                    type="burns"
-                                />
-                                <FilterButton
-                                    toggleShowReset={() => toggleShowReset()}
-                                    reset={resetFilter}
-                                    content={t('general.bids')}
-                                    type="bids"
-                                />
-                                <FilterButton
-                                    toggleShowReset={() => toggleShowReset()}
-                                    reset={resetFilter}
-                                    content={t('general.likes')}
-                                    type="likes"
-                                />
-                                <FilterButton
-                                    toggleShowReset={() => toggleShowReset()}
-                                    reset={resetFilter}
-                                    content={t('general.followings')}
-                                    type="followings"
-                                />
-                            </Flex>
-                        </Box>
-                    </Flex>
-                </Box>
-                <Box
-                    px={24}
-                    sx={{
-                        display: 'none',
-                        width: '100%',
-                        position: 'fixed',
-                        bottom: '0',
-                        '@media screen and (max-width: 776px)': {
-                            display: 'block',
-                        },
-                    }}
-                >
-                    <Button
-                        variant="primary" 
-                        onClick={() => setOpenPopup(true)}
-                    >Filters : All</Button>
-                </Box>
-
-                <Popup
-                    isOpen={openPopup}
-                    onClose={() => {
-                        setOpenPopup(false)
-                    }}
-                    label={t('general.filters')}
-                >
-                    <Flex
-                        sx={{
-                            width: 400,
-                            mt: 3,
-                            flexWrap: 'wrap',
-                        }}
-                    >
-                        <FilterButton
-                            toggleShowReset={() => toggleShowReset()}
-                            reset={false}
-                            content={t('general.listings')}
-                            type="listings"
-                        />
-                        <FilterButton
-                            toggleShowReset={() => toggleShowReset()}
-                            reset={false}
-                            content={t('general.purchases')}
-                            type="purchases"
-                        />
-                        <FilterButton
-                            toggleShowReset={() => toggleShowReset()}
-                            reset={false}
-                            content={t('general.sales')}
-                            type="sales"
-                        />
-                        <FilterButton
-                            toggleShowReset={() => toggleShowReset()}
-                            reset={false}
-                            content={t('general.transfers')}
-                            type="transfers"
-                        />
-                        <FilterButton
-                            toggleShowReset={() => toggleShowReset()}
-                            reset={false}
-                            content={t('general.burns')}
-                            type="burns"
-                        />
-                        <FilterButton
-                            toggleShowReset={() => toggleShowReset()}
-                            reset={false}
-                            content={t('general.bids')}
-                            type="bids"
-                        />
-                        <FilterButton
-                            toggleShowReset={() => toggleShowReset()}
-                            reset={false}
-                            content={t('general.likes')}
-                            type="likes"
-                        />
-                        <FilterButton
-                            toggleShowReset={() => toggleShowReset()}
-                            reset={false}
-                            content={t('general.followings')}
-                            type="followings"
-                        />
-                        <Button
-                            variant="primary"
-                            onClick={() => setOpenPopup(false)}
-                        >
-                            {t('general.show')}
-                        </Button>
-                    </Flex>
-                </Popup>
-            </>
-        )
-    }
-
-    const renderCards = (): ReactNode => {
-        if (showCards && !showActivity) {
-            return (
-                <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
-                    {assets?.map((item) => (
-                        <Box
-                            key={uuidv4()}
-                            p={10}
-                            sx={{
-                                maxWidth: [
-                                    '100%',
-                                    '50%',
-                                    '33.3333%',
-                                    '25%',
-                                    '20%',
-                                ],
-                                flex: [
-                                    '0 0 100%',
-                                    '0 0 50%',
-                                    '0 0 33.3333%',
-                                    '0 0 25%',
-                                    '0 0 20%',
-                                ],
-                            }}
-                        >
-                            <BidCard
-                                key={item.id}
-                                onCLick={() =>
-                                    router.push(
-                                        `/product/${item.asset_contract.address}/${item.token_id}`
-                                    )
-                                }
-                                name={item.name || 'Unnamed'}
-                                image={item.image_url}
-                                currency="ETH"
-                                price={
-                                    item.sell_orders?.[0]?.current_price / 1000000000000000000
-                                    || item.orders?.[0]?.current_price / 1000000000000000000
-                                    ||  0}
-                                {...(item?.creator && {
-                                    creator: {
-                                        src: item.creator?.profile_img_url,
-                                    },
-                                })}
-                                {...(item?.owner && {
-                                    owner: {
-                                        src: item.owner?.profile_img_url,
-                                    },
-                                })}
-                                {...(item?.collection && {
-                                    collection: {
-                                        src: item.collection?.image_url,
-                                    },
-                                })}
-                            />
-                        </Box>
-                    ))}
-                </Flex>
-            )
-        }
-        return (
-            <Box sx={{ margin: '60px auto', maxWidth: '360px' }}>
-                <Flex
-                    px={3}
-                    mt={8}
-                    mb={16}
-                    sx={{ flexDirection: 'column', alignItems: 'center' }}
-                >
-                    <Text
-                        color="text"
-                        sx={{ fontWeight: 'heavy', fontSize: 28 }}
-                    >
-                        {t('general.no_items_found')}
-                    </Text>
-                    <Text mt={20}>
-                        {t('general.no_items_found_description')}
-                    </Text>
-
-                    <Button variant="primary">
-                        <Link href="/">{t('general.browse_marketplace')}</Link>
-                    </Button>
-                </Flex>
-            </Box>
-        )
-    }
 
     return (
         <Box>
@@ -683,6 +367,11 @@ const Items: FC = () => {
                             </Button>
                         </Popover>
                     </Flex>
+
+                    {
+                        minted && 
+                            <p className="mt-4 font-bold text-center border-2 border-gray-400 rounded-full py-2 px-4">{t('items.minting_pending')}</p>
+                    }
                 </Flex>
             </Box>
             <Box
@@ -694,11 +383,10 @@ const Items: FC = () => {
                     maxWidth: 1500,
                 }}
             >
-                {showActivity && renderActivity()}
                 {
                     assets === null ?
                         <h3 style={{ textAlign: 'center', marginTop: 20 }}>Loading...</h3>
-                        : renderCards()
+                        : <MyItemCardList assets={assets} />
                 }
             </Box>
             <Footer />

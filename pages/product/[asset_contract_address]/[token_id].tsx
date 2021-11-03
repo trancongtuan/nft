@@ -212,6 +212,9 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 asset_contract_address,
                 token_id,
             )
+
+console.log(result)
+
             setData(result)
         } catch (e) {
             alert(e.toString())

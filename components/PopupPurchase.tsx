@@ -4,6 +4,7 @@
 import { Box, Button, Flex, Text } from 'theme-ui'
 import React, { useState } from 'react'
 import CustomInput from './CustomInput'
+import { useAuth } from '../hooks/auth'
 
 interface Props {
     name: string
@@ -20,6 +21,7 @@ export const PopupPlaceABid = ({
 }: Props) => {
     const [quantity, setQuantity] = useState('1')
     const [cost, setCost] = useState('')
+    const { profile, connected, setConnected } = useAuth()
 
     return (
         <Flex
@@ -64,7 +66,7 @@ export const PopupPlaceABid = ({
                             fontSize: 1,
                         }}
                     >
-                        0 ETH
+                        {(profile.balance / 1000000000000000000).toFixed(2)} ETH
                     </Text>
                 </Flex>
                 <Flex sx={{ justifyContent: 'space-between' }} my={1}>

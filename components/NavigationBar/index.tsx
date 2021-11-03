@@ -23,10 +23,7 @@ import { useAuth } from '../../hooks/auth'
 import CatalogIcon from '../../public/assets/images/icons/catalog.svg'
 import CheckedIcon from '../../public/assets/images/icons/checked.svg'
 import CopyIcon from '../../public/assets/images/icons/copy.svg'
-import MasterCardIcon from '../../public/assets/images/icons/master-card.svg'
-import NotificationIcon from '../../public/assets/images/icons/notification.svg'
 import PurchaseIcon from '../../public/assets/images/icons/purchase.svg'
-import VisaIcon from '../../public/assets/images/icons/visa.svg'
 import SearchInput from '../SearchInput'
 import Selection from '../Selection'
 import ToggleButton from '../ToggleButton'
@@ -36,7 +33,6 @@ import selectionItems from './selectionItems'
 import TooltipItem from './TooltipItem'
 
 const NavigationBar: FC = () => {
-    const [visibleNoti, setVisibleNoti] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
     const router = useRouter()
     const [colorMode, setColorMode] = useColorMode()
@@ -75,33 +71,23 @@ const NavigationBar: FC = () => {
             bg="background"
         >
             <Link href="/">
-                <Box
-                    mr={24}
-                    sx={{
-                        cursor: 'pointer',
-                        transition: 'all 0.12s ease-in-out 0s',
-                        ':active': {
-                            transform: 'scale(0.95)',
-                        },
-                        position: 'relative',
-                        width: '180px',
-                        height: '45px',
-                    }}
-                >
+
                     {colorMode === 'dark' ? (
                         <Image
                             src="/assets/images/logo_black.png"
                             alt="logo"
-                            layout="fill"
+                            width="180"
+                            height="45"
                         />
                     ) : (
                         <Image
                             src="/assets/images/logo_white.png"
                             alt="logo"
-                            layout="fill"
+                            width="180"
+                            height="45"
                         />
                     )}
-                </Box>
+
             </Link>
             <Flex
                 mr={24}
@@ -164,117 +150,12 @@ const NavigationBar: FC = () => {
                     >
                         {t('general.create')}
                     </Button>
-
-                    {connected && (
-                        <Popover
-                            onOuterAction={() => setVisibleNoti(false)}
-                            isOpen={visibleNoti}
-                            body={
-                                <Tooltip minWidth={295}>
-                                    <Flex
-                                        py={2}
-                                        px={24}
-                                        sx={{
-                                            justifyContent: 'space-around',
-                                            flexDirection: 'column',
-                                        }}
-                                        color="rgba(4, 4, 5, 0.6)"
-                                    >
-                                        <Flex
-                                            sx={{
-                                                justifyContent: 'space-between',
-                                                width: '100%',
-                                            }}
-                                        >
-                                            <Text
-                                                color="text"
-                                                sx={{
-                                                    fontSize: 1,
-                                                    fontWeight: 'heavy',
-                                                }}
-                                            >
-                                                Notifications
-                                            </Text>
-                                            <Link href="/activity">
-                                                <Text
-                                                    color="primary"
-                                                    sx={{
-                                                        fontSize: 1,
-                                                        fontWeight: 'bold',
-                                                        cursor: 'pointer',
-                                                    }}
-                                                >
-                                                    See all
-                                                </Text>
-                                            </Link>
-                                        </Flex>
-                                        <Flex
-                                            sx={{
-                                                height: 240,
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                flexDirection: 'column',
-                                                svg: {
-                                                    width: 38,
-                                                    height: 38,
-                                                },
-                                            }}
-                                        >
-                                            <NotificationIcon />
-                                            <Text
-                                                mt={8}
-                                                color="textSecondary"
-                                                sx={{
-                                                    textAlign: 'center',
-                                                    fontSize: 18,
-                                                    fontWeight: 'body',
-                                                }}
-                                            >
-                                                No new notifications
-                                            </Text>
-                                        </Flex>
-                                        <Link href="/setting">
-                                            <Button variant="border">
-                                                Receive email notifications
-                                            </Button>
-                                        </Link>
-                                    </Flex>
-                                </Tooltip>
-                            }
-                            place="below"
-                            tipSize={0.01}
-                        >
-                            <Button
-                                mr={8}
-                                variant="border"
-                                sx={{
-                                    width: 40,
-                                    p: 0,
-                                    border: '1px #2d2d2d solid',
-                                    color: '#afafaf',
-                                    fontWeight: 'normal',
-                                    borderRadius: '5px',
-                                }}
-                                onClick={() => setVisibleNoti(!visibleNoti)}
-                            >
-                                <NotificationIcon />
-                            </Button>
-                        </Popover>
-                    )}
-                    <Button
+                    <div
                         onClick={() => setMobileMenu(true)}
-                        mr={8}
-                        variant="border"
-                        sx={{
-                            width: 40,
-                            p: 0,
-                            '@media screen and (min-width: 891px)': {
-                                display: 'none',
-                            },
-                        }}
+                        className="md:hidden border border-gray-400 p-4 rounded-full"
                     >
                         <CatalogIcon />
-                    </Button>
+                    </div>
                     <Popover
                         onOuterAction={() => setShowDetail(false)}
                         isOpen={showDetail}
@@ -361,23 +242,14 @@ const NavigationBar: FC = () => {
                                                     Balance
                                                 </Text>
                                                 <Text color="text">
-                                                    0 ETH{' '}
+                                                    {(profile.balance / 1000000000000000000).toFixed(2)} ETH{' '}
                                                     <Text color="textSecondary">
-                                                        $0.00
+                                                        ${(profile.balance / 1000000000000000000 * 4600).toFixed(2)}
                                                     </Text>
                                                 </Text>
                                             </Flex>
                                         </Flex>
                                     </Box>
-                                    <Button
-                                        mt={16}
-                                        variant="border"
-                                        sx={{ width: '100%' }}
-                                        onClick={() => window.open('https://pay.sendwyre.com/', '_blank')}
-                                    >
-                                        Add funds width <MasterCardIcon />{' '}
-                                        <VisaIcon />
-                                    </Button>
                                 </Box>
                                 <Box
                                     bg="borderColor"
@@ -468,13 +340,21 @@ const NavigationBar: FC = () => {
                             </Button>
                         ) : (
                             <Button
+                                onClick={connectWallet}
                                 variant="border"
+                                pl={20}
+                                pr={55}
                                 sx={{
-                                    '@media screen and (max-width: 890px)': {
-                                        display: 'none',
+                                    border: '1px #2d2d2d solid',
+                                    color: '#00eeb9',
+                                    fontWeight: 'normal',
+                                    borderRadius: '5px',
+                                    position: 'relative',
+                                    '@media screen and (max-width: 400px)': {
+                                        p: 0,
+                                        width: 40,
                                     },
                                 }}
-                                onClick={connectWallet}
                             >
                                 <Text>{t('general.connect_wallet')}</Text>
                             </Button>

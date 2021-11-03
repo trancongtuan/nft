@@ -20,6 +20,7 @@ const DEFAULT_PROFILE = {
     address: '',
     profile_pic: { url: null },
     profile_banner: { url: null },
+    balance: 0,
 }
 
 const AuthContext = React.createContext<AuthContextProps>({
@@ -42,14 +43,14 @@ export const AuthProvider: FC<
         /*
          * Create user if not exists
          */
-        const result = await fetchUsers({ address })
+        const result = await fetchUsers({ address_contains: address })
         if (result.length < 1) {
             await createUser({ address })
         }
     }
 
     const getProfile = async (address) => {
-        const result = await fetchUsers({ address })
+        const result = await fetchUsers({ address_contains: address })
         setProfile(result[0])
     }
 

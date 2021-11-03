@@ -51,7 +51,8 @@
         "set_name": "設置名稱"
     },
     "items": {
-        "edit_profile": "編輯個人資料"
+        "edit_profile": "編輯個人資料",
+        "minting_pending": "我們正在鑄造您的物品！ 交易完成後請點擊刷新！"
     },
     "product": {
         "creator": "製作者",

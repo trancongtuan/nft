@@ -96,7 +96,10 @@ export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
                             fontSize: 1,
                         }}
                     >
-                        {offer} ETH
+                        {parseFloat(offer) * 0.975 || 0} ETH
+                    </Text>
+                    <Text sx={{ fontSize: 1, color: 'textSecondary' }}>
+                        (- 2.5% Fee)
                     </Text>
                 </Flex>
             </Box>

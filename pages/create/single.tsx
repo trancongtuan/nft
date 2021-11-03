@@ -1,122 +1,36 @@
+import { GetStaticProps } from 'next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useRouter } from 'next/router'
+import React, {
+    ChangeEventHandler,
+    FC, useRef,
+    useState
+} from 'react'
 import 'react-datepicker/dist/react-datepicker.css'
+import Popover from 'react-popover'
 import {
     Box,
     Button,
-    Flex,
-    Grid,
-    Input,
-    Text,
-    Image as UIIMage,
+    Flex, Image as UIIMage, Input,
+    Text
 } from 'theme-ui'
-import React, {
-    ChangeEventHandler,
-    FC,
-    ReactNode,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
-import Popover from 'react-popover'
-import { useRouter } from 'next/router'
-import Image from 'next/image'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
-import Layout from '../../containers/Layout'
-import CloseIcon from '../../public/assets/images/icons/close.svg'
-import HelpIcon from '../../public/assets/images/icons/help.svg'
-import BackIcon from '../../public/assets/images/icons/back.svg'
-
+import { useAuth } from '../../hooks/auth'
 import BidCard from '../../components/BidCard'
 import CustomInput from '../../components/CustomInput'
 import Tooltip from '../../components/Tooltip'
+import Layout from '../../containers/Layout'
+import BackIcon from '../../public/assets/images/icons/back.svg'
+import CloseIcon from '../../public/assets/images/icons/close.svg'
+import HelpIcon from '../../public/assets/images/icons/help.svg'
+import { mint, uploadImageToIPFS, uploadJsonToIPFS, preMintRequest } from '../../queries'
 import { randomString } from '../../utils'
-import { uploadJsonToIPFS, uploadImageToIPFS, mint } from '../../queries';
-
-interface CurrencyIconProps {
-    name: string
-}
-
-const CurrencyIcon: FC<CurrencyIconProps> = ({ name }) => (
-    <Box
-        mr={16}
-        sx={{
-            width: 24,
-            height: 24,
-            borderRadius: 2,
-            overflow: 'hidden',
-        }}
-    >
-        <Image
-            src={`/assets/images/${name}.png`}
-            width={24}
-            height={24}
-            alt={name}
-        />
-    </Box>
-)
-
-interface MarketplaceItemProps {
-    id: string | number
-    icon: () => ReactNode
-    label: string
-    onClick?: () => void
-    selected?: boolean
-}
-
-const MarketplaceItem: FC<MarketplaceItemProps> = ({
-    id,
-    icon,
-    label,
-    onClick,
-    selected,
-}) => (
-    <Flex
-        onClick={onClick}
-        key={id}
-        px={20}
-        sx={{
-            flex: 1,
-            height: 140,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderWidth: 2,
-            borderStyle: 'solid',
-            borderColor: selected ? 'primary' : 'borderColor',
-            borderRadius: 1,
-            ':hover': {
-                borderColor: selected ? 'primary' : 'borderHoverColor',
-            },
-            flexDirection: 'column',
-            cursor: 'pointer',
-        }}
-        color="text"
-    >
-        {icon()}
-        <Text
-            mt={8}
-            sx={{
-                maxWidth: 60,
-                textAlign: 'center',
-                fontSize: [12, 14],
-                fontWeight: 'heavy',
-            }}
-        >
-            {label}
-        </Text>
-    </Flex>
-)
-
-interface CollectionItemProps {
-    id: string | number
-    icon: () => ReactNode
-    label: string
-    onClick?: () => void
-    selected?: boolean
-    subLabel: string
-}
 
 const Single: FC = () => {
     const ref = useRef<HTMLInputElement>(null)
+
+    const { profile } = useAuth()
+
+    const [statusText, setStatusText] = useState('')
     const [file, setFile] = useState<File>(null)
     const [loading, setLoading] = useState(false)
     const defaultAddress = `ultcube_local_${randomString(20)}`
@@ -149,15 +63,18 @@ const Single: FC = () => {
         setFile(event.target.files[0])
     }
     const [showHelp, setShowHelp] = useState(false)
+    const [preMint, setPreMint] = useState(false)
     const router = useRouter()
 
-    const onCreate: (event) => void = async (assetData) => {
+    const onCreate: (event, isPreMint) => void = async (assetData, isPreMint) => {
         try {
             setLoading(true)
 
+            setStatusText('Minting machine starting...')
             const files = Array.from([file])
             if (files.length < 1) return
 
+            setStatusText('Uploading image to IPFS...')
             const mediaUploadResult = await uploadImageToIPFS(files)
             const nftData = {
                 name: assetData.name,
@@ -166,15 +83,26 @@ const Single: FC = () => {
                 attributes: {},
             }
         
+            setStatusText('Preparing NFT JSON...')
             const result = await uploadJsonToIPFS(nftData);
-            const hash = await mint(`https://gateway.pinata.cloud/ipfs/${result.IpfsHash}`)
-            alert(`Minted: ${hash}, please wait for network confirmation and refresh My Item page.`);
-            router.push('/my_items')
+
+            setStatusText('Minting now! Please approve the transaction on your wallet!')
+            if (isPreMint) {
+                const preMintResult = await preMintRequest(`Resulthttps://gateway.pinata.cloud/ipfs/${result.IpfsHash}`, profile.address);
+                console.log(preMintResult)
+            } else {
+                await mint(`https://gateway.pinata.cloud/ipfs/${result.IpfsHash}`)
+                alert(`Minted, please wait for network confirmation and refresh My Item page.`);
+            }
+
+            setStatusText('Minted, please wait for network confirmation and refresh My Item page.')
+            router.push('/my_items?minted=1')
         } catch (e) {
             if (e.message) return alert(e.message)
             alert(e.toString())
         } finally {
             setLoading(false)
+            setStatusText('')
         }
     }
 
@@ -323,13 +251,18 @@ const Single: FC = () => {
                                     value={assetData.description || ''}
                                 />
                             </Box>
+                            <div className="mt-6">
+                                <input type="checkbox" id="pre-mint" name="pre-mint" value="Bike" onChange={(e) => setPreMint(e.target.checked)}/>
+                                <label className="font-bold ml-2">Mint and pay by buyer</label><br />
+                            </div>
+
                             <Flex mt={32} sx={{ alignItems: 'center' }}>
                                 <Button
                                     disabled={loading}
                                     sx={{ minWidth: 192 }}
-                                    onClick={() => onCreate(assetData)}
+                                    onClick={() => onCreate(assetData, preMint)}
                                 >
-                                    {loading ? 'Loading' : 'Create item'}
+                                    {loading ? statusText : 'Create item'}
                                 </Button>
                                 <Text
                                     ml="auto"
