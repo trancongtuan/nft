@@ -4,11 +4,11 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useRouter } from 'next/router'
 import React, { FC, useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useTranslation } from 'react-i18next'
 import Popover from 'react-popover'
-import { useRouter } from 'next/router'
 import { Box, Flex, Text, useColorMode } from 'theme-ui'
 import Web3 from 'web3'
 import Avatar from '../components/Avatar'
@@ -28,7 +28,8 @@ import TelegramIcon from '../public/assets/images/icons/telegram.svg'
 import ThreeDos from '../public/assets/images/icons/threedos.svg'
 import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 import UploadIcon from '../public/assets/images/icons/upload.svg'
-import { Asset, EthUser, fetchAssets, fetchUsers, updateUserAssets } from '../queries'
+import { Asset, EthUser, fetchAssets, fetchUsers, getPreMintByCreator, updateUserAssets } from '../queries'
+import BidCard from '../components/BidCard'
 
 const Items: FC = () => {
     const router = useRouter()
@@ -42,6 +43,8 @@ const Items: FC = () => {
     const [showReportPopup, setShowReportPopup] = useState(false)
     const [assets, setAssets] = useState<null | Asset[]>(null)
     const [refreshing, setRefreshing] = useState(false)
+    const [page, setPage] = useState(1)
+    const [preMintItems, setPreMintItems] = useState([])
     const [profile, setProfile] = useState<EthUser>({
         id: null,
         display_name: '',
@@ -68,27 +71,27 @@ const Items: FC = () => {
         }
     }
 
-    const updateAssets = async (forceReload = false) => {
+    const updateAssets = async (forceReload = false, _page = 1) => {
         try {
+            setRefreshing(true)
             const web3 = new Web3(window.ethereum)
-
             const address = await web3.eth.getAccounts()
             const accountAddress: string = address[0]
 
-            
-            let result = []; 
+            let result = [];
             if (forceReload) {
-                setRefreshing(true)
                 result = await updateUserAssets(accountAddress)
             } else {
                 const query = {
                     owner_address_contains: accountAddress,
                     _sort: 'createdAt:ASC',
                     _limit: 20,
+                    _start: _page * 20
                 }
                 result = await fetchAssets(query)
             }
 
+            setPage(_page);
             setAssets(result);
         } catch (e) {
             alert(e.toString())
@@ -104,12 +107,21 @@ const Items: FC = () => {
         try {
             const address = await web3.eth.getAccounts()
             const accountAddress: string = address[0]
-            setConnected(!!accountAddress)
+            setConnected(accountAddress)
             updateProfile()
-            updateAssets()
+            updateAssets(false, 0)
         } catch (e) {
             alert(e.toString())
         }
+    }
+
+    const updatePreMintItem = async () => {
+        const web3 = new Web3(window.ethereum)
+        const address = await web3.eth.getAccounts()
+        const accountAddress: string = address[0]
+
+        const result = await getPreMintByCreator(accountAddress)
+        setPreMintItems(result)
     }
 
     useEffect(() => {
@@ -118,8 +130,9 @@ const Items: FC = () => {
         } else {
             updateProfile()
             updateAssets()
+            updatePreMintItem()
         }
-    }, [])
+    }, [connected])
 
     return (
         <Box>
@@ -369,8 +382,8 @@ const Items: FC = () => {
                     </Flex>
 
                     {
-                        minted && 
-                            <p className="mt-4 font-bold text-center border-2 border-gray-400 rounded-full py-2 px-4">{t('items.minting_pending')}</p>
+                        minted &&
+                        <p className="mt-4 font-bold text-center border-2 border-gray-400 rounded-full py-2 px-4">{t('items.minting_pending')}</p>
                     }
                 </Flex>
             </Box>
@@ -384,10 +397,71 @@ const Items: FC = () => {
                 }}
             >
                 {
+                    preMintItems.length > 0 &&
+                    <div>
+                        <h1 className="font-bold">Pre-Mint Items</h1>
+                        <Flex mt={18} mx={-10} mb={28} sx={{ flexWrap: 'wrap' }}>
+                            {preMintItems.map(item => (
+                                <Box
+                                    key={item.id}
+                                    p={10}
+                                    sx={{
+                                        maxWidth: [
+                                            '100%',
+                                            '50%',
+                                            '33.3333%',
+                                            '25%',
+                                            '20%',
+                                        ],
+                                        flex: [
+                                            '0 0 100%',
+                                            '0 0 50%',
+                                            '0 0 33.3333%',
+                                            '0 0 25%',
+                                            '0 0 20%',
+                                        ],
+                                    }}
+                                >
+                                    <BidCard
+                                        key={item.id}
+                                        onCLick={() =>
+                                            router.push(
+                                                `/pre_mint/${item.id}`
+                                            )
+                                        }
+                                        name={item.data?.meta?.name || 'Unnamed'}
+                                        image={item.data?.meta?.image}
+                                        currency="ETH"
+                                        price={0}
+                                        creator={item.creator_address}
+                                        owner={item.creator_address}
+                                        selling={false}
+                                    />
+                                </Box>
+                            ))}
+                        </Flex>
+                    </div>
+                }
+                {
                     assets === null ?
                         <h3 style={{ textAlign: 'center', marginTop: 20 }}>Loading...</h3>
                         : <MyItemCardList assets={assets} />
                 }
+                <div className="flex w-full text-center">
+                    {
+                        page > 1 &&
+                        <Button
+                            variant="border"
+                            className="ml-auto border rounded-full"
+                            onClick={() => updateAssets(false, page - 1)}
+                        >{refreshing ? 'Loading' : 'Previous Page'}</Button>
+                    }
+                    <Button
+                        variant="border"
+                        className={`${page > 1 ? 'mr-auto' : 'm-auto'} border rounded-full`}
+                        onClick={() => updateAssets(false, page + 1)}
+                    >{refreshing ? 'Loading' : 'Next Page'}</Button>
+                </div>
             </Box>
             <Footer />
             <Popup

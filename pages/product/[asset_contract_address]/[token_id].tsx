@@ -1,31 +1,29 @@
 /* eslint-disable no-alert */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable @typescript-eslint/no-shadow */
-import React, { FC, useEffect, useState } from 'react'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import Popover from 'react-popover'
-import { Box, Text, Flex, Image, Button, useColorMode } from 'theme-ui'
 // import { useRouter } from 'next/router'
+import OrderList from '../../../components/OrderList'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { OpenSeaPort, Network } from 'opensea-js'
-import { OrderSide } from 'opensea-js/lib/types'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import NavigationBar from '../../../components/NavigationBar'
-import Tooltip from '../../../components/Tooltip'
+import Popover from 'react-popover'
+import { Box, Button, Flex, Image, Text } from 'theme-ui'
 import Avatar from '../../../components/Avatar'
-import ThreeDos from '../../../public/assets/images/icons/threedos.svg'
-import FavoriteIcon from '../../../public/assets/images/icons/favorite.svg'
-import TopSellerCard from '../../../components/TopSellerCard'
+import CountDownBox from '../../../components/CountDownBox'
+import NavigationBar from '../../../components/NavigationBar'
 import Popup from '../../../components/Popup'
-import PopupPlaceABid from '../../../components/PopupPurchase'
 import PopupPlaceAnOffer from '../../../components/PopupPlaceAnOffer'
+import PopupPlaceABid from '../../../components/PopupPurchase'
 import PopupShare from '../../../components/PopupShare'
 import PreviewProduct from '../../../components/PreviewProduct'
+import Tooltip from '../../../components/Tooltip'
+import TopSellerCard from '../../../components/TopSellerCard'
 import { useAuth } from '../../../hooks/auth'
-import { Asset, updateSingleAsset, fetchAssets } from '../../../queries'
-const OPENSEA_URL = process.env.NEXT_PUBLIC_OPENSEA_URL;
-const Web3 = require('web3')
+import ThreeDos from '../../../public/assets/images/icons/threedos.svg'
+import { Asset, cancelOrder, createSellOrder, fetchAssets, fulfillOrder, updateSingleAsset, createBuyOrder, getOrder } from '../../../queries'
 
+const OPENSEA_URL = process.env.NEXT_PUBLIC_OPENSEA_URL;
 
 type ProductParams = {
     asset_contract_address: string
@@ -57,14 +55,6 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
 }) => {
     const { t } = useTranslation('common')
     const { connected } = useAuth()
-    const [seaport, setSeaport] = useState<any>()
-    const [colorMode] = useColorMode()
-    const checkHeartIconColor = (): string => {
-        if (colorMode === 'dark') {
-            return 'white'
-        }
-        return 'text'
-    }
 
     const createTooltipItems = (allowPlaceBid = false, address, tokenId, setOpenPopupShare): Array<{ id: number, label: string }> => {
         const items = [
@@ -79,30 +69,15 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 action: () => setOpenPopupShare(true),
             },
         ]
-    
+
         if (allowPlaceBid) items.unshift({
             id: 1,
             label: t('product.place_a_bid'),
             action: () => new Promise((res, rej) => { rej() }),
         })
-    
+
         return items;
     }
-
-    useEffect(() => {
-        const provider =
-            typeof window.web3 !== 'undefined'
-                ? window.web3.currentProvider
-                : new Web3.providers.HttpProvider(
-                    'https://rinkeby.infura.io/v3/014909ef8db84165ade6e01f5efb6e74'
-                )
-
-        const seaPort = new OpenSeaPort(provider, {
-            // networkName: Network.Main
-            networkName: Network.Rinkeby,
-        })
-        setSeaport(seaPort)
-    }, [])
 
     const [showProduct, setShowProduct] = useState(false)
     const [openPopupPlaceABid, setOpenPopupPlaceABid] = useState(false)
@@ -111,6 +86,9 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const [openPreview, setOpenPreview] = useState(false)
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState(asset)
+    const [buyOrder, setBuyOrder] = useState([]);
+    const [sellOrder, setSellOrder] = useState([]);
+
     const {
         token_id,
         asset_contract: { address: asset_contract_address },
@@ -123,75 +101,75 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
     const sellOrders = data?.orders || null;
 
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    const makeBid = async () => {
+    const buyNow = useCallback(async () => {
         setLoading(true)
 
         // Get Address
         try {
-            if (!window.ethereum) throw new Error('Please install MetaMask.')
-            let accountAddress = await window.ethereum.enable()
-            if (!accountAddress[0]) throw new Error('No account selected.')
-            accountAddress = accountAddress[0]
-
-            const {
-                token_id,
-                asset_contract: { address: asset_contract_address },
-            } = data
-
-            const order = await seaport.api.getOrder({
-                side: OrderSide.Sell,
-                asset_contract_address,
-                token_id,
-            })
-            const transactionHash = await seaport.fulfillOrder({
-                order,
-                accountAddress,
-            })
-
-            if (transactionHash) {
-                await updateSingleAsset(
-                    asset_contract_address,
-                    token_id,
-                    accountAddress
-                )
-                alert('Purchased')
-                reFetchAsset()
-            }
+            await fulfillOrder(data, false)
+            reFetchAsset()
             setOpenPopupPlaceABid(false)
         } catch (e) {
             alert(e.message)
         } finally {
             setLoading(false)
         }
-    }
+    }, [data])
 
-    const makeOffer = async (price): Promise<void> => {
+    const acceptBid = useCallback(async () => {
+        setLoading(true)
+
+        // Get Address
+        try {
+            const hash = await fulfillOrder(data, true)
+            reFetchAsset()
+            alert(`You accepted the bid! Please wait for ${hash} to confirm`)
+        } catch (e) {
+            alert(e.message)
+        } finally {
+            setLoading(false)
+        }
+    }, [data])
+
+    const placeABid = useCallback(async (quantity, startAmount, duration) => {
+        setLoading(true)
+
+        try {
+            let expirationTime = null
+            if (duration > 0) {
+                let dayInSec = 60 * 60 * 24 * duration
+                expirationTime = Math.round(Date.now() / 1000 + dayInSec)
+            }
+
+            await createBuyOrder({
+                tokenAddress: asset_contract_address,
+                tokenId: token_id,
+                startAmount,
+                quantity,
+                expirationTime,
+            })
+            reFetchAsset()
+            setOpenPopupPlaceABid(false)
+        } catch (e) {
+            alert(e.message)
+        } finally {
+            setLoading(false)
+        }
+    }, [data])
+
+    const sellNow = useCallback(async (price, timeAuction, duration): Promise<void> => {
         // Get Address
         try {
             setLoading(true)
-            if (!window.ethereum) throw new Error('Please install MetaMask.')
-            let accountAddress = await window.ethereum.enable()
-            if (!accountAddress[0]) throw new Error('No account selected.')
-            accountAddress = accountAddress[0]
 
-            const {
-                token_id,
-                asset_contract: { address: asset_contract_address },
-            } = data
-
-            const fixedPriceSellOrder = await seaport.createSellOrder({
-                asset: {
-                    tokenId: token_id,
-                    tokenAddress: asset_contract_address,
-                },
-                startAmount: price,
-                expirationTime: 0,
-                accountAddress,
-            })
-
-            alert(
-                `Successfully created a fixed-price sell order! ${fixedPriceSellOrder.asset.openseaLink}\n`
-            )
+            let expirationTime;
+            if (timeAuction > 0) {
+                let dayInSec = 60 * 60 * 24 * duration
+                expirationTime = Math.round(Date.now() / 1000 + dayInSec)
+            }
+            const result = await createSellOrder(data, price, timeAuction, expirationTime);
+            
+            alert(`Successfully created a ${timeAuction ? 'time auction' : 'fixed-price'} sell order! ${result.asset.openseaLink}`)
             setOpenPopupPlaceAnOffer(false)
             reFetchAsset()
         } catch (e) {
@@ -199,7 +177,20 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
         } finally {
             setLoading(false)
         }
-    }
+    }, [data])
+
+    const cancelListing = useCallback(async (): Promise<void> => {
+        try {
+            setLoading(true)
+            await cancelOrder(asset_contract_address, token_id)
+            alert(`Order cancelling, please wait for transaction completed`)
+            reFetchAsset()
+        }  catch (e) {
+            alert(e.message)
+        } finally {
+            setLoading(false)
+        }
+    }, [token_id, asset_contract_address])
 
     const reFetchAsset = async () => {
         try {
@@ -212,10 +203,16 @@ const Product: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
                 asset_contract_address,
                 token_id,
             )
-
-console.log(result)
-
             setData(result)
+
+            if (result?.orders.length > 0) {
+                await new Promise((res) => setTimeout(() => {res(0)}, 1000))
+                const buyOrder = await getOrder(asset_contract_address, token_id, 'buy')    
+                setBuyOrder(buyOrder.orders)
+                await new Promise((res) => setTimeout(() => {res(0)}, 1000))
+                const sellOrder = await getOrder(asset_contract_address, token_id, 'sell')
+                setSellOrder(sellOrder.orders)
+            }
         } catch (e) {
             alert(e.toString())
         }
@@ -224,6 +221,10 @@ console.log(result)
     useEffect(() => {
         reFetchAsset();
     }, []);
+
+    const haveSellOrders = (Array.isArray(sellOrder) && sellOrder.length > 0);
+    const firstSellOrder = haveSellOrders && sellOrder[0] || null
+    const bidExpiration = haveSellOrders && firstSellOrder.listingTime.toString() || null
 
     return (
         <Box>
@@ -454,6 +455,16 @@ console.log(result)
                                 ))}
                             </Flex>
                         </Box>
+                        {
+                            bidExpiration &&
+                                <CountDownBox className="mt-auto" endTime={bidExpiration}/>
+                        }
+                        <OrderList
+                            buyOrder={buyOrder}
+                            sellOrder={sellOrder}
+                            owner={iAmOwner}
+                            onAcceptBid={acceptBid}
+                        />
                     </Box>
                     <Box
                         sx={{
@@ -478,15 +489,16 @@ console.log(result)
                             <Flex>
                                 {iAmOwner ? (
                                     <Button
-                                        disabled={(Array.isArray(sellOrders) && sellOrders.length > 0)}
                                         variant="primary"
                                         mr={10}
                                         sx={{ width: '50%', height: '40px' }}
                                         onClick={() =>
-                                            setOpenPopupPlaceAnOffer(true)
+                                            haveSellOrders ? 
+                                                cancelListing()
+                                                : setOpenPopupPlaceAnOffer(true)
                                         }
                                     >
-                                        {(Array.isArray(sellOrders) && sellOrders.length > 0) ? t('product.selling') : t('product.sell_item')}
+                                        {haveSellOrders ? t('product.cancel_listing') : t('product.sell_item')}
                                     </Button>
                                 ) : (
                                     <Button
@@ -494,11 +506,13 @@ console.log(result)
                                         variant="primary"
                                         mr={10}
                                         sx={{ width: '50%', height: '40px', opacity: sellOrders ? '100%' : '50%', cursor: sellOrders ? 'pointer' : 'not-allowed' }}
-                                        onClick={() =>
-                                            setOpenPopupPlaceABid(true)
-                                        }
+                                        onClick={() => setOpenPopupPlaceABid(true)}
                                     >
-                                        {!sellOrders ? t('product.this_item_is_not_on_sale') : t('product.buy_now')}
+                                        {
+                                            !sellOrders ? 
+                                                t('product.this_item_is_not_on_sale') 
+                                                : bidExpiration ? t('product.place_a_bid') : t('product.buy_now')
+                                        }
                                     </Button>
                                 )}
                                 <Button
@@ -519,9 +533,10 @@ console.log(result)
                             >
                                 <PopupPlaceABid
                                     name={data?.name || ''}
-                                    onConfirm={makeBid}
+                                    onConfirm={(qty, cost, duration) => bidExpiration ? placeABid(qty, cost, duration) : buyNow()}
                                     onClose={() => setOpenPopupPlaceABid(false)}
                                     loading={loading}
+                                    isBid={bidExpiration !== null}
                                 />
                             </Popup>
                             <Popup
@@ -533,7 +548,7 @@ console.log(result)
                             >
                                 <PopupPlaceAnOffer
                                     name={data?.name || ''}
-                                    onConfirm={makeOffer}
+                                    onConfirm={sellNow}
                                     onClose={() =>
                                         setOpenPopupPlaceAnOffer(false)
                                     }

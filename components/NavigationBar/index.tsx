@@ -109,6 +109,7 @@ const NavigationBar: FC = () => {
                 }}
             >
                 <Flex
+                    ml="auto"
                     sx={{
                         '@media screen and (max-width: 890px)': {
                             display: 'none',
@@ -133,7 +134,7 @@ const NavigationBar: FC = () => {
                         }}
                     />
                 </Flex>
-                <Flex ml="auto">
+                <Flex>
                     <Button
                         onClick={() => router.push('/create')}
                         variant="secondary"
@@ -281,7 +282,7 @@ const NavigationBar: FC = () => {
                                 />
                                 <TooltipItem
                                     onClick={() => {
-                                        setConnected(false)
+                                        setConnected(null)
                                         setShowDetail(false)
                                     }}
                                     label="Disconnect"

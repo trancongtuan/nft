@@ -5,13 +5,15 @@ import CustomInput from './CustomInput'
 
 interface Props {
     name
-    onConfirm: (offer: string) => void
+    onConfirm: (offer: string, timeAuction?: boolean, duration?: number) => void
     loading: boolean
     onClose?: () => void
 }
 
 export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
     const [offer, setOffer] = useState('')
+    const [duration, setDuration] = useState(3)
+    const [timeAuction, setTimeAuction] = useState(false)
 
     return (
         <Flex
@@ -25,10 +27,16 @@ export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
                 You are about to place a offer for {name}
                 {/* <b>CRYPTOxPINS #25 Crypto Boy</b> */}
             </Text>
+            <Box sx={{ width: '100%' }} mt={0}>
+                <div className="mt-6">
+                    <input type="checkbox" id="pre-mint" name="pre-mint" value="Bike" onChange={(e) => setTimeAuction(e.target.checked)} />
+                    <label className="font-bold ml-2">Time Auction</label><br />
+                </div>
+            </Box>
             <Box sx={{ width: '100%' }} mt={3}>
                 <CustomInput
                     onChange={(v) => setOffer(v || '')}
-                    label="Your offer"
+                    label={timeAuction ? 'Starting Price' : 'Amount'}
                     value={offer}
                     placeholder="Enter offer"
                     staticRight="ETH"
@@ -42,49 +50,19 @@ export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
                     placeholder="Enter quantity"
                 />
             </Box>
+            {
+                timeAuction &&
+                    <Box sx={{ width: '100%' }} mt={3}>
+                        <CustomInput
+                            onChange={(v) => setDuration(parseInt(v) || 0)}
+                            label="Duration"
+                            optionLabel="day"
+                            value={`${duration}`}
+                            placeholder="Duration"
+                        />
+                    </Box>
+            }
             <Box sx={{ width: '100%' }} mt={2}>
-                {/* <Flex sx={{ justifyContent: 'space-between' }} my={1}>
-                    <Text sx={{ fontSize: 1, color: 'textSecondary' }}>
-                        Your balance
-                    </Text>
-                    <Text
-                        sx={{
-                            fontWeight: 'semiBold',
-                            color: 'text',
-                            fontSize: 1,
-                        }}
-                    >
-                        0 ETH
-                    </Text>
-                </Flex> */}
-                {/* <Flex sx={{ justifyContent: 'space-between' }} my={1}>
-                    <Text sx={{ fontSize: 1, color: 'textSecondary' }}>
-                        Your bidding balance
-                    </Text>
-                    <Text
-                        sx={{
-                            fontWeight: 'semiBold',
-                            color: 'text',
-                            fontSize: 1,
-                        }}
-                    >
-                        0 ETH
-                    </Text>
-                </Flex> */}
-                {/* <Flex sx={{ justifyContent: 'space-between' }} my={1}>
-                    <Text sx={{ fontSize: 1, color: 'textSecondary' }}>
-                        Service fee
-                    </Text>
-                    <Text
-                        sx={{
-                            fontWeight: 'semiBold',
-                            color: 'text',
-                            fontSize: 1,
-                        }}
-                    >
-                        0.026 ETH
-                    </Text>
-                </Flex> */}
                 <Flex sx={{ justifyContent: 'space-between' }} my={1}>
                     <Text sx={{ fontSize: 1, color: 'textSecondary' }}>
                         You will get
@@ -109,7 +87,7 @@ export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
                 mr={10}
                 mt={3}
                 sx={{ width: '100%', height: '40px' }}
-                onClick={() => onConfirm(offer)}
+                onClick={() => onConfirm(offer, timeAuction, duration)}
             >
                 {loading ? 'Loading...' : 'Create Offer'}
             </Button>

@@ -8,9 +8,10 @@ import { useAuth } from '../hooks/auth'
 
 interface Props {
     name: string
-    onConfirm?: (amount: any) => Promise<void>
+    onConfirm?: (quanity: any, cost: number, duration: number) => Promise<void>
     loading?: boolean
     onClose?: any
+    isBid?: boolean
 }
 
 export const PopupPlaceABid = ({
@@ -18,10 +19,12 @@ export const PopupPlaceABid = ({
     onConfirm,
     onClose,
     loading,
+    isBid = false,
 }: Props) => {
     const [quantity, setQuantity] = useState('1')
-    const [cost, setCost] = useState('')
-    const { profile, connected, setConnected } = useAuth()
+    const [cost, setCost] = useState(0)
+    const { profile } = useAuth()
+    const [duration, setDuration] = useState(3)
 
     return (
         <Flex
@@ -48,12 +51,24 @@ export const PopupPlaceABid = ({
                 <CustomInput
                     type="number"
                     label=""
-                    onChange={(v) => setCost(v)}
+                    onChange={(v) => setCost(parseFloat(v) || 0)}
                     value={`${cost}`}
                     placeholder="Enter Amount"
                     staticRight="ETH"
                 />
             </Box>
+            {
+                isBid &&
+                    <Box sx={{ width: '100%' }} mt={3}>
+                        <CustomInput
+                            onChange={(v) => setDuration(parseInt(v) || 0)}
+                            label="Duration"
+                            optionLabel="day"
+                            value={`${duration}`}
+                            placeholder="Duration"
+                        />
+                    </Box>
+            }
             <Box sx={{ width: '100%' }} mt={2}>
                 <Flex sx={{ justifyContent: 'space-between' }} my={1}>
                     <Text sx={{ fontSize: 1, color: 'textSecondary' }}>
@@ -103,10 +118,10 @@ export const PopupPlaceABid = ({
                 mr={10}
                 mt={3}
                 sx={{ width: '100%', height: '40px' }}
-                onClick={() => onConfirm(0)}
+                onClick={() => onConfirm(quantity, cost, duration)}
                 disabled={loading}
             >
-                {loading ? 'Loading...' : 'Proceed to payment'}
+                {loading ? 'Loading...' : isBid ? 'Place a bid' : 'Proceed to payment'}
             </Button>
             <Button
                 variant="secondary"

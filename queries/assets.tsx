@@ -197,6 +197,8 @@ export interface Asset {
     asset_type?: { name: string }
     orders: {
         current_price: number
+        expiration_time: number
+        closing_date: string
     }[]
     top_ownerships: {
         owner: {

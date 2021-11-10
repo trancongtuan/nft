@@ -34,7 +34,7 @@ export const AuthProvider: FC<
 > = ({ children }) => {
     const [connected, setConnected] = useState<null | string>(null)
     const [profile, setProfile] = useState<EthUser>(DEFAULT_PROFILE)
-    
+    console.log('profile', profile);
     // eslint-disable-next-line no-underscore-dangle
     const _setConnected = async (address) => {
         setConnected(address)
@@ -44,15 +44,23 @@ export const AuthProvider: FC<
         /*
          * Create user if not exists
          */
-        const result = await fetchUsers({ address_contains: address })
-        if (result.length < 1) {
-            await createUser({ address })
+        try {
+            const result = await fetchUsers({ address_contains: address })
+            if (result.length < 1) {
+                await createUser({ address })
+            }
+        } catch(e) {
+            console.log('Set connected error', e)
         }
     }
 
     const getProfile = async (address) => {
-        const result = await fetchUsers({ address_contains: address })
-        setProfile(result[0])
+        try {
+            const result = await fetchUsers({ address_contains: address })
+            if (result[0]) setProfile(result[0])
+        } catch(e) {
+            console.log('Get Profile Error', e);
+        }
     }
 
     const testConnected = async () => {

@@ -1,11 +1,12 @@
 interface IButton {
+  disabled?: boolean
   variant: 'primary' | 'border'
   children: any
   onClick?: any
   className?: string
 }
 
-const Button = ({ variant, children, onClick, className = '' }: IButton) => {
+const Button = ({ disabled = false, variant, children, onClick, className = '' }: IButton) => {
   let _className = 'py-2 px-4 h-10 bold rounded-full m-1 transform active:scale-95 text-sm font-bold';
   const style: any = {};
 
@@ -14,6 +15,7 @@ const Button = ({ variant, children, onClick, className = '' }: IButton) => {
   
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
       className={_className + ' ' + className}
       style={style}

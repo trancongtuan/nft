@@ -88,8 +88,8 @@ const Single: FC = () => {
 
             setStatusText('Minting now! Please approve the transaction on your wallet!')
             if (isPreMint) {
-                const preMintResult = await preMintRequest(`Resulthttps://gateway.pinata.cloud/ipfs/${result.IpfsHash}`, profile.address);
-                console.log(preMintResult)
+                const data = { meta: nftData, ipfsJson: `https://gateway.pinata.cloud/ipfs/${result.IpfsHash}` }
+                await preMintRequest(data, profile.address);
             } else {
                 await mint(`https://gateway.pinata.cloud/ipfs/${result.IpfsHash}`)
                 alert(`Minted, please wait for network confirmation and refresh My Item page.`);
