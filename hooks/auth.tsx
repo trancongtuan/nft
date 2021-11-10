@@ -32,8 +32,9 @@ const AuthContext = React.createContext<AuthContextProps>({
 export const AuthProvider: FC<
     React.PropsWithChildren<Record<string, unknown>>
 > = ({ children }) => {
-    const [connected, setConnected] = useLocalStorage('connected', false)
+    const [connected, setConnected] = useState<null | string>(null)
     const [profile, setProfile] = useState<EthUser>(DEFAULT_PROFILE)
+    
     // eslint-disable-next-line no-underscore-dangle
     const _setConnected = async (address) => {
         setConnected(address)
@@ -54,6 +55,21 @@ export const AuthProvider: FC<
         setProfile(result[0])
     }
 
+    const testConnected = async () => {
+        // Get Address
+        try {
+            let accountAddress: any
+            if (!window.ethereum) throw new Error('Please install MetaMask.')
+            accountAddress = await window.ethereum.enable()
+            if (!accountAddress[0]) throw new Error('No account selected.')
+            // eslint-disable-next-line prefer-destructuring
+            accountAddress = accountAddress[0]
+            setConnected(accountAddress)
+        } catch (e) {
+            alert(e.message)
+        }
+    }
+
     useEffect(() => {
         if (connected) {
             getProfile(connected)
@@ -61,6 +77,10 @@ export const AuthProvider: FC<
             setProfile(DEFAULT_PROFILE)
         }
     }, [connected])
+
+    useEffect(() => {
+        testConnected()
+    }, [])
 
     return (
         <AuthContext.Provider
