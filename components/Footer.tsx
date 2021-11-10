@@ -179,8 +179,7 @@ const Footer: FC = () => {
                                     </Text>
                                 </Link>
                                 <UILink
-                                    href="https://www.notion.so/rarible-com-FAQ-a47b276aa1994f7c8e3bc96d700717c5"
-                                    target="_blank"
+                                    href="/how_it_works"
                                     mb={12}
                                     sx={{
                                         cursor: 'pointer',

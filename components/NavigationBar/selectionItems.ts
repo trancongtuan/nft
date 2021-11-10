@@ -23,6 +23,6 @@ export default [
     {
         id: '5',
         label: 'general.how_it_work',
-        value: '/how_it_work',
+        value: '/how_it_works',
     },
 ]
