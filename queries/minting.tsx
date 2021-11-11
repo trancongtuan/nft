@@ -7,7 +7,7 @@ const web3 = createAlchemyWeb3(API_URL);
 
 const singleContract = require("../utils/contracts/single.json");
 const multiContract = require("../utils/contracts/multi.json");
-const singleMintingContractAddress = "0xDf990Bbf74ed828d68992F9D5CFdC48932E28EE3";
+const singleMintingContractAddress = "0x8277885126bB6d5d5ba6A9ebb43Df35d7E31C807";
 const multiMintingContractAddress = "0x50277b27624751a1FDe7c473BD61f3e9A9C2e0D2";
 
 const singleContractConnection = new web3.eth.Contract(singleContract.abi, singleMintingContractAddress);
@@ -54,6 +54,30 @@ const mint = async (attributesJsonUrl: string) => {
   return txHash;
 }
 
+const mintAndPayCreator = async (attributesJsonUrl: string, creatorAddress: string, priceInEth: number) => {
+  if (!window.ethereum) throw new Error('Please install MetaMask.')
+  const creatorKey = (await window.ethereum.enable())[0]
+  if (!creatorKey) throw new Error('No account selected.')
+  const nonce = await web3.eth.getTransactionCount(creatorKey, "latest") //get latest nonce
+
+  //the transaction
+  const tx = {
+    from: creatorKey,
+    to: singleMintingContractAddress,
+    nonce: `${nonce}`,
+    gas: '500000',
+    data: singleContractConnection.methods.mintNFTAndPayCreator(creatorKey, attributesJsonUrl, creatorAddress).encodeABI(),
+    value: (priceInEth * 10 ** 18).toString(16)
+  }
+
+  const txHash = await window.ethereum.request({
+    method: 'eth_sendTransaction',
+    params: [tx],
+  });
+  
+  return txHash;
+}
+
 const mintMultiple = async (amount: number) => {
   if (!window.ethereum) throw new Error('Please install MetaMask.')
   const creatorKey = (await window.ethereum.enable())[0]
@@ -77,4 +101,4 @@ const mintMultiple = async (amount: number) => {
   return txHash;
 }
 
-export { uploadJsonToUltcube, uploadJsonToIPFS, uploadImageToIPFS, mint, mintMultiple }
+export { uploadJsonToUltcube, uploadJsonToIPFS, uploadImageToIPFS, mint, mintMultiple, mintAndPayCreator }

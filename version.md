@@ -13,7 +13,10 @@ Done:
 - Mobile menu button should hidden
 - Hide [Add funds with master / visa] on [Connected] button
 - Edit Profile > Custome URL remove rariable
-
+- Activity page should fully changes
+  > Need Ultcube provide content
+- Bid function chcek (Partially done)
+- Try to mint on first buy
 
 Hidding, make it after MVP
 - Bid card > Buy now, heart not working
@@ -27,12 +30,6 @@ Hidding, make it after MVP
 - Place an offer, You will get xxx ETH need to deduct the fees
 
 Pending:
-- Activity page should fully changes
-  > Need Ultcube provide content
 - Set royalty on item, total 3 fees on transaction: Opensea 2.5%, Ultcube ?%, Creator royalty x%
   > https://support.opensea.io/hc/en-us/articles/1500009575482-How-do-royalties-work-on-OpenSea-
   > https://eips.ethereum.org/EIPS/eip-2981
-
-WIP:
-- Bid function chcek (Partially done)
-- Try to mint on first buy

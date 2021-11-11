@@ -8,9 +8,10 @@ interface Props {
     onConfirm: (offer: string, timeAuction?: boolean, duration?: number) => void
     loading: boolean
     onClose?: () => void
+    allowTimeAuction: boolean
 }
 
-export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
+export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading, allowTimeAuction = true }) => {
     const [offer, setOffer] = useState('')
     const [duration, setDuration] = useState(3)
     const [timeAuction, setTimeAuction] = useState(false)
@@ -27,12 +28,15 @@ export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading }) => {
                 You are about to place a offer for {name}
                 {/* <b>CRYPTOxPINS #25 Crypto Boy</b> */}
             </Text>
-            <Box sx={{ width: '100%' }} mt={0}>
-                <div className="mt-6">
-                    <input type="checkbox" id="pre-mint" name="pre-mint" value="Bike" onChange={(e) => setTimeAuction(e.target.checked)} />
-                    <label className="font-bold ml-2">Time Auction</label><br />
-                </div>
-            </Box>
+            {
+                allowTimeAuction &&
+                    <Box sx={{ width: '100%' }} mt={0}>
+                        <div className="mt-6">
+                            <input type="checkbox" id="pre-mint" name="pre-mint" value="Bike" onChange={(e) => setTimeAuction(e.target.checked)} />
+                            <label className="font-bold ml-2">Time Auction</label><br />
+                        </div>
+                    </Box>
+            }
             <Box sx={{ width: '100%' }} mt={3}>
                 <CustomInput
                     onChange={(v) => setOffer(v || '')}

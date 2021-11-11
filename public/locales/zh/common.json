@@ -72,7 +72,10 @@
         "this_item_is_not_on_sale": "此商品不作銷售",
         "buy_now": "立即購買",
         "share_this_nft": "分享此NFT",
-        "share_this_user": "分享此用户"
+        "share_this_user": "分享此用户",
+        "confirm_cancel_listing": "確定取消銷售？",
+        "confirm_to_buy": "確認購買NFT 以",
+        "item_purchased": "商品已購買，請等待交易完成"
     },
     "home": {
         "top": "最暢銷賣家",

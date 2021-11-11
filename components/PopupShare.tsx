@@ -1,31 +1,14 @@
-import { Box, Button, Flex } from 'theme-ui'
-import React, { FC } from 'react'
 import { useRouter } from 'next/router'
-import EmailIcon from '../public/assets/images/icons/email.svg'
-import TwitterIcon from '../public/assets/images/icons/twitter.svg'
-import TelegramIcon from '../public/assets/images/icons/telegram.svg'
-import FacebookIcon from '../public/assets/images/icons/facebook.svg'
+import React, { FC } from 'react'
 import {
     EmailShareButton,
-    FacebookShareButton,
-    HatenaShareButton,
-    InstapaperShareButton,
-    LineShareButton,
-    LinkedinShareButton,
-    LivejournalShareButton,
-    MailruShareButton,
-    OKShareButton,
-    PinterestShareButton,
-    PocketShareButton,
-    RedditShareButton,
-    TelegramShareButton,
-    TumblrShareButton,
-    TwitterShareButton,
-    ViberShareButton,
-    VKShareButton,
-    WhatsappShareButton,
-    WorkplaceShareButton
-} from "react-share";
+    FacebookShareButton, TelegramShareButton, TwitterShareButton
+} from "react-share"
+import { Box, Flex } from 'theme-ui'
+import EmailIcon from '../public/assets/images/icons/email.svg'
+import FacebookIcon from '../public/assets/images/icons/facebook.svg'
+import TelegramIcon from '../public/assets/images/icons/telegram.svg'
+import TwitterIcon from '../public/assets/images/icons/twitter.svg'
 
 
 
