@@ -8,7 +8,7 @@ interface Props {
     onConfirm: (offer: string, timeAuction?: boolean, duration?: number) => void
     loading: boolean
     onClose?: () => void
-    allowTimeAuction: boolean
+    allowTimeAuction?: boolean
 }
 
 export const PopupPurchase: FC<Props> = ({ name, onConfirm, loading, allowTimeAuction = true }) => {
