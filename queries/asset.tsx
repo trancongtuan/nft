@@ -201,8 +201,6 @@ export function useGetSingleAssetQuery(
     return useQuery(
         ['asset', ...Object.values(variables)],
         () => fetchOpenseaAsset(variables),
-        {
-            initialData,
-        }
+        { initialData }
     )
 }
